@@ -107,10 +107,11 @@ Module collections.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter",
                                         "iter"
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -118,7 +119,7 @@ Module collections.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -152,10 +153,11 @@ Module collections.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter",
                                         "iter"
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -163,7 +165,7 @@ Module collections.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -203,8 +205,11 @@ Module collections.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field next 0;
-                                            M.get_tuple_field (M.read (| peeked |)) 0
+                                            M.SubPointer.get_tuple_field (| next, 0 |);
+                                            M.SubPointer.get_tuple_field (|
+                                              M.read (| peeked |),
+                                              0
+                                            |)
                                           ]
                                         |)
                                       |)) in

@@ -29,7 +29,11 @@ Module ffi.
                 [ __H ]
               |),
               [
-                M.get_struct_record_field (M.read (| self |)) "core::ffi::c_str::CStr" "inner";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::c_str::CStr",
+                  "inner"
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -73,10 +77,11 @@ Module ffi.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ffi::c_str::FromBytesWithNulError"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ffi::c_str::FromBytesWithNulError",
                         "kind"
+                      |)
                     ]
                   |))
               ]))
@@ -121,14 +126,16 @@ Module ffi.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::ffi::c_str::FromBytesWithNulError"
-                  "kind";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::ffi::c_str::FromBytesWithNulError"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::c_str::FromBytesWithNulError",
                   "kind"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::ffi::c_str::FromBytesWithNulError",
+                  "kind"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -203,10 +210,11 @@ Module ffi.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::ffi::c_str::FromBytesWithNulError"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ffi::c_str::FromBytesWithNulError",
                       "kind"
+                    |)
                   |))
               ]
             |)))
@@ -258,7 +266,7 @@ Module ffi.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul",
                           0
@@ -354,11 +362,11 @@ Module ffi.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul",
                                   0
@@ -366,7 +374,7 @@ Module ffi.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul",
                                   0
@@ -451,7 +459,7 @@ Module ffi.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul",
                           0
@@ -569,10 +577,11 @@ Module ffi.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::ffi::c_str::FromBytesWithNulError"
-                  "kind",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::c_str::FromBytesWithNulError",
+                  "kind"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -620,10 +629,11 @@ Module ffi.
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", Ty.tuple [], [], "clone", [] |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::ffi::c_str::FromBytesUntilNulError"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::ffi::c_str::FromBytesUntilNulError",
                       0
+                    |)
                   ]
                 |)
               ]))
@@ -668,14 +678,16 @@ Module ffi.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::ffi::c_str::FromBytesUntilNulError"
-                  0;
-                M.get_struct_tuple_field
-                  (M.read (| other |))
-                  "core::ffi::c_str::FromBytesUntilNulError"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::ffi::c_str::FromBytesUntilNulError",
                   0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::ffi::c_str::FromBytesUntilNulError",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -749,10 +761,11 @@ Module ffi.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::ffi::c_str::FromBytesUntilNulError"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::ffi::c_str::FromBytesUntilNulError",
                       0
+                    |)
                   |))
               ]
             |)))
@@ -986,7 +999,7 @@ Module ffi.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -1022,7 +1035,7 @@ Module ffi.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -1038,12 +1051,13 @@ Module ffi.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::ffi::c_str::FromBytesWithNulError"
-                                "kind" in
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::ffi::c_str::FromBytesWithNulError",
+                                "kind"
+                              |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul",
                                 0
@@ -1110,7 +1124,7 @@ Module ffi.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -1146,7 +1160,7 @@ Module ffi.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -1270,7 +1284,7 @@ Module ffi.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -1366,7 +1380,7 @@ Module ffi.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -1406,7 +1420,7 @@ Module ffi.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -1541,7 +1555,13 @@ Module ffi.
                 "as_ptr",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::ffi::c_str::CStr" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::c_str::CStr",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1565,7 +1585,13 @@ Module ffi.
                   "len",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "core::ffi::c_str::CStr" "inner" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ffi::c_str::CStr",
+                    "inner"
+                  |)
+                ]
               |),
               Value.Integer Integer.Usize 1
             |)))
@@ -1595,7 +1621,13 @@ Module ffi.
                     "as_ptr",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::ffi::c_str::CStr" "inner" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ffi::c_str::CStr",
+                      "inner"
+                    |)
+                  ]
                 |)
               |))
               (Value.Integer Integer.I8 0)))
@@ -1677,7 +1709,11 @@ Module ffi.
               (M.read (|
                 M.use
                   (M.alloc (|
-                    M.get_struct_record_field (M.read (| self |)) "core::ffi::c_str::CStr" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ffi::c_str::CStr",
+                      "inner"
+                    |)
                   |))
               |))))
         | _, _ => M.impossible
@@ -1906,10 +1942,11 @@ Module ffi.
                           (M.alloc (|
                             BinOp.Pure.lt
                               (M.read (|
-                                M.get_struct_record_field
-                                  index
-                                  "core::ops::range::RangeFrom"
+                                M.SubPointer.get_struct_record_field (|
+                                  index,
+                                  "core::ops::range::RangeFrom",
                                   "start"
+                                |)
                               |))
                               (M.call_closure (|
                                 M.get_associated_function (|
@@ -1948,10 +1985,11 @@ Module ffi.
                                   [
                                     ("start",
                                       M.read (|
-                                        M.get_struct_record_field
-                                          index
-                                          "core::ops::range::RangeFrom"
+                                        M.SubPointer.get_struct_record_field (|
+                                          index,
+                                          "core::ops::range::RangeFrom",
                                           "start"
+                                        |)
                                       |))
                                   ]
                               ]
@@ -2015,10 +2053,11 @@ Module ffi.
                                               [ Ty.path "usize" ]
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                index
-                                                "core::ops::range::RangeFrom"
+                                              M.SubPointer.get_struct_record_field (|
+                                                index,
+                                                "core::ops::range::RangeFrom",
                                                 "start"
+                                              |)
                                             ]
                                           |)
                                         ]

@@ -22,17 +22,19 @@ Module ptr.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.read (|
-            M.get_struct_record_field
-              (M.get_struct_record_field
-                (M.alloc (|
+            M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.alloc (|
                   Value.StructRecord
                     "core::ptr::metadata::PtrRepr"
                     [ ("const_ptr", M.read (| ptr |)) ]
-                |))
-                "core::ptr::metadata::PtrRepr"
-                "components")
-              "core::ptr::metadata::PtrComponents"
+                |),
+                "core::ptr::metadata::PtrRepr",
+                "components"
+              |),
+              "core::ptr::metadata::PtrComponents",
               "metadata"
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -55,8 +57,8 @@ Module ptr.
           (let data_address := M.alloc (| data_address |) in
           let metadata := M.alloc (| metadata |) in
           M.read (|
-            M.get_struct_record_field
-              (M.alloc (|
+            M.SubPointer.get_struct_record_field (|
+              M.alloc (|
                 Value.StructRecord
                   "core::ptr::metadata::PtrRepr"
                   [
@@ -68,9 +70,10 @@ Module ptr.
                           ("metadata", M.read (| metadata |))
                         ])
                   ]
-              |))
-              "core::ptr::metadata::PtrRepr"
+              |),
+              "core::ptr::metadata::PtrRepr",
               "const_ptr"
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -93,8 +96,8 @@ Module ptr.
           (let data_address := M.alloc (| data_address |) in
           let metadata := M.alloc (| metadata |) in
           M.read (|
-            M.get_struct_record_field
-              (M.alloc (|
+            M.SubPointer.get_struct_record_field (|
+              M.alloc (|
                 Value.StructRecord
                   "core::ptr::metadata::PtrRepr"
                   [
@@ -107,9 +110,10 @@ Module ptr.
                           ("metadata", M.read (| metadata |))
                         ])
                   ]
-              |))
-              "core::ptr::metadata::PtrRepr"
+              |),
+              "core::ptr::metadata::PtrRepr",
               "mut_ptr"
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -215,10 +219,11 @@ Module ptr.
                               M.use
                                 (M.alloc (|
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "core::ptr::metadata::DynMetadata"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::ptr::metadata::DynMetadata",
                                       "vtable_ptr"
+                                    |)
                                   |)
                                 |))
                             |))
@@ -262,10 +267,11 @@ Module ptr.
                               M.use
                                 (M.alloc (|
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "core::ptr::metadata::DynMetadata"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::ptr::metadata::DynMetadata",
                                       "vtable_ptr"
+                                    |)
                                   |)
                                 |))
                             |))
@@ -399,10 +405,11 @@ Module ptr.
                       (M.use
                         (M.alloc (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::ptr::metadata::DynMetadata"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::ptr::metadata::DynMetadata",
                               "vtable_ptr"
+                            |)
                           |)
                         |)))
                   ]
@@ -508,16 +515,18 @@ Module ptr.
               M.get_function (| "core::ptr::eq", [ Ty.path "core::ptr::metadata::VTable" ] |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ptr::metadata::DynMetadata"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ptr::metadata::DynMetadata",
                     "vtable_ptr"
+                  |)
                 |);
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "core::ptr::metadata::DynMetadata"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "core::ptr::metadata::DynMetadata",
                     "vtable_ptr"
+                  |)
                 |)
               ]
             |)))
@@ -561,19 +570,21 @@ Module ptr.
                 M.use
                   (M.alloc (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ptr::metadata::DynMetadata"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ptr::metadata::DynMetadata",
                         "vtable_ptr"
+                      |)
                     |)
                   |));
                 M.use
                   (M.alloc (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::ptr::metadata::DynMetadata"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::ptr::metadata::DynMetadata",
                         "vtable_ptr"
+                      |)
                     |)
                   |))
               ]
@@ -652,10 +663,11 @@ Module ptr.
               M.get_function (| "core::ptr::hash", [ Ty.path "core::ptr::metadata::VTable"; H ] |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ptr::metadata::DynMetadata"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ptr::metadata::DynMetadata",
                     "vtable_ptr"
+                  |)
                 |);
                 M.read (| hasher |)
               ]

@@ -138,7 +138,7 @@ Module ptr.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -186,7 +186,15 @@ Module ptr.
                 "as_ptr",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::ptr::unique::Unique" "pointer" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::unique::Unique",
+                    "pointer"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -214,7 +222,12 @@ Module ptr.
                 "as_ref",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::ptr::unique::Unique" "pointer"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ptr::unique::Unique",
+                  "pointer"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -243,7 +256,12 @@ Module ptr.
                 "as_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::ptr::unique::Unique" "pointer"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ptr::unique::Unique",
+                  "pointer"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -288,7 +306,11 @@ Module ptr.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field self "core::ptr::unique::Unique" "pointer"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::ptr::unique::Unique",
+                            "pointer"
+                          |)
                         |)
                       ]
                     |)

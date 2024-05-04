@@ -792,11 +792,19 @@ Module fmt.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.read (|
-                M.get_struct_record_field (M.read (| self |)) "core::fmt::rt::Argument" "formatter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::fmt::rt::Argument",
+                  "formatter"
+                |)
               |),
               [
                 M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "core::fmt::rt::Argument" "value"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::rt::Argument",
+                    "value"
+                  |)
                 |);
                 M.read (| f |)
               ]
@@ -838,10 +846,11 @@ Module fmt.
                             BinOp.Pure.eq
                               (M.rust_cast
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::fmt::rt::Argument"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::fmt::rt::Argument",
                                     "formatter"
+                                  |)
                                 |)))
                               (M.rust_cast
                                 (M.read (|
@@ -859,10 +868,11 @@ Module fmt.
                                   M.use
                                     (M.alloc (|
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::fmt::rt::Argument"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::fmt::rt::Argument",
                                           "value"
+                                        |)
                                       |)
                                     |))
                                 |))

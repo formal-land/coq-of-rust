@@ -31,10 +31,11 @@ Module collections.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::TryReserveError"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::TryReserveError",
                       "kind"
+                    |)
                   ]
                 |))
             ]))
@@ -79,14 +80,16 @@ Module collections.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "alloc::collections::TryReserveError"
-                "kind";
-              M.get_struct_record_field
-                (M.read (| other |))
-                "alloc::collections::TryReserveError"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::collections::TryReserveError",
                 "kind"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "alloc::collections::TryReserveError",
+                "kind"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -161,10 +164,11 @@ Module collections.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::TryReserveError"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::TryReserveError",
                     "kind"
+                  |)
                 |))
             ]
           |)))
@@ -201,10 +205,11 @@ Module collections.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "alloc::collections::TryReserveError"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::collections::TryReserveError",
                 "kind"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -261,13 +266,13 @@ Module collections.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "alloc::collections::TryReserveErrorKind::AllocError",
                         "layout"
                       |) in
                     let γ1_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "alloc::collections::TryReserveErrorKind::AllocError",
                         "non_exhaustive"
@@ -368,17 +373,17 @@ Module collections.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let γ2_0 :=
-                              M.get_struct_record_field_or_break_match (|
+                              M.SubPointer.get_struct_record_field (|
                                 γ0_0,
                                 "alloc::collections::TryReserveErrorKind::AllocError",
                                 "layout"
                               |) in
                             let γ2_1 :=
-                              M.get_struct_record_field_or_break_match (|
+                              M.SubPointer.get_struct_record_field (|
                                 γ0_0,
                                 "alloc::collections::TryReserveErrorKind::AllocError",
                                 "non_exhaustive"
@@ -387,13 +392,13 @@ Module collections.
                             let __self_1 := M.alloc (| γ2_1 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
-                              M.get_struct_record_field_or_break_match (|
+                              M.SubPointer.get_struct_record_field (|
                                 γ0_1,
                                 "alloc::collections::TryReserveErrorKind::AllocError",
                                 "layout"
                               |) in
                             let γ2_1 :=
-                              M.get_struct_record_field_or_break_match (|
+                              M.SubPointer.get_struct_record_field (|
                                 γ0_1,
                                 "alloc::collections::TryReserveErrorKind::AllocError",
                                 "non_exhaustive"
@@ -519,13 +524,13 @@ Module collections.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "alloc::collections::TryReserveErrorKind::AllocError",
                         "layout"
                       |) in
                     let γ1_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "alloc::collections::TryReserveErrorKind::AllocError",
                         "non_exhaustive"
@@ -681,7 +686,7 @@ Module collections.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -717,7 +722,7 @@ Module collections.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0
@@ -729,10 +734,11 @@ Module collections.
                 let reason :=
                   M.copy (|
                     M.match_operator (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::TryReserveError"
-                        "kind",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::TryReserveError",
+                        "kind"
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic

@@ -123,7 +123,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (| γ, "enums::WebEvent::KeyPress", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::KeyPress", 0 |) in
                 let c := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|
@@ -171,7 +171,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (| γ, "enums::WebEvent::Paste", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::Paste", 0 |) in
                 let s := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|
@@ -219,9 +219,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_record_field_or_break_match (| γ, "enums::WebEvent::Click", "x" |) in
+                  M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "x" |) in
                 let γ0_1 :=
-                  M.get_struct_record_field_or_break_match (| γ, "enums::WebEvent::Click", "y" |) in
+                  M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "y" |) in
                 let x := M.copy (| γ0_0 |) in
                 let y := M.copy (| γ0_1 |) in
                 let _ :=

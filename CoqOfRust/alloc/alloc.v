@@ -375,7 +375,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -417,7 +417,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -744,7 +744,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -786,7 +786,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -895,7 +895,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -937,7 +937,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -1476,7 +1476,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -1518,7 +1518,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -1584,7 +1584,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -1626,7 +1626,7 @@ Module alloc.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -1753,11 +1753,7 @@ Module alloc.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Ok",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let ptr := M.copy (| γ0_0 |) in
                   M.alloc (|
                     M.call_closure (|
@@ -1774,11 +1770,7 @@ Module alloc.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Err",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|

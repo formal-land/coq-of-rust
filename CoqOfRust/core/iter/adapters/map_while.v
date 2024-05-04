@@ -29,20 +29,22 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_while::MapWhile"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_while::MapWhile",
                           "iter"
+                        |)
                       ]
                     |));
                   ("predicate",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_while::MapWhile"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_while::MapWhile",
                           "predicate"
+                        |)
                       ]
                     |))
                 ]))
@@ -128,10 +130,11 @@ Module iter.
                       M.read (| Value.String "iter" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_while::MapWhile"
-                          "iter")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_while::MapWhile",
+                          "iter"
+                        |))
                     ]
                   |)
                 ]
@@ -192,10 +195,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::map_while::MapWhile"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::map_while::MapWhile",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -205,7 +209,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -236,7 +240,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -256,10 +260,11 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::map_while::MapWhile"
-                            "predicate";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::map_while::MapWhile",
+                            "predicate"
+                          |);
                           Value.Tuple [ M.read (| x |) ]
                         ]
                       |)
@@ -293,18 +298,19 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_while::MapWhile"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_while::MapWhile",
                           "iter"
+                        |)
                       ]
                     |)
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let upper := M.copy (| γ0_1 |) in
                         M.alloc (|
                           Value.Tuple [ Value.Integer Integer.Usize 0; M.read (| upper |) ]
@@ -346,13 +352,13 @@ Module iter.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "core::iter::adapters::map_while::MapWhile",
                             "iter"
                           |) in
                         let γ1_1 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "core::iter::adapters::map_while::MapWhile",
                             "predicate"
@@ -428,7 +434,7 @@ Module iter.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ0_0 :=
-                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
                                                                         "core::option::Option::Some",
                                                                         0
@@ -523,8 +529,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
@@ -550,9 +556,10 @@ Module iter.
                         |)
                       ]
                     |)
-                  |))
-                  "core::ops::try_trait::NeverShortCircuit"
+                  |),
+                  "core::ops::try_trait::NeverShortCircuit",
                   0
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -595,10 +602,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::map_while::MapWhile"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::map_while::MapWhile",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

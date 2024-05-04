@@ -479,7 +479,10 @@ Module num.
               let base := M.alloc (| repeat (Value.Integer Integer.U32 0) 40 |) in
               let _ :=
                 M.write (|
-                  M.get_array_field (| base, M.alloc (| Value.Integer Integer.Usize 0 |) |),
+                  M.SubPointer.get_array_field (|
+                    base,
+                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                  |),
                   M.read (| v |)
                 |) in
               M.alloc (|
@@ -530,7 +533,7 @@ Module num.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_array_field (| base, sz |),
+                                M.SubPointer.get_array_field (| base, sz |),
                                 M.rust_cast (M.read (| v |))
                               |) in
                             let _ :=
@@ -593,16 +596,21 @@ Module num.
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| self |)) "core::num::bignum::Big32x40" "base";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::num::bignum::Big32x40",
+                  "base"
+                |);
                 Value.StructRecord
                   "core::ops::range::RangeTo"
                   [
                     ("end_",
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::bignum::Big32x40"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::bignum::Big32x40",
                           "size"
+                        |)
                       |))
                   ]
               ]
@@ -636,11 +644,12 @@ Module num.
                   (BinOp.Pure.bit_and
                     (BinOp.Panic.shr (|
                       M.read (|
-                        M.get_array_field (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::bignum::Big32x40"
-                            "base",
+                        M.SubPointer.get_array_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::bignum::Big32x40",
+                            "base"
+                          |),
                           d
                         |)
                       |),
@@ -803,7 +812,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -816,7 +825,11 @@ Module num.
                             M.rust_cast
                               (M.call_closure (|
                                 M.get_associated_function (| Ty.path "u32", "ilog2", [] |),
-                                [ M.read (| M.get_array_field (| M.read (| digits |), msd |) |) ]
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_array_field (| M.read (| digits |), msd |)
+                                  |)
+                                ]
                               |))
                           |),
                           Value.Integer Integer.Usize 1
@@ -864,16 +877,18 @@ Module num.
                     M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::bignum::Big32x40"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::bignum::Big32x40",
                           "size"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "core::num::bignum::Big32x40"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::num::bignum::Big32x40",
                           "size"
+                        |)
                       |)
                     ]
                   |)
@@ -923,10 +938,11 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::num::bignum::Big32x40"
-                                    "base";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::num::bignum::Big32x40",
+                                    "base"
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
                                     [ ("end_", M.read (| sz |)) ]
@@ -945,10 +961,11 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| other |))
-                                    "core::num::bignum::Big32x40"
-                                    "base";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| other |),
+                                    "core::num::bignum::Big32x40",
+                                    "base"
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
                                     [ ("end_", M.read (| sz |)) ]
@@ -997,13 +1014,13 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let a := M.copy (| γ1_0 |) in
                                         let b := M.copy (| γ1_1 |) in
                                         M.match_operator (|
@@ -1024,8 +1041,10 @@ Module num.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let v := M.copy (| γ0_0 |) in
                                                 let c := M.copy (| γ0_1 |) in
                                                 let _ :=
@@ -1051,11 +1070,12 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.write (|
-                            M.get_array_field (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::num::bignum::Big32x40"
-                                "base",
+                            M.SubPointer.get_array_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::num::bignum::Big32x40",
+                                "base"
+                              |),
                               sz
                             |),
                             Value.Integer Integer.U32 1
@@ -1072,10 +1092,11 @@ Module num.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::num::bignum::Big32x40"
-                    "size",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |),
                   M.read (| sz |)
                 |) in
               M.alloc (| M.read (| self |) |)
@@ -1115,11 +1136,12 @@ Module num.
                     M.get_associated_function (| Ty.path "u32", "carrying_add", [] |),
                     [
                       M.read (|
-                        M.get_array_field (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::bignum::Big32x40"
-                            "base",
+                        M.SubPointer.get_array_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::bignum::Big32x40",
+                            "base"
+                          |),
                           M.alloc (| Value.Integer Integer.Usize 0 |)
                         |)
                       |);
@@ -1131,17 +1153,18 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let v := M.copy (| γ0_0 |) in
                       let carry := M.copy (| γ0_1 |) in
                       let _ :=
                         M.write (|
-                          M.get_array_field (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::num::bignum::Big32x40"
-                              "base",
+                          M.SubPointer.get_array_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::num::bignum::Big32x40",
+                              "base"
+                            |),
                             M.alloc (| Value.Integer Integer.Usize 0 |)
                           |),
                           M.read (| v |)
@@ -1171,11 +1194,12 @@ Module num.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_array_field (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::num::bignum::Big32x40"
-                                                  "base",
+                                              M.SubPointer.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::num::bignum::Big32x40",
+                                                  "base"
+                                                |),
                                                 i
                                               |)
                                             |);
@@ -1187,17 +1211,18 @@ Module num.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                             let v := M.copy (| γ0_0 |) in
                                             let c := M.copy (| γ0_1 |) in
                                             let _ :=
                                               M.write (|
-                                                M.get_array_field (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::num::bignum::Big32x40"
-                                                    "base",
+                                                M.SubPointer.get_array_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::num::bignum::Big32x40",
+                                                    "base"
+                                                  |),
                                                   i
                                                 |),
                                                 M.read (| v |)
@@ -1243,10 +1268,11 @@ Module num.
                                       BinOp.Pure.gt
                                         (M.read (| i |))
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::num::bignum::Big32x40"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::num::bignum::Big32x40",
                                             "size"
+                                          |)
                                         |))
                                     |)) in
                                 let _ :=
@@ -1256,10 +1282,11 @@ Module num.
                                   |) in
                                 let _ :=
                                   M.write (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::num::bignum::Big32x40"
-                                      "size",
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::num::bignum::Big32x40",
+                                      "size"
+                                    |),
                                     M.read (| i |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -1305,16 +1332,18 @@ Module num.
                     M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::bignum::Big32x40"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::bignum::Big32x40",
                           "size"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "core::num::bignum::Big32x40"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::num::bignum::Big32x40",
                           "size"
+                        |)
                       |)
                     ]
                   |)
@@ -1364,10 +1393,11 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::num::bignum::Big32x40"
-                                    "base";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::num::bignum::Big32x40",
+                                    "base"
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
                                     [ ("end_", M.read (| sz |)) ]
@@ -1386,10 +1416,11 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| other |))
-                                    "core::num::bignum::Big32x40"
-                                    "base";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| other |),
+                                    "core::num::bignum::Big32x40",
+                                    "base"
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
                                     [ ("end_", M.read (| sz |)) ]
@@ -1438,13 +1469,13 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let a := M.copy (| γ1_0 |) in
                                         let b := M.copy (| γ1_1 |) in
                                         M.match_operator (|
@@ -1465,8 +1496,10 @@ Module num.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let v := M.copy (| γ0_0 |) in
                                                 let c := M.copy (| γ0_1 |) in
                                                 let _ :=
@@ -1503,10 +1536,11 @@ Module num.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::num::bignum::Big32x40"
-                    "size",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |),
                   M.read (| sz |)
                 |) in
               M.alloc (| M.read (| self |) |)
@@ -1542,7 +1576,11 @@ Module num.
             M.read (|
               let sz :=
                 M.copy (|
-                  M.get_struct_record_field (M.read (| self |)) "core::num::bignum::Big32x40" "size"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |)
                 |) in
               let carry := M.alloc (| Value.Integer Integer.U32 0 |) in
               let _ :=
@@ -1570,10 +1608,11 @@ Module num.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::num::bignum::Big32x40"
-                                "base";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::num::bignum::Big32x40",
+                                "base"
+                              |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
                                 [ ("end_", M.read (| sz |)) ]
@@ -1613,7 +1652,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -1637,8 +1676,10 @@ Module num.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let v := M.copy (| γ0_0 |) in
                                                 let c := M.copy (| γ0_1 |) in
                                                 let _ :=
@@ -1668,11 +1709,12 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.write (|
-                            M.get_array_field (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::num::bignum::Big32x40"
-                                "base",
+                            M.SubPointer.get_array_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::num::bignum::Big32x40",
+                                "base"
+                              |),
                               sz
                             |),
                             M.read (| carry |)
@@ -1689,10 +1731,11 @@ Module num.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::num::bignum::Big32x40"
-                    "size",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |),
                   M.read (| sz |)
                 |) in
               M.alloc (| M.read (| self |) |)
@@ -1841,10 +1884,11 @@ Module num.
                                                         []
                                                       |),
                                                       [
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::num::bignum::Big32x40"
-                                                          "base";
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::num::bignum::Big32x40",
+                                                          "base"
+                                                        |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeFrom"
                                                           [
@@ -1933,11 +1977,12 @@ Module num.
                                               (BinOp.Pure.eq
                                                 (BinOp.Panic.shr (|
                                                   M.read (|
-                                                    M.get_array_field (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::num::bignum::Big32x40"
-                                                        "base",
+                                                    M.SubPointer.get_array_field (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::num::bignum::Big32x40",
+                                                        "base"
+                                                      |),
                                                       M.alloc (|
                                                         BinOp.Panic.sub (|
                                                           BinOp.Panic.sub (|
@@ -2012,10 +2057,11 @@ Module num.
                                   ("start", Value.Integer Integer.Usize 0);
                                   ("end_",
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::num::bignum::Big32x40"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::num::bignum::Big32x40",
                                         "size"
+                                      |)
                                     |))
                                 ]
                             ]
@@ -2058,7 +2104,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -2066,11 +2112,12 @@ Module num.
                                         let i := M.copy (| γ0_0 |) in
                                         let _ :=
                                           M.write (|
-                                            M.get_array_field (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::num::bignum::Big32x40"
-                                                "base",
+                                            M.SubPointer.get_array_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::num::bignum::Big32x40",
+                                                "base"
+                                              |),
                                               M.alloc (|
                                                 BinOp.Panic.add (|
                                                   M.read (| i |),
@@ -2079,11 +2126,12 @@ Module num.
                                               |)
                                             |),
                                             M.read (|
-                                              M.get_array_field (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::num::bignum::Big32x40"
-                                                  "base",
+                                              M.SubPointer.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::num::bignum::Big32x40",
+                                                  "base"
+                                                |),
                                                 i
                                               |)
                                             |)
@@ -2148,7 +2196,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -2156,11 +2204,12 @@ Module num.
                                         let i := M.copy (| γ0_0 |) in
                                         let _ :=
                                           M.write (|
-                                            M.get_array_field (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::num::bignum::Big32x40"
-                                                "base",
+                                            M.SubPointer.get_array_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::num::bignum::Big32x40",
+                                                "base"
+                                              |),
                                               i
                                             |),
                                             Value.Integer Integer.U32 0
@@ -2176,10 +2225,11 @@ Module num.
                 M.alloc (|
                   BinOp.Panic.add (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::bignum::Big32x40"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::bignum::Big32x40",
                         "size"
+                      |)
                     |),
                     M.read (| digits |)
                   |)
@@ -2202,11 +2252,12 @@ Module num.
                           M.alloc (|
                             BinOp.Panic.shr (|
                               M.read (|
-                                M.get_array_field (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::num::bignum::Big32x40"
-                                    "base",
+                                M.SubPointer.get_array_field (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::num::bignum::Big32x40",
+                                    "base"
+                                  |),
                                   M.alloc (|
                                     BinOp.Panic.sub (|
                                       M.read (| last |),
@@ -2238,11 +2289,12 @@ Module num.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_array_field (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::bignum::Big32x40"
-                                          "base",
+                                      M.SubPointer.get_array_field (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::bignum::Big32x40",
+                                          "base"
+                                        |),
                                         last
                                       |),
                                       M.read (| overflow |)
@@ -2340,7 +2392,7 @@ Module num.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::option::Option::Some",
                                                       0
@@ -2348,21 +2400,23 @@ Module num.
                                                   let i := M.copy (| γ0_0 |) in
                                                   let _ :=
                                                     M.write (|
-                                                      M.get_array_field (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::num::bignum::Big32x40"
-                                                          "base",
+                                                      M.SubPointer.get_array_field (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::num::bignum::Big32x40",
+                                                          "base"
+                                                        |),
                                                         i
                                                       |),
                                                       BinOp.Pure.bit_or
                                                         (BinOp.Panic.shl (|
                                                           M.read (|
-                                                            M.get_array_field (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| self |))
-                                                                "core::num::bignum::Big32x40"
-                                                                "base",
+                                                            M.SubPointer.get_array_field (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::num::bignum::Big32x40",
+                                                                "base"
+                                                              |),
                                                               i
                                                             |)
                                                           |),
@@ -2370,11 +2424,12 @@ Module num.
                                                         |))
                                                         (BinOp.Panic.shr (|
                                                           M.read (|
-                                                            M.get_array_field (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| self |))
-                                                                "core::num::bignum::Big32x40"
-                                                                "base",
+                                                            M.SubPointer.get_array_field (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::num::bignum::Big32x40",
+                                                                "base"
+                                                              |),
                                                               M.alloc (|
                                                                 BinOp.Panic.sub (|
                                                                   M.read (| i |),
@@ -2398,11 +2453,12 @@ Module num.
                             |)) in
                         let _ :=
                           let β :=
-                            M.get_array_field (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::num::bignum::Big32x40"
-                                "base",
+                            M.SubPointer.get_array_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::num::bignum::Big32x40",
+                                "base"
+                              |),
                               digits
                             |) in
                           M.write (|
@@ -2415,10 +2471,11 @@ Module num.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::num::bignum::Big32x40"
-                    "size",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |),
                   M.read (| sz |)
                 |) in
               M.alloc (| M.read (| self |) |)
@@ -2476,15 +2533,15 @@ Module num.
                     |))
                 |) in
               M.match_operator (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::bignum::SMALL_POW5" |),
                   table_index
                 |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let small_power := M.copy (| γ0_0 |) in
                       let small_e := M.copy (| γ0_1 |) in
                       let small_power := M.alloc (| M.rust_cast (M.read (| small_power |)) |) in
@@ -2594,7 +2651,7 @@ Module num.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::option::Option::Some",
                                                     0
@@ -2695,10 +2752,11 @@ Module num.
                               (M.alloc (|
                                 BinOp.Pure.lt
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::num::bignum::Big32x40"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::num::bignum::Big32x40",
                                       "size"
+                                    |)
                                   |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -2752,18 +2810,20 @@ Module num.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::num::bignum::Big32x40"
-                    "base",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::Big32x40",
+                    "base"
+                  |),
                   M.read (| ret |)
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::num::bignum::Big32x40"
-                    "size",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |),
                   M.read (| retsz |)
                 |) in
               M.alloc (| M.read (| self |) |)
@@ -2823,7 +2883,11 @@ Module num.
                 |) in
               let sz :=
                 M.copy (|
-                  M.get_struct_record_field (M.read (| self |)) "core::num::bignum::Big32x40" "size"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |)
                 |) in
               let borrow := M.alloc (| Value.Integer Integer.U32 0 |) in
               let _ :=
@@ -2870,10 +2934,11 @@ Module num.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::num::bignum::Big32x40"
-                                        "base";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::num::bignum::Big32x40",
+                                        "base"
+                                      |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
                                         [ ("end_", M.read (| sz |)) ]
@@ -2921,7 +2986,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -2947,8 +3012,10 @@ Module num.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let q := M.copy (| γ0_0 |) in
                                                 let r := M.copy (| γ0_1 |) in
                                                 let _ :=
@@ -3075,10 +3142,11 @@ Module num.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| q |))
-                                "core::num::bignum::Big32x40"
-                                "base";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| q |),
+                                "core::num::bignum::Big32x40",
+                                "base"
+                              |);
                               Value.StructTuple "core::ops::range::RangeFull" []
                             ]
                           |)
@@ -3116,7 +3184,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -3158,10 +3226,11 @@ Module num.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| r |))
-                                "core::num::bignum::Big32x40"
-                                "base";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| r |),
+                                "core::num::bignum::Big32x40",
+                                "base"
+                              |);
                               Value.StructTuple "core::ops::range::RangeFull" []
                             ]
                           |)
@@ -3199,7 +3268,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -3219,14 +3288,26 @@ Module num.
                   |)) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field (M.read (| r |)) "core::num::bignum::Big32x40" "size",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| r |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |),
                   M.read (|
-                    M.get_struct_record_field (M.read (| d |)) "core::num::bignum::Big32x40" "size"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| d |),
+                      "core::num::bignum::Big32x40",
+                      "size"
+                    |)
                   |)
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field (M.read (| q |)) "core::num::bignum::Big32x40" "size",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| q |),
+                    "core::num::bignum::Big32x40",
+                    "size"
+                  |),
                   Value.Integer Integer.Usize 1
                 |) in
               let q_is_zero := M.alloc (| Value.Bool true |) in
@@ -3311,7 +3392,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -3330,11 +3411,12 @@ Module num.
                                           |) in
                                         let _ :=
                                           let β :=
-                                            M.get_array_field (|
-                                              M.get_struct_record_field
-                                                (M.read (| r |))
-                                                "core::num::bignum::Big32x40"
-                                                "base",
+                                            M.SubPointer.get_array_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| r |),
+                                                "core::num::bignum::Big32x40",
+                                                "base"
+                                              |),
                                               M.alloc (| Value.Integer Integer.Usize 0 |)
                                             |) in
                                           M.write (|
@@ -3427,10 +3509,11 @@ Module num.
                                                             |) in
                                                           let _ :=
                                                             M.write (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| q |))
-                                                                "core::num::bignum::Big32x40"
-                                                                "size",
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| q |),
+                                                                "core::num::bignum::Big32x40",
+                                                                "size"
+                                                              |),
                                                               BinOp.Panic.add (|
                                                                 M.read (| digit_idx |),
                                                                 Value.Integer Integer.Usize 1
@@ -3449,11 +3532,12 @@ Module num.
                                                   |) in
                                                 let _ :=
                                                   let β :=
-                                                    M.get_array_field (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| q |))
-                                                        "core::num::bignum::Big32x40"
-                                                        "base",
+                                                    M.SubPointer.get_array_field (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| q |),
+                                                        "core::num::bignum::Big32x40",
+                                                        "base"
+                                                      |),
                                                       digit_idx
                                                     |) in
                                                   M.write (|
@@ -3535,19 +3619,21 @@ Module num.
                                                         []
                                                       |),
                                                       [
-                                                        M.get_struct_record_field
-                                                          (M.read (| q |))
-                                                          "core::num::bignum::Big32x40"
-                                                          "base";
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| q |),
+                                                          "core::num::bignum::Big32x40",
+                                                          "base"
+                                                        |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeFrom"
                                                           [
                                                             ("start",
                                                               M.read (|
-                                                                M.get_struct_record_field
-                                                                  (M.read (| q |))
-                                                                  "core::num::bignum::Big32x40"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| q |),
+                                                                  "core::num::bignum::Big32x40",
                                                                   "size"
+                                                                |)
                                                               |))
                                                           ]
                                                       ]
@@ -3662,19 +3748,21 @@ Module num.
                                                         []
                                                       |),
                                                       [
-                                                        M.get_struct_record_field
-                                                          (M.read (| r |))
-                                                          "core::num::bignum::Big32x40"
-                                                          "base";
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| r |),
+                                                          "core::num::bignum::Big32x40",
+                                                          "base"
+                                                        |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeFrom"
                                                           [
                                                             ("start",
                                                               M.read (|
-                                                                M.get_struct_record_field
-                                                                  (M.read (| r |))
-                                                                  "core::num::bignum::Big32x40"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| r |),
+                                                                  "core::num::bignum::Big32x40",
                                                                   "size"
+                                                                |)
                                                               |))
                                                           ]
                                                       ]
@@ -3769,10 +3857,11 @@ Module num.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::Big32x40"
-                      "base";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::Big32x40",
+                      "base"
+                    |);
                     Value.StructTuple "core::ops::range::RangeFull" []
                   ]
                 |);
@@ -3785,10 +3874,11 @@ Module num.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::num::bignum::Big32x40"
-                      "base";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::num::bignum::Big32x40",
+                      "base"
+                    |);
                     Value.StructTuple "core::ops::range::RangeFull" []
                   ]
                 |)
@@ -3876,16 +3966,18 @@ Module num.
                     M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::bignum::Big32x40"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::bignum::Big32x40",
                           "size"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "core::num::bignum::Big32x40"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::num::bignum::Big32x40",
                           "size"
+                        |)
                       |)
                     ]
                   |)
@@ -3932,10 +4024,11 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::num::bignum::Big32x40"
-                                    "base";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::num::bignum::Big32x40",
+                                    "base"
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
                                     [ ("end_", M.read (| sz |)) ]
@@ -3990,10 +4083,11 @@ Module num.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| other |))
-                                    "core::num::bignum::Big32x40"
-                                    "base";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| other |),
+                                    "core::num::bignum::Big32x40",
+                                    "base"
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
                                     [ ("end_", M.read (| sz |)) ]
@@ -4062,17 +4156,19 @@ Module num.
               [
                 ("size",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::Big32x40"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::Big32x40",
                       "size"
+                    |)
                   |));
                 ("base",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::Big32x40"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::Big32x40",
                       "base"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -4122,10 +4218,11 @@ Module num.
                                   (M.alloc (|
                                     BinOp.Pure.lt
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::bignum::Big32x40"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::bignum::Big32x40",
                                           "size"
+                                        |)
                                       |))
                                       (Value.Integer Integer.Usize 1)
                                   |)) in
@@ -4137,10 +4234,11 @@ Module num.
                               M.alloc (| Value.Integer Integer.Usize 1 |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::num::bignum::Big32x40"
-                                "size"))
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::num::bignum::Big32x40",
+                                "size"
+                              |)))
                         ]
                       |)
                     |) in
@@ -4195,11 +4293,12 @@ Module num.
                                                 [ Ty.path "u32" ]
                                               |),
                                               [
-                                                M.get_array_field (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::num::bignum::Big32x40"
-                                                    "base",
+                                                M.SubPointer.get_array_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::num::bignum::Big32x40",
+                                                    "base"
+                                                  |),
                                                   M.alloc (|
                                                     BinOp.Panic.sub (|
                                                       M.read (| sz |),
@@ -4256,7 +4355,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -4292,7 +4391,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -4345,10 +4444,11 @@ Module num.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::num::bignum::Big32x40"
-                                            "base";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::num::bignum::Big32x40",
+                                            "base"
+                                          |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
                                             [
@@ -4402,7 +4502,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -4527,7 +4627,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::ops::control_flow::ControlFlow::Break",
                                                           0
@@ -4568,7 +4668,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::ops::control_flow::ControlFlow::Continue",
                                                           0
@@ -4626,7 +4726,10 @@ Module num.
                 let base := M.alloc (| repeat (Value.Integer Integer.U8 0) 3 |) in
                 let _ :=
                   M.write (|
-                    M.get_array_field (| base, M.alloc (| Value.Integer Integer.Usize 0 |) |),
+                    M.SubPointer.get_array_field (|
+                      base,
+                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                    |),
                     M.read (| v |)
                   |) in
                 M.alloc (|
@@ -4680,7 +4783,7 @@ Module num.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_array_field (| base, sz |),
+                                  M.SubPointer.get_array_field (| base, sz |),
                                   M.rust_cast (M.read (| v |))
                                 |) in
                               let _ :=
@@ -4748,19 +4851,21 @@ Module num.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::num::bignum::tests::Big8x3"
-                    "base";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::bignum::tests::Big8x3",
+                    "base"
+                  |);
                   Value.StructRecord
                     "core::ops::range::RangeTo"
                     [
                       ("end_",
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::bignum::tests::Big8x3"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::bignum::tests::Big8x3",
                             "size"
+                          |)
                         |))
                     ]
                 ]
@@ -4796,11 +4901,12 @@ Module num.
                     BinOp.Pure.bit_and
                       (BinOp.Panic.shr (|
                         M.read (|
-                          M.get_array_field (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::num::bignum::tests::Big8x3"
-                              "base",
+                          M.SubPointer.get_array_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::num::bignum::tests::Big8x3",
+                              "base"
+                            |),
                             d
                           |)
                         |),
@@ -4965,7 +5071,7 @@ Module num.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -4978,7 +5084,11 @@ Module num.
                               M.rust_cast
                                 (M.call_closure (|
                                   M.get_associated_function (| Ty.path "u8", "ilog2", [] |),
-                                  [ M.read (| M.get_array_field (| M.read (| digits |), msd |) |) ]
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_array_field (| M.read (| digits |), msd |)
+                                    |)
+                                  ]
                                 |))
                             |),
                             Value.Integer Integer.Usize 1
@@ -5026,16 +5136,18 @@ Module num.
                       M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::bignum::tests::Big8x3"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::bignum::tests::Big8x3",
                             "size"
+                          |)
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "core::num::bignum::tests::Big8x3"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "core::num::bignum::tests::Big8x3",
                             "size"
+                          |)
                         |)
                       ]
                     |)
@@ -5085,10 +5197,11 @@ Module num.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::num::bignum::tests::Big8x3"
-                                      "base";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::num::bignum::tests::Big8x3",
+                                      "base"
+                                    |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
                                       [ ("end_", M.read (| sz |)) ]
@@ -5107,10 +5220,11 @@ Module num.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| other |))
-                                      "core::num::bignum::tests::Big8x3"
-                                      "base";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| other |),
+                                      "core::num::bignum::tests::Big8x3",
+                                      "base"
+                                    |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
                                       [ ("end_", M.read (| sz |)) ]
@@ -5159,13 +5273,13 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let a := M.copy (| γ1_0 |) in
                                           let b := M.copy (| γ1_1 |) in
                                           M.match_operator (|
@@ -5186,8 +5300,10 @@ Module num.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let v := M.copy (| γ0_0 |) in
                                                   let c := M.copy (| γ0_1 |) in
                                                   let _ :=
@@ -5213,11 +5329,12 @@ Module num.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.write (|
-                              M.get_array_field (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::bignum::tests::Big8x3"
-                                  "base",
+                              M.SubPointer.get_array_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::bignum::tests::Big8x3",
+                                  "base"
+                                |),
                                 sz
                               |),
                               Value.Integer Integer.U8 1
@@ -5234,10 +5351,11 @@ Module num.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::tests::Big8x3"
-                      "size",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::tests::Big8x3",
+                      "size"
+                    |),
                     M.read (| sz |)
                   |) in
                 M.alloc (| M.read (| self |) |)
@@ -5277,11 +5395,12 @@ Module num.
                       M.get_associated_function (| Ty.path "u8", "carrying_add", [] |),
                       [
                         M.read (|
-                          M.get_array_field (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::num::bignum::tests::Big8x3"
-                              "base",
+                          M.SubPointer.get_array_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::num::bignum::tests::Big8x3",
+                              "base"
+                            |),
                             M.alloc (| Value.Integer Integer.Usize 0 |)
                           |)
                         |);
@@ -5293,17 +5412,18 @@ Module num.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let v := M.copy (| γ0_0 |) in
                         let carry := M.copy (| γ0_1 |) in
                         let _ :=
                           M.write (|
-                            M.get_array_field (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::num::bignum::tests::Big8x3"
-                                "base",
+                            M.SubPointer.get_array_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::num::bignum::tests::Big8x3",
+                                "base"
+                              |),
                               M.alloc (| Value.Integer Integer.Usize 0 |)
                             |),
                             M.read (| v |)
@@ -5333,11 +5453,12 @@ Module num.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_array_field (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::num::bignum::tests::Big8x3"
-                                                    "base",
+                                                M.SubPointer.get_array_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::num::bignum::tests::Big8x3",
+                                                    "base"
+                                                  |),
                                                   i
                                                 |)
                                               |);
@@ -5349,17 +5470,19 @@ Module num.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ0_0 := M.get_tuple_field γ 0 in
-                                              let γ0_1 := M.get_tuple_field γ 1 in
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                               let v := M.copy (| γ0_0 |) in
                                               let c := M.copy (| γ0_1 |) in
                                               let _ :=
                                                 M.write (|
-                                                  M.get_array_field (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::num::bignum::tests::Big8x3"
-                                                      "base",
+                                                  M.SubPointer.get_array_field (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::num::bignum::tests::Big8x3",
+                                                      "base"
+                                                    |),
                                                     i
                                                   |),
                                                   M.read (| v |)
@@ -5405,10 +5528,11 @@ Module num.
                                         BinOp.Pure.gt
                                           (M.read (| i |))
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::num::bignum::tests::Big8x3"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::num::bignum::tests::Big8x3",
                                               "size"
+                                            |)
                                           |))
                                       |)) in
                                   let _ :=
@@ -5418,10 +5542,11 @@ Module num.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::num::bignum::tests::Big8x3"
-                                        "size",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::num::bignum::tests::Big8x3",
+                                        "size"
+                                      |),
                                       M.read (| i |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -5467,16 +5592,18 @@ Module num.
                       M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::bignum::tests::Big8x3"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::bignum::tests::Big8x3",
                             "size"
+                          |)
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "core::num::bignum::tests::Big8x3"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "core::num::bignum::tests::Big8x3",
                             "size"
+                          |)
                         |)
                       ]
                     |)
@@ -5526,10 +5653,11 @@ Module num.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::num::bignum::tests::Big8x3"
-                                      "base";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::num::bignum::tests::Big8x3",
+                                      "base"
+                                    |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
                                       [ ("end_", M.read (| sz |)) ]
@@ -5548,10 +5676,11 @@ Module num.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| other |))
-                                      "core::num::bignum::tests::Big8x3"
-                                      "base";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| other |),
+                                      "core::num::bignum::tests::Big8x3",
+                                      "base"
+                                    |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
                                       [ ("end_", M.read (| sz |)) ]
@@ -5600,13 +5729,13 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let a := M.copy (| γ1_0 |) in
                                           let b := M.copy (| γ1_1 |) in
                                           M.match_operator (|
@@ -5627,8 +5756,10 @@ Module num.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let v := M.copy (| γ0_0 |) in
                                                   let c := M.copy (| γ0_1 |) in
                                                   let _ :=
@@ -5665,10 +5796,11 @@ Module num.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::tests::Big8x3"
-                      "size",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::tests::Big8x3",
+                      "size"
+                    |),
                     M.read (| sz |)
                   |) in
                 M.alloc (| M.read (| self |) |)
@@ -5704,10 +5836,11 @@ Module num.
               M.read (|
                 let sz :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::tests::Big8x3"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::tests::Big8x3",
                       "size"
+                    |)
                   |) in
                 let carry := M.alloc (| Value.Integer Integer.U8 0 |) in
                 let _ :=
@@ -5735,10 +5868,11 @@ Module num.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::bignum::tests::Big8x3"
-                                  "base";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::bignum::tests::Big8x3",
+                                  "base"
+                                |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
                                   [ ("end_", M.read (| sz |)) ]
@@ -5778,7 +5912,7 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -5802,8 +5936,10 @@ Module num.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let v := M.copy (| γ0_0 |) in
                                                   let c := M.copy (| γ0_1 |) in
                                                   let _ :=
@@ -5833,11 +5969,12 @@ Module num.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.write (|
-                              M.get_array_field (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::bignum::tests::Big8x3"
-                                  "base",
+                              M.SubPointer.get_array_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::bignum::tests::Big8x3",
+                                  "base"
+                                |),
                                 sz
                               |),
                               M.read (| carry |)
@@ -5854,10 +5991,11 @@ Module num.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::tests::Big8x3"
-                      "size",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::tests::Big8x3",
+                      "size"
+                    |),
                     M.read (| sz |)
                   |) in
                 M.alloc (| M.read (| self |) |)
@@ -6007,10 +6145,11 @@ Module num.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::num::bignum::tests::Big8x3"
-                                                            "base";
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::num::bignum::tests::Big8x3",
+                                                            "base"
+                                                          |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeFrom"
                                                             [
@@ -6099,11 +6238,12 @@ Module num.
                                                 (BinOp.Pure.eq
                                                   (BinOp.Panic.shr (|
                                                     M.read (|
-                                                      M.get_array_field (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::num::bignum::tests::Big8x3"
-                                                          "base",
+                                                      M.SubPointer.get_array_field (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::num::bignum::tests::Big8x3",
+                                                          "base"
+                                                        |),
                                                         M.alloc (|
                                                           BinOp.Panic.sub (|
                                                             BinOp.Panic.sub (|
@@ -6178,10 +6318,11 @@ Module num.
                                     ("start", Value.Integer Integer.Usize 0);
                                     ("end_",
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::bignum::tests::Big8x3"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::bignum::tests::Big8x3",
                                           "size"
+                                        |)
                                       |))
                                   ]
                               ]
@@ -6224,7 +6365,7 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -6232,11 +6373,12 @@ Module num.
                                           let i := M.copy (| γ0_0 |) in
                                           let _ :=
                                             M.write (|
-                                              M.get_array_field (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::num::bignum::tests::Big8x3"
-                                                  "base",
+                                              M.SubPointer.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::num::bignum::tests::Big8x3",
+                                                  "base"
+                                                |),
                                                 M.alloc (|
                                                   BinOp.Panic.add (|
                                                     M.read (| i |),
@@ -6245,11 +6387,12 @@ Module num.
                                                 |)
                                               |),
                                               M.read (|
-                                                M.get_array_field (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::num::bignum::tests::Big8x3"
-                                                    "base",
+                                                M.SubPointer.get_array_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::num::bignum::tests::Big8x3",
+                                                    "base"
+                                                  |),
                                                   i
                                                 |)
                                               |)
@@ -6314,7 +6457,7 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -6322,11 +6465,12 @@ Module num.
                                           let i := M.copy (| γ0_0 |) in
                                           let _ :=
                                             M.write (|
-                                              M.get_array_field (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::num::bignum::tests::Big8x3"
-                                                  "base",
+                                              M.SubPointer.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::num::bignum::tests::Big8x3",
+                                                  "base"
+                                                |),
                                                 i
                                               |),
                                               Value.Integer Integer.U8 0
@@ -6342,10 +6486,11 @@ Module num.
                   M.alloc (|
                     BinOp.Panic.add (|
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::bignum::tests::Big8x3"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::bignum::tests::Big8x3",
                           "size"
+                        |)
                       |),
                       M.read (| digits |)
                     |)
@@ -6368,11 +6513,12 @@ Module num.
                             M.alloc (|
                               BinOp.Panic.shr (|
                                 M.read (|
-                                  M.get_array_field (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::num::bignum::tests::Big8x3"
-                                      "base",
+                                  M.SubPointer.get_array_field (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::num::bignum::tests::Big8x3",
+                                      "base"
+                                    |),
                                     M.alloc (|
                                       BinOp.Panic.sub (|
                                         M.read (| last |),
@@ -6404,11 +6550,12 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::num::bignum::tests::Big8x3"
-                                            "base",
+                                        M.SubPointer.get_array_field (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::num::bignum::tests::Big8x3",
+                                            "base"
+                                          |),
                                           last
                                         |),
                                         M.read (| overflow |)
@@ -6506,7 +6653,7 @@ Module num.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -6514,21 +6661,23 @@ Module num.
                                                     let i := M.copy (| γ0_0 |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_array_field (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::num::bignum::tests::Big8x3"
-                                                            "base",
+                                                        M.SubPointer.get_array_field (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::num::bignum::tests::Big8x3",
+                                                            "base"
+                                                          |),
                                                           i
                                                         |),
                                                         BinOp.Pure.bit_or
                                                           (BinOp.Panic.shl (|
                                                             M.read (|
-                                                              M.get_array_field (|
-                                                                M.get_struct_record_field
-                                                                  (M.read (| self |))
-                                                                  "core::num::bignum::tests::Big8x3"
-                                                                  "base",
+                                                              M.SubPointer.get_array_field (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::num::bignum::tests::Big8x3",
+                                                                  "base"
+                                                                |),
                                                                 i
                                                               |)
                                                             |),
@@ -6536,11 +6685,12 @@ Module num.
                                                           |))
                                                           (BinOp.Panic.shr (|
                                                             M.read (|
-                                                              M.get_array_field (|
-                                                                M.get_struct_record_field
-                                                                  (M.read (| self |))
-                                                                  "core::num::bignum::tests::Big8x3"
-                                                                  "base",
+                                                              M.SubPointer.get_array_field (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::num::bignum::tests::Big8x3",
+                                                                  "base"
+                                                                |),
                                                                 M.alloc (|
                                                                   BinOp.Panic.sub (|
                                                                     M.read (| i |),
@@ -6564,11 +6714,12 @@ Module num.
                               |)) in
                           let _ :=
                             let β :=
-                              M.get_array_field (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::bignum::tests::Big8x3"
-                                  "base",
+                              M.SubPointer.get_array_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::bignum::tests::Big8x3",
+                                  "base"
+                                |),
                                 digits
                               |) in
                             M.write (|
@@ -6581,10 +6732,11 @@ Module num.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::tests::Big8x3"
-                      "size",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::tests::Big8x3",
+                      "size"
+                    |),
                     M.read (| sz |)
                   |) in
                 M.alloc (| M.read (| self |) |)
@@ -6642,15 +6794,15 @@ Module num.
                       |))
                   |) in
                 M.match_operator (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.get_constant (| "core::num::bignum::SMALL_POW5" |),
                     table_index
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let small_power := M.copy (| γ0_0 |) in
                         let small_e := M.copy (| γ0_1 |) in
                         let small_power := M.alloc (| M.rust_cast (M.read (| small_power |)) |) in
@@ -6762,7 +6914,7 @@ Module num.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::option::Option::Some",
                                                       0
@@ -6863,10 +7015,11 @@ Module num.
                                 (M.alloc (|
                                   BinOp.Pure.lt
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::num::bignum::tests::Big8x3"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::num::bignum::tests::Big8x3",
                                         "size"
+                                      |)
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
@@ -6920,18 +7073,20 @@ Module num.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::tests::Big8x3"
-                      "base",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::tests::Big8x3",
+                      "base"
+                    |),
                     M.read (| ret |)
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::tests::Big8x3"
-                      "size",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::tests::Big8x3",
+                      "size"
+                    |),
                     M.read (| retsz |)
                   |) in
                 M.alloc (| M.read (| self |) |)
@@ -6991,10 +7146,11 @@ Module num.
                   |) in
                 let sz :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::bignum::tests::Big8x3"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::bignum::tests::Big8x3",
                       "size"
+                    |)
                   |) in
                 let borrow := M.alloc (| Value.Integer Integer.U8 0 |) in
                 let _ :=
@@ -7041,10 +7197,11 @@ Module num.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::bignum::tests::Big8x3"
-                                          "base";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::bignum::tests::Big8x3",
+                                          "base"
+                                        |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
                                           [ ("end_", M.read (| sz |)) ]
@@ -7092,7 +7249,7 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -7118,8 +7275,10 @@ Module num.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let q := M.copy (| γ0_0 |) in
                                                   let r := M.copy (| γ0_1 |) in
                                                   let _ :=
@@ -7246,10 +7405,11 @@ Module num.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| q |))
-                                  "core::num::bignum::tests::Big8x3"
-                                  "base";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| q |),
+                                  "core::num::bignum::tests::Big8x3",
+                                  "base"
+                                |);
                                 Value.StructTuple "core::ops::range::RangeFull" []
                               ]
                             |)
@@ -7287,7 +7447,7 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -7329,10 +7489,11 @@ Module num.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| r |))
-                                  "core::num::bignum::tests::Big8x3"
-                                  "base";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| r |),
+                                  "core::num::bignum::tests::Big8x3",
+                                  "base"
+                                |);
                                 Value.StructTuple "core::ops::range::RangeFull" []
                               ]
                             |)
@@ -7370,7 +7531,7 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -7390,23 +7551,26 @@ Module num.
                     |)) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| r |))
-                      "core::num::bignum::tests::Big8x3"
-                      "size",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| r |),
+                      "core::num::bignum::tests::Big8x3",
+                      "size"
+                    |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| d |))
-                        "core::num::bignum::tests::Big8x3"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| d |),
+                        "core::num::bignum::tests::Big8x3",
                         "size"
+                      |)
                     |)
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| q |))
-                      "core::num::bignum::tests::Big8x3"
-                      "size",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| q |),
+                      "core::num::bignum::tests::Big8x3",
+                      "size"
+                    |),
                     Value.Integer Integer.Usize 1
                   |) in
                 let q_is_zero := M.alloc (| Value.Bool true |) in
@@ -7491,7 +7655,7 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -7510,11 +7674,12 @@ Module num.
                                             |) in
                                           let _ :=
                                             let β :=
-                                              M.get_array_field (|
-                                                M.get_struct_record_field
-                                                  (M.read (| r |))
-                                                  "core::num::bignum::tests::Big8x3"
-                                                  "base",
+                                              M.SubPointer.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| r |),
+                                                  "core::num::bignum::tests::Big8x3",
+                                                  "base"
+                                                |),
                                                 M.alloc (| Value.Integer Integer.Usize 0 |)
                                               |) in
                                             M.write (|
@@ -7615,10 +7780,11 @@ Module num.
                                                               |) in
                                                             let _ :=
                                                               M.write (|
-                                                                M.get_struct_record_field
-                                                                  (M.read (| q |))
-                                                                  "core::num::bignum::tests::Big8x3"
-                                                                  "size",
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| q |),
+                                                                  "core::num::bignum::tests::Big8x3",
+                                                                  "size"
+                                                                |),
                                                                 BinOp.Panic.add (|
                                                                   M.read (| digit_idx |),
                                                                   Value.Integer Integer.Usize 1
@@ -7637,11 +7803,12 @@ Module num.
                                                     |) in
                                                   let _ :=
                                                     let β :=
-                                                      M.get_array_field (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| q |))
-                                                          "core::num::bignum::tests::Big8x3"
-                                                          "base",
+                                                      M.SubPointer.get_array_field (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| q |),
+                                                          "core::num::bignum::tests::Big8x3",
+                                                          "base"
+                                                        |),
                                                         digit_idx
                                                       |) in
                                                     M.write (|
@@ -7725,19 +7892,21 @@ Module num.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_struct_record_field
-                                                            (M.read (| q |))
-                                                            "core::num::bignum::tests::Big8x3"
-                                                            "base";
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| q |),
+                                                            "core::num::bignum::tests::Big8x3",
+                                                            "base"
+                                                          |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeFrom"
                                                             [
                                                               ("start",
                                                                 M.read (|
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| q |))
-                                                                    "core::num::bignum::tests::Big8x3"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| q |),
+                                                                    "core::num::bignum::tests::Big8x3",
                                                                     "size"
+                                                                  |)
                                                                 |))
                                                             ]
                                                         ]
@@ -7853,19 +8022,21 @@ Module num.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_struct_record_field
-                                                            (M.read (| r |))
-                                                            "core::num::bignum::tests::Big8x3"
-                                                            "base";
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| r |),
+                                                            "core::num::bignum::tests::Big8x3",
+                                                            "base"
+                                                          |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeFrom"
                                                             [
                                                               ("start",
                                                                 M.read (|
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| r |))
-                                                                    "core::num::bignum::tests::Big8x3"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| r |),
+                                                                    "core::num::bignum::tests::Big8x3",
                                                                     "size"
+                                                                  |)
                                                                 |))
                                                             ]
                                                         ]
@@ -7960,10 +8131,11 @@ Module num.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::bignum::tests::Big8x3"
-                        "base";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::bignum::tests::Big8x3",
+                        "base"
+                      |);
                       Value.StructTuple "core::ops::range::RangeFull" []
                     ]
                   |);
@@ -7976,10 +8148,11 @@ Module num.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::num::bignum::tests::Big8x3"
-                        "base";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::num::bignum::tests::Big8x3",
+                        "base"
+                      |);
                       Value.StructTuple "core::ops::range::RangeFull" []
                     ]
                   |)
@@ -8067,16 +8240,18 @@ Module num.
                       M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::bignum::tests::Big8x3"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::bignum::tests::Big8x3",
                             "size"
+                          |)
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "core::num::bignum::tests::Big8x3"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "core::num::bignum::tests::Big8x3",
                             "size"
+                          |)
                         |)
                       ]
                     |)
@@ -8123,10 +8298,11 @@ Module num.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::num::bignum::tests::Big8x3"
-                                      "base";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::num::bignum::tests::Big8x3",
+                                      "base"
+                                    |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
                                       [ ("end_", M.read (| sz |)) ]
@@ -8181,10 +8357,11 @@ Module num.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| other |))
-                                      "core::num::bignum::tests::Big8x3"
-                                      "base";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| other |),
+                                      "core::num::bignum::tests::Big8x3",
+                                      "base"
+                                    |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
                                       [ ("end_", M.read (| sz |)) ]
@@ -8253,17 +8430,19 @@ Module num.
                 [
                   ("size",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::bignum::tests::Big8x3"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::bignum::tests::Big8x3",
                         "size"
+                      |)
                     |));
                   ("base",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::bignum::tests::Big8x3"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::bignum::tests::Big8x3",
                         "base"
+                      |)
                     |))
                 ]))
           | _, _ => M.impossible
@@ -8313,10 +8492,11 @@ Module num.
                                     (M.alloc (|
                                       BinOp.Pure.lt
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::num::bignum::tests::Big8x3"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::num::bignum::tests::Big8x3",
                                             "size"
+                                          |)
                                         |))
                                         (Value.Integer Integer.Usize 1)
                                     |)) in
@@ -8328,10 +8508,11 @@ Module num.
                                 M.alloc (| Value.Integer Integer.Usize 1 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::bignum::tests::Big8x3"
-                                  "size"))
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::bignum::tests::Big8x3",
+                                  "size"
+                                |)))
                           ]
                         |)
                       |) in
@@ -8388,11 +8569,12 @@ Module num.
                                                   [ Ty.path "u8" ]
                                                 |),
                                                 [
-                                                  M.get_array_field (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::num::bignum::tests::Big8x3"
-                                                      "base",
+                                                  M.SubPointer.get_array_field (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::num::bignum::tests::Big8x3",
+                                                      "base"
+                                                    |),
                                                     M.alloc (|
                                                       BinOp.Panic.sub (|
                                                         M.read (| sz |),
@@ -8451,7 +8633,7 @@ Module num.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -8487,7 +8669,7 @@ Module num.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -8540,10 +8722,11 @@ Module num.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::num::bignum::tests::Big8x3"
-                                              "base";
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::num::bignum::tests::Big8x3",
+                                              "base"
+                                            |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
                                               [
@@ -8597,7 +8780,7 @@ Module num.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -8726,7 +8909,7 @@ Module num.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Break",
                                                             0
@@ -8768,7 +8951,7 @@ Module num.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Continue",
                                                             0

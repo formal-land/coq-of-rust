@@ -191,12 +191,26 @@ Module slice.
           M.call_closure (|
             M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
             [
-              M.read (| M.get_struct_record_field range "core::ops::range::Range" "start" |);
+              M.read (|
+                M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
+              |);
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "sub_ptr", [] |),
                 [
-                  M.read (| M.get_struct_record_field range "core::ops::range::Range" "end" |);
-                  M.read (| M.get_struct_record_field range "core::ops::range::Range" "start" |)
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      range,
+                      "core::ops::range::Range",
+                      "end"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      range,
+                      "core::ops::range::Range",
+                      "start"
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -218,14 +232,28 @@ Module slice.
           M.call_closure (|
             M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
             [
-              M.read (| M.get_struct_record_field range "core::ops::range::Range" "start" |);
+              M.read (|
+                M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
+              |);
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "sub_ptr", [] |),
                 [
-                  M.read (| M.get_struct_record_field range "core::ops::range::Range" "end" |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      range,
+                      "core::ops::range::Range",
+                      "end"
+                    |)
+                  |);
                   (* MutToConstPointer *)
                   M.pointer_coercion
-                    (M.read (| M.get_struct_record_field range "core::ops::range::Range" "start" |))
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        range,
+                        "core::ops::range::Range",
+                        "start"
+                      |)
+                    |))
                 ]
               |)
             ]

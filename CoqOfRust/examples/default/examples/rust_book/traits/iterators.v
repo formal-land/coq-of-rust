@@ -34,22 +34,42 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
         M.read (|
           let current :=
             M.copy (|
-              M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "curr"
-            |) in
-          let _ :=
-            M.write (|
-              M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "curr",
-              M.read (|
-                M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "next"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "iterators::Fibonacci",
+                "curr"
               |)
             |) in
           let _ :=
             M.write (|
-              M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "next",
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "iterators::Fibonacci",
+                "curr"
+              |),
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "iterators::Fibonacci",
+                  "next"
+                |)
+              |)
+            |) in
+          let _ :=
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "iterators::Fibonacci",
+                "next"
+              |),
               BinOp.Panic.add (|
                 M.read (| current |),
                 M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "next"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "iterators::Fibonacci",
+                    "next"
+                  |)
                 |)
               |)
             |) in
@@ -432,7 +452,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -575,7 +595,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -743,7 +763,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -904,7 +924,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0

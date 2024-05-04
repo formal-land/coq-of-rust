@@ -29,10 +29,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::copied::Copied"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::copied::Copied",
                           "it"
+                        |)
                       ]
                     |))
                 ]))
@@ -73,10 +74,11 @@ Module iter.
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::copied::Copied"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::copied::Copied",
                         "it"
+                      |)
                     |))
                 ]
               |)))
@@ -254,10 +256,11 @@ Module iter.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::copied::Copied"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::copied::Copied",
                         "it"
+                      |)
                     ]
                   |)
                 ]
@@ -290,10 +293,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::copied::Copied"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
                     "it"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -319,10 +323,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::copied::Copied"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
                     "it"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -355,10 +360,11 @@ Module iter.
                   [ B; Ty.associated; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::copied::Copied"
-                    "it";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
+                    "it"
+                  |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_function (|
@@ -398,7 +404,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::copied::Copied" "it"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::copied::Copied",
+                      "it"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
@@ -438,10 +448,11 @@ Module iter.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::copied::Copied"
-                        "it";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::copied::Copied",
+                        "it"
+                      |);
                       M.read (| n |)
                     ]
                   |)
@@ -478,7 +489,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::iter::adapters::copied::Copied" "it"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::copied::Copied",
+                          "it"
+                        |)
                       |)
                     ]
                   |)
@@ -508,7 +523,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::copied::Copied" "it"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::copied::Copied",
+                      "it"
+                    |)
                   |)
                 ]
               |)))
@@ -536,10 +555,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::copied::Copied"
-                    "it";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
+                    "it"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -567,10 +587,11 @@ Module iter.
                 M.call_closure (|
                   M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::copied::Copied"
-                      "it";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::copied::Copied",
+                      "it"
+                    |);
                     M.read (| idx |)
                   ]
                 |)
@@ -631,10 +652,11 @@ Module iter.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::copied::Copied"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::copied::Copied",
                         "it"
+                      |)
                     ]
                   |)
                 ]
@@ -669,10 +691,11 @@ Module iter.
                   [ B; Ty.associated; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::copied::Copied"
-                    "it";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
+                    "it"
+                  |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_function (|
@@ -712,7 +735,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::copied::Copied" "it"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::copied::Copied",
+                      "it"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
@@ -745,10 +772,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::copied::Copied"
-                    "it";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
+                    "it"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -794,10 +822,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::copied::Copied"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
                     "it"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -823,10 +852,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::copied::Copied"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
                     "it"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

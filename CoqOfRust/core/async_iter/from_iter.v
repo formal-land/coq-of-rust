@@ -28,10 +28,11 @@ Module async_iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::async_iter::from_iter::FromIter"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::async_iter::from_iter::FromIter",
                         "iter"
+                      |)
                     ]
                   |))
               ]))
@@ -72,10 +73,11 @@ Module async_iter.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::async_iter::from_iter::FromIter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::async_iter::from_iter::FromIter",
                       "iter"
+                    |)
                   |))
               ]
             |)))
@@ -163,8 +165,8 @@ Module async_iter.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.call_closure (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
                           Ty.apply
@@ -179,9 +181,10 @@ Module async_iter.
                           []
                         |),
                         [ self ]
-                      |))
-                      "core::async_iter::from_iter::FromIter"
+                      |),
+                      "core::async_iter::from_iter::FromIter",
                       "iter"
+                    |)
                   ]
                 |)
               ]))
@@ -208,10 +211,11 @@ Module async_iter.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::async_iter::from_iter::FromIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::async_iter::from_iter::FromIter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible

@@ -223,7 +223,11 @@ Module Impl_custom_environment_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "custom_environment::Env" "caller"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "custom_environment::Env",
+            "caller"
+          |)
         |)))
     | _, _ => M.impossible
     end.

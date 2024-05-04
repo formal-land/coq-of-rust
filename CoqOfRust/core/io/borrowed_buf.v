@@ -81,19 +81,21 @@ Module io.
                             M.read (| Value.String "init" |);
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::io::borrowed_buf::BorrowedBuf"
-                                "init")
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::io::borrowed_buf::BorrowedBuf",
+                                "init"
+                              |))
                           ]
                         |);
                         M.read (| Value.String "filled" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::io::borrowed_buf::BorrowedBuf"
-                            "filled")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::io::borrowed_buf::BorrowedBuf",
+                            "filled"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "capacity" |);
@@ -275,10 +277,11 @@ Module io.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::io::borrowed_buf::BorrowedBuf"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::io::borrowed_buf::BorrowedBuf",
                     "buf"
+                  |)
                 |)
               ]
             |)))
@@ -298,10 +301,11 @@ Module io.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::io::borrowed_buf::BorrowedBuf"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::io::borrowed_buf::BorrowedBuf",
                 "filled"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -319,10 +323,11 @@ Module io.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::io::borrowed_buf::BorrowedBuf"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::io::borrowed_buf::BorrowedBuf",
                 "init"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -360,10 +365,11 @@ Module io.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedBuf"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedBuf",
                         "buf"
+                      |)
                     |);
                     Value.StructRecord
                       "core::ops::range::Range"
@@ -371,10 +377,11 @@ Module io.
                         ("start", Value.Integer Integer.Usize 0);
                         ("end_",
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::io::borrowed_buf::BorrowedBuf"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedBuf",
                               "filled"
+                            |)
                           |))
                       ]
                   ]
@@ -417,10 +424,11 @@ Module io.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedBuf"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedBuf",
                         "buf"
+                      |)
                     |);
                     Value.StructRecord
                       "core::ops::range::Range"
@@ -428,10 +436,11 @@ Module io.
                         ("start", Value.Integer Integer.Usize 0);
                         ("end_",
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::io::borrowed_buf::BorrowedBuf"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedBuf",
                               "filled"
+                            |)
                           |))
                       ]
                   ]
@@ -465,10 +474,11 @@ Module io.
               [
                 ("start",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::io::borrowed_buf::BorrowedBuf"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::io::borrowed_buf::BorrowedBuf",
                       "filled"
+                    |)
                   |));
                 ("buf",
                   M.call_closure (|
@@ -501,10 +511,11 @@ Module io.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::io::borrowed_buf::BorrowedBuf"
-                    "filled",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::io::borrowed_buf::BorrowedBuf",
+                    "filled"
+                  |),
                   Value.Integer Integer.Usize 0
                 |) in
               M.alloc (| M.read (| self |) |)
@@ -529,18 +540,20 @@ Module io.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::io::borrowed_buf::BorrowedBuf"
-                    "init",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::io::borrowed_buf::BorrowedBuf",
+                    "init"
+                  |),
                   M.call_closure (|
                     M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::io::borrowed_buf::BorrowedBuf"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::io::borrowed_buf::BorrowedBuf",
                           "init"
+                        |)
                       |);
                       M.read (| n |)
                     ]
@@ -587,18 +600,20 @@ Module io.
                 M.read (| Value.String "buf" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::io::borrowed_buf::BorrowedCursor"
-                    "buf");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::io::borrowed_buf::BorrowedCursor",
+                    "buf"
+                  |));
                 M.read (| Value.String "start" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::io::borrowed_buf::BorrowedCursor"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::io::borrowed_buf::BorrowedCursor",
                       "start"
+                    |)
                   |))
               ]
             |)))
@@ -649,19 +664,21 @@ Module io.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::io::borrowed_buf::BorrowedCursor"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::io::borrowed_buf::BorrowedCursor",
                           "buf"
+                        |)
                       |)
                     ]
                   |));
                 ("start",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::io::borrowed_buf::BorrowedCursor"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::io::borrowed_buf::BorrowedCursor",
                       "start"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -688,23 +705,26 @@ Module io.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::io::borrowed_buf::BorrowedCursor"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::io::borrowed_buf::BorrowedCursor",
                       "buf"
+                    |)
                   |)
                 ]
               |),
               M.read (|
-                M.get_struct_record_field
-                  (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::io::borrowed_buf::BorrowedCursor"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::io::borrowed_buf::BorrowedCursor",
                       "buf"
-                  |))
-                  "core::io::borrowed_buf::BorrowedBuf"
+                    |)
+                  |),
+                  "core::io::borrowed_buf::BorrowedBuf",
                   "filled"
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -724,21 +744,24 @@ Module io.
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
               M.read (|
-                M.get_struct_record_field
-                  (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::io::borrowed_buf::BorrowedCursor"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::io::borrowed_buf::BorrowedCursor",
                       "buf"
-                  |))
-                  "core::io::borrowed_buf::BorrowedBuf"
+                    |)
+                  |),
+                  "core::io::borrowed_buf::BorrowedBuf",
                   "filled"
+                |)
               |),
               M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::io::borrowed_buf::BorrowedCursor"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::io::borrowed_buf::BorrowedCursor",
                   "start"
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -777,42 +800,48 @@ Module io.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::io::borrowed_buf::BorrowedCursor"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::io::borrowed_buf::BorrowedCursor",
                             "buf"
-                        |))
-                        "core::io::borrowed_buf::BorrowedBuf"
+                          |)
+                        |),
+                        "core::io::borrowed_buf::BorrowedBuf",
                         "buf"
+                      |)
                     |);
                     Value.StructRecord
                       "core::ops::range::Range"
                       [
                         ("start",
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::io::borrowed_buf::BorrowedCursor"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::io::borrowed_buf::BorrowedCursor",
                                   "buf"
-                              |))
-                              "core::io::borrowed_buf::BorrowedBuf"
+                                |)
+                              |),
+                              "core::io::borrowed_buf::BorrowedBuf",
                               "filled"
+                            |)
                           |));
                         ("end_",
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::io::borrowed_buf::BorrowedCursor"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::io::borrowed_buf::BorrowedCursor",
                                   "buf"
-                              |))
-                              "core::io::borrowed_buf::BorrowedBuf"
+                                |)
+                              |),
+                              "core::io::borrowed_buf::BorrowedBuf",
                               "init"
+                            |)
                           |))
                       ]
                   ]
@@ -857,42 +886,48 @@ Module io.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::io::borrowed_buf::BorrowedCursor"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::io::borrowed_buf::BorrowedCursor",
                             "buf"
-                        |))
-                        "core::io::borrowed_buf::BorrowedBuf"
+                          |)
+                        |),
+                        "core::io::borrowed_buf::BorrowedBuf",
                         "buf"
+                      |)
                     |);
                     Value.StructRecord
                       "core::ops::range::Range"
                       [
                         ("start",
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::io::borrowed_buf::BorrowedCursor"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::io::borrowed_buf::BorrowedCursor",
                                   "buf"
-                              |))
-                              "core::io::borrowed_buf::BorrowedBuf"
+                                |)
+                              |),
+                              "core::io::borrowed_buf::BorrowedBuf",
                               "filled"
+                            |)
                           |));
                         ("end_",
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::io::borrowed_buf::BorrowedCursor"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::io::borrowed_buf::BorrowedCursor",
                                   "buf"
-                              |))
-                              "core::io::borrowed_buf::BorrowedBuf"
+                                |)
+                              |),
+                              "core::io::borrowed_buf::BorrowedBuf",
                               "init"
+                            |)
                           |))
                       ]
                   ]
@@ -926,30 +961,34 @@ Module io.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedCursor"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedCursor",
                         "buf"
-                    |))
-                    "core::io::borrowed_buf::BorrowedBuf"
+                      |)
+                    |),
+                    "core::io::borrowed_buf::BorrowedBuf",
                     "buf"
+                  |)
                 |);
                 Value.StructRecord
                   "core::ops::range::RangeFrom"
                   [
                     ("start",
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::io::borrowed_buf::BorrowedCursor"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
                               "buf"
-                          |))
-                          "core::io::borrowed_buf::BorrowedBuf"
+                            |)
+                          |),
+                          "core::io::borrowed_buf::BorrowedBuf",
                           "init"
+                        |)
                       |))
                   ]
               ]
@@ -981,30 +1020,34 @@ Module io.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedCursor"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedCursor",
                         "buf"
-                    |))
-                    "core::io::borrowed_buf::BorrowedBuf"
+                      |)
+                    |),
+                    "core::io::borrowed_buf::BorrowedBuf",
                     "buf"
+                  |)
                 |);
                 Value.StructRecord
                   "core::ops::range::RangeFrom"
                   [
                     ("start",
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::io::borrowed_buf::BorrowedCursor"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
                               "buf"
-                          |))
-                          "core::io::borrowed_buf::BorrowedBuf"
+                            |)
+                          |),
+                          "core::io::borrowed_buf::BorrowedBuf",
                           "filled"
+                        |)
                       |))
                   ]
               ]
@@ -1030,51 +1073,59 @@ Module io.
             M.read (|
               let _ :=
                 let β :=
-                  M.get_struct_record_field
-                    (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedCursor"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedCursor",
                         "buf"
-                    |))
-                    "core::io::borrowed_buf::BorrowedBuf"
-                    "filled" in
+                      |)
+                    |),
+                    "core::io::borrowed_buf::BorrowedBuf",
+                    "filled"
+                  |) in
                 M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| n |) |) |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedCursor"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedCursor",
                         "buf"
-                    |))
-                    "core::io::borrowed_buf::BorrowedBuf"
-                    "init",
+                      |)
+                    |),
+                    "core::io::borrowed_buf::BorrowedBuf",
+                    "init"
+                  |),
                   M.call_closure (|
                     M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::io::borrowed_buf::BorrowedCursor"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
                               "buf"
-                          |))
-                          "core::io::borrowed_buf::BorrowedBuf"
+                            |)
+                          |),
+                          "core::io::borrowed_buf::BorrowedBuf",
                           "init"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::io::borrowed_buf::BorrowedCursor"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
                               "buf"
-                          |))
-                          "core::io::borrowed_buf::BorrowedBuf"
+                            |)
+                          |),
+                          "core::io::borrowed_buf::BorrowedBuf",
                           "filled"
+                        |)
                       |)
                     ]
                   |)
@@ -1161,15 +1212,17 @@ Module io.
                 M.alloc (| Value.Tuple [] |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedCursor"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedCursor",
                         "buf"
-                    |))
-                    "core::io::borrowed_buf::BorrowedBuf"
-                    "init",
+                      |)
+                    |),
+                    "core::io::borrowed_buf::BorrowedBuf",
+                    "init"
+                  |),
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::io::borrowed_buf::BorrowedBuf",
@@ -1178,10 +1231,11 @@ Module io.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::io::borrowed_buf::BorrowedCursor"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::io::borrowed_buf::BorrowedCursor",
                           "buf"
+                        |)
                       |)
                     ]
                   |)
@@ -1208,40 +1262,46 @@ Module io.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedCursor"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedCursor",
                         "buf"
-                    |))
-                    "core::io::borrowed_buf::BorrowedBuf"
-                    "init",
+                      |)
+                    |),
+                    "core::io::borrowed_buf::BorrowedBuf",
+                    "init"
+                  |),
                   M.call_closure (|
                     M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::io::borrowed_buf::BorrowedCursor"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
                               "buf"
-                          |))
-                          "core::io::borrowed_buf::BorrowedBuf"
+                            |)
+                          |),
+                          "core::io::borrowed_buf::BorrowedBuf",
                           "init"
+                        |)
                       |);
                       BinOp.Panic.add (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::io::borrowed_buf::BorrowedCursor"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::io::borrowed_buf::BorrowedCursor",
                                 "buf"
-                            |))
-                            "core::io::borrowed_buf::BorrowedBuf"
+                              |)
+                            |),
+                            "core::io::borrowed_buf::BorrowedBuf",
                             "filled"
+                          |)
                         |),
                         M.read (| n |)
                       |)
@@ -1401,15 +1461,17 @@ Module io.
                 M.alloc (| Value.Tuple [] |) in
               let _ :=
                 let β :=
-                  M.get_struct_record_field
-                    (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::io::borrowed_buf::BorrowedCursor"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedCursor",
                         "buf"
-                    |))
-                    "core::io::borrowed_buf::BorrowedBuf"
-                    "filled" in
+                      |)
+                    |),
+                    "core::io::borrowed_buf::BorrowedBuf",
+                    "filled"
+                  |) in
                 M.write (|
                   β,
                   BinOp.Panic.add (|

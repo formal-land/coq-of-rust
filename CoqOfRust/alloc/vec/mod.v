@@ -460,7 +460,8 @@ Module vec.
               "capacity",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf" ]
+            [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -491,9 +492,17 @@ Module vec.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::Vec",
+                      "buf"
+                    |);
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::Vec",
+                        "len"
+                      |)
                     |);
                     M.read (| additional |)
                   ]
@@ -530,9 +539,17 @@ Module vec.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::Vec",
+                      "buf"
+                    |);
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::Vec",
+                        "len"
+                      |)
                     |);
                     M.read (| additional |)
                   ]
@@ -566,8 +583,18 @@ Module vec.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf";
-              M.read (| M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::vec::Vec",
+                "buf"
+              |);
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |)
+              |);
               M.read (| additional |)
             ]
           |)))
@@ -597,8 +624,18 @@ Module vec.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf";
-              M.read (| M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::vec::Vec",
+                "buf"
+              |);
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |)
+              |);
               M.read (| additional |)
             ]
           |)))
@@ -644,7 +681,11 @@ Module vec.
                               [ M.read (| self |) ]
                             |))
                             (M.read (|
-                              M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::Vec",
+                                "len"
+                              |)
                             |))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -657,9 +698,17 @@ Module vec.
                             []
                           |),
                           [
-                            M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::Vec",
+                              "buf"
+                            |);
                             M.read (|
-                              M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::Vec",
+                                "len"
+                              |)
                             |)
                           ]
                         |)
@@ -720,15 +769,20 @@ Module vec.
                             []
                           |),
                           [
-                            M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::Vec",
+                              "buf"
+                            |);
                             M.call_closure (|
                               M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::Vec"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::Vec",
                                     "len"
+                                  |)
                                 |);
                                 M.read (| min_capacity |)
                               ]
@@ -798,8 +852,8 @@ Module vec.
                     [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ] ]
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.call_closure (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply
@@ -810,9 +864,10 @@ Module vec.
                           []
                         |),
                         [ me ]
-                      |))
-                      "alloc::vec::Vec"
+                      |),
+                      "alloc::vec::Vec",
                       "buf"
+                    |)
                   ]
                 |)
               |) in
@@ -919,10 +974,11 @@ Module vec.
                                 BinOp.Pure.gt
                                   (M.read (| len |))
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::vec::Vec"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::Vec",
                                       "len"
+                                    |)
                                   |))
                               |)) in
                           let _ :=
@@ -937,7 +993,11 @@ Module vec.
                   M.alloc (|
                     BinOp.Panic.sub (|
                       M.read (|
-                        M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::Vec",
+                          "len"
+                        |)
                       |),
                       M.read (| len |)
                     |)
@@ -971,7 +1031,11 @@ Module vec.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::Vec",
+                      "len"
+                    |),
                     M.read (| len |)
                   |) in
                 let _ :=
@@ -1071,7 +1135,13 @@ Module vec.
                 "ptr",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "buf"
+                |)
+              ]
             |))))
       | _, _ => M.impossible
       end.
@@ -1099,7 +1169,8 @@ Module vec.
               "ptr",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf" ]
+            [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1125,7 +1196,8 @@ Module vec.
               "allocator",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf" ]
+            [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1205,7 +1277,11 @@ Module vec.
               |) in
             let _ :=
               M.write (|
-                M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |),
                 M.read (| new_len |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1436,10 +1512,11 @@ Module vec.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::Vec"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::Vec",
                                     "buf"
+                                  |)
                                 ]
                               |))
                           |)) in
@@ -2414,10 +2491,11 @@ Module vec.
                                   (M.alloc (|
                                     BinOp.Pure.lt
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          gap
-                                          "alloc::vec::dedup_by::FillGapOnDrop"
+                                        M.SubPointer.get_struct_record_field (|
+                                          gap,
+                                          "alloc::vec::dedup_by::FillGapOnDrop",
                                           "read"
+                                        |)
                                       |))
                                       (M.read (| len |))
                                   |)) in
@@ -2437,10 +2515,11 @@ Module vec.
                                     [
                                       M.read (| start |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          gap
-                                          "alloc::vec::dedup_by::FillGapOnDrop"
+                                        M.SubPointer.get_struct_record_field (|
+                                          gap,
+                                          "alloc::vec::dedup_by::FillGapOnDrop",
                                           "read"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2463,10 +2542,11 @@ Module vec.
                                         |),
                                         [
                                           M.read (|
-                                            M.get_struct_record_field
-                                              gap
-                                              "alloc::vec::dedup_by::FillGapOnDrop"
+                                            M.SubPointer.get_struct_record_field (|
+                                              gap,
+                                              "alloc::vec::dedup_by::FillGapOnDrop",
                                               "write"
+                                            |)
                                           |);
                                           Value.Integer Integer.Usize 1
                                         ]
@@ -2509,10 +2589,11 @@ Module vec.
                                         |) in
                                       let _ :=
                                         let β :=
-                                          M.get_struct_record_field
-                                            gap
-                                            "alloc::vec::dedup_by::FillGapOnDrop"
-                                            "read" in
+                                          M.SubPointer.get_struct_record_field (|
+                                            gap,
+                                            "alloc::vec::dedup_by::FillGapOnDrop",
+                                            "read"
+                                          |) in
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
@@ -2541,10 +2622,11 @@ Module vec.
                                             [
                                               M.read (| start |);
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  gap
-                                                  "alloc::vec::dedup_by::FillGapOnDrop"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  gap,
+                                                  "alloc::vec::dedup_by::FillGapOnDrop",
                                                   "write"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -2566,10 +2648,11 @@ Module vec.
                                         |) in
                                       let _ :=
                                         let β :=
-                                          M.get_struct_record_field
-                                            gap
-                                            "alloc::vec::dedup_by::FillGapOnDrop"
-                                            "write" in
+                                          M.SubPointer.get_struct_record_field (|
+                                            gap,
+                                            "alloc::vec::dedup_by::FillGapOnDrop",
+                                            "write"
+                                          |) in
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
@@ -2579,10 +2662,11 @@ Module vec.
                                         |) in
                                       let _ :=
                                         let β :=
-                                          M.get_struct_record_field
-                                            gap
-                                            "alloc::vec::dedup_by::FillGapOnDrop"
-                                            "read" in
+                                          M.SubPointer.get_struct_record_field (|
+                                            gap,
+                                            "alloc::vec::dedup_by::FillGapOnDrop",
+                                            "read"
+                                          |) in
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
@@ -2619,13 +2703,18 @@ Module vec.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field gap "alloc::vec::dedup_by::FillGapOnDrop" "vec"
+                          M.SubPointer.get_struct_record_field (|
+                            gap,
+                            "alloc::vec::dedup_by::FillGapOnDrop",
+                            "vec"
+                          |)
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            gap
-                            "alloc::vec::dedup_by::FillGapOnDrop"
+                          M.SubPointer.get_struct_record_field (|
+                            gap,
+                            "alloc::vec::dedup_by::FillGapOnDrop",
                             "write"
+                          |)
                         |)
                       ]
                     |)
@@ -2683,10 +2772,11 @@ Module vec.
                           (M.alloc (|
                             BinOp.Pure.eq
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::Vec"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::Vec",
                                   "len"
+                                |)
                               |))
                               (M.call_closure (|
                                 M.get_associated_function (|
@@ -2695,10 +2785,11 @@ Module vec.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::Vec"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::Vec",
                                     "buf"
+                                  |)
                                 ]
                               |))
                           |)) in
@@ -2712,12 +2803,17 @@ Module vec.
                               []
                             |),
                             [
-                              M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::Vec",
+                                "buf"
+                              |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::Vec"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::Vec",
                                   "len"
+                                |)
                               |)
                             ]
                           |)
@@ -2740,7 +2836,11 @@ Module vec.
                       [ M.read (| self |) ]
                     |);
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::Vec",
+                        "len"
+                      |)
                     |)
                   ]
                 |)
@@ -2753,7 +2853,12 @@ Module vec.
                 |)
               |) in
             let _ :=
-              let β := M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" in
+              let β :=
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |) in
               M.write (|
                 β,
                 BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -2801,10 +2906,11 @@ Module vec.
                               (M.alloc (|
                                 BinOp.Pure.eq
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::vec::Vec"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::Vec",
                                       "len"
+                                    |)
                                   |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -2813,10 +2919,11 @@ Module vec.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::vec::Vec"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::vec::Vec",
                                         "buf"
+                                      |)
                                     ]
                                   |))
                               |)) in
@@ -2851,7 +2958,11 @@ Module vec.
                             [ M.read (| self |) ]
                           |);
                           M.read (|
-                            M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::Vec",
+                              "len"
+                            |)
                           |)
                         ]
                       |)
@@ -2865,7 +2976,11 @@ Module vec.
                     |) in
                   let _ :=
                     let β :=
-                      M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::Vec",
+                        "len"
+                      |) in
                     M.write (|
                       β,
                       BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -2911,7 +3026,11 @@ Module vec.
                         (M.alloc (|
                           BinOp.Pure.eq
                             (M.read (|
-                              M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::Vec",
+                                "len"
+                              |)
                             |))
                             (Value.Integer Integer.Usize 0)
                         |)) in
@@ -2921,7 +3040,11 @@ Module vec.
                   ltac:(M.monadic
                     (let _ :=
                       let β :=
-                        M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::Vec",
+                          "len"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -2933,10 +3056,11 @@ Module vec.
                           [
                             BinOp.Pure.lt
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::Vec"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::Vec",
                                   "len"
+                                |)
                               |))
                               (M.call_closure (|
                                 M.get_associated_function (|
@@ -3128,7 +3252,12 @@ Module vec.
                 |)
               |) in
             let _ :=
-              let β := M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" in
+              let β :=
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |) in
               M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| count |) |) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -3203,13 +3332,13 @@ Module vec.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "core::ops::range::Range",
                         "start"
                       |) in
                     let γ0_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "core::ops::range::Range",
                         "end"
@@ -3334,7 +3463,11 @@ Module vec.
               |) in
             let _ :=
               M.write (|
-                M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |),
                 Value.Integer Integer.Usize 0
               |) in
             let _ :=
@@ -3367,7 +3500,9 @@ Module vec.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "len" |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -3566,7 +3701,11 @@ Module vec.
                   M.alloc (|
                     BinOp.Panic.sub (|
                       M.read (|
-                        M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::Vec",
+                          "len"
+                        |)
                       |),
                       M.read (| at_ |)
                     |)
@@ -3837,8 +3976,8 @@ Module vec.
                     ]
                   |);
                   M.read (|
-                    M.get_struct_record_field
-                      (M.call_closure (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply
@@ -3849,9 +3988,10 @@ Module vec.
                           []
                         |),
                         [ me ]
-                      |))
-                      "alloc::vec::Vec"
+                      |),
+                      "alloc::vec::Vec",
                       "len"
+                    |)
                   |)
                 ]
               |)
@@ -3902,7 +4042,11 @@ Module vec.
                       [ M.read (| self |) ]
                     |);
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::Vec",
+                        "len"
+                      |)
                     |)
                   ]
                 |));
@@ -3913,9 +4057,21 @@ Module vec.
                     "capacity",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::Vec",
+                      "buf"
+                    |)
+                  ]
                 |),
-                M.read (| M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" |)
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::Vec",
+                    "len"
+                  |)
+                |)
               |)
             ]
           |)))
@@ -3955,9 +4111,9 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                     let init := M.copy (| γ0_0 |) in
                     let spare := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| init |); M.read (| spare |) ] |)))
@@ -4020,7 +4176,11 @@ Module vec.
                   [
                     M.read (| ptr |);
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::Vec",
+                        "len"
+                      |)
                     |)
                   ]
                 |)
@@ -4045,9 +4205,21 @@ Module vec.
                       "capacity",
                       []
                     |),
-                    [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "buf" ]
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::Vec",
+                        "buf"
+                      |)
+                    ]
                   |),
-                  M.read (| M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" |)
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::Vec",
+                      "len"
+                    |)
+                  |)
                 |)
               |) in
             let initialized :=
@@ -4057,7 +4229,11 @@ Module vec.
                   [
                     M.read (| ptr |);
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::Vec",
+                        "len"
+                      |)
                     |)
                   ]
                 |)
@@ -4077,7 +4253,11 @@ Module vec.
                 [
                   M.read (| initialized |);
                   M.read (| spare |);
-                  M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::Vec",
+                    "len"
+                  |)
                 ]
             |)
           |)))
@@ -4373,7 +4553,13 @@ Module vec.
                     "new",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::Vec",
+                      "len"
+                    |)
+                  ]
                 |)
               |) in
             let _ :=
@@ -4426,7 +4612,7 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -4638,7 +4824,7 @@ Module vec.
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -4696,8 +4882,8 @@ Module vec.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                           let lower := M.copy (| γ0_0 |) in
                                           let _ :=
                                             M.alloc (|
@@ -4852,8 +5038,8 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let low := M.copy (| γ0_0 |) in
                     let high := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -4863,7 +5049,7 @@ Module vec.
                           ltac:(M.monadic
                             (let γ := high in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -4887,8 +5073,10 @@ Module vec.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let left_val := M.copy (| γ0_0 |) in
                                                 let right_val := M.copy (| γ0_1 |) in
                                                 M.match_operator (|
@@ -5049,10 +5237,11 @@ Module vec.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::vec::Vec"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::Vec",
                                       "len"
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -5337,10 +5526,10 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                     let ptr := M.copy (| γ0_0 |) in
                     let len := M.copy (| γ0_1 |) in
                     let cap := M.copy (| γ0_2 |) in
@@ -5422,8 +5611,8 @@ Module vec.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let new_len := M.copy (| γ0_0 |) in
                             let new_cap := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -5560,9 +5749,9 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                     let this := M.copy (| γ0_0 |) in
                     let spare := M.copy (| γ0_1 |) in
                     let len := M.copy (| γ0_2 |) in
@@ -5695,8 +5884,10 @@ Module vec.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let src := M.copy (| γ0_0 |) in
                                                 let dst := M.copy (| γ0_1 |) in
                                                 M.call_closure (|
@@ -5838,8 +6029,8 @@ Module vec.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let init := M.copy (| γ0_0 |) in
                       let spare := M.copy (| γ0_1 |) in
                       let source :=
@@ -5889,7 +6080,12 @@ Module vec.
                 ]
               |) in
             let _ :=
-              let β := M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" in
+              let β :=
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |) in
               M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| count |) |) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -5934,7 +6130,13 @@ Module vec.
                 |),
                 [ M.read (| self |) ]
               |);
-              M.read (| M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" |)
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -5975,7 +6177,13 @@ Module vec.
                 |),
                 [ M.read (| self |) ]
               |);
-              M.read (| M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" |)
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::Vec",
+                  "len"
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -6515,8 +6723,8 @@ Module vec.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.call_closure (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply
@@ -6527,9 +6735,10 @@ Module vec.
                           []
                         |),
                         [ me ]
-                      |))
-                      "alloc::vec::Vec"
+                      |),
+                      "alloc::vec::Vec",
                       "buf"
+                    |)
                   ]
                 |)
               |) in
@@ -7074,7 +7283,13 @@ Module vec.
                     |),
                     [ M.read (| self |) ]
                   |);
-                  M.read (| M.get_struct_record_field (M.read (| self |)) "alloc::vec::Vec" "len" |)
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::Vec",
+                      "len"
+                    |)
+                  |)
                 ]
               |)
             ]

@@ -33,7 +33,11 @@ Module Impl_polymorphic_associated_function_Foo_A.
                 M.get_trait_method (| "core::convert::Into", A, [ B ], "into", [] |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "polymorphic_associated_function::Foo" "data"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "polymorphic_associated_function::Foo",
+                      "data"
+                    |)
                   |)
                 ]
               |))
@@ -81,15 +85,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.get_struct_record_field bar "polymorphic_associated_function::Foo" "data";
+                  M.SubPointer.get_struct_record_field (|
+                    bar,
+                    "polymorphic_associated_function::Foo",
+                    "data"
+                  |);
                   UnsupportedLiteral
                 ]
             |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|

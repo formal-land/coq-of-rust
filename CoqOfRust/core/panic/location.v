@@ -81,25 +81,28 @@ Module panic.
                 M.read (| Value.String "file" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::location::Location"
-                    "file");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::location::Location",
+                    "file"
+                  |));
                 M.read (| Value.String "line" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::location::Location"
-                    "line");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::location::Location",
+                    "line"
+                  |));
                 M.read (| Value.String "col" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::panic::location::Location"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::panic::location::Location",
                       "col"
+                    |)
                   |))
               ]
             |)))
@@ -181,10 +184,11 @@ Module panic.
                       [ __H ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::panic::location::Location"
-                        "file";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::panic::location::Location",
+                        "file"
+                      |);
                       M.read (| state |)
                     ]
                   |)
@@ -194,10 +198,11 @@ Module panic.
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::panic::location::Location"
-                        "line";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::panic::location::Location",
+                        "line"
+                      |);
                       M.read (| state |)
                     ]
                   |)
@@ -206,10 +211,11 @@ Module panic.
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::panic::location::Location"
-                      "col";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::panic::location::Location",
+                      "col"
+                    |);
                     M.read (| state |)
                   ]
                 |)
@@ -248,14 +254,16 @@ Module panic.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::panic::location::Location"
-                        "file";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::panic::location::Location"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::panic::location::Location",
                         "file"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::panic::location::Location",
+                        "file"
+                      |)
                     ]
                   |)
                 |),
@@ -267,14 +275,16 @@ Module panic.
                           M.call_closure (|
                             M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::panic::location::Location"
-                                "line";
-                              M.get_struct_record_field
-                                (M.read (| other |))
-                                "core::panic::location::Location"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::panic::location::Location",
                                 "line"
+                              |);
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| other |),
+                                "core::panic::location::Location",
+                                "line"
+                              |)
                             ]
                           |)
                         |),
@@ -291,14 +301,16 @@ Module panic.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::panic::location::Location"
-                                      "col";
-                                    M.get_struct_record_field
-                                      (M.read (| other |))
-                                      "core::panic::location::Location"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::panic::location::Location",
                                       "col"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| other |),
+                                      "core::panic::location::Location",
+                                      "col"
+                                    |)
                                   ]
                                 |)
                               |)));
@@ -358,44 +370,50 @@ Module panic.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::panic::location::Location"
-                      "file";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::panic::location::Location"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::panic::location::Location",
                       "file"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::panic::location::Location",
+                      "file"
+                    |)
                   ]
                 |),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::panic::location::Location"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::panic::location::Location",
                         "line"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::panic::location::Location"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::panic::location::Location",
                         "line"
+                      |)
                     |))))
               |),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::panic::location::Location"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::panic::location::Location",
                       "col"
+                    |)
                   |))
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::panic::location::Location"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::panic::location::Location",
                       "col"
+                    |)
                   |))))
             |)))
         | _, _ => M.impossible
@@ -431,14 +449,16 @@ Module panic.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::panic::location::Location"
-                        "file";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::panic::location::Location"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::panic::location::Location",
                         "file"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::panic::location::Location",
+                        "file"
+                      |)
                     ]
                   |)
                 |),
@@ -446,7 +466,7 @@ Module panic.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -462,14 +482,16 @@ Module panic.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::panic::location::Location"
-                                "line";
-                              M.get_struct_record_field
-                                (M.read (| other |))
-                                "core::panic::location::Location"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::panic::location::Location",
                                 "line"
+                              |);
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| other |),
+                                "core::panic::location::Location",
+                                "line"
+                              |)
                             ]
                           |)
                         |),
@@ -477,7 +499,7 @@ Module panic.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -492,14 +514,16 @@ Module panic.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::panic::location::Location"
-                                      "col";
-                                    M.get_struct_record_field
-                                      (M.read (| other |))
-                                      "core::panic::location::Location"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::panic::location::Location",
                                       "col"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| other |),
+                                      "core::panic::location::Location",
+                                      "col"
+                                    |)
                                   ]
                                 |)
                               |)));
@@ -556,7 +580,11 @@ Module panic.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::panic::location::Location" "file"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::panic::location::Location",
+                "file"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -574,7 +602,11 @@ Module panic.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::panic::location::Location" "line"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::panic::location::Location",
+                "line"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -592,7 +624,11 @@ Module panic.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::panic::location::Location" "col"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::panic::location::Location",
+                "col"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -665,10 +701,11 @@ Module panic.
                                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::panic::location::Location"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::panic::location::Location",
                                   "file"
+                                |)
                               ]
                             |);
                             M.call_closure (|
@@ -678,10 +715,11 @@ Module panic.
                                 [ Ty.path "u32" ]
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::panic::location::Location"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::panic::location::Location",
                                   "line"
+                                |)
                               ]
                             |);
                             M.call_closure (|
@@ -691,10 +729,11 @@ Module panic.
                                 [ Ty.path "u32" ]
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::panic::location::Location"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::panic::location::Location",
                                   "col"
+                                |)
                               ]
                             |)
                           ]

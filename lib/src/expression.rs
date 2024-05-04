@@ -561,8 +561,10 @@ impl Expr {
                 ]),
             Expr::Loop { body } => coq::Expression::just_name("M.loop")
                 .monadic_apply(&Rc::new(coq::Expression::monadic(&body.to_coq()))),
-            Expr::Index { base, index } => coq::Expression::just_name("M.get_array_field")
-                .monadic_apply_many(&[base.to_coq(), index.to_coq()]),
+            Expr::Index { base, index } => {
+                coq::Expression::just_name("M.SubPointer.get_array_field")
+                    .monadic_apply_many(&[base.to_coq(), index.to_coq()])
+            }
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_coq(),
             Expr::StructStruct { path, fields, base } => match base {
                 None => coq::Expression::just_name("Value.StructRecord").apply_many(&[

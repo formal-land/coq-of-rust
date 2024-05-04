@@ -750,8 +750,16 @@ Module mem.
               []
             |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::mem::Discriminant" 0;
-              M.get_struct_tuple_field (M.read (| rhs |)) "core::mem::Discriminant" 0
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::mem::Discriminant",
+                0
+              |);
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| rhs |),
+                "core::mem::Discriminant",
+                0
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -795,7 +803,11 @@ Module mem.
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.associated, [], "hash", [ H ] |),
                   [
-                    M.get_struct_tuple_field (M.read (| self |)) "core::mem::Discriminant" 0;
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::mem::Discriminant",
+                      0
+                    |);
                     M.read (| state |)
                   ]
                 |)
@@ -851,7 +863,11 @@ Module mem.
                   |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_tuple_field (M.read (| self |)) "core::mem::Discriminant" 0)
+                    (M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::mem::Discriminant",
+                      0
+                    |))
                 ]
               |)
             ]

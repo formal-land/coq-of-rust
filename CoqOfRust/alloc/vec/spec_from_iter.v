@@ -98,15 +98,20 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    iterator
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    iterator,
+                                    "alloc::vec::into_iter::IntoIter",
                                     "buf"
+                                  |)
                                 |)
                               ]
                             |))))
                         (M.read (|
-                          M.get_struct_record_field iterator "alloc::vec::into_iter::IntoIter" "ptr"
+                          M.SubPointer.get_struct_record_field (|
+                            iterator,
+                            "alloc::vec::into_iter::IntoIter",
+                            "ptr"
+                          |)
                         |))
                     |) in
                   let _ :=
@@ -136,10 +141,11 @@ Module vec.
                                         |))
                                         (BinOp.Panic.div (|
                                           M.read (|
-                                            M.get_struct_record_field
-                                              iterator
-                                              "alloc::vec::into_iter::IntoIter"
+                                            M.SubPointer.get_struct_record_field (|
+                                              iterator,
+                                              "alloc::vec::into_iter::IntoIter",
                                               "cap"
+                                            |)
                                           |),
                                           Value.Integer Integer.Usize 2
                                         |))))
@@ -188,8 +194,8 @@ Module vec.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.call_closure (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.call_closure (|
                                                           M.get_trait_method (|
                                                             "core::ops::deref::Deref",
                                                             Ty.apply
@@ -209,9 +215,10 @@ Module vec.
                                                             []
                                                           |),
                                                           [ it ]
-                                                        |))
-                                                        "alloc::vec::into_iter::IntoIter"
+                                                        |),
+                                                        "alloc::vec::into_iter::IntoIter",
                                                         "ptr"
+                                                      |)
                                                     |);
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -223,8 +230,8 @@ Module vec.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            (M.call_closure (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.call_closure (|
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.apply
@@ -245,9 +252,10 @@ Module vec.
                                                                 []
                                                               |),
                                                               [ it ]
-                                                            |))
-                                                            "alloc::vec::into_iter::IntoIter"
+                                                            |),
+                                                            "alloc::vec::into_iter::IntoIter",
                                                             "buf"
+                                                          |)
                                                         |)
                                                       ]
                                                     |);
@@ -311,8 +319,8 @@ Module vec.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.call_closure (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::ops::deref::Deref",
                                                     Ty.apply
@@ -329,9 +337,10 @@ Module vec.
                                                     []
                                                   |),
                                                   [ it ]
-                                                |))
-                                                "alloc::vec::into_iter::IntoIter"
+                                                |),
+                                                "alloc::vec::into_iter::IntoIter",
                                                 "buf"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -365,8 +374,8 @@ Module vec.
                                           ]
                                         |);
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.call_closure (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
@@ -381,9 +390,10 @@ Module vec.
                                                 []
                                               |),
                                               [ it ]
-                                            |))
-                                            "alloc::vec::into_iter::IntoIter"
+                                            |),
+                                            "alloc::vec::into_iter::IntoIter",
                                             "cap"
+                                          |)
                                         |)
                                       ]
                                     |)

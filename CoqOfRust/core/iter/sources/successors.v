@@ -58,20 +58,22 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::successors::Successors"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::successors::Successors",
                           "next"
+                        |)
                       ]
                     |));
                   ("succ",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::successors::Successors"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::successors::Successors",
                           "succ"
+                        |)
                       ]
                     |))
                 ]))
@@ -130,10 +132,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::sources::successors::Successors"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::sources::successors::Successors",
                                       "next"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -143,7 +146,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -174,7 +177,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -186,10 +189,11 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::successors::Successors"
-                          "next",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::successors::Successors",
+                          "next"
+                        |),
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::function::FnMut",
@@ -199,10 +203,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::sources::successors::Successors"
-                              "succ";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::sources::successors::Successors",
+                              "succ"
+                            |);
                             Value.Tuple [ item ]
                           ]
                         |)
@@ -242,10 +247,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::sources::successors::Successors"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::sources::successors::Successors",
                                     "next"
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -345,10 +351,11 @@ Module iter.
                       M.read (| Value.String "next" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::successors::Successors"
-                          "next")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::successors::Successors",
+                          "next"
+                        |))
                     ]
                   |)
                 ]

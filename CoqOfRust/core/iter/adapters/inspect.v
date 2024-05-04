@@ -29,20 +29,22 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::inspect::Inspect"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::inspect::Inspect",
                           "iter"
+                        |)
                       ]
                     |));
                   ("f",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::inspect::Inspect"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::inspect::Inspect",
                           "f"
+                        |)
                       ]
                     |))
                 ]))
@@ -108,7 +110,7 @@ Module iter.
                         ltac:(M.monadic
                           (let γ := elt in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -125,10 +127,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::inspect::Inspect"
-                                    "f";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::inspect::Inspect",
+                                    "f"
+                                  |);
                                   Value.Tuple [ M.read (| a |) ]
                                 ]
                               |)
@@ -190,10 +193,11 @@ Module iter.
                       M.read (| Value.String "iter" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::inspect::Inspect"
-                          "iter")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::inspect::Inspect",
+                          "iter"
+                        |))
                     ]
                   |)
                 ]
@@ -396,10 +400,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::inspect::Inspect"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::inspect::Inspect",
                           "iter"
+                        |)
                       ]
                     |)
                   |) in
@@ -437,10 +442,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::inspect::Inspect"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::inspect::Inspect",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -473,10 +479,11 @@ Module iter.
                   [ Acc; Ty.associated; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::inspect::Inspect"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::inspect::Inspect",
+                    "iter"
+                  |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_function (|
@@ -484,10 +491,11 @@ Module iter.
                       [ Ty.associated; Acc; R; F; Fold ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::inspect::Inspect"
-                        "f";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::inspect::Inspect",
+                        "f"
+                      |);
                       M.read (| fold |)
                     ]
                   |)
@@ -522,7 +530,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::inspect::Inspect" "iter"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::inspect::Inspect",
+                      "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
@@ -532,7 +544,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::iter::adapters::inspect::Inspect" "f"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::inspect::Inspect",
+                          "f"
+                        |)
                       |);
                       M.read (| fold |)
                     ]
@@ -586,10 +602,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::inspect::Inspect"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::inspect::Inspect",
                           "iter"
+                        |)
                       ]
                     |)
                   |) in
@@ -634,10 +651,11 @@ Module iter.
                   [ Acc; Ty.associated; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::inspect::Inspect"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::inspect::Inspect",
+                    "iter"
+                  |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_function (|
@@ -645,10 +663,11 @@ Module iter.
                       [ Ty.associated; Acc; R; F; Fold ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::inspect::Inspect"
-                        "f";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::inspect::Inspect",
+                        "f"
+                      |);
                       M.read (| fold |)
                     ]
                   |)
@@ -683,7 +702,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::inspect::Inspect" "iter"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::inspect::Inspect",
+                      "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
@@ -693,7 +716,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::iter::adapters::inspect::Inspect" "f"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::inspect::Inspect",
+                          "f"
+                        |)
                       |);
                       M.read (| fold |)
                     ]
@@ -741,10 +768,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::inspect::Inspect"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::inspect::Inspect",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -770,10 +798,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::inspect::Inspect"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::inspect::Inspect",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -840,10 +869,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::inspect::Inspect"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::inspect::Inspect",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

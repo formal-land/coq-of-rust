@@ -64,7 +64,11 @@ Module Impl_incrementer_Incrementer.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_record_field (M.read (| self |)) "incrementer::Incrementer" "value" in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "incrementer::Incrementer",
+                "value"
+              |) in
             M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| by_ |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -84,7 +88,11 @@ Module Impl_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "incrementer::Incrementer" "value"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "incrementer::Incrementer",
+            "value"
+          |)
         |)))
     | _, _ => M.impossible
     end.

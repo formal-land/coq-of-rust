@@ -115,10 +115,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| borrowed_point |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| borrowed_point |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "x"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -128,10 +129,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| another_borrow |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| another_borrow |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "y"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -141,10 +143,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    point
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    point,
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "z"
+                                  |)
                                 ]
                               |)
                             ]
@@ -188,10 +191,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| borrowed_point |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| borrowed_point |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "x"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -201,10 +205,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| another_borrow |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| another_borrow |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "y"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -214,10 +219,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    point
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    point,
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "z"
+                                  |)
                                 ]
                               |)
                             ]
@@ -231,26 +237,29 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let mutable_borrow := M.alloc (| point |) in
         let _ :=
           M.write (|
-            M.get_struct_record_field
-              (M.read (| mutable_borrow |))
-              "scoping_rules_borrowing_aliasing::Point"
-              "x",
+            M.SubPointer.get_struct_record_field (|
+              M.read (| mutable_borrow |),
+              "scoping_rules_borrowing_aliasing::Point",
+              "x"
+            |),
             Value.Integer Integer.I32 5
           |) in
         let _ :=
           M.write (|
-            M.get_struct_record_field
-              (M.read (| mutable_borrow |))
-              "scoping_rules_borrowing_aliasing::Point"
-              "y",
+            M.SubPointer.get_struct_record_field (|
+              M.read (| mutable_borrow |),
+              "scoping_rules_borrowing_aliasing::Point",
+              "y"
+            |),
             Value.Integer Integer.I32 2
           |) in
         let _ :=
           M.write (|
-            M.get_struct_record_field
-              (M.read (| mutable_borrow |))
-              "scoping_rules_borrowing_aliasing::Point"
-              "z",
+            M.SubPointer.get_struct_record_field (|
+              M.read (| mutable_borrow |),
+              "scoping_rules_borrowing_aliasing::Point",
+              "z"
+            |),
             Value.Integer Integer.I32 1
           |) in
         let _ :=
@@ -286,10 +295,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| mutable_borrow |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| mutable_borrow |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "x"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -299,10 +309,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| mutable_borrow |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| mutable_borrow |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "y"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -312,10 +323,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| mutable_borrow |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| mutable_borrow |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "z"
+                                  |)
                                 ]
                               |)
                             ]
@@ -360,10 +372,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| new_borrowed_point |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| new_borrowed_point |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "x"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -373,10 +386,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| new_borrowed_point |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| new_borrowed_point |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "y"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -386,10 +400,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| new_borrowed_point |))
-                                    "scoping_rules_borrowing_aliasing::Point"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| new_borrowed_point |),
+                                    "scoping_rules_borrowing_aliasing::Point",
                                     "z"
+                                  |)
                                 ]
                               |)
                             ]

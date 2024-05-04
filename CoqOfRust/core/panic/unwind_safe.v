@@ -277,10 +277,11 @@ Module panic.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_tuple_field
-              (M.read (| self |))
-              "core::panic::unwind_safe::AssertUnwindSafe"
-              0))
+            M.SubPointer.get_struct_tuple_field (|
+              M.read (| self |),
+              "core::panic::unwind_safe::AssertUnwindSafe",
+              0
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -309,10 +310,11 @@ Module panic.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_tuple_field
-              (M.read (| self |))
-              "core::panic::unwind_safe::AssertUnwindSafe"
-              0))
+            M.SubPointer.get_struct_tuple_field (|
+              M.read (| self |),
+              "core::panic::unwind_safe::AssertUnwindSafe",
+              0
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -354,7 +356,11 @@ Module panic.
               |),
               [
                 M.read (|
-                  M.get_struct_tuple_field self "core::panic::unwind_safe::AssertUnwindSafe" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::panic::unwind_safe::AssertUnwindSafe",
+                    0
+                  |)
                 |);
                 Value.Tuple []
               ]
@@ -417,10 +423,11 @@ Module panic.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::panic::unwind_safe::AssertUnwindSafe"
-                        0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::panic::unwind_safe::AssertUnwindSafe",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -537,10 +544,11 @@ Module panic.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      M.get_struct_tuple_field
-                                        (M.read (| x |))
-                                        "core::panic::unwind_safe::AssertUnwindSafe"
-                                        0))
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.read (| x |),
+                                        "core::panic::unwind_safe::AssertUnwindSafe",
+                                        0
+                                      |)))
                                 ]
                               |)
                             | _ => M.impossible (||)
@@ -638,10 +646,11 @@ Module panic.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let x := M.copy (| γ |) in
-                                    M.get_struct_tuple_field
-                                      (M.read (| x |))
-                                      "core::panic::unwind_safe::AssertUnwindSafe"
-                                      0))
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.read (| x |),
+                                      "core::panic::unwind_safe::AssertUnwindSafe",
+                                      0
+                                    |)))
                               ]
                             |)
                           | _ => M.impossible (||)
@@ -674,10 +683,11 @@ Module panic.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::panic::unwind_safe::AssertUnwindSafe"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::panic::unwind_safe::AssertUnwindSafe",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible

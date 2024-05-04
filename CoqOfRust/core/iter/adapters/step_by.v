@@ -29,10 +29,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::step_by::StepBy"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::step_by::StepBy",
                           "iter"
+                        |)
                       ]
                     |));
                   ("step",
@@ -45,10 +46,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::step_by::StepBy"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::step_by::StepBy",
                           "step"
+                        |)
                       ]
                     |));
                   ("first_take",
@@ -61,10 +63,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::step_by::StepBy"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::step_by::StepBy",
                           "first_take"
+                        |)
                       ]
                     |))
                 ]))
@@ -104,25 +107,28 @@ Module iter.
                   M.read (| Value.String "iter" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::step_by::StepBy"
-                      "iter");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::step_by::StepBy",
+                      "iter"
+                    |));
                   M.read (| Value.String "step" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::step_by::StepBy"
-                      "step");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::step_by::StepBy",
+                      "step"
+                    |));
                   M.read (| Value.String "first_take" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
                         "first_take"
+                      |)
                     |))
                 ]
               |)))
@@ -239,18 +245,20 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
                             "iter"
+                          |)
                         ]
                       |),
                       BinOp.Panic.add (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
                             "step"
+                          |)
                         |),
                         Value.Integer Integer.Usize 1
                       |)
@@ -263,10 +271,11 @@ Module iter.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::step_by::StepBy"
-                              "first_take") in
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::step_by::StepBy",
+                              "first_take"
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
@@ -286,10 +295,11 @@ Module iter.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::step_by::StepBy"
-                                  "step"));
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::step_by::StepBy",
+                                  "step"
+                                |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
@@ -677,28 +687,31 @@ Module iter.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::step_by::StepBy"
-                                  "first_take") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::step_by::StepBy",
+                                  "first_take"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (| Value.Integer Integer.Usize 0 |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::step_by::StepBy"
-                              "step"))
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::step_by::StepBy",
+                              "step"
+                            |)))
                       ]
                     |)
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::step_by::StepBy"
-                      "first_take",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::step_by::StepBy",
+                      "first_take"
+                    |),
                     Value.Bool false
                   |) in
                 M.alloc (|
@@ -711,10 +724,11 @@ Module iter.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |);
                       M.read (| step_size |)
                     ]
                   |)
@@ -764,18 +778,19 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::step_by::StepBy"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::step_by::StepBy",
                           "iter"
+                        |)
                       ]
                     |)
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let low := M.copy (| γ0_0 |) in
                         let high := M.copy (| γ0_1 |) in
                         M.match_operator (|
@@ -785,10 +800,11 @@ Module iter.
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::step_by::StepBy"
-                                      "first_take") in
+                                    (M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::step_by::StepBy",
+                                      "first_take"
+                                    |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
@@ -804,10 +820,11 @@ Module iter.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::step_by::StepBy"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::step_by::StepBy",
                                             "step"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -849,10 +866,11 @@ Module iter.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::step_by::StepBy"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::step_by::StepBy",
                                             "step"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -953,10 +971,11 @@ Module iter.
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::step_by::StepBy"
-                                    "first_take") in
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::step_by::StepBy",
+                                    "first_take"
+                                  |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -964,10 +983,11 @@ Module iter.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::step_by::StepBy"
-                                    "first_take",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::step_by::StepBy",
+                                    "first_take"
+                                  |),
                                   Value.Bool false
                                 |) in
                               let first :=
@@ -981,10 +1001,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::step_by::StepBy"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::step_by::StepBy",
                                         "iter"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -1031,10 +1052,11 @@ Module iter.
                       M.alloc (|
                         BinOp.Panic.add (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::step_by::StepBy"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::step_by::StepBy",
                               "step"
+                            |)
                           |),
                           Value.Integer Integer.Usize 1
                         |)
@@ -1068,10 +1090,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::step_by::StepBy"
-                                        "iter";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::step_by::StepBy",
+                                        "iter"
+                                      |);
                                       BinOp.Panic.sub (|
                                         M.read (| step |),
                                         Value.Integer Integer.Usize 1
@@ -1153,10 +1176,11 @@ Module iter.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::iter::adapters::step_by::StepBy"
-                                                      "iter";
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::iter::adapters::step_by::StepBy",
+                                                      "iter"
+                                                    |);
                                                     BinOp.Panic.sub (|
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -1256,10 +1280,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::step_by::StepBy"
-                                        "iter";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::step_by::StepBy",
+                                        "iter"
+                                      |);
                                       BinOp.Panic.sub (|
                                         M.read (| nth |),
                                         Value.Integer Integer.Usize 1
@@ -1317,10 +1342,11 @@ Module iter.
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::step_by::StepBy"
-                                    "first_take") in
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::step_by::StepBy",
+                                    "first_take"
+                                  |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -1328,10 +1354,11 @@ Module iter.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::step_by::StepBy"
-                                    "first_take",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::step_by::StepBy",
+                                    "first_take"
+                                  |),
                                   Value.Bool false
                                 |) in
                               M.match_operator (|
@@ -1345,10 +1372,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::step_by::StepBy"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::step_by::StepBy",
                                         "iter"
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -1376,7 +1404,7 @@ Module iter.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -1417,7 +1445,7 @@ Module iter.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::ops::control_flow::ControlFlow::Break",
                                                       0
@@ -1444,7 +1472,7 @@ Module iter.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                       0
@@ -1482,15 +1510,17 @@ Module iter.
                                 M.call_closure (|
                                   M.get_associated_function (| Self, "nth.spec_try_fold", [] |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::step_by::StepBy"
-                                      "iter";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::step_by::StepBy",
+                                      "iter"
+                                    |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::step_by::StepBy"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::step_by::StepBy",
                                         "step"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1546,10 +1576,11 @@ Module iter.
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
-                                  (M.get_struct_record_field
-                                    self
-                                    "core::iter::adapters::step_by::StepBy"
-                                    "first_take") in
+                                  (M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::step_by::StepBy",
+                                    "first_take"
+                                  |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -1557,10 +1588,11 @@ Module iter.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    self
-                                    "core::iter::adapters::step_by::StepBy"
-                                    "first_take",
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::step_by::StepBy",
+                                    "first_take"
+                                  |),
                                   Value.Bool false
                                 |) in
                               M.match_operator (|
@@ -1574,10 +1606,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        self
-                                        "core::iter::adapters::step_by::StepBy"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::iter::adapters::step_by::StepBy",
                                         "iter"
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -1592,7 +1625,7 @@ Module iter.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -1637,15 +1670,17 @@ Module iter.
                               M.call_closure (|
                                 M.get_associated_function (| Self, "nth.spec_fold", [] |),
                                 [
-                                  M.get_struct_record_field
-                                    self
-                                    "core::iter::adapters::step_by::StepBy"
-                                    "iter";
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::step_by::StepBy",
+                                    "iter"
+                                  |);
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "core::iter::adapters::step_by::StepBy"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::iter::adapters::step_by::StepBy",
                                       "step"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1705,10 +1740,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::step_by::StepBy"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::step_by::StepBy",
+                    "iter"
+                  |);
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
@@ -1751,10 +1787,11 @@ Module iter.
                             M.read (| n |);
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -1781,10 +1818,11 @@ Module iter.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |);
                       M.read (| n |)
                     ]
                   |)
@@ -1858,7 +1896,7 @@ Module iter.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -1894,7 +1932,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
@@ -1921,7 +1959,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
@@ -1957,15 +1995,17 @@ Module iter.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::iter::adapters::step_by::StepBy"
-                                              "iter";
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::step_by::StepBy",
+                                              "iter"
+                                            |);
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::step_by::StepBy"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::step_by::StepBy",
                                                 "step"
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -2034,7 +2074,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -2074,15 +2114,17 @@ Module iter.
                                   M.call_closure (|
                                     M.get_associated_function (| Self, "nth_back.spec_rfold", [] |),
                                     [
-                                      M.get_struct_record_field
-                                        self
-                                        "core::iter::adapters::step_by::StepBy"
-                                        "iter";
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::iter::adapters::step_by::StepBy",
+                                        "iter"
+                                      |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          self
-                                          "core::iter::adapters::step_by::StepBy"
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::iter::adapters::step_by::StepBy",
                                           "step"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2138,8 +2180,8 @@ Module iter.
               M.read (|
                 let inner_len :=
                   M.copy (|
-                    M.get_tuple_field
-                      (M.alloc (|
+                    M.SubPointer.get_tuple_field (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
@@ -2150,8 +2192,9 @@ Module iter.
                           |),
                           [ r ]
                         |)
-                      |))
+                      |),
                       0
+                    |)
                   |) in
                 let yield_count :=
                   M.alloc (|
@@ -2162,7 +2205,7 @@ Module iter.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field r "core::ops::range::Range" "end",
+                    M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
                     M.rust_cast (M.read (| yield_count |))
                   |) in
                 r
@@ -2232,10 +2275,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -2247,13 +2291,15 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2269,23 +2315,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let val :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "start",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "start"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
                               [ M.read (| val |); M.read (| step |) ]
@@ -2293,13 +2343,15 @@ Module iter.
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (| M.read (| remaining |), Value.Integer Integer.U8 1 |)
                           |) in
                         M.alloc (|
@@ -2330,13 +2382,15 @@ Module iter.
                   M.alloc (|
                     M.rust_cast
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
-                            "iter")
-                          "core::ops::range::Range"
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
+                            "iter"
+                          |),
+                          "core::ops::range::Range",
                           "end"
+                        |)
                       |))
                   |) in
                 M.alloc (|
@@ -2411,7 +2465,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -2444,7 +2498,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -2524,7 +2578,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -2566,7 +2620,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -2593,7 +2647,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -2688,10 +2742,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -2703,24 +2758,28 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 let acc := M.copy (| init |) in
                 let val :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "start"
+                    |)
                   |) in
                 let _ :=
                   M.use
@@ -2775,7 +2834,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -2874,8 +2933,8 @@ Module iter.
               M.read (|
                 let inner_len :=
                   M.copy (|
-                    M.get_tuple_field
-                      (M.alloc (|
+                    M.SubPointer.get_tuple_field (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
@@ -2886,8 +2945,9 @@ Module iter.
                           |),
                           [ r ]
                         |)
-                      |))
+                      |),
                       0
+                    |)
                   |) in
                 let yield_count :=
                   M.alloc (|
@@ -2898,7 +2958,7 @@ Module iter.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field r "core::ops::range::Range" "end",
+                    M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
                     M.rust_cast (M.read (| yield_count |))
                   |) in
                 r
@@ -2968,10 +3028,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -2983,13 +3044,15 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -3005,23 +3068,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let val :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "start",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "start"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u16", "wrapping_add", [] |),
                               [ M.read (| val |); M.read (| step |) ]
@@ -3029,13 +3096,15 @@ Module iter.
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (|
                               M.read (| remaining |),
                               Value.Integer Integer.U16 1
@@ -3069,13 +3138,15 @@ Module iter.
                   M.alloc (|
                     M.rust_cast
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
-                            "iter")
-                          "core::ops::range::Range"
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
+                            "iter"
+                          |),
+                          "core::ops::range::Range",
                           "end"
+                        |)
                       |))
                   |) in
                 M.alloc (|
@@ -3150,7 +3221,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -3183,7 +3254,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -3263,7 +3334,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -3305,7 +3376,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -3332,7 +3403,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -3427,10 +3498,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -3442,24 +3514,28 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 let acc := M.copy (| init |) in
                 let val :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "start"
+                    |)
                   |) in
                 let _ :=
                   M.use
@@ -3514,7 +3590,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -3613,8 +3689,8 @@ Module iter.
               M.read (|
                 let inner_len :=
                   M.copy (|
-                    M.get_tuple_field
-                      (M.alloc (|
+                    M.SubPointer.get_tuple_field (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
@@ -3625,8 +3701,9 @@ Module iter.
                           |),
                           [ r ]
                         |)
-                      |))
+                      |),
                       0
+                    |)
                   |) in
                 let yield_count :=
                   M.alloc (|
@@ -3637,7 +3714,7 @@ Module iter.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field r "core::ops::range::Range" "end",
+                    M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
                     M.rust_cast (M.read (| yield_count |))
                   |) in
                 r
@@ -3707,10 +3784,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -3722,13 +3800,15 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -3744,23 +3824,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let val :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "start",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "start"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u32", "wrapping_add", [] |),
                               [ M.read (| val |); M.read (| step |) ]
@@ -3768,13 +3852,15 @@ Module iter.
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (|
                               M.read (| remaining |),
                               Value.Integer Integer.U32 1
@@ -3808,13 +3894,15 @@ Module iter.
                   M.alloc (|
                     M.rust_cast
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
-                            "iter")
-                          "core::ops::range::Range"
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
+                            "iter"
+                          |),
+                          "core::ops::range::Range",
                           "end"
+                        |)
                       |))
                   |) in
                 M.alloc (|
@@ -3889,7 +3977,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -3922,7 +4010,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -4002,7 +4090,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -4044,7 +4132,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -4071,7 +4159,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -4166,10 +4254,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -4181,24 +4270,28 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 let acc := M.copy (| init |) in
                 let val :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "start"
+                    |)
                   |) in
                 let _ :=
                   M.use
@@ -4253,7 +4346,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -4352,8 +4445,8 @@ Module iter.
               M.read (|
                 let inner_len :=
                   M.copy (|
-                    M.get_tuple_field
-                      (M.alloc (|
+                    M.SubPointer.get_tuple_field (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
@@ -4364,8 +4457,9 @@ Module iter.
                           |),
                           [ r ]
                         |)
-                      |))
+                      |),
                       0
+                    |)
                   |) in
                 let yield_count :=
                   M.alloc (|
@@ -4376,7 +4470,7 @@ Module iter.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field r "core::ops::range::Range" "end",
+                    M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
                     M.rust_cast (M.read (| yield_count |))
                   |) in
                 r
@@ -4446,10 +4540,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -4461,13 +4556,15 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -4483,23 +4580,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let val :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "start",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "start"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                               [ M.read (| val |); M.read (| step |) ]
@@ -4507,13 +4608,15 @@ Module iter.
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (|
                               M.read (| remaining |),
                               Value.Integer Integer.U64 1
@@ -4547,13 +4650,15 @@ Module iter.
                   M.alloc (|
                     M.rust_cast
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
-                            "iter")
-                          "core::ops::range::Range"
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
+                            "iter"
+                          |),
+                          "core::ops::range::Range",
                           "end"
+                        |)
                       |))
                   |) in
                 M.alloc (|
@@ -4628,7 +4733,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -4661,7 +4766,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -4741,7 +4846,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -4783,7 +4888,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -4810,7 +4915,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -4905,10 +5010,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -4920,24 +5026,28 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 let acc := M.copy (| init |) in
                 let val :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "start"
+                    |)
                   |) in
                 let _ :=
                   M.use
@@ -4992,7 +5102,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -5091,8 +5201,8 @@ Module iter.
               M.read (|
                 let inner_len :=
                   M.copy (|
-                    M.get_tuple_field
-                      (M.alloc (|
+                    M.SubPointer.get_tuple_field (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
@@ -5103,8 +5213,9 @@ Module iter.
                           |),
                           [ r ]
                         |)
-                      |))
+                      |),
                       0
+                    |)
                   |) in
                 let yield_count :=
                   M.alloc (|
@@ -5115,7 +5226,7 @@ Module iter.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field r "core::ops::range::Range" "end",
+                    M.SubPointer.get_struct_record_field (| r, "core::ops::range::Range", "end" |),
                     M.read (| M.use yield_count |)
                   |) in
                 r
@@ -5185,10 +5296,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -5200,13 +5312,15 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5222,23 +5336,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let val :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "start",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "start"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
                               [ M.read (| val |); M.read (| step |) ]
@@ -5246,13 +5364,15 @@ Module iter.
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (|
                               M.read (| remaining |),
                               Value.Integer Integer.Usize 1
@@ -5285,13 +5405,15 @@ Module iter.
                 let remaining :=
                   M.copy (|
                     M.use
-                      (M.get_struct_record_field
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::step_by::StepBy"
-                          "iter")
-                        "core::ops::range::Range"
-                        "end")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::step_by::StepBy",
+                          "iter"
+                        |),
+                        "core::ops::range::Range",
+                        "end"
+                      |))
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -5365,7 +5487,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -5398,7 +5520,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -5478,7 +5600,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -5520,7 +5642,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -5547,7 +5669,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -5642,10 +5764,11 @@ Module iter.
                           [
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::step_by::StepBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::step_by::StepBy",
                                   "step"
+                                |)
                               |),
                               Value.Integer Integer.Usize 1
                             |)
@@ -5657,24 +5780,28 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 let acc := M.copy (| init |) in
                 let val :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "start"
+                    |)
                   |) in
                 let _ :=
                   M.use
@@ -5729,7 +5856,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -5837,23 +5964,26 @@ Module iter.
                     M.rust_cast
                       (BinOp.Panic.add (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
                             "step"
+                          |)
                         |),
                         Value.Integer Integer.Usize 1
                       |))
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5869,23 +5999,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let start :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (| M.read (| remaining |), Value.Integer Integer.U8 1 |)
                           |) in
                         M.alloc (|
@@ -6061,7 +6195,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -6103,7 +6237,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -6130,7 +6264,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -6225,7 +6359,7 @@ Module iter.
                                   |)
                                 |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -6314,23 +6448,26 @@ Module iter.
                     M.rust_cast
                       (BinOp.Panic.add (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
                             "step"
+                          |)
                         |),
                         Value.Integer Integer.Usize 1
                       |))
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -6346,23 +6483,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let start :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (|
                               M.read (| remaining |),
                               Value.Integer Integer.U16 1
@@ -6541,7 +6682,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -6583,7 +6724,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -6610,7 +6751,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -6705,7 +6846,7 @@ Module iter.
                                   |)
                                 |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -6794,23 +6935,26 @@ Module iter.
                     M.rust_cast
                       (BinOp.Panic.add (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::step_by::StepBy"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::step_by::StepBy",
                             "step"
+                          |)
                         |),
                         Value.Integer Integer.Usize 1
                       |))
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -6826,23 +6970,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let start :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (|
                               M.read (| remaining |),
                               Value.Integer Integer.U32 1
@@ -7021,7 +7169,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -7063,7 +7211,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -7090,7 +7238,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -7185,7 +7333,7 @@ Module iter.
                                   |)
                                 |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -7275,10 +7423,11 @@ Module iter.
                       (M.alloc (|
                         BinOp.Panic.add (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::step_by::StepBy"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::step_by::StepBy",
                               "step"
+                            |)
                           |),
                           Value.Integer Integer.Usize 1
                         |)
@@ -7286,13 +7435,15 @@ Module iter.
                   |) in
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::step_by::StepBy"
-                        "iter")
-                      "core::ops::range::Range"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::step_by::StepBy",
+                        "iter"
+                      |),
+                      "core::ops::range::Range",
                       "end"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -7308,23 +7459,27 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let start :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
                               "start"
+                            |)
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::step_by::StepBy"
-                                "iter")
-                              "core::ops::range::Range"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::step_by::StepBy",
+                                "iter"
+                              |),
+                              "core::ops::range::Range",
+                              "end"
+                            |),
                             BinOp.Panic.sub (|
                               M.read (| remaining |),
                               Value.Integer Integer.Usize 1
@@ -7503,7 +7658,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -7545,7 +7700,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
@@ -7572,7 +7727,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
@@ -7667,7 +7822,7 @@ Module iter.
                                   |)
                                 |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0

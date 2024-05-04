@@ -126,10 +126,11 @@ Module collections.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      self
-                      "alloc::collections::btree::borrow::DormantMutRef"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::borrow::DormantMutRef",
                       "ptr"
+                    |)
                   |)
                 ]
               |)))
@@ -160,10 +161,11 @@ Module collections.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::borrow::DormantMutRef"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::borrow::DormantMutRef",
                       "ptr"
+                    |)
                   |)
                 ]
               |)))
@@ -194,10 +196,11 @@ Module collections.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::borrow::DormantMutRef"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::borrow::DormantMutRef",
                       "ptr"
+                    |)
                   |)
                 ]
               |)))

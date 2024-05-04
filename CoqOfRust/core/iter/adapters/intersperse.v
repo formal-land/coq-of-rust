@@ -40,25 +40,28 @@ Module iter.
                   M.read (| Value.String "separator" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::intersperse::Intersperse"
-                      "separator");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::intersperse::Intersperse",
+                      "separator"
+                    |));
                   M.read (| Value.String "iter" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::intersperse::Intersperse"
-                      "iter");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::intersperse::Intersperse",
+                      "iter"
+                    |));
                   M.read (| Value.String "needs_sep" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::intersperse::Intersperse"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::intersperse::Intersperse",
                         "needs_sep"
+                      |)
                     |))
                 ]
               |)))
@@ -92,10 +95,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::intersperse::Intersperse"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::Intersperse",
                           "separator"
+                        |)
                       ]
                     |));
                   ("iter",
@@ -108,10 +112,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::intersperse::Intersperse"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::Intersperse",
                           "iter"
+                        |)
                       ]
                     |));
                   ("needs_sep",
@@ -124,10 +129,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::intersperse::Intersperse"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::Intersperse",
                           "needs_sep"
+                        |)
                       ]
                     |))
                 ]))
@@ -219,10 +225,11 @@ Module iter.
                             (M.alloc (|
                               LogicalOp.and (|
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::intersperse::Intersperse"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::intersperse::Intersperse",
                                     "needs_sep"
+                                  |)
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -244,10 +251,11 @@ Module iter.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::iter::adapters::intersperse::Intersperse"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::intersperse::Intersperse",
                                               "iter"
+                                            |)
                                           ]
                                         |)
                                       |)
@@ -259,10 +267,11 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::intersperse::Intersperse"
-                              "needs_sep",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::Intersperse",
+                              "needs_sep"
+                            |),
                             Value.Bool false
                           |) in
                         M.alloc (|
@@ -278,10 +287,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::intersperse::Intersperse"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::intersperse::Intersperse",
                                     "separator"
+                                  |)
                                 ]
                               |)
                             ]
@@ -290,10 +300,11 @@ Module iter.
                       ltac:(M.monadic
                         (let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::intersperse::Intersperse"
-                              "needs_sep",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::Intersperse",
+                              "needs_sep"
+                            |),
                             Value.Bool true
                           |) in
                         M.alloc (|
@@ -306,10 +317,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::intersperse::Intersperse"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::intersperse::Intersperse",
                                 "iter"
+                              |)
                             ]
                           |)
                         |)))
@@ -340,10 +352,11 @@ Module iter.
               M.read (|
                 let separator :=
                   M.copy (|
-                    M.get_struct_record_field
-                      self
-                      "core::iter::adapters::intersperse::Intersperse"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::intersperse::Intersperse",
                       "separator"
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -358,10 +371,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::intersperse::Intersperse"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::intersperse::Intersperse",
                           "iter"
+                        |)
                       |);
                       M.read (| init |);
                       M.read (| f |);
@@ -390,10 +404,11 @@ Module iter.
                             | _ => M.impossible (||)
                             end));
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::intersperse::Intersperse"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::intersperse::Intersperse",
                           "needs_sep"
+                        |)
                       |)
                     ]
                   |)
@@ -419,15 +434,17 @@ Module iter.
                   [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ] ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::intersperse::Intersperse"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::intersperse::Intersperse",
+                    "iter"
+                  |);
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::intersperse::Intersperse"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::intersperse::Intersperse",
                       "needs_sep"
+                    |)
                   |)
                 ]
               |)))
@@ -522,28 +539,31 @@ Module iter.
                               M.read (| Value.String "separator" |);
                               (* Unsize *)
                               M.pointer_coercion
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::intersperse::IntersperseWith"
-                                  "separator")
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::intersperse::IntersperseWith",
+                                  "separator"
+                                |))
                             ]
                           |);
                           M.read (| Value.String "iter" |);
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::intersperse::IntersperseWith"
-                              "iter")
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::IntersperseWith",
+                              "iter"
+                            |))
                         ]
                       |);
                       M.read (| Value.String "needs_sep" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::intersperse::IntersperseWith"
-                          "needs_sep")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::IntersperseWith",
+                          "needs_sep"
+                        |))
                     ]
                   |)
                 ]
@@ -586,10 +606,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::intersperse::IntersperseWith"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::IntersperseWith",
                           "separator"
+                        |)
                       ]
                     |));
                   ("iter",
@@ -602,10 +623,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::intersperse::IntersperseWith"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::IntersperseWith",
                           "iter"
+                        |)
                       ]
                     |));
                   ("needs_sep",
@@ -618,10 +640,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::intersperse::IntersperseWith"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::IntersperseWith",
                           "needs_sep"
+                        |)
                       ]
                     |))
                 ]))
@@ -713,10 +736,11 @@ Module iter.
                             (M.alloc (|
                               LogicalOp.and (|
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::intersperse::IntersperseWith"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::intersperse::IntersperseWith",
                                     "needs_sep"
+                                  |)
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -738,10 +762,11 @@ Module iter.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::iter::adapters::intersperse::IntersperseWith"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::intersperse::IntersperseWith",
                                               "iter"
+                                            |)
                                           ]
                                         |)
                                       |)
@@ -753,10 +778,11 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::intersperse::IntersperseWith"
-                              "needs_sep",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::IntersperseWith",
+                              "needs_sep"
+                            |),
                             Value.Bool false
                           |) in
                         M.alloc (|
@@ -772,10 +798,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::intersperse::IntersperseWith"
-                                    "separator";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::intersperse::IntersperseWith",
+                                    "separator"
+                                  |);
                                   Value.Tuple []
                                 ]
                               |)
@@ -785,10 +812,11 @@ Module iter.
                       ltac:(M.monadic
                         (let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::intersperse::IntersperseWith"
-                              "needs_sep",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::IntersperseWith",
+                              "needs_sep"
+                            |),
                             Value.Bool true
                           |) in
                         M.alloc (|
@@ -801,10 +829,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::intersperse::IntersperseWith"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::intersperse::IntersperseWith",
                                 "iter"
+                              |)
                             ]
                           |)
                         |)))
@@ -838,24 +867,27 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      self
-                      "core::iter::adapters::intersperse::IntersperseWith"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::intersperse::IntersperseWith",
                       "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| f |);
                   M.read (|
-                    M.get_struct_record_field
-                      self
-                      "core::iter::adapters::intersperse::IntersperseWith"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::intersperse::IntersperseWith",
                       "separator"
+                    |)
                   |);
                   M.read (|
-                    M.get_struct_record_field
-                      self
-                      "core::iter::adapters::intersperse::IntersperseWith"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::intersperse::IntersperseWith",
                       "needs_sep"
+                    |)
                   |)
                 ]
               |)))
@@ -879,15 +911,17 @@ Module iter.
                   [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ] ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::intersperse::IntersperseWith"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::intersperse::IntersperseWith",
+                    "iter"
+                  |);
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::intersperse::IntersperseWith"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::intersperse::IntersperseWith",
                       "needs_sep"
+                    |)
                   |)
                 ]
               |)))
@@ -945,8 +979,8 @@ Module iter.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lo := M.copy (| γ0_0 |) in
                       let hi := M.copy (| γ0_1 |) in
                       let next_is_elem := M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |) in
@@ -1098,7 +1132,7 @@ Module iter.
                                         |)
                                       |) in
                                     let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0

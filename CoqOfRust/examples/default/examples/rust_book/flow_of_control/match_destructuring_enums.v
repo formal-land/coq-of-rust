@@ -194,19 +194,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::RGB",
                     0
                   |) in
                 let γ0_1 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::RGB",
                     1
                   |) in
                 let γ0_2 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::RGB",
                     2
@@ -278,19 +278,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::HSV",
                     0
                   |) in
                 let γ0_1 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::HSV",
                     1
                   |) in
                 let γ0_2 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::HSV",
                     2
@@ -362,19 +362,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::HSL",
                     0
                   |) in
                 let γ0_1 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::HSL",
                     1
                   |) in
                 let γ0_2 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::HSL",
                     2
@@ -446,19 +446,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::CMY",
                     0
                   |) in
                 let γ0_1 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::CMY",
                     1
                   |) in
                 let γ0_2 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::CMY",
                     2
@@ -530,25 +530,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::CMYK",
                     0
                   |) in
                 let γ0_1 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::CMYK",
                     1
                   |) in
                 let γ0_2 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::CMYK",
                     2
                   |) in
                 let γ0_3 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "match_destructuring_enums::Color::CMYK",
                     3

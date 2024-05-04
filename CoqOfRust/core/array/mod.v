@@ -16,8 +16,8 @@ Module array.
       ltac:(M.monadic
         (let cb := M.alloc (| cb |) in
         M.read (|
-          M.get_struct_tuple_field
-            (M.alloc (|
+          M.SubPointer.get_struct_tuple_field (|
+            M.alloc (|
               M.call_closure (|
                 M.get_function (|
                   "core::array::try_from_fn",
@@ -37,9 +37,10 @@ Module array.
                   |)
                 ]
               |)
-            |))
-            "core::ops::try_trait::NeverShortCircuit"
+            |),
+            "core::ops::try_trait::NeverShortCircuit",
             0
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -89,7 +90,7 @@ Module array.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "core::ops::control_flow::ControlFlow::Break",
                       0
@@ -110,7 +111,7 @@ Module array.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "core::ops::control_flow::ControlFlow::Continue",
                       0
@@ -217,7 +218,11 @@ Module array.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "core::array::TryFromSliceError" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::array::TryFromSliceError",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -4436,8 +4441,8 @@ Module array.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            M.get_struct_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_struct_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "array") [ T ],
@@ -4459,9 +4464,10 @@ Module array.
                     |)
                   ]
                 |)
-              |))
-              "core::ops::try_trait::NeverShortCircuit"
+              |),
+              "core::ops::try_trait::NeverShortCircuit",
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -4799,8 +4805,8 @@ Module array.
       ltac:(M.monadic
         (let iter := M.alloc (| iter |) in
         M.read (|
-          M.get_struct_tuple_field
-            (M.alloc (|
+          M.SubPointer.get_struct_tuple_field (|
+            M.alloc (|
               M.call_closure (|
                 M.get_function (|
                   "core::array::try_from_trusted_iterator",
@@ -4838,9 +4844,10 @@ Module array.
                   |)
                 ]
               |)
-            |))
-            "core::ops::try_trait::NeverShortCircuit"
+            |),
+            "core::ops::try_trait::NeverShortCircuit",
             0
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -4883,8 +4890,8 @@ Module array.
                           UnOp.Pure.not
                             (BinOp.Pure.ge
                               (M.read (|
-                                M.get_tuple_field
-                                  (M.alloc (|
+                                M.SubPointer.get_tuple_field (|
+                                  M.alloc (|
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
@@ -4895,8 +4902,9 @@ Module array.
                                       |),
                                       [ iter ]
                                     |)
-                                  |))
+                                  |),
                                   0
+                                |)
                               |))
                               (M.read (|
                                 M.get_constant (| "core::array::try_from_trusted_iterator::N" |)
@@ -5028,10 +5036,11 @@ Module array.
                                 (M.alloc (|
                                   BinOp.Pure.lt
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        guard
-                                        "core::array::Guard"
+                                      M.SubPointer.get_struct_record_field (|
+                                        guard,
+                                        "core::array::Guard",
                                         "initialized"
+                                      |)
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
@@ -5047,10 +5056,11 @@ Module array.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            guard
-                                            "core::array::Guard"
+                                          M.SubPointer.get_struct_record_field (|
+                                            guard,
+                                            "core::array::Guard",
                                             "array_mut"
+                                          |)
                                         |)
                                       ]
                                     |))
@@ -5094,10 +5104,11 @@ Module array.
                                                 Value.Tuple
                                                   [
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        guard
-                                                        "core::array::Guard"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        guard,
+                                                        "core::array::Guard",
                                                         "initialized"
+                                                      |)
                                                     |)
                                                   ]
                                               ]
@@ -5111,7 +5122,7 @@ Module array.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
@@ -5149,7 +5160,7 @@ Module array.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
@@ -5264,16 +5275,18 @@ Module array.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::array::Guard"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::array::Guard",
                             "array_mut"
+                          |)
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::array::Guard"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::array::Guard",
                             "initialized"
+                          |)
                         |)
                       ]
                     |);
@@ -5283,15 +5296,20 @@ Module array.
               |) in
             let _ :=
               M.write (|
-                M.get_struct_record_field (M.read (| self |)) "core::array::Guard" "initialized",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::array::Guard",
+                  "initialized"
+                |),
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::array::Guard"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::array::Guard",
                         "initialized"
+                      |)
                     |);
                     Value.Integer Integer.Usize 1
                   ]
@@ -5349,10 +5367,11 @@ Module array.
                                       UnOp.Pure.not
                                         (BinOp.Pure.le
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::array::Guard"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::array::Guard",
                                               "initialized"
+                                            |)
                                           |))
                                           (M.call_closure (|
                                             M.get_associated_function (|
@@ -5368,10 +5387,11 @@ Module array.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::array::Guard"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::array::Guard",
                                                   "array_mut"
+                                                |)
                                               |)
                                             ]
                                           |)))
@@ -5426,20 +5446,22 @@ Module array.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::array::Guard"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::array::Guard",
                                 "array_mut"
+                              |)
                             |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [
                                 ("end_",
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::array::Guard"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::array::Guard",
                                       "initialized"
+                                    |)
                                   |))
                               ]
                           ]
@@ -5514,11 +5536,7 @@ Module array.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Ok",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
@@ -5536,11 +5554,7 @@ Module array.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Err",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let initialized := M.copy (| γ0_0 |) in
                   M.alloc (|
                     Value.StructTuple
@@ -5620,7 +5634,11 @@ Module array.
                             (M.alloc (|
                               BinOp.Pure.lt
                                 (M.read (|
-                                  M.get_struct_record_field guard "core::array::Guard" "initialized"
+                                  M.SubPointer.get_struct_record_field (|
+                                    guard,
+                                    "core::array::Guard",
+                                    "initialized"
+                                  |)
                                 |))
                                 (M.call_closure (|
                                   M.get_associated_function (|
@@ -5636,10 +5654,11 @@ Module array.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        guard
-                                        "core::array::Guard"
+                                      M.SubPointer.get_struct_record_field (|
+                                        guard,
+                                        "core::array::Guard",
                                         "array_mut"
+                                      |)
                                     |)
                                   ]
                                 |))
@@ -5663,7 +5682,7 @@ Module array.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0

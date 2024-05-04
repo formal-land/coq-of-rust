@@ -26,20 +26,22 @@ Module ops.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::index_range::IndexRange"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::index_range::IndexRange",
                         "start"
+                      |)
                     ]
                   |));
                 ("end_",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::index_range::IndexRange"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::index_range::IndexRange",
                         "end"
+                      |)
                     ]
                   |))
               ]))
@@ -76,18 +78,20 @@ Module ops.
                 M.read (| Value.String "start" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
-                    "start");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
+                    "start"
+                  |));
                 M.read (| Value.String "end" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::ops::index_range::IndexRange"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::index_range::IndexRange",
                       "end"
+                    |)
                   |))
               ]
             |)))
@@ -126,30 +130,34 @@ Module ops.
             LogicalOp.and (|
               BinOp.Pure.eq
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
                     "start"
+                  |)
                 |))
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "core::ops::index_range::IndexRange"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "core::ops::index_range::IndexRange",
                     "start"
+                  |)
                 |)),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::ops::index_range::IndexRange"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::index_range::IndexRange",
                       "end"
+                    |)
                   |))
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::ops::index_range::IndexRange"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::ops::index_range::IndexRange",
                       "end"
+                    |)
                   |))))
             |)))
         | _, _ => M.impossible
@@ -325,10 +333,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::ops::index_range::IndexRange"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::ops::index_range::IndexRange",
                 "start"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -346,10 +355,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::ops::index_range::IndexRange"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::ops::index_range::IndexRange",
                 "end"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -371,16 +381,18 @@ Module ops.
               M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
                     "end"
+                  |)
                 |);
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
                     "start"
+                  |)
                 |)
               ]
             |)))
@@ -426,16 +438,18 @@ Module ops.
                                         UnOp.Pure.not
                                           (BinOp.Pure.lt
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::index_range::IndexRange"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::index_range::IndexRange",
                                                 "start"
+                                              |)
                                             |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::index_range::IndexRange"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::index_range::IndexRange",
                                                 "end"
+                                              |)
                                             |)))
                                       |)) in
                                   let _ :=
@@ -464,17 +478,19 @@ Module ops.
                 |) in
               let value :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
                     "start"
+                  |)
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
-                    "start",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
+                    "start"
+                  |),
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
                     [ M.read (| value |); Value.Integer Integer.Usize 1 ]
@@ -525,16 +541,18 @@ Module ops.
                                         UnOp.Pure.not
                                           (BinOp.Pure.lt
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::index_range::IndexRange"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::index_range::IndexRange",
                                                 "start"
+                                              |)
                                             |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::index_range::IndexRange"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::index_range::IndexRange",
                                                 "end"
+                                              |)
                                             |)))
                                       |)) in
                                   let _ :=
@@ -567,10 +585,11 @@ Module ops.
                     M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::ops::index_range::IndexRange"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::ops::index_range::IndexRange",
                           "end"
+                        |)
                       |);
                       Value.Integer Integer.Usize 1
                     ]
@@ -578,10 +597,11 @@ Module ops.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
-                    "end",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
+                    "end"
+                  |),
                   M.read (| value |)
                 |) in
               value
@@ -648,10 +668,11 @@ Module ops.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::ops::index_range::IndexRange"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::ops::index_range::IndexRange",
                                     "start"
+                                  |)
                                 |);
                                 M.read (| n |)
                               ]
@@ -659,10 +680,11 @@ Module ops.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::index_range::IndexRange"
-                            "end"))
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::index_range::IndexRange",
+                            "end"
+                          |)))
                     ]
                   |)
                 |) in
@@ -673,20 +695,22 @@ Module ops.
                     [
                       ("start",
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::index_range::IndexRange"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::index_range::IndexRange",
                             "start"
+                          |)
                         |));
                       ("end_", M.read (| mid |))
                     ]
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
-                    "start",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
+                    "start"
+                  |),
                   M.read (| mid |)
                 |) in
               prefix
@@ -752,10 +776,11 @@ Module ops.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::ops::index_range::IndexRange"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::ops::index_range::IndexRange",
                                     "end"
+                                  |)
                                 |);
                                 M.read (| n |)
                               ]
@@ -763,10 +788,11 @@ Module ops.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::index_range::IndexRange"
-                            "start"))
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::index_range::IndexRange",
+                            "start"
+                          |)))
                     ]
                   |)
                 |) in
@@ -778,19 +804,21 @@ Module ops.
                       ("start", M.read (| mid |));
                       ("end_",
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::index_range::IndexRange"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::index_range::IndexRange",
                             "end"
+                          |)
                         |))
                     ]
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::index_range::IndexRange"
-                    "end",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::index_range::IndexRange",
+                    "end"
+                  |),
                   M.read (| mid |)
                 |) in
               suffix

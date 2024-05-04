@@ -373,8 +373,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -454,8 +454,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -513,8 +513,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -594,8 +594,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -653,8 +653,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -1001,8 +1001,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -1081,8 +1081,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -1199,8 +1199,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -1459,7 +1459,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -1512,7 +1512,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -1664,7 +1664,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1730,7 +1730,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1842,7 +1842,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1903,16 +1903,16 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     result));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
@@ -1953,7 +1953,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -2099,14 +2099,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "overflowing_div", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -2125,14 +2126,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "overflowing_div_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -2152,14 +2154,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "overflowing_rem", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -2178,14 +2181,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "overflowing_rem_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -2520,8 +2524,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -2561,8 +2565,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -2575,8 +2579,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -2618,8 +2622,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -2663,8 +2667,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -2704,8 +2708,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -2718,8 +2722,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -2762,8 +2766,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -2807,8 +2811,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -3299,14 +3303,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -3330,14 +3337,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -3365,7 +3376,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -3547,7 +3558,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -4037,7 +4048,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -4250,7 +4261,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -4306,7 +4317,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -4362,7 +4373,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -5391,8 +5402,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -5472,8 +5483,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -5531,8 +5542,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -5612,8 +5623,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -5671,8 +5682,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -6019,8 +6030,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -6099,8 +6110,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -6217,8 +6228,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -6477,7 +6488,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -6530,7 +6541,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -6682,7 +6693,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -6748,7 +6759,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -6860,7 +6871,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -6923,16 +6934,16 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     result));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
@@ -6973,7 +6984,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -7119,14 +7130,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "overflowing_div", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -7145,14 +7157,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "overflowing_div_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -7172,14 +7185,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "overflowing_rem", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -7198,14 +7212,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "overflowing_rem_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -7540,8 +7555,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -7581,8 +7596,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -7595,8 +7610,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -7638,8 +7653,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -7683,8 +7698,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -7724,8 +7739,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -7738,8 +7753,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -7782,8 +7797,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -7827,8 +7842,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -8319,14 +8334,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -8350,14 +8368,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -8385,7 +8407,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -8567,7 +8589,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -9059,7 +9081,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -9274,7 +9296,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -9330,7 +9352,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -9386,7 +9408,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -10415,8 +10437,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -10496,8 +10518,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -10555,8 +10577,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -10636,8 +10658,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -10695,8 +10717,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -11043,8 +11065,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -11123,8 +11145,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -11241,8 +11263,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -11501,7 +11523,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -11554,7 +11576,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -11706,7 +11728,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -11772,7 +11794,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -11884,7 +11906,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -11947,16 +11969,16 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     result));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
@@ -11997,7 +12019,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -12143,14 +12165,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "overflowing_div", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -12169,14 +12192,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "overflowing_div_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -12196,14 +12220,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "overflowing_rem", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -12222,14 +12247,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "overflowing_rem_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -12564,8 +12590,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -12605,8 +12631,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -12619,8 +12645,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -12662,8 +12688,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -12707,8 +12733,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -12748,8 +12774,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -12762,8 +12788,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -12806,8 +12832,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -12851,8 +12877,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -13343,14 +13369,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -13374,14 +13403,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -13409,7 +13442,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -13591,7 +13624,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -14083,7 +14116,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -14298,7 +14331,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -14354,7 +14387,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -14410,7 +14443,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -15439,8 +15472,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -15520,8 +15553,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -15579,8 +15612,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -15660,8 +15693,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -15719,8 +15752,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -16067,8 +16100,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -16147,8 +16180,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -16265,8 +16298,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -16525,7 +16558,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -16578,7 +16611,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -16730,7 +16763,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -16796,7 +16829,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -16908,7 +16941,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -16971,16 +17004,16 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     result));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
@@ -17021,7 +17054,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -17167,14 +17200,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "overflowing_div", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -17193,14 +17227,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "overflowing_div_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -17220,14 +17255,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "overflowing_rem", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -17246,14 +17282,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "overflowing_rem_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -17588,8 +17625,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -17629,8 +17666,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -17643,8 +17680,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -17686,8 +17723,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -17731,8 +17768,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -17772,8 +17809,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -17786,8 +17823,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -17830,8 +17867,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -17875,8 +17912,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -18367,14 +18404,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -18398,14 +18438,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -18433,7 +18477,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -18615,7 +18659,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -19107,7 +19151,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -19322,7 +19366,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -19378,7 +19422,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -19434,7 +19478,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -20463,8 +20507,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -20544,8 +20588,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -20603,8 +20647,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -20684,8 +20728,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -20743,8 +20787,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -21091,8 +21135,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -21171,8 +21215,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -21289,8 +21333,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -21549,7 +21593,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -21602,7 +21646,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -21754,7 +21798,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -21820,7 +21864,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -21932,7 +21976,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -21997,16 +22041,16 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     result));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
@@ -22047,7 +22091,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -22193,14 +22237,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "overflowing_div", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -22219,14 +22264,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "overflowing_div_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -22246,14 +22292,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "overflowing_rem", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -22272,14 +22319,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "overflowing_rem_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -22614,8 +22662,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -22655,8 +22703,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -22669,8 +22717,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -22712,8 +22760,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -22757,8 +22805,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -22798,8 +22846,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -22812,8 +22860,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -22856,8 +22904,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -22901,8 +22949,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -23393,14 +23441,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -23424,14 +23475,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -23459,7 +23514,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -23641,7 +23696,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -24133,7 +24188,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -24348,7 +24403,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -24404,7 +24459,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -24460,7 +24515,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -25489,8 +25544,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -25570,8 +25625,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -25629,8 +25684,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -25710,8 +25765,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -25769,8 +25824,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -26117,8 +26172,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -26197,8 +26252,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -26315,8 +26370,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -26575,7 +26630,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -26628,7 +26683,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -26780,7 +26835,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -26846,7 +26901,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -26958,7 +27013,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -27023,16 +27078,16 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     result));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
@@ -27073,7 +27128,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -27219,14 +27274,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "overflowing_div", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -27245,14 +27301,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "overflowing_div_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -27272,14 +27329,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "overflowing_rem", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -27298,14 +27356,15 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "overflowing_rem_euclid", [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -27640,8 +27699,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
@@ -27681,8 +27740,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -27695,8 +27754,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -27738,8 +27797,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -27783,8 +27842,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
@@ -27824,8 +27883,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -27838,8 +27897,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -27882,8 +27941,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -27927,8 +27986,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
@@ -28423,14 +28482,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -28454,14 +28516,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -28489,7 +28555,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -28671,7 +28737,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -29169,7 +29235,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -29386,7 +29452,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -29442,7 +29508,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -29498,7 +29564,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -30544,8 +30610,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -30625,8 +30691,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -30684,8 +30750,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -30765,8 +30831,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -31114,7 +31180,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -31170,7 +31236,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -31226,7 +31292,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -31453,7 +31519,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -31516,7 +31582,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -31569,8 +31635,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -31627,8 +31693,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -31745,8 +31811,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -31959,7 +32025,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -32012,7 +32078,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -32116,8 +32182,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -32210,7 +32276,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -32275,7 +32341,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -32706,8 +32772,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -32747,8 +32813,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -32761,8 +32827,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -32808,8 +32874,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -32853,8 +32919,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -32894,8 +32960,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -32908,8 +32974,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -33038,8 +33104,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -33324,14 +33390,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -33355,14 +33424,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -33390,7 +33463,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -33924,7 +33997,7 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -35454,8 +35527,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -35535,8 +35608,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -35594,8 +35667,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -35675,8 +35748,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -36024,7 +36097,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -36080,7 +36153,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -36136,7 +36209,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -36363,7 +36436,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -36426,7 +36499,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -36479,8 +36552,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -36537,8 +36610,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -36655,8 +36728,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -36869,7 +36942,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -36922,7 +36995,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -37026,8 +37099,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -37121,7 +37194,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -37186,7 +37259,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -37617,8 +37690,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -37658,8 +37731,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -37672,8 +37745,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -37719,8 +37792,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -37764,8 +37837,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -37805,8 +37878,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -37819,8 +37892,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -37949,8 +38022,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -38235,14 +38308,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -38266,14 +38342,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -38301,7 +38381,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -38835,7 +38915,7 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -39745,8 +39825,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -39826,8 +39906,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -39885,8 +39965,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -39966,8 +40046,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -40315,7 +40395,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -40371,7 +40451,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -40427,7 +40507,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -40654,7 +40734,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -40717,7 +40797,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -40770,8 +40850,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -40828,8 +40908,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -40945,8 +41025,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -41158,7 +41238,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -41211,7 +41291,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -41315,8 +41395,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -41410,7 +41490,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -41475,7 +41555,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -41906,8 +41986,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -41947,8 +42027,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -41961,8 +42041,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -42008,8 +42088,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -42053,8 +42133,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -42094,8 +42174,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -42108,8 +42188,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -42238,8 +42318,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -42524,14 +42604,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -42555,14 +42638,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -42590,7 +42677,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -43124,7 +43211,7 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -43997,8 +44084,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -44078,8 +44165,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -44137,8 +44224,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -44218,8 +44305,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -44567,7 +44654,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -44623,7 +44710,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -44679,7 +44766,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -44906,7 +44993,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -44969,7 +45056,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -45022,8 +45109,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -45080,8 +45167,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -45198,8 +45285,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -45412,7 +45499,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -45465,7 +45552,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -45569,8 +45656,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -45664,7 +45751,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -45729,7 +45816,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -46160,8 +46247,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -46201,8 +46288,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -46215,8 +46302,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -46262,8 +46349,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -46307,8 +46394,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -46348,8 +46435,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -46362,8 +46449,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -46492,8 +46579,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -46778,14 +46865,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -46809,14 +46899,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -46844,7 +46938,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -47378,7 +47472,7 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -48251,8 +48345,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -48332,8 +48426,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -48391,8 +48485,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -48472,8 +48566,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -48821,7 +48915,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -48877,7 +48971,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -48933,7 +49027,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -49160,7 +49254,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -49223,7 +49317,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -49276,8 +49370,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -49334,8 +49428,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -49452,8 +49546,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -49666,7 +49760,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -49719,7 +49813,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -49823,8 +49917,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -49920,7 +50014,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -49985,7 +50079,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -50416,8 +50510,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -50457,8 +50551,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -50471,8 +50565,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -50518,8 +50612,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -50563,8 +50657,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -50604,8 +50698,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -50618,8 +50712,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -50748,8 +50842,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| M.use a |); M.read (| b |) ] |)))
@@ -51034,14 +51128,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -51065,14 +51162,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -51100,7 +51201,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -51634,7 +51735,7 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -52420,8 +52521,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -52501,8 +52602,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -52560,8 +52661,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -52641,8 +52742,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -52990,7 +53091,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -53046,7 +53147,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -53102,7 +53203,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -53333,7 +53434,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -53396,7 +53497,7 @@ Module num.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -53449,8 +53550,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -53507,8 +53608,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -53625,8 +53726,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -53839,7 +53940,7 @@ Module num.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -53892,7 +53993,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -53996,8 +54097,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -54093,7 +54194,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -54158,7 +54259,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -54589,8 +54690,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
@@ -54630,8 +54731,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -54644,8 +54745,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -54691,8 +54792,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let res := M.copy (| γ0_0 |) in
                     let overflowed := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -54736,8 +54837,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
@@ -54777,8 +54878,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -54791,8 +54892,8 @@ Module num.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let c := M.copy (| γ0_0 |) in
                             let d := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -54921,8 +55022,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.rust_cast (M.read (| a |)); M.read (| b |) ] |)))
@@ -55207,14 +55308,17 @@ Module num.
                                             |)
                                           |) in
                                         let _ :=
-                                          M.write (| acc, M.read (| M.get_tuple_field r 0 |) |) in
+                                          M.write (|
+                                            acc,
+                                            M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                          |) in
                                         let _ :=
                                           let β := overflown in
                                           M.write (|
                                             β,
                                             BinOp.Pure.bit_or
                                               (M.read (| β |))
-                                              (M.read (| M.get_tuple_field r 1 |))
+                                              (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -55238,14 +55342,18 @@ Module num.
                                     [ M.read (| base |); M.read (| base |) ]
                                   |)
                                 |) in
-                              let _ := M.write (| base, M.read (| M.get_tuple_field r 0 |) |) in
+                              let _ :=
+                                M.write (|
+                                  base,
+                                  M.read (| M.SubPointer.get_tuple_field (| r, 0 |) |)
+                                |) in
                               let _ :=
                                 let β := overflown in
                                 M.write (|
                                   β,
                                   BinOp.Pure.bit_or
                                     (M.read (| β |))
-                                    (M.read (| M.get_tuple_field r 1 |))
+                                    (M.read (| M.SubPointer.get_tuple_field (| r, 1 |) |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -55273,7 +55381,7 @@ Module num.
                     |)
                   |) in
                 let _ :=
-                  let β := M.get_tuple_field r 1 in
+                  let β := M.SubPointer.get_tuple_field (| r, 1 |) in
                   M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| overflown |)) |) in
                 r
               |)))
@@ -55807,7 +55915,7 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -58329,7 +58437,7 @@ Module num.
                 |) in
               M.match_operator (|
                 M.match_operator (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.read (| src |),
                     M.alloc (| Value.Integer Integer.Usize 0 |)
                   |),
@@ -58495,8 +58603,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let is_positive := M.copy (| γ0_0 |) in
                       let digits := M.copy (| γ0_1 |) in
                       let result :=
@@ -58598,7 +58706,7 @@ Module num.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::option::Option::Some",
                                                                       0
@@ -58699,7 +58807,7 @@ Module num.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                                   0
@@ -58748,7 +58856,7 @@ Module num.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                                   0
@@ -58845,7 +58953,7 @@ Module num.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::option::Option::Some",
                                                                       0
@@ -58946,7 +59054,7 @@ Module num.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                                   0
@@ -58995,7 +59103,7 @@ Module num.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                                   0
@@ -59107,7 +59215,7 @@ Module num.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::option::Option::Some",
                                                                       0
@@ -59196,7 +59304,7 @@ Module num.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                                   0
@@ -59245,7 +59353,7 @@ Module num.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                                   0
@@ -59338,7 +59446,7 @@ Module num.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ0_0 :=
-                                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                                     γ,
                                                                                     "core::ops::control_flow::ControlFlow::Break",
                                                                                     0
@@ -59389,7 +59497,7 @@ Module num.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ0_0 :=
-                                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                                     γ,
                                                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                                                     0
@@ -59497,7 +59605,7 @@ Module num.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ0_0 :=
-                                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                                     γ,
                                                                                     "core::ops::control_flow::ControlFlow::Break",
                                                                                     0
@@ -59548,7 +59656,7 @@ Module num.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ0_0 :=
-                                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                                     γ,
                                                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                                                     0
@@ -59622,7 +59730,7 @@ Module num.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::option::Option::Some",
                                                                       0
@@ -59711,7 +59819,7 @@ Module num.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                                   0
@@ -59760,7 +59868,7 @@ Module num.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                                   0
@@ -59853,7 +59961,7 @@ Module num.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ0_0 :=
-                                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                                     γ,
                                                                                     "core::ops::control_flow::ControlFlow::Break",
                                                                                     0
@@ -59904,7 +60012,7 @@ Module num.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ0_0 :=
-                                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                                     γ,
                                                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                                                     0
@@ -60012,7 +60120,7 @@ Module num.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ0_0 :=
-                                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                                     γ,
                                                                                     "core::ops::control_flow::ControlFlow::Break",
                                                                                     0
@@ -60063,7 +60171,7 @@ Module num.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ0_0 :=
-                                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                                     γ,
                                                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                                                     0

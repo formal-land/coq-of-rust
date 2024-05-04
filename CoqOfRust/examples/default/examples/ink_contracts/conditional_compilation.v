@@ -136,7 +136,11 @@ Module Impl_conditional_compilation_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "conditional_compilation::Env" "caller"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "conditional_compilation::Env",
+            "caller"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -307,16 +311,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         M.read (|
           let _ :=
             M.write (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "conditional_compilation::ConditionalCompilation"
-                "value",
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "conditional_compilation::ConditionalCompilation",
+                "value"
+              |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "conditional_compilation::ConditionalCompilation"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "conditional_compilation::ConditionalCompilation",
                     "value"
+                  |)
                 |))
             |) in
           let caller :=
@@ -368,10 +374,11 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                         [
                           ("new_value",
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "conditional_compilation::ConditionalCompilation"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "conditional_compilation::ConditionalCompilation",
                                 "value"
+                              |)
                             |));
                           ("by_", M.read (| caller |))
                         ]
@@ -451,16 +458,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             |) in
           let _ :=
             M.write (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "conditional_compilation::ConditionalCompilation"
-                "value",
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "conditional_compilation::ConditionalCompilation",
+                "value"
+              |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "conditional_compilation::ConditionalCompilation"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "conditional_compilation::ConditionalCompilation",
                     "value"
+                  |)
                 |))
             |) in
           let _ :=
@@ -490,10 +499,11 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                         [
                           ("new_value",
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "conditional_compilation::ConditionalCompilation"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "conditional_compilation::ConditionalCompilation",
                                 "value"
+                              |)
                             |));
                           ("by_", M.read (| caller |));
                           ("when", M.read (| block_number |))
@@ -527,16 +537,18 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         M.read (|
           let _ :=
             M.write (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "conditional_compilation::ConditionalCompilation"
-                "value",
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "conditional_compilation::ConditionalCompilation",
+                "value"
+              |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "conditional_compilation::ConditionalCompilation"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "conditional_compilation::ConditionalCompilation",
                     "value"
+                  |)
                 |))
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -555,10 +567,11 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field
-            (M.read (| self |))
-            "conditional_compilation::ConditionalCompilation"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "conditional_compilation::ConditionalCompilation",
             "value"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -633,10 +646,11 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
             |) in
           let _ :=
             M.write (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "conditional_compilation::ConditionalCompilation"
-                "value",
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "conditional_compilation::ConditionalCompilation",
+                "value"
+              |),
               M.read (| value |)
             |) in
           M.alloc (| Value.Tuple [] |)

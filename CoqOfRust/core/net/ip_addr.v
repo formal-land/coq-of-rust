@@ -164,11 +164,11 @@ Module net.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::net::ip_addr::IpAddr::V4",
                                   0
@@ -176,7 +176,7 @@ Module net.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::net::ip_addr::IpAddr::V4",
                                   0
@@ -196,11 +196,11 @@ Module net.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::net::ip_addr::IpAddr::V6",
                                   0
@@ -208,7 +208,7 @@ Module net.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::net::ip_addr::IpAddr::V6",
                                   0
@@ -294,7 +294,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -316,7 +316,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -384,11 +384,11 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -396,7 +396,7 @@ Module net.
                       let __self_0 := M.alloc (| γ2_0 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_1,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -416,11 +416,11 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -428,7 +428,7 @@ Module net.
                       let __self_0 := M.alloc (| γ2_0 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_1,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -520,11 +520,11 @@ Module net.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::net::ip_addr::IpAddr::V4",
                                   0
@@ -532,7 +532,7 @@ Module net.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::net::ip_addr::IpAddr::V4",
                                   0
@@ -552,11 +552,11 @@ Module net.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::net::ip_addr::IpAddr::V6",
                                   0
@@ -564,7 +564,7 @@ Module net.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::net::ip_addr::IpAddr::V6",
                                   0
@@ -686,14 +686,16 @@ Module net.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::net::ip_addr::Ipv4Addr"
-                  "octets";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::net::ip_addr::Ipv4Addr"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::net::ip_addr::Ipv4Addr",
                   "octets"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::net::ip_addr::Ipv4Addr",
+                  "octets"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -764,10 +766,11 @@ Module net.
                 [ __H ]
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::net::ip_addr::Ipv4Addr"
-                  "octets";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::net::ip_addr::Ipv4Addr",
+                  "octets"
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -856,14 +859,16 @@ Module net.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::net::ip_addr::Ipv6Addr"
-                  "octets";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::net::ip_addr::Ipv6Addr"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::net::ip_addr::Ipv6Addr",
                   "octets"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::net::ip_addr::Ipv6Addr",
+                  "octets"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -934,10 +939,11 @@ Module net.
                 [ __H ]
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::net::ip_addr::Ipv6Addr"
-                  "octets";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::net::ip_addr::Ipv6Addr",
+                  "octets"
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -1242,7 +1248,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1262,7 +1268,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1308,7 +1314,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1328,7 +1334,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1373,7 +1379,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1393,7 +1399,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1438,7 +1444,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1458,7 +1464,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1504,7 +1510,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1524,7 +1530,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1570,7 +1576,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1590,7 +1596,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1633,7 +1639,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1666,7 +1672,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1702,7 +1708,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1712,7 +1718,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1784,7 +1790,14 @@ Module net.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
-              [ M.read (| M.get_struct_record_field self "core::net::ip_addr::Ipv4Addr" "octets" |)
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::net::ip_addr::Ipv4Addr",
+                    "octets"
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1887,7 +1900,11 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::net::ip_addr::Ipv4Addr" "octets"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::net::ip_addr::Ipv4Addr",
+                "octets"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1909,10 +1926,11 @@ Module net.
                 M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::net::ip_addr::Ipv4Addr"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::net::ip_addr::Ipv4Addr",
                       "octets"
+                    |)
                   |)
                 ]
               |))
@@ -1935,7 +1953,7 @@ Module net.
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1985,8 +2003,8 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_rest := M.get_slice_rest_or_break_match (| γ, 1, 0 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
@@ -1995,9 +2013,9 @@ Module net.
                       M.alloc (| Value.Bool true |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
@@ -2017,9 +2035,9 @@ Module net.
                       M.alloc (| Value.Bool true |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
@@ -2065,9 +2083,9 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
@@ -2121,7 +2139,7 @@ Module net.
                               LogicalOp.or (|
                                 BinOp.Pure.eq
                                   (M.read (|
-                                    M.get_array_field (|
+                                    M.SubPointer.get_array_field (|
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2181,7 +2199,7 @@ Module net.
                             LogicalOp.and (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_array_field (|
+                                  M.SubPointer.get_array_field (|
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2199,7 +2217,7 @@ Module net.
                               ltac:(M.monadic
                                 (BinOp.Pure.eq
                                   (M.read (|
-                                    M.get_array_field (|
+                                    M.SubPointer.get_array_field (|
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2218,7 +2236,7 @@ Module net.
                             ltac:(M.monadic
                               (BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_array_field (|
+                                  M.SubPointer.get_array_field (|
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2293,7 +2311,7 @@ Module net.
             LogicalOp.and (|
               BinOp.Pure.eq
                 (M.read (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2312,7 +2330,7 @@ Module net.
                 (BinOp.Pure.eq
                   (BinOp.Pure.bit_and
                     (M.read (|
-                      M.get_array_field (|
+                      M.SubPointer.get_array_field (|
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -2347,7 +2365,7 @@ Module net.
             LogicalOp.and (|
               BinOp.Pure.eq
                 (M.read (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2366,7 +2384,7 @@ Module net.
                 (BinOp.Pure.eq
                   (BinOp.Pure.bit_and
                     (M.read (|
-                      M.get_array_field (|
+                      M.SubPointer.get_array_field (|
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -2403,7 +2421,7 @@ Module net.
               BinOp.Pure.eq
                 (BinOp.Pure.bit_and
                   (M.read (|
-                    M.get_array_field (|
+                    M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -2448,7 +2466,7 @@ Module net.
             LogicalOp.and (|
               BinOp.Pure.ge
                 (M.read (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2466,7 +2484,7 @@ Module net.
               ltac:(M.monadic
                 (BinOp.Pure.le
                   (M.read (|
-                    M.get_array_field (|
+                    M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -2561,10 +2579,10 @@ Module net.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                              let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                              let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                              let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
+                              (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                              let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                              let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
@@ -2583,10 +2601,10 @@ Module net.
                               Value.Tuple []));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                              let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                              let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                              let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
+                              (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                              let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                              let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
@@ -2605,10 +2623,10 @@ Module net.
                               Value.Tuple []));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                              let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                              let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                              let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
+                              (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                              let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                              let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
@@ -2670,10 +2688,10 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                      let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                       let a := M.copy (| γ0_0 |) in
                       let b := M.copy (| γ0_1 |) in
                       let c := M.copy (| γ0_2 |) in
@@ -2739,10 +2757,10 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                      let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                       let a := M.copy (| γ0_0 |) in
                       let b := M.copy (| γ0_1 |) in
                       let c := M.copy (| γ0_2 |) in
@@ -2808,7 +2826,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -2830,7 +2848,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -3077,7 +3095,7 @@ Module net.
                                             [ Ty.path "u8" ]
                                           |),
                                           [
-                                            M.get_array_field (|
+                                            M.SubPointer.get_array_field (|
                                               octets,
                                               M.alloc (| Value.Integer Integer.Usize 0 |)
                                             |)
@@ -3090,7 +3108,7 @@ Module net.
                                             [ Ty.path "u8" ]
                                           |),
                                           [
-                                            M.get_array_field (|
+                                            M.SubPointer.get_array_field (|
                                               octets,
                                               M.alloc (| Value.Integer Integer.Usize 1 |)
                                             |)
@@ -3103,7 +3121,7 @@ Module net.
                                             [ Ty.path "u8" ]
                                           |),
                                           [
-                                            M.get_array_field (|
+                                            M.SubPointer.get_array_field (|
                                               octets,
                                               M.alloc (| Value.Integer Integer.Usize 2 |)
                                             |)
@@ -3116,7 +3134,7 @@ Module net.
                                             [ Ty.path "u8" ]
                                           |),
                                           [
-                                            M.get_array_field (|
+                                            M.SubPointer.get_array_field (|
                                               octets,
                                               M.alloc (| Value.Integer Integer.Usize 3 |)
                                             |)
@@ -3193,7 +3211,7 @@ Module net.
                                                   [ Ty.path "u8" ]
                                                 |),
                                                 [
-                                                  M.get_array_field (|
+                                                  M.SubPointer.get_array_field (|
                                                     octets,
                                                     M.alloc (| Value.Integer Integer.Usize 0 |)
                                                   |)
@@ -3206,7 +3224,7 @@ Module net.
                                                   [ Ty.path "u8" ]
                                                 |),
                                                 [
-                                                  M.get_array_field (|
+                                                  M.SubPointer.get_array_field (|
                                                     octets,
                                                     M.alloc (| Value.Integer Integer.Usize 1 |)
                                                   |)
@@ -3219,7 +3237,7 @@ Module net.
                                                   [ Ty.path "u8" ]
                                                 |),
                                                 [
-                                                  M.get_array_field (|
+                                                  M.SubPointer.get_array_field (|
                                                     octets,
                                                     M.alloc (| Value.Integer Integer.Usize 2 |)
                                                   |)
@@ -3232,7 +3250,7 @@ Module net.
                                                   [ Ty.path "u8" ]
                                                 |),
                                                 [
-                                                  M.get_array_field (|
+                                                  M.SubPointer.get_array_field (|
                                                     octets,
                                                     M.alloc (| Value.Integer Integer.Usize 3 |)
                                                   |)
@@ -3337,7 +3355,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -3359,7 +3377,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -3404,7 +3422,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -3426,7 +3444,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -3510,7 +3528,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -3532,7 +3550,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -3581,7 +3599,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -3603,7 +3621,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -3650,14 +3668,16 @@ Module net.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::net::ip_addr::Ipv4Addr"
-                  "octets";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::net::ip_addr::Ipv4Addr"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::net::ip_addr::Ipv4Addr",
                   "octets"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::net::ip_addr::Ipv4Addr",
+                  "octets"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3942,7 +3962,14 @@ Module net.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
-              [ M.read (| M.get_struct_record_field self "core::net::ip_addr::Ipv6Addr" "octets" |)
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::net::ip_addr::Ipv6Addr",
+                    "octets"
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4058,10 +4085,11 @@ Module net.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::net::ip_addr::Ipv6Addr"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::net::ip_addr::Ipv6Addr",
                           "octets"
+                        |)
                       |)
                     ]
                   |)
@@ -4069,14 +4097,14 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                      let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                      let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                      let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                      let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                      let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                       let a := M.copy (| γ0_0 |) in
                       let b := M.copy (| γ0_1 |) in
                       let c := M.copy (| γ0_2 |) in
@@ -4292,14 +4320,14 @@ Module net.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                                        let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                                        let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                                        let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                                        let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                                        let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                                        let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                                        let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
+                                        (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                        let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                        let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                                        let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                                        let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                                        let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                                        let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                                        let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_0 |),
@@ -4352,14 +4380,14 @@ Module net.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                                      let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                                      let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                                      let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                                      let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                                      let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                                      let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
+                                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                                      let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                                      let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                                      let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                                      let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ0_0 |),
@@ -4397,14 +4425,14 @@ Module net.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                                    let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                                    let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
+                                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                                    let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                                    let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_0 |),
@@ -4448,14 +4476,14 @@ Module net.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                                    let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                                    let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
+                                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                                    let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                                    let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_0 |),
@@ -4545,21 +4573,21 @@ Module net.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_slice_index_or_break_match (| γ, 0 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 0 |) in
                                                 let γ0_1 :=
-                                                  M.get_slice_index_or_break_match (| γ, 1 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 1 |) in
                                                 let γ0_2 :=
-                                                  M.get_slice_index_or_break_match (| γ, 2 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 2 |) in
                                                 let γ0_3 :=
-                                                  M.get_slice_index_or_break_match (| γ, 3 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 3 |) in
                                                 let γ0_4 :=
-                                                  M.get_slice_index_or_break_match (| γ, 4 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 4 |) in
                                                 let γ0_5 :=
-                                                  M.get_slice_index_or_break_match (| γ, 5 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 5 |) in
                                                 let γ0_6 :=
-                                                  M.get_slice_index_or_break_match (| γ, 6 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 6 |) in
                                                 let γ0_7 :=
-                                                  M.get_slice_index_or_break_match (| γ, 7 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 7 |) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ0_0 |),
@@ -4594,21 +4622,14 @@ Module net.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_slice_index_or_break_match (| γ, 0 |) in
-                                              let γ0_1 :=
-                                                M.get_slice_index_or_break_match (| γ, 1 |) in
-                                              let γ0_2 :=
-                                                M.get_slice_index_or_break_match (| γ, 2 |) in
-                                              let γ0_3 :=
-                                                M.get_slice_index_or_break_match (| γ, 3 |) in
-                                              let γ0_4 :=
-                                                M.get_slice_index_or_break_match (| γ, 4 |) in
-                                              let γ0_5 :=
-                                                M.get_slice_index_or_break_match (| γ, 5 |) in
-                                              let γ0_6 :=
-                                                M.get_slice_index_or_break_match (| γ, 6 |) in
-                                              let γ0_7 :=
-                                                M.get_slice_index_or_break_match (| γ, 7 |) in
+                                                M.SubPointer.get_slice_index (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                              let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                                              let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                                              let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                                              let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                                              let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                                              let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ0_0 |),
@@ -4646,22 +4667,14 @@ Module net.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.get_slice_index_or_break_match (| γ, 0 |) in
-                                            let γ0_1 :=
-                                              M.get_slice_index_or_break_match (| γ, 1 |) in
-                                            let γ0_2 :=
-                                              M.get_slice_index_or_break_match (| γ, 2 |) in
-                                            let γ0_3 :=
-                                              M.get_slice_index_or_break_match (| γ, 3 |) in
-                                            let γ0_4 :=
-                                              M.get_slice_index_or_break_match (| γ, 4 |) in
-                                            let γ0_5 :=
-                                              M.get_slice_index_or_break_match (| γ, 5 |) in
-                                            let γ0_6 :=
-                                              M.get_slice_index_or_break_match (| γ, 6 |) in
-                                            let γ0_7 :=
-                                              M.get_slice_index_or_break_match (| γ, 7 |) in
+                                            (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                            let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                                            let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                                            let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                                            let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                                            let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                                            let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ0_0 |),
@@ -4746,7 +4759,7 @@ Module net.
             BinOp.Pure.eq
               (BinOp.Pure.bit_and
                 (M.read (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4805,7 +4818,7 @@ Module net.
             BinOp.Pure.eq
               (BinOp.Pure.bit_and
                 (M.read (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4840,7 +4853,7 @@ Module net.
             LogicalOp.and (|
               BinOp.Pure.eq
                 (M.read (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4858,7 +4871,7 @@ Module net.
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
-                    M.get_array_field (|
+                    M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -4894,7 +4907,7 @@ Module net.
               LogicalOp.and (|
                 BinOp.Pure.eq
                   (M.read (|
-                    M.get_array_field (|
+                    M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -4912,7 +4925,7 @@ Module net.
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_array_field (|
+                      M.SubPointer.get_array_field (|
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -4931,7 +4944,7 @@ Module net.
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
-                    M.get_array_field (|
+                    M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -5101,7 +5114,7 @@ Module net.
                         M.alloc (|
                           BinOp.Pure.bit_and
                             (M.read (|
-                              M.get_array_field (|
+                              M.SubPointer.get_array_field (|
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -5260,7 +5273,7 @@ Module net.
             BinOp.Pure.eq
               (BinOp.Pure.bit_and
                 (M.read (|
-                  M.get_array_field (|
+                  M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -5312,22 +5325,22 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                      let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                      let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                      let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                      let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                      let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
-                      let γ0_8 := M.get_slice_index_or_break_match (| γ, 8 |) in
-                      let γ0_9 := M.get_slice_index_or_break_match (| γ, 9 |) in
-                      let γ0_10 := M.get_slice_index_or_break_match (| γ, 10 |) in
-                      let γ0_11 := M.get_slice_index_or_break_match (| γ, 11 |) in
-                      let γ0_12 := M.get_slice_index_or_break_match (| γ, 12 |) in
-                      let γ0_13 := M.get_slice_index_or_break_match (| γ, 13 |) in
-                      let γ0_14 := M.get_slice_index_or_break_match (| γ, 14 |) in
-                      let γ0_15 := M.get_slice_index_or_break_match (| γ, 15 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
+                      let γ0_8 := M.SubPointer.get_slice_index (| γ, 8 |) in
+                      let γ0_9 := M.SubPointer.get_slice_index (| γ, 9 |) in
+                      let γ0_10 := M.SubPointer.get_slice_index (| γ, 10 |) in
+                      let γ0_11 := M.SubPointer.get_slice_index (| γ, 11 |) in
+                      let γ0_12 := M.SubPointer.get_slice_index (| γ, 12 |) in
+                      let γ0_13 := M.SubPointer.get_slice_index (| γ, 13 |) in
+                      let γ0_14 := M.SubPointer.get_slice_index (| γ, 14 |) in
+                      let γ0_15 := M.SubPointer.get_slice_index (| γ, 15 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
@@ -5451,14 +5464,14 @@ Module net.
                             [ M.read (| self |) ]
                           |)
                         |) in
-                      let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                      let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                      let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                      let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                      let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                      let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
+                      let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
@@ -5525,8 +5538,8 @@ Module net.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                                        let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
+                                        (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                        let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                                         let a := M.copy (| γ0_0 |) in
                                         let b := M.copy (| γ0_1 |) in
                                         M.match_operator (|
@@ -5544,9 +5557,9 @@ Module net.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_slice_index_or_break_match (| γ, 0 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 0 |) in
                                                 let γ0_1 :=
-                                                  M.get_slice_index_or_break_match (| γ, 1 |) in
+                                                  M.SubPointer.get_slice_index (| γ, 1 |) in
                                                 let c := M.copy (| γ0_0 |) in
                                                 let d := M.copy (| γ0_1 |) in
                                                 M.alloc (|
@@ -5620,7 +5633,7 @@ Module net.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -5664,7 +5677,11 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::net::ip_addr::Ipv6Addr" "octets"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::net::ip_addr::Ipv6Addr",
+                "octets"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5838,7 +5855,7 @@ Module net.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -6000,15 +6017,21 @@ Module net.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                     γ,
                                                                     "core::option::Option::Some",
                                                                     0
                                                                   |) in
                                                                 let γ1_0 :=
-                                                                  M.get_tuple_field γ0_0 0 in
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ0_0,
+                                                                    0
+                                                                  |) in
                                                                 let γ1_1 :=
-                                                                  M.get_tuple_field γ0_0 1 in
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ0_0,
+                                                                    1
+                                                                  |) in
                                                                 let i := M.copy (| γ1_0 |) in
                                                                 let γ1_1 := M.read (| γ1_1 |) in
                                                                 let segment := M.copy (| γ1_1 |) in
@@ -6046,10 +6069,11 @@ Module net.
                                                                                       (M.alloc (|
                                                                                         BinOp.Pure.eq
                                                                                           (M.read (|
-                                                                                            M.get_struct_record_field
-                                                                                              current
-                                                                                              "core::net::ip_addr::fmt::Span"
+                                                                                            M.SubPointer.get_struct_record_field (|
+                                                                                              current,
+                                                                                              "core::net::ip_addr::fmt::Span",
                                                                                               "len"
+                                                                                            |)
                                                                                           |))
                                                                                           (Value.Integer
                                                                                             Integer.Usize
@@ -6065,10 +6089,11 @@ Module net.
                                                                                     |) in
                                                                                   let _ :=
                                                                                     M.write (|
-                                                                                      M.get_struct_record_field
-                                                                                        current
-                                                                                        "core::net::ip_addr::fmt::Span"
-                                                                                        "start",
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        current,
+                                                                                        "core::net::ip_addr::fmt::Span",
+                                                                                        "start"
+                                                                                      |),
                                                                                       M.read (| i |)
                                                                                     |) in
                                                                                   M.alloc (|
@@ -6083,10 +6108,11 @@ Module net.
                                                                           |) in
                                                                         let _ :=
                                                                           let β :=
-                                                                            M.get_struct_record_field
-                                                                              current
-                                                                              "core::net::ip_addr::fmt::Span"
-                                                                              "len" in
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              current,
+                                                                              "core::net::ip_addr::fmt::Span",
+                                                                              "len"
+                                                                            |) in
                                                                           M.write (|
                                                                             β,
                                                                             BinOp.Panic.add (|
@@ -6108,16 +6134,18 @@ Module net.
                                                                                     (M.alloc (|
                                                                                       BinOp.Pure.gt
                                                                                         (M.read (|
-                                                                                          M.get_struct_record_field
-                                                                                            current
-                                                                                            "core::net::ip_addr::fmt::Span"
+                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                            current,
+                                                                                            "core::net::ip_addr::fmt::Span",
                                                                                             "len"
+                                                                                          |)
                                                                                         |))
                                                                                         (M.read (|
-                                                                                          M.get_struct_record_field
-                                                                                            longest
-                                                                                            "core::net::ip_addr::fmt::Span"
+                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                            longest,
+                                                                                            "core::net::ip_addr::fmt::Span",
                                                                                             "len"
+                                                                                          |)
                                                                                         |))
                                                                                     |)) in
                                                                                 let _ :=
@@ -6182,10 +6210,11 @@ Module net.
                                               (M.alloc (|
                                                 BinOp.Pure.gt
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      zeroes
-                                                      "core::net::ip_addr::fmt::Span"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      zeroes,
+                                                      "core::net::ip_addr::fmt::Span",
                                                       "len"
+                                                    |)
                                                   |))
                                                   (Value.Integer Integer.Usize 1)
                                               |)) in
@@ -6238,10 +6267,11 @@ Module net.
                                                               [
                                                                 ("end_",
                                                                   M.read (|
-                                                                    M.get_struct_record_field
-                                                                      zeroes
-                                                                      "core::net::ip_addr::fmt::Span"
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      zeroes,
+                                                                      "core::net::ip_addr::fmt::Span",
                                                                       "start"
+                                                                    |)
                                                                   |))
                                                               ]
                                                           ]
@@ -6255,7 +6285,7 @@ Module net.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::ops::control_flow::ControlFlow::Break",
                                                         0
@@ -6295,7 +6325,7 @@ Module net.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::ops::control_flow::ControlFlow::Continue",
                                                         0
@@ -6336,7 +6366,7 @@ Module net.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::ops::control_flow::ControlFlow::Break",
                                                         0
@@ -6376,7 +6406,7 @@ Module net.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::ops::control_flow::ControlFlow::Continue",
                                                         0
@@ -6414,16 +6444,18 @@ Module net.
                                                         ("start",
                                                           BinOp.Panic.add (|
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                zeroes
-                                                                "core::net::ip_addr::fmt::Span"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                zeroes,
+                                                                "core::net::ip_addr::fmt::Span",
                                                                 "start"
+                                                              |)
                                                             |),
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                zeroes
-                                                                "core::net::ip_addr::fmt::Span"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                zeroes,
+                                                                "core::net::ip_addr::fmt::Span",
                                                                 "len"
+                                                              |)
                                                             |)
                                                           |))
                                                       ]
@@ -6618,7 +6650,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -6628,7 +6660,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -6685,7 +6717,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -6695,7 +6727,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -6791,7 +6823,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -6805,7 +6837,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -6862,7 +6894,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -6876,7 +6908,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -7069,14 +7101,14 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                      let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                      let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                      let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                      let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                      let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                      let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                      let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                       let a := M.copy (| γ0_0 |) in
                       let b := M.copy (| γ0_1 |) in
                       let c := M.copy (| γ0_2 |) in
@@ -7189,7 +7221,13 @@ Module net.
                           "into_iter",
                           []
                         |),
-                        [ M.get_struct_record_field self "core::net::ip_addr::Ipv4Addr" "octets" ]
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::net::ip_addr::Ipv4Addr",
+                            "octets"
+                          |)
+                        ]
                       |)
                     |),
                     [
@@ -7223,7 +7261,7 @@ Module net.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -7325,7 +7363,13 @@ Module net.
                           "into_iter",
                           []
                         |),
-                        [ M.get_struct_record_field self "core::net::ip_addr::Ipv6Addr" "octets" ]
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::net::ip_addr::Ipv6Addr",
+                            "octets"
+                          |)
+                        ]
                       |)
                     |),
                     [
@@ -7359,7 +7403,7 @@ Module net.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -7474,12 +7518,17 @@ Module net.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::net::ip_addr::Ipv4Addr"
-                              "octets";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::net::ip_addr::Ipv4Addr",
+                              "octets"
+                            |);
                             M.read (|
-                              M.get_struct_record_field rhs "core::net::ip_addr::Ipv4Addr" "octets"
+                              M.SubPointer.get_struct_record_field (|
+                                rhs,
+                                "core::net::ip_addr::Ipv4Addr",
+                                "octets"
+                              |)
                             |)
                           ]
                         |)
@@ -7524,13 +7573,13 @@ Module net.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let lhs := M.copy (| γ1_0 |) in
                                       let rhs := M.copy (| γ1_1 |) in
                                       let _ :=
@@ -7842,12 +7891,17 @@ Module net.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::net::ip_addr::Ipv4Addr"
-                              "octets";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::net::ip_addr::Ipv4Addr",
+                              "octets"
+                            |);
                             M.read (|
-                              M.get_struct_record_field rhs "core::net::ip_addr::Ipv4Addr" "octets"
+                              M.SubPointer.get_struct_record_field (|
+                                rhs,
+                                "core::net::ip_addr::Ipv4Addr",
+                                "octets"
+                              |)
                             |)
                           ]
                         |)
@@ -7892,13 +7946,13 @@ Module net.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let lhs := M.copy (| γ1_0 |) in
                                       let rhs := M.copy (| γ1_1 |) in
                                       let _ :=
@@ -8210,12 +8264,17 @@ Module net.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::net::ip_addr::Ipv6Addr"
-                              "octets";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::net::ip_addr::Ipv6Addr",
+                              "octets"
+                            |);
                             M.read (|
-                              M.get_struct_record_field rhs "core::net::ip_addr::Ipv6Addr" "octets"
+                              M.SubPointer.get_struct_record_field (|
+                                rhs,
+                                "core::net::ip_addr::Ipv6Addr",
+                                "octets"
+                              |)
                             |)
                           ]
                         |)
@@ -8260,13 +8319,13 @@ Module net.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let lhs := M.copy (| γ1_0 |) in
                                       let rhs := M.copy (| γ1_1 |) in
                                       let _ :=
@@ -8578,12 +8637,17 @@ Module net.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::net::ip_addr::Ipv6Addr"
-                              "octets";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::net::ip_addr::Ipv6Addr",
+                              "octets"
+                            |);
                             M.read (|
-                              M.get_struct_record_field rhs "core::net::ip_addr::Ipv6Addr" "octets"
+                              M.SubPointer.get_struct_record_field (|
+                                rhs,
+                                "core::net::ip_addr::Ipv6Addr",
+                                "octets"
+                              |)
                             |)
                           ]
                         |)
@@ -8628,13 +8692,13 @@ Module net.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let lhs := M.copy (| γ1_0 |) in
                                       let rhs := M.copy (| γ1_1 |) in
                                       let _ :=

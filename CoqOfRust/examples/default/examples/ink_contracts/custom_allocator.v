@@ -110,10 +110,11 @@ Module Impl_custom_allocator_CustomAllocator.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "custom_allocator::CustomAllocator"
-                    "value";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "custom_allocator::CustomAllocator",
+                    "value"
+                  |);
                   Value.Integer Integer.Usize 0
                 ]
               |),
@@ -130,10 +131,11 @@ Module Impl_custom_allocator_CustomAllocator.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "custom_allocator::CustomAllocator"
-                        "value";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "custom_allocator::CustomAllocator",
+                        "value"
+                      |);
                       Value.Integer Integer.Usize 0
                     ]
                   |)
@@ -168,10 +170,11 @@ Module Impl_custom_allocator_CustomAllocator.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "custom_allocator::CustomAllocator"
-                "value";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "custom_allocator::CustomAllocator",
+                "value"
+              |);
               Value.Integer Integer.Usize 0
             ]
           |)

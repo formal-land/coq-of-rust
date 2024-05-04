@@ -88,19 +88,21 @@ Module net.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::net::display_buffer::DisplayBuffer"
-                            "buf";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::net::display_buffer::DisplayBuffer",
+                            "buf"
+                          |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
                             [
                               ("end_",
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::net::display_buffer::DisplayBuffer"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::net::display_buffer::DisplayBuffer",
                                     "len"
+                                  |)
                                 |))
                             ]
                         ]
@@ -173,27 +175,30 @@ Module net.
                             [
                               (* Unsize *)
                               M.pointer_coercion
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::net::display_buffer::DisplayBuffer"
-                                  "buf");
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::net::display_buffer::DisplayBuffer",
+                                  "buf"
+                                |));
                               Value.StructRecord
                                 "core::ops::range::Range"
                                 [
                                   ("start",
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::net::display_buffer::DisplayBuffer"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::net::display_buffer::DisplayBuffer",
                                         "len"
+                                      |)
                                     |));
                                   ("end_",
                                     BinOp.Panic.add (|
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::net::display_buffer::DisplayBuffer"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::net::display_buffer::DisplayBuffer",
                                           "len"
+                                        |)
                                       |),
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -209,7 +214,7 @@ Module net.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -230,10 +235,11 @@ Module net.
                         |) in
                       let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::net::display_buffer::DisplayBuffer"
-                            "len" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::net::display_buffer::DisplayBuffer",
+                            "len"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.add (|

@@ -31,10 +31,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "scoping_rules_lifetimes_traits::Borrowed"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "scoping_rules_lifetimes_traits::Borrowed",
                   "x"
+                |)
               |))
           ]
         |)))

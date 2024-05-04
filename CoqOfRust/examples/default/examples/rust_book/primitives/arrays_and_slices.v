@@ -44,7 +44,7 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_array_field (|
+                                  M.SubPointer.get_array_field (|
                                     M.read (| slice |),
                                     M.alloc (| Value.Integer Integer.Usize 0 |)
                                   |)
@@ -211,7 +211,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_array_field (|
+                                  M.SubPointer.get_array_field (|
                                     xs,
                                     M.alloc (| Value.Integer Integer.Usize 0 |)
                                   |)
@@ -256,7 +256,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                 |),
                                 [
-                                  M.get_array_field (|
+                                  M.SubPointer.get_array_field (|
                                     xs,
                                     M.alloc (| Value.Integer Integer.Usize 1 |)
                                   |)
@@ -458,8 +458,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -552,8 +552,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -679,7 +679,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -700,7 +700,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0

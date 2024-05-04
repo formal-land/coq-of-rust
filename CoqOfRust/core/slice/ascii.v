@@ -187,8 +187,8 @@ Module slice.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let a := M.copy (| γ0_0 |) in
                                     let b := M.copy (| γ0_1 |) in
                                     M.call_closure (|
@@ -270,7 +270,7 @@ Module slice.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -359,7 +359,7 @@ Module slice.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -466,8 +466,8 @@ Module slice.
                           ltac:(M.monadic
                             (let γ := bytes in
                             let γ := M.read (| γ |) in
-                            let γ1_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                            let γ1_rest := M.get_slice_rest_or_break_match (| γ, 1, 0 |) in
+                            let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                            let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                             let first := M.alloc (| γ1_0 |) in
                             let rest := M.alloc (| γ1_rest |) in
                             M.match_operator (|
@@ -553,8 +553,8 @@ Module slice.
                           ltac:(M.monadic
                             (let γ := bytes in
                             let γ := M.read (| γ |) in
-                            let γ1_rest := M.get_slice_rest_or_break_match (| γ, 0, 1 |) in
-                            let γ1_rev0 := M.get_slice_rev_index_or_break_match (| γ, 0 |) in
+                            let γ1_rest := M.SubPointer.get_slice_rest (| γ, 0, 1 |) in
+                            let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                             let rest := M.alloc (| γ1_rest |) in
                             let last := M.alloc (| γ1_rev0 |) in
                             M.match_operator (|
@@ -707,10 +707,11 @@ Module slice.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::ascii::EscapeAscii"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::ascii::EscapeAscii",
                         "inner"
+                      |)
                     ]
                   |))
               ]))
@@ -756,10 +757,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::ascii::EscapeAscii"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::ascii::EscapeAscii",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -790,10 +792,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::ascii::EscapeAscii"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::ascii::EscapeAscii",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -830,10 +833,11 @@ Module slice.
                 [ Acc; Fold; R ]
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::ascii::EscapeAscii"
-                  "inner";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::ascii::EscapeAscii",
+                  "inner"
+                |);
                 M.read (| init |);
                 M.read (| fold |)
               ]
@@ -872,7 +876,11 @@ Module slice.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::slice::ascii::EscapeAscii" "inner"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::slice::ascii::EscapeAscii",
+                    "inner"
+                  |)
                 |);
                 M.read (| init |);
                 M.read (| fold |)
@@ -948,10 +956,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::ascii::EscapeAscii"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::ascii::EscapeAscii",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1162,8 +1171,8 @@ Module slice.
                         ltac:(M.monadic
                           (let γ := bytes in
                           let γ := M.read (| γ |) in
-                          let γ1_rest := M.get_slice_rest_or_break_match (| γ, 0, 1 |) in
-                          let γ1_rev0 := M.get_slice_rev_index_or_break_match (| γ, 0 |) in
+                          let γ1_rest := M.SubPointer.get_slice_rest (| γ, 0, 1 |) in
+                          let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                           let rest := M.alloc (| γ1_rest |) in
                           let last := M.alloc (| γ1_rev0 |) in
                           let _ :=
@@ -1755,7 +1764,7 @@ Module slice.
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ0_0 :=
-                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                 γ,
                                                                                 "core::option::Option::Some",
                                                                                 0

@@ -62,7 +62,9 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
             M.read (| Value.String "Choice" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "subtle::Choice" 0 |))
+              (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
+              |))
           ]
         |)))
     | _, _ => M.impossible
@@ -89,7 +91,9 @@ Module Impl_subtle_Choice.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_tuple_field (M.read (| self |)) "subtle::Choice" 0 |)))
+        M.read (|
+          M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -132,12 +136,20 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                       (BinOp.Pure.bit_or
                                         (BinOp.Pure.eq
                                           (M.read (|
-                                            M.get_struct_tuple_field source "subtle::Choice" 0
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              source,
+                                              "subtle::Choice",
+                                              0
+                                            |)
                                           |))
                                           (Value.Integer Integer.U8 0))
                                         (BinOp.Pure.eq
                                           (M.read (|
-                                            M.get_struct_tuple_field source "subtle::Choice" 0
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              source,
+                                              "subtle::Choice",
+                                              0
+                                            |)
                                           |))
                                           (Value.Integer Integer.U8 1)))
                                   |)) in
@@ -168,7 +180,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
             |) in
           M.alloc (|
             BinOp.Pure.ne
-              (M.read (| M.get_struct_tuple_field source "subtle::Choice" 0 |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| source, "subtle::Choice", 0 |) |))
               (Value.Integer Integer.U8 0)
           |)
         |)))
@@ -210,8 +222,8 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
           |),
           [
             BinOp.Pure.bit_and
-              (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
-              (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
     | _, _ => M.impossible
@@ -295,8 +307,8 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
           |),
           [
             BinOp.Pure.bit_or
-              (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
-              (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
     | _, _ => M.impossible
@@ -380,8 +392,8 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
           |),
           [
             BinOp.Pure.bit_xor
-              (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
-              (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
     | _, _ => M.impossible
@@ -465,7 +477,8 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
           [
             BinOp.Pure.bit_and
               (Value.Integer Integer.U8 1)
-              (UnOp.Pure.not (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |)))
+              (UnOp.Pure.not
+                (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |)))
           ]
         |)))
     | _, _ => M.impossible
@@ -784,13 +797,13 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let ai := M.copy (| γ1_0 |) in
                                         let bi := M.copy (| γ1_1 |) in
                                         let _ :=
@@ -2887,8 +2900,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| a |)) "subtle::Choice" 0;
-                M.get_struct_tuple_field (M.read (| b |)) "subtle::Choice" 0;
+                M.SubPointer.get_struct_tuple_field (| M.read (| a |), "subtle::Choice", 0 |);
+                M.SubPointer.get_struct_tuple_field (| M.read (| b |), "subtle::Choice", 0 |);
                 M.read (| choice |)
               ]
             |)
@@ -2988,7 +3001,13 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
             ("value",
               M.call_closure (|
                 M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                [ M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "subtle::CtOption",
+                    "value"
+                  |)
+                ]
               |));
             ("is_some",
               M.call_closure (|
@@ -2999,7 +3018,13 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "subtle::CtOption",
+                    "is_some"
+                  |)
+                ]
               |))
           ]))
     | _, _ => M.impossible
@@ -3049,12 +3074,20 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
             M.read (| Value.String "value" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value");
+              (M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "subtle::CtOption",
+                "value"
+              |));
             M.read (| Value.String "is_some" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "subtle::CtOption",
+                  "is_some"
+                |)
               |))
           ]
         |)))
@@ -3123,7 +3156,15 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
-                      [ M.read (| M.get_struct_record_field source "subtle::CtOption" "value" |) ]
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            source,
+                            "subtle::CtOption",
+                            "value"
+                          |)
+                        |)
+                      ]
                   |)));
               fun γ =>
                 ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -3191,7 +3232,13 @@ Module Impl_subtle_CtOption_T.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
-                        [ M.get_struct_record_field self "subtle::CtOption" "is_some" ]
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "subtle::CtOption",
+                            "is_some"
+                          |)
+                        ]
                       |)
                     |);
                     M.alloc (| Value.Integer Integer.U8 1 |)
@@ -3200,8 +3247,8 @@ Module Impl_subtle_CtOption_T.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -3284,7 +3331,7 @@ Module Impl_subtle_CtOption_T.
                     |)))
               ]
             |) in
-          M.get_struct_record_field self "subtle::CtOption" "value"
+          M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
         |)))
     | _, _ => M.impossible
     end.
@@ -3315,7 +3362,13 @@ Module Impl_subtle_CtOption_T.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
-                        [ M.get_struct_record_field self "subtle::CtOption" "is_some" ]
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "subtle::CtOption",
+                            "is_some"
+                          |)
+                        ]
                       |)
                     |);
                     M.alloc (| Value.Integer Integer.U8 1 |)
@@ -3324,8 +3377,8 @@ Module Impl_subtle_CtOption_T.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -3372,7 +3425,7 @@ Module Impl_subtle_CtOption_T.
                     |)))
               ]
             |) in
-          M.get_struct_record_field self "subtle::CtOption" "value"
+          M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
         |)))
     | _, _ => M.impossible
     end.
@@ -3406,8 +3459,10 @@ Module Impl_subtle_CtOption_T.
           |),
           [
             def;
-            M.get_struct_record_field self "subtle::CtOption" "value";
-            M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |);
+            M.read (|
+              M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -3454,8 +3509,10 @@ Module Impl_subtle_CtOption_T.
                 [ M.read (| f |); Value.Tuple [] ]
               |)
             |);
-            M.get_struct_record_field self "subtle::CtOption" "value";
-            M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |);
+            M.read (|
+              M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -3476,7 +3533,13 @@ Module Impl_subtle_CtOption_T.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some" |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "subtle::CtOption",
+            "is_some"
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -3497,7 +3560,14 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_trait_method (| "core::ops::bit::Not", Ty.path "subtle::Choice", [], "not", [] |),
-          [ M.read (| M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some" |)
+          [
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "subtle::CtOption",
+                "is_some"
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -3560,14 +3630,26 @@ Module Impl_subtle_CtOption_T.
                             []
                           |)
                         |);
-                        M.get_struct_record_field self "subtle::CtOption" "value";
-                        M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "subtle::CtOption",
+                          "value"
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "subtle::CtOption",
+                            "is_some"
+                          |)
+                        |)
                       ]
                     |)
                   ]
               ]
             |);
-            M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            M.read (|
+              M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -3634,8 +3716,18 @@ Module Impl_subtle_CtOption_T.
                               []
                             |)
                           |);
-                          M.get_struct_record_field self "subtle::CtOption" "value";
-                          M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "subtle::CtOption",
+                            "value"
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "subtle::CtOption",
+                              "is_some"
+                            |)
+                          |)
                         ]
                       |)
                     ]
@@ -3653,8 +3745,10 @@ Module Impl_subtle_CtOption_T.
                   []
                 |),
                 [
-                  M.get_struct_record_field tmp "subtle::CtOption" "is_some";
-                  M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+                  M.SubPointer.get_struct_record_field (| tmp, "subtle::CtOption", "is_some" |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
+                  |)
                 ]
               |)
             |) in
@@ -3763,8 +3857,16 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| a |)) "subtle::CtOption" "value";
-                M.get_struct_record_field (M.read (| b |)) "subtle::CtOption" "value";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| a |),
+                  "subtle::CtOption",
+                  "value"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| b |),
+                  "subtle::CtOption",
+                  "value"
+                |);
                 M.read (| choice |)
               ]
             |);
@@ -3777,8 +3879,16 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| a |)) "subtle::CtOption" "is_some";
-                M.get_struct_record_field (M.read (| b |)) "subtle::CtOption" "is_some";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| a |),
+                  "subtle::CtOption",
+                  "is_some"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| b |),
+                  "subtle::CtOption",
+                  "is_some"
+                |);
                 M.read (| choice |)
               ]
             |)
@@ -3869,8 +3979,16 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                     M.call_closure (|
                       M.get_trait_method (| "subtle::ConstantTimeEq", T, [], "ct_eq", [] |),
                       [
-                        M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value";
-                        M.get_struct_record_field (M.read (| rhs |)) "subtle::CtOption" "value"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "subtle::CtOption",
+                          "value"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| rhs |),
+                          "subtle::CtOption",
+                          "value"
+                        |)
                       ]
                     |)
                   ]

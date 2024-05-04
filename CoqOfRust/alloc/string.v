@@ -47,8 +47,16 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
-              M.get_struct_record_field (M.read (| other |)) "alloc::string::String" "vec"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "alloc::string::String",
+                "vec"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -85,8 +93,16 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
-              M.get_struct_record_field (M.read (| other |)) "alloc::string::String" "vec"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "alloc::string::String",
+                "vec"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -157,8 +173,16 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
-              M.get_struct_record_field (M.read (| other |)) "alloc::string::String" "vec"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "alloc::string::String",
+                "vec"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -206,18 +230,20 @@ Module string.
               M.read (| Value.String "bytes" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::string::FromUtf8Error"
-                  "bytes");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::string::FromUtf8Error",
+                  "bytes"
+                |));
               M.read (| Value.String "error" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::string::FromUtf8Error"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::string::FromUtf8Error",
                     "error"
+                  |)
                 |))
             ]
           |)))
@@ -269,14 +295,16 @@ Module string.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::string::FromUtf8Error"
-                  "bytes";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "alloc::string::FromUtf8Error"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::string::FromUtf8Error",
                   "bytes"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "alloc::string::FromUtf8Error",
+                  "bytes"
+                |)
               ]
             |),
             ltac:(M.monadic
@@ -289,14 +317,16 @@ Module string.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::string::FromUtf8Error"
-                    "error";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "alloc::string::FromUtf8Error"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::string::FromUtf8Error",
                     "error"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "alloc::string::FromUtf8Error",
+                    "error"
+                  |)
                 ]
               |)))
           |)))
@@ -380,10 +410,11 @@ Module string.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::string::FromUtf8Error"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::FromUtf8Error",
                       "bytes"
+                    |)
                   ]
                 |));
               ("error",
@@ -396,10 +427,11 @@ Module string.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::string::FromUtf8Error"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::FromUtf8Error",
                       "error"
+                    |)
                   ]
                 |))
             ]))
@@ -443,7 +475,11 @@ Module string.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "alloc::string::FromUtf16Error" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "alloc::string::FromUtf16Error",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -566,11 +602,7 @@ Module string.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
                     M.alloc (|
                       Value.StructTuple
@@ -660,7 +692,7 @@ Module string.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -758,8 +790,15 @@ Module string.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_tuple_field γ 0 in
-                                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    0
+                                                                  |) in
+                                                                let γ0_1 :=
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    1
+                                                                  |) in
                                                                 let left_val := M.copy (| γ0_0 |) in
                                                                 let right_val :=
                                                                   M.copy (| γ0_1 |) in
@@ -961,7 +1000,7 @@ Module string.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -1198,7 +1237,7 @@ Module string.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -1211,7 +1250,7 @@ Module string.
                                                 ltac:(M.monadic
                                                   (let γ := c in
                                                   let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::result::Result::Ok",
                                                       0
@@ -1489,13 +1528,13 @@ Module string.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
-                        let γ1_0 := M.get_tuple_field γ0_1 0 in
-                        let γ1_1 := M.get_tuple_field γ0_1 1 in
-                        let γ1_2 := M.get_tuple_field γ0_1 2 in
+                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
+                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
+                        let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
                         let γ1_0 := M.read (| γ1_0 |) in
                         let v := M.copy (| γ1_1 |) in
                         let γ1_2 := M.read (| γ1_2 |) in
@@ -1704,13 +1743,13 @@ Module string.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
-                    let γ1_0 := M.get_tuple_field γ0_1 0 in
-                    let γ1_1 := M.get_tuple_field γ0_1 1 in
-                    let γ1_2 := M.get_tuple_field γ0_1 2 in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
                     let γ1_0 := M.read (| γ1_0 |) in
                     let v := M.copy (| γ1_1 |) in
                     let γ1_2 := M.read (| γ1_2 |) in
@@ -1726,17 +1765,17 @@ Module string.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
-                    let γ1_0 := M.get_tuple_field γ0_1 0 in
-                    let γ1_1 := M.get_tuple_field γ0_1 1 in
-                    let γ1_2 := M.get_tuple_field γ0_1 2 in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
                     let γ1_0 := M.read (| γ1_0 |) in
                     let v := M.copy (| γ1_1 |) in
                     let γ1_2 := M.read (| γ1_2 |) in
-                    let γ3_0 := M.get_slice_index_or_break_match (| γ1_2, 0 |) in
+                    let γ3_0 := M.SubPointer.get_slice_index (| γ1_2, 0 |) in
                     let _remainder := M.alloc (| γ3_0 |) in
                     M.alloc (|
                       M.call_closure (|
@@ -2137,13 +2176,13 @@ Module string.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
-                        let γ1_0 := M.get_tuple_field γ0_1 0 in
-                        let γ1_1 := M.get_tuple_field γ0_1 1 in
-                        let γ1_2 := M.get_tuple_field γ0_1 2 in
+                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
+                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
+                        let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
                         let γ1_0 := M.read (| γ1_0 |) in
                         let v := M.copy (| γ1_1 |) in
                         let γ1_2 := M.read (| γ1_2 |) in
@@ -2352,13 +2391,13 @@ Module string.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
-                    let γ1_0 := M.get_tuple_field γ0_1 0 in
-                    let γ1_1 := M.get_tuple_field γ0_1 1 in
-                    let γ1_2 := M.get_tuple_field γ0_1 2 in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
                     let γ1_0 := M.read (| γ1_0 |) in
                     let v := M.copy (| γ1_1 |) in
                     let γ1_2 := M.read (| γ1_2 |) in
@@ -2374,17 +2413,17 @@ Module string.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
-                    let γ1_0 := M.get_tuple_field γ0_1 0 in
-                    let γ1_1 := M.get_tuple_field γ0_1 1 in
-                    let γ1_2 := M.get_tuple_field γ0_1 2 in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
                     let γ1_0 := M.read (| γ1_0 |) in
                     let v := M.copy (| γ1_1 |) in
                     let γ1_2 := M.read (| γ1_2 |) in
-                    let γ3_0 := M.get_slice_index_or_break_match (| γ1_2, 0 |) in
+                    let γ3_0 := M.SubPointer.get_slice_index (| γ1_2, 0 |) in
                     let _remainder := M.alloc (| γ3_0 |) in
                     M.alloc (|
                       M.call_closure (|
@@ -2719,7 +2758,11 @@ Module string.
               "into_raw_parts",
               []
             |),
-            [ M.read (| M.get_struct_record_field self "alloc::string::String" "vec" |) ]
+            [
+              M.read (|
+                M.SubPointer.get_struct_record_field (| self, "alloc::string::String", "vec" |)
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -2787,7 +2830,9 @@ Module string.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field self "alloc::string::String" "vec" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (| self, "alloc::string::String", "vec" |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2861,7 +2906,11 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
               M.call_closure (|
                 M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                 [ M.read (| string |) ]
@@ -2920,13 +2969,13 @@ Module string.
                   ltac:(M.monadic
                     (let src := M.copy (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "core::ops::range::Range",
                         "start"
                       |) in
                     let γ1_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "core::ops::range::Range",
                         "end"
@@ -3047,10 +3096,11 @@ Module string.
                             [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::string::String"
-                              "vec";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::string::String",
+                              "vec"
+                            |);
                             M.read (| src |)
                           ]
                         |)
@@ -3081,7 +3131,13 @@ Module string.
               "capacity",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -3106,7 +3162,11 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
               M.read (| additional |)
             ]
           |)))
@@ -3133,7 +3193,11 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
               M.read (| additional |)
             ]
           |)))
@@ -3161,7 +3225,11 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
               M.read (| additional |)
             ]
           |)))
@@ -3188,7 +3256,11 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
               M.read (| additional |)
             ]
           |)))
@@ -3214,7 +3286,13 @@ Module string.
               "shrink_to_fit",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -3240,7 +3318,11 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |);
               M.read (| min_capacity |)
             ]
           |)))
@@ -3289,10 +3371,11 @@ Module string.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::string::String"
-                            "vec";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::string::String",
+                            "vec"
+                          |);
                           M.rust_cast (M.read (| ch |))
                         ]
                       |)
@@ -3309,10 +3392,11 @@ Module string.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::string::String"
-                            "vec";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::string::String",
+                            "vec"
+                          |);
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                             [
@@ -3356,7 +3440,13 @@ Module string.
               "deref",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -3460,10 +3550,11 @@ Module string.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::string::String"
-                            "vec";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::string::String",
+                            "vec"
+                          |);
                           M.read (| new_len |)
                         ]
                       |)
@@ -3556,7 +3647,7 @@ Module string.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -3589,7 +3680,7 @@ Module string.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -3624,10 +3715,11 @@ Module string.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::string::String"
-                            "vec";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::string::String",
+                            "vec"
+                          |);
                           M.read (| newlen |)
                         ]
                       |)
@@ -3710,7 +3802,7 @@ Module string.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -3790,10 +3882,11 @@ Module string.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::string::String"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::string::String",
                                 "vec"
+                              |)
                             ]
                           |);
                           M.read (| next |)
@@ -3815,10 +3908,11 @@ Module string.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::string::String"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::string::String",
                                 "vec"
+                              |)
                             ]
                           |);
                           M.read (| idx |)
@@ -3839,7 +3933,11 @@ Module string.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::string::String",
+                        "vec"
+                      |);
                       BinOp.Panic.sub (|
                         M.read (| len |),
                         BinOp.Panic.sub (| M.read (| next |), M.read (| idx |) |)
@@ -4027,7 +4125,7 @@ Module string.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Break",
                                                             0
@@ -4071,7 +4169,7 @@ Module string.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Continue",
                                                             0
@@ -4083,8 +4181,10 @@ Module string.
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                      let γ0_1 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                       let start := M.copy (| γ0_0 |) in
                                                       let end_ := M.copy (| γ0_1 |) in
                                                       let prev_front := M.copy (| front |) in
@@ -4182,7 +4282,13 @@ Module string.
                     "as_mut_ptr",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::String",
+                      "vec"
+                    |)
+                  ]
                 |)
               |) in
             let _ :=
@@ -4253,13 +4359,13 @@ Module string.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let start := M.copy (| γ1_0 |) in
                                       let end_ := M.copy (| γ1_1 |) in
                                       let count :=
@@ -4349,7 +4455,11 @@ Module string.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::String",
+                      "vec"
+                    |);
                     M.read (| len |)
                   ]
                 |)
@@ -4453,10 +4563,11 @@ Module string.
                               (M.alloc (|
                                 BinOp.Pure.lt
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      guard
-                                      "alloc::string::retain::SetLenOnDrop"
+                                    M.SubPointer.get_struct_record_field (|
+                                      guard,
+                                      "alloc::string::retain::SetLenOnDrop",
                                       "idx"
+                                    |)
                                   |))
                                   (M.read (| len |))
                               |)) in
@@ -4509,10 +4620,11 @@ Module string.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        guard
-                                                        "alloc::string::retain::SetLenOnDrop"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        guard,
+                                                        "alloc::string::retain::SetLenOnDrop",
                                                         "s"
+                                                      |)
                                                     |)
                                                   ]
                                                 |);
@@ -4521,10 +4633,11 @@ Module string.
                                                   [
                                                     ("start",
                                                       M.read (|
-                                                        M.get_struct_record_field
-                                                          guard
-                                                          "alloc::string::retain::SetLenOnDrop"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          guard,
+                                                          "alloc::string::retain::SetLenOnDrop",
                                                           "idx"
+                                                        |)
                                                       |));
                                                     ("end_", M.read (| len |))
                                                   ]
@@ -4573,10 +4686,11 @@ Module string.
                                       |) in
                                     let _ :=
                                       let β :=
-                                        M.get_struct_record_field
-                                          guard
-                                          "alloc::string::retain::SetLenOnDrop"
-                                          "del_bytes" in
+                                        M.SubPointer.get_struct_record_field (|
+                                          guard,
+                                          "alloc::string::retain::SetLenOnDrop",
+                                          "del_bytes"
+                                        |) in
                                       M.write (|
                                         β,
                                         BinOp.Panic.add (| M.read (| β |), M.read (| ch_len |) |)
@@ -4594,10 +4708,11 @@ Module string.
                                                 (M.alloc (|
                                                   BinOp.Pure.gt
                                                     (M.read (|
-                                                      M.get_struct_record_field
-                                                        guard
-                                                        "alloc::string::retain::SetLenOnDrop"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        guard,
+                                                        "alloc::string::retain::SetLenOnDrop",
                                                         "del_bytes"
+                                                      |)
                                                     |))
                                                     (Value.Integer Integer.Usize 0)
                                                 |)) in
@@ -4648,10 +4763,11 @@ Module string.
                                                                   |),
                                                                   [
                                                                     M.read (|
-                                                                      M.get_struct_record_field
-                                                                        guard
-                                                                        "alloc::string::retain::SetLenOnDrop"
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        guard,
+                                                                        "alloc::string::retain::SetLenOnDrop",
                                                                         "s"
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -4659,16 +4775,18 @@ Module string.
                                                             |);
                                                             BinOp.Panic.sub (|
                                                               M.read (|
-                                                                M.get_struct_record_field
-                                                                  guard
-                                                                  "alloc::string::retain::SetLenOnDrop"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  guard,
+                                                                  "alloc::string::retain::SetLenOnDrop",
                                                                   "idx"
+                                                                |)
                                                               |),
                                                               M.read (|
-                                                                M.get_struct_record_field
-                                                                  guard
-                                                                  "alloc::string::retain::SetLenOnDrop"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  guard,
+                                                                  "alloc::string::retain::SetLenOnDrop",
                                                                   "del_bytes"
+                                                                |)
                                                               |)
                                                             |)
                                                           ]
@@ -4694,10 +4812,11 @@ Module string.
                             |) in
                           let _ :=
                             let β :=
-                              M.get_struct_record_field
-                                guard
-                                "alloc::string::retain::SetLenOnDrop"
-                                "idx" in
+                              M.SubPointer.get_struct_record_field (|
+                                guard,
+                                "alloc::string::retain::SetLenOnDrop",
+                                "idx"
+                              |) in
                             M.write (|
                               β,
                               BinOp.Panic.add (| M.read (| β |), M.read (| ch_len |) |)
@@ -4881,7 +5000,11 @@ Module string.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::String",
+                      "vec"
+                    |);
                     M.read (| amt |)
                   ]
                 |)
@@ -4907,10 +5030,11 @@ Module string.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::string::String"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::string::String",
                               "vec"
+                            |)
                           ]
                         |);
                         M.read (| idx |)
@@ -4932,10 +5056,11 @@ Module string.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::string::String"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::string::String",
                               "vec"
+                            |)
                           ]
                         |);
                         BinOp.Panic.add (| M.read (| idx |), M.read (| amt |) |)
@@ -4974,10 +5099,11 @@ Module string.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::string::String"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::string::String",
                               "vec"
+                            |)
                           ]
                         |);
                         M.read (| idx |)
@@ -4998,7 +5124,11 @@ Module string.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::String",
+                      "vec"
+                    |);
                     BinOp.Panic.add (| M.read (| len |), M.read (| amt |) |)
                   ]
                 |)
@@ -5109,7 +5239,11 @@ Module string.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec"))
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "alloc::string::String",
+            "vec"
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -5131,7 +5265,13 @@ Module string.
               "len",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -5231,7 +5371,11 @@ Module string.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::String",
+                      "vec"
+                    |);
                     M.read (| at_ |)
                   ]
                 |)
@@ -5268,7 +5412,13 @@ Module string.
               "clear",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::String",
+                "vec"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -5332,13 +5482,13 @@ Module string.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "core::ops::range::Range",
                         "start"
                       |) in
                     let γ0_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "core::ops::range::Range",
                         "end"
@@ -5556,7 +5706,7 @@ Module string.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::ops::range::Bound::Included",
                           0
@@ -5616,7 +5766,7 @@ Module string.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::ops::range::Bound::Excluded",
                           0
@@ -5700,7 +5850,7 @@ Module string.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::ops::range::Bound::Included",
                           0
@@ -5764,7 +5914,7 @@ Module string.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::ops::range::Bound::Excluded",
                           0
@@ -5892,7 +6042,15 @@ Module string.
                     "into_boxed_slice",
                     []
                   |),
-                  [ M.read (| M.get_struct_record_field self "alloc::string::String" "vec" |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::string::String",
+                        "vec"
+                      |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5930,7 +6088,15 @@ Module string.
                     "leak",
                     []
                   |),
-                  [ M.read (| M.get_struct_record_field self "alloc::string::String" "vec" |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::string::String",
+                        "vec"
+                      |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5968,7 +6134,11 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::FromUtf8Error" "bytes";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::FromUtf8Error",
+                "bytes"
+              |);
               Value.StructTuple "core::ops::range::RangeFull" []
             ]
           |)))
@@ -5987,7 +6157,9 @@ Module string.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field self "alloc::string::FromUtf8Error" "bytes" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (| self, "alloc::string::FromUtf8Error", "bytes" |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -6004,7 +6176,11 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.get_struct_record_field (M.read (| self |)) "alloc::string::FromUtf8Error" "error"
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "alloc::string::FromUtf8Error",
+              "error"
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -6035,7 +6211,11 @@ Module string.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "alloc::string::FromUtf8Error" "error";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::FromUtf8Error",
+                "error"
+              |);
               M.read (| f |)
             ]
           |)))
@@ -6156,7 +6336,13 @@ Module string.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::String",
+                      "vec"
+                    |)
+                  ]
                 |))
             ]))
       | _, _ => M.impossible
@@ -6187,8 +6373,16 @@ Module string.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec";
-                    M.get_struct_record_field (M.read (| source |)) "alloc::string::String" "vec"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::string::String",
+                      "vec"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| source |),
+                      "alloc::string::String",
+                      "vec"
+                    |)
                   ]
                 |)
               |) in
@@ -6416,7 +6610,7 @@ Module string.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -6571,7 +6765,7 @@ Module string.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -6664,8 +6858,8 @@ Module string.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let lower_bound := M.copy (| γ0_0 |) in
                     let _ :=
                       M.alloc (|
@@ -9188,7 +9382,13 @@ Module string.
                   "deref",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::string::String",
+                    "vec"
+                  |)
+                ]
               |)
             ]
           |)))
@@ -9479,7 +9679,13 @@ Module string.
                   "deref_mut",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::string::String",
+                    "vec"
+                  |)
+                ]
               |)
             ]
           |)))
@@ -9619,7 +9825,13 @@ Module string.
                   "deref",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::string::String",
+                    "vec"
+                  |)
+                ]
               |)
             ]
           |)))
@@ -9661,7 +9873,13 @@ Module string.
                   "deref_mut",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "alloc::string::String" "vec" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::string::String",
+                    "vec"
+                  |)
+                ]
               |)
             ]
           |)))
@@ -11094,7 +11312,11 @@ Module string.
                   M.get_associated_function (| Ty.path "alloc::string::String", "as_mut_vec", [] |),
                   [
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "alloc::string::Drain" "string"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::string::Drain",
+                        "string"
+                      |)
                     |)
                   ]
                 |)
@@ -11110,24 +11332,27 @@ Module string.
                           LogicalOp.and (|
                             BinOp.Pure.le
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::string::Drain"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::string::Drain",
                                   "start"
+                                |)
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::string::Drain"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::string::Drain",
                                   "end"
+                                |)
                               |)),
                             ltac:(M.monadic
                               (BinOp.Pure.le
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::string::Drain"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::string::Drain",
                                     "end"
+                                  |)
                                 |))
                                 (M.call_closure (|
                                   M.get_associated_function (|
@@ -11159,17 +11384,19 @@ Module string.
                               [
                                 ("start",
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::string::Drain"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::string::Drain",
                                       "start"
+                                    |)
                                   |));
                                 ("end_",
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::string::Drain"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::string::Drain",
                                       "end"
+                                    |)
                                   |))
                               ]
                           ]
@@ -11206,7 +11433,13 @@ Module string.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [] |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::Drain" "iter" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::Drain",
+                "iter"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -11299,7 +11532,13 @@ Module string.
               "next",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::Drain" "iter" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::Drain",
+                "iter"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -11322,7 +11561,13 @@ Module string.
               "size_hint",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::Drain" "iter" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::Drain",
+                "iter"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -11385,7 +11630,13 @@ Module string.
               "next_back",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "alloc::string::Drain" "iter" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::Drain",
+                "iter"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.

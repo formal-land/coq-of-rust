@@ -949,7 +949,7 @@ Module fmt.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::option::Option::Some",
                                                     0
@@ -1168,7 +1168,7 @@ Module fmt.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::option::Option::Some",
                                                     0
@@ -7033,7 +7033,7 @@ Module fmt.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -7128,8 +7128,8 @@ Module fmt.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let added_precision := M.copy (| γ0_0 |) in
                         let subtracted_precision := M.copy (| γ0_1 |) in
                         let _ :=
@@ -7187,7 +7187,7 @@ Module fmt.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::option::Option::Some",
                                                       0
@@ -7386,10 +7386,10 @@ Module fmt.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                       let n := M.copy (| γ0_0 |) in
                       let exponent := M.copy (| γ0_1 |) in
                       let trailing_zeros := M.copy (| γ0_2 |) in
@@ -10016,7 +10016,7 @@ Module fmt.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -10111,8 +10111,8 @@ Module fmt.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let added_precision := M.copy (| γ0_0 |) in
                       let subtracted_precision := M.copy (| γ0_1 |) in
                       let _ :=
@@ -10168,7 +10168,7 @@ Module fmt.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::option::Option::Some",
                                                     0
@@ -10366,10 +10366,10 @@ Module fmt.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                     let n := M.copy (| γ0_0 |) in
                     let exponent := M.copy (| γ0_1 |) in
                     let trailing_zeros := M.copy (| γ0_2 |) in
@@ -12608,8 +12608,8 @@ Module fmt.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let n := M.copy (| γ0_0 |) in
                     let rem := M.copy (| γ0_1 |) in
                     let _ :=
@@ -12701,8 +12701,8 @@ Module fmt.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let n := M.copy (| γ0_0 |) in
                                       let rem := M.copy (| γ0_1 |) in
                                       let _ :=

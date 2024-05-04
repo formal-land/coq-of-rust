@@ -238,8 +238,8 @@ Module num.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let lo := M.copy (| γ0_0 |) in
                           let hi := M.copy (| γ0_1 |) in
                           let _ :=
@@ -965,15 +965,15 @@ Module num.
                     |))
                 |) in
               M.match_operator (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.read (| M.get_constant (| "core::num::dec2flt::table::POWER_OF_FIVE_128" |) |),
                   index
                 |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lo5 := M.copy (| γ0_0 |) in
                       let hi5 := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -989,8 +989,8 @@ Module num.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let first_lo := M.copy (| γ0_0 |) in
                               let first_hi := M.copy (| γ0_1 |) in
                               let _ :=
@@ -1026,8 +1026,10 @@ Module num.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let second_hi := M.copy (| γ0_1 |) in
                                                 let _ :=
                                                   M.write (|

@@ -59,10 +59,11 @@ Module collections.
                     M.call_closure (|
                       M.get_function (| "core::mem::replace", [ Ty.path "usize" ] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| deque |))
-                          "alloc::collections::vec_deque::VecDeque"
-                          "len";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| deque |),
+                          "alloc::collections::vec_deque::VecDeque",
+                          "len"
+                        |);
                         M.read (| drain_start |)
                       ]
                     |)
@@ -155,10 +156,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::drain::Drain"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::drain::Drain",
                           "deque"
+                        |)
                       ]
                     |)
                   |) in
@@ -169,24 +171,27 @@ Module collections.
                       [
                         ("start",
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::drain::Drain"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::drain::Drain",
                               "idx"
+                            |)
                           |));
                         ("end_",
                           BinOp.Panic.add (|
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::drain::Drain"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::drain::Drain",
                                 "idx"
+                              |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::drain::Drain"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::drain::Drain",
                                 "remaining"
+                              |)
                             |)
                           |))
                       ]
@@ -212,10 +217,11 @@ Module collections.
                           [ logical_remaining_range ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            logical_remaining_range
-                            "core::ops::range::Range"
+                          M.SubPointer.get_struct_record_field (|
+                            logical_remaining_range,
+                            "core::ops::range::Range",
                             "end"
+                          |)
                         |)
                       ]
                     |)
@@ -223,8 +229,8 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let a_range := M.copy (| γ0_0 |) in
                         let b_range := M.copy (| γ0_1 |) in
                         M.alloc (|
@@ -331,34 +337,38 @@ Module collections.
                                   |);
                                   (* Unsize *)
                                   M.pointer_coercion
-                                    (M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::drain::Drain"
-                                      "drain_len")
+                                    (M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::drain::Drain",
+                                      "drain_len"
+                                    |))
                                 ]
                               |);
                               (* Unsize *)
                               M.pointer_coercion
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::drain::Drain"
-                                  "idx")
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::drain::Drain",
+                                  "idx"
+                                |))
                             ]
                           |);
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::drain::Drain"
-                              "tail_len")
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::drain::Drain",
+                              "tail_len"
+                            |))
                         ]
                       |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::drain::Drain"
-                          "remaining")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::drain::Drain",
+                          "remaining"
+                        |))
                     ]
                   |)
                 ]
@@ -511,15 +521,17 @@ Module collections.
                             (M.alloc (|
                               BinOp.Pure.ne
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (|
-                                      M.get_struct_tuple_field
-                                        guard
-                                        "alloc::collections::vec_deque::drain::drop::DropGuard"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        guard,
+                                        "alloc::collections::vec_deque::drain::drop::DropGuard",
                                         0
-                                    |))
-                                    "alloc::collections::vec_deque::drain::Drain"
+                                      |)
+                                    |),
+                                    "alloc::collections::vec_deque::drain::Drain",
                                     "remaining"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -537,10 +549,11 @@ Module collections.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_tuple_field
-                                    guard
-                                    "alloc::collections::vec_deque::drain::drop::DropGuard"
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    guard,
+                                    "alloc::collections::vec_deque::drain::drop::DropGuard",
                                     0
+                                  |)
                                 |)
                               ]
                             |)
@@ -548,21 +561,23 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let front := M.copy (| γ0_0 |) in
                                 let back := M.copy (| γ0_1 |) in
                                 let _ :=
                                   let β :=
-                                    M.get_struct_record_field
-                                      (M.read (|
-                                        M.get_struct_tuple_field
-                                          guard
-                                          "alloc::collections::vec_deque::drain::drop::DropGuard"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          guard,
+                                          "alloc::collections::vec_deque::drain::drop::DropGuard",
                                           0
-                                      |))
-                                      "alloc::collections::vec_deque::drain::Drain"
-                                      "idx" in
+                                        |)
+                                      |),
+                                      "alloc::collections::vec_deque::drain::Drain",
+                                      "idx"
+                                    |) in
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
@@ -581,15 +596,17 @@ Module collections.
                                   |) in
                                 let _ :=
                                   let β :=
-                                    M.get_struct_record_field
-                                      (M.read (|
-                                        M.get_struct_tuple_field
-                                          guard
-                                          "alloc::collections::vec_deque::drain::drop::DropGuard"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          guard,
+                                          "alloc::collections::vec_deque::drain::drop::DropGuard",
                                           0
-                                      |))
-                                      "alloc::collections::vec_deque::drain::Drain"
-                                      "remaining" in
+                                        |)
+                                      |),
+                                      "alloc::collections::vec_deque::drain::Drain",
+                                      "remaining"
+                                    |) in
                                   M.write (|
                                     β,
                                     BinOp.Panic.sub (|
@@ -618,15 +635,17 @@ Module collections.
                                   |) in
                                 let _ :=
                                   M.write (|
-                                    M.get_struct_record_field
-                                      (M.read (|
-                                        M.get_struct_tuple_field
-                                          guard
-                                          "alloc::collections::vec_deque::drain::drop::DropGuard"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          guard,
+                                          "alloc::collections::vec_deque::drain::drop::DropGuard",
                                           0
-                                      |))
-                                      "alloc::collections::vec_deque::drain::Drain"
-                                      "remaining",
+                                        |)
+                                      |),
+                                      "alloc::collections::vec_deque::drain::Drain",
+                                      "remaining"
+                                    |),
                                     Value.Integer Integer.Usize 0
                                   |) in
                                 let _ :=
@@ -696,10 +715,11 @@ Module collections.
                                   (M.alloc (|
                                     BinOp.Pure.eq
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::collections::vec_deque::drain::Drain"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::vec_deque::drain::Drain",
                                           "remaining"
+                                        |)
                                       |))
                                       (Value.Integer Integer.Usize 0)
                                   |)) in
@@ -742,37 +762,41 @@ Module collections.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::drain::Drain"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::drain::Drain",
                                   "deque"
+                                |)
                               ]
                             |);
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::drain::Drain"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::drain::Drain",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
                       |) in
                     let _ :=
                       let β :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::drain::Drain"
-                          "idx" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::drain::Drain",
+                          "idx"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
                       |) in
                     let _ :=
                       let β :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::drain::Drain"
-                          "remaining" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::drain::Drain",
+                          "remaining"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -801,10 +825,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::vec_deque::drain::Drain"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::drain::Drain",
                                     "deque"
+                                  |)
                                 ]
                               |);
                               M.read (| wrapped_idx |)
@@ -832,10 +857,11 @@ Module collections.
               M.read (|
                 let len :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::vec_deque::drain::Drain"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::vec_deque::drain::Drain",
                       "remaining"
+                    |)
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -896,10 +922,11 @@ Module collections.
                                   (M.alloc (|
                                     BinOp.Pure.eq
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::collections::vec_deque::drain::Drain"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::vec_deque::drain::Drain",
                                           "remaining"
+                                        |)
                                       |))
                                       (Value.Integer Integer.Usize 0)
                                   |)) in
@@ -922,10 +949,11 @@ Module collections.
                       |) in
                     let _ :=
                       let β :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::drain::Drain"
-                          "remaining" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::drain::Drain",
+                          "remaining"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -952,24 +980,27 @@ Module collections.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::drain::Drain"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::drain::Drain",
                                   "deque"
+                                |)
                               ]
                             |);
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::drain::Drain"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::drain::Drain",
                                   "idx"
+                                |)
                               |),
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::drain::Drain"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::drain::Drain",
                                   "remaining"
+                                |)
                               |)
                             |)
                           ]
@@ -999,10 +1030,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::vec_deque::drain::Drain"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::drain::Drain",
                                     "deque"
+                                  |)
                                 ]
                               |);
                               M.read (| wrapped_idx |)

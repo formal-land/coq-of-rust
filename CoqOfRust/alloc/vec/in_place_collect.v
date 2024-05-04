@@ -59,17 +59,17 @@ Module vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
                           |) in
                         let step_merge := M.copy (| γ1_0 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
                             "core::option::Option::Some",
                             0
@@ -413,24 +413,27 @@ Module vec.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| inner |))
-                                  "alloc::vec::into_iter::IntoIter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| inner |),
+                                  "alloc::vec::into_iter::IntoIter",
                                   "buf"
+                                |)
                               |)
                             ]
                           |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| inner |))
-                              "alloc::vec::into_iter::IntoIter"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| inner |),
+                              "alloc::vec::into_iter::IntoIter",
                               "ptr"
+                            |)
                           |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| inner |))
-                              "alloc::vec::into_iter::IntoIter"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| inner |),
+                              "alloc::vec::into_iter::IntoIter",
                               "cap"
+                            |)
                           |);
                           M.rust_cast
                             (M.call_closure (|
@@ -441,27 +444,30 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| inner |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| inner |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "buf"
+                                  |)
                                 |)
                               ]
                             |));
                           M.rust_cast
                             (M.read (|
-                              M.get_struct_record_field
-                                (M.read (| inner |))
-                                "alloc::vec::into_iter::IntoIter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| inner |),
+                                "alloc::vec::into_iter::IntoIter",
                                 "end"
+                              |)
                             |));
                           BinOp.Panic.div (|
                             BinOp.Panic.mul (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| inner |))
-                                  "alloc::vec::into_iter::IntoIter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| inner |),
+                                  "alloc::vec::into_iter::IntoIter",
                                   "cap"
+                                |)
                               |),
                               M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
@@ -478,12 +484,12 @@ Module vec.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
-                          let γ0_3 := M.get_tuple_field γ 3 in
-                          let γ0_4 := M.get_tuple_field γ 4 in
-                          let γ0_5 := M.get_tuple_field γ 5 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                          let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                          let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                          let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
                           let src_buf := M.copy (| γ0_0 |) in
                           let src_ptr := M.copy (| γ0_1 |) in
                           let src_cap := M.copy (| γ0_2 |) in
@@ -556,10 +562,11 @@ Module vec.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| src |))
-                                                        "alloc::vec::into_iter::IntoIter"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| src |),
+                                                        "alloc::vec::into_iter::IntoIter",
                                                         "buf"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -569,8 +576,9 @@ Module vec.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ0_0 := M.get_tuple_field γ 0 in
-                                              let γ0_1 := M.get_tuple_field γ 1 in
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                               let left_val := M.copy (| γ0_0 |) in
                                               let right_val := M.copy (| γ0_1 |) in
                                               M.match_operator (|
@@ -649,10 +657,11 @@ Module vec.
                                         (M.alloc (|
                                           BinOp.Pure.ne
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| src |))
-                                                "alloc::vec::into_iter::IntoIter"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| src |),
+                                                "alloc::vec::into_iter::IntoIter",
                                                 "ptr"
+                                              |)
                                             |))
                                             (M.read (| src_ptr |))
                                         |)) in
@@ -699,10 +708,11 @@ Module vec.
                                                                       ]
                                                                     |)))
                                                                   (M.read (|
-                                                                    M.get_struct_record_field
-                                                                      (M.read (| src |))
-                                                                      "alloc::vec::into_iter::IntoIter"
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| src |),
+                                                                      "alloc::vec::into_iter::IntoIter",
                                                                       "ptr"
+                                                                    |)
                                                                   |)))
                                                             |)) in
                                                         let _ :=
@@ -826,8 +836,10 @@ Module vec.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let γ0_0 := M.get_tuple_field γ 0 in
-                                                        let γ0_1 := M.get_tuple_field γ 1 in
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                        let γ0_1 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                         let left_val := M.copy (| γ0_0 |) in
                                                         let right_val := M.copy (| γ0_1 |) in
                                                         M.match_operator (|
@@ -917,8 +929,10 @@ Module vec.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let γ0_0 := M.get_tuple_field γ 0 in
-                                                        let γ0_1 := M.get_tuple_field γ 1 in
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                        let γ0_1 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                         let left_val := M.copy (| γ0_0 |) in
                                                         let right_val := M.copy (| γ0_1 |) in
                                                         M.match_operator (|
@@ -1093,7 +1107,7 @@ Module vec.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::result::Result::Ok",
                                                 0
@@ -1169,8 +1183,10 @@ Module vec.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let γ0_0 := M.get_tuple_field γ 0 in
-                                                        let γ0_1 := M.get_tuple_field γ 1 in
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                        let γ0_1 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                         let left_val := M.copy (| γ0_0 |) in
                                                         let right_val := M.copy (| γ0_1 |) in
                                                         M.match_operator (|
@@ -1354,10 +1370,11 @@ Module vec.
                                                                       (* MutToConstPointer *)
                                                                       (M.pointer_coercion
                                                                         (M.read (|
-                                                                          M.get_struct_record_field
-                                                                            sink
-                                                                            "alloc::vec::in_place_drop::InPlaceDrop"
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            sink,
+                                                                            "alloc::vec::in_place_drop::InPlaceDrop",
                                                                             "dst"
+                                                                          |)
                                                                         |))))
                                                                     (M.read (| src_end |)))
                                                               |)) in
@@ -1414,10 +1431,11 @@ Module vec.
                                             M.get_function (| "core::ptr::write", [ T ] |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  sink
-                                                  "alloc::vec::in_place_drop::InPlaceDrop"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  sink,
+                                                  "alloc::vec::in_place_drop::InPlaceDrop",
                                                   "dst"
+                                                |)
                                               |);
                                               M.read (| item |)
                                             ]
@@ -1425,10 +1443,11 @@ Module vec.
                                         |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            sink
-                                            "alloc::vec::in_place_drop::InPlaceDrop"
-                                            "dst",
+                                          M.SubPointer.get_struct_record_field (|
+                                            sink,
+                                            "alloc::vec::in_place_drop::InPlaceDrop",
+                                            "dst"
+                                          |),
                                           M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [ T ],
@@ -1437,10 +1456,11 @@ Module vec.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  sink
-                                                  "alloc::vec::in_place_drop::InPlaceDrop"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  sink,
+                                                  "alloc::vec::in_place_drop::InPlaceDrop",
                                                   "dst"
+                                                |)
                                               |);
                                               Value.Integer Integer.Usize 1
                                             ]
@@ -1551,8 +1571,8 @@ Module vec.
                   M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "sub_ptr", [] |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.call_closure (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -1580,9 +1600,10 @@ Module vec.
                               |)
                             |)
                           ]
-                        |))
-                        "alloc::vec::in_place_drop::InPlaceDrop"
+                        |),
+                        "alloc::vec::in_place_drop::InPlaceDrop",
                         "dst"
+                      |)
                     |);
                     (* MutToConstPointer *) M.pointer_coercion (M.read (| dst_buf |))
                   ]
@@ -1703,7 +1724,7 @@ Module vec.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -1818,10 +1839,11 @@ Module vec.
                                           |) in
                                         let _ :=
                                           M.write (|
-                                            M.get_struct_record_field
-                                              drop_guard
-                                              "alloc::vec::in_place_drop::InPlaceDrop"
-                                              "dst",
+                                            M.SubPointer.get_struct_record_field (|
+                                              drop_guard,
+                                              "alloc::vec::in_place_drop::InPlaceDrop",
+                                              "dst"
+                                            |),
                                             M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [ T ],

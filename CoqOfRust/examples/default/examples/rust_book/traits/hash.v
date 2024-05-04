@@ -26,7 +26,11 @@ Module Impl_core_hash_Hash_for_hash_Person.
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "hash::Person" "id";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "hash::Person",
+                    "id"
+                  |);
                   M.read (| state |)
                 ]
               |)
@@ -42,7 +46,11 @@ Module Impl_core_hash_Hash_for_hash_Person.
                   [ __H ]
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "hash::Person" "name";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "hash::Person",
+                    "name"
+                  |);
                   M.read (| state |)
                 ]
               |)
@@ -51,7 +59,11 @@ Module Impl_core_hash_Hash_for_hash_Person.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
               [
-                M.get_struct_record_field (M.read (| self |)) "hash::Person" "phone";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "hash::Person",
+                  "phone"
+                |);
                 M.read (| state |)
               ]
             |)

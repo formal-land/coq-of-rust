@@ -29,10 +29,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::take::Take"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::take::Take",
                           "iter"
+                        |)
                       ]
                     |));
                   ("n",
@@ -45,10 +46,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::take::Take"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::take::Take",
                           "n"
+                        |)
                       ]
                     |))
                 ]))
@@ -88,18 +90,20 @@ Module iter.
                   M.read (| Value.String "iter" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::take::Take"
-                      "iter");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::take::Take",
+                      "iter"
+                    |));
                   M.read (| Value.String "n" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::take::Take"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::take::Take",
                         "n"
+                      |)
                     |))
                 ]
               |)))
@@ -176,10 +180,11 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.ne
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::take::Take"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::take::Take",
                                     "n"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -187,10 +192,11 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
-                              "n" in
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
+                              "n"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -205,10 +211,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::take::Take"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::take::Take",
                                 "iter"
+                              |)
                             ]
                           |)
                         |)));
@@ -253,10 +260,11 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::take::Take"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::take::Take",
                                     "n"
+                                  |)
                                 |))
                                 (M.read (| n |))
                             |)) in
@@ -264,10 +272,11 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
-                              "n" in
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
+                              "n"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.sub (|
@@ -285,10 +294,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::take::Take"
-                                "iter";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |);
                               M.read (| n |)
                             ]
                           |)
@@ -306,10 +316,11 @@ Module iter.
                                       (M.alloc (|
                                         BinOp.Pure.gt
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::iter::adapters::take::Take"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::take::Take",
                                               "n"
+                                            |)
                                           |))
                                           (Value.Integer Integer.Usize 0)
                                       |)) in
@@ -329,16 +340,18 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::take::Take"
-                                            "iter";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::take::Take",
+                                            "iter"
+                                          |);
                                           BinOp.Panic.sub (|
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::take::Take"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::take::Take",
                                                 "n"
+                                              |)
                                             |),
                                             Value.Integer Integer.Usize 1
                                           |)
@@ -347,10 +360,11 @@ Module iter.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::take::Take"
-                                        "n",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::take::Take",
+                                        "n"
+                                      |),
                                       Value.Integer Integer.Usize 0
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -402,10 +416,11 @@ Module iter.
                                   (M.alloc (|
                                     BinOp.Pure.eq
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::iter::adapters::take::Take"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::take::Take",
                                           "n"
+                                        |)
                                       |))
                                       (Value.Integer Integer.Usize 0)
                                   |)) in
@@ -443,18 +458,19 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
                               "iter"
+                            |)
                           ]
                         |)
                       |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let lower := M.copy (| γ0_0 |) in
                             let upper := M.copy (| γ0_1 |) in
                             let lower :=
@@ -464,10 +480,11 @@ Module iter.
                                   [
                                     M.read (| lower |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::take::Take"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::take::Take",
                                         "n"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -480,7 +497,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -491,10 +508,11 @@ Module iter.
                                             BinOp.Pure.lt
                                               (M.read (| x |))
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::iter::adapters::take::Take"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::iter::adapters::take::Take",
                                                   "n"
+                                                |)
                                               |))
                                           |) in
                                         let _ :=
@@ -514,10 +532,11 @@ Module iter.
                                             "core::option::Option::Some"
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::iter::adapters::take::Take"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::iter::adapters::take::Take",
                                                   "n"
+                                                |)
                                               |)
                                             ]
                                         |)))
@@ -576,10 +595,11 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::take::Take"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::take::Take",
                                     "n"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -601,10 +621,11 @@ Module iter.
                       ltac:(M.monadic
                         (let n :=
                           M.alloc (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
                               "n"
+                            |)
                           |) in
                         M.alloc (|
                           M.call_closure (|
@@ -631,10 +652,11 @@ Module iter.
                                   ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::take::Take"
-                                    "iter";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::take::Take",
+                                    "iter"
+                                  |);
                                   M.read (| init |);
                                   M.call_closure (|
                                     M.get_associated_function (| Self, "check.try_fold", [] |),
@@ -732,10 +754,11 @@ Module iter.
                       M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::take::Take"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::take::Take",
                             "n"
+                          |)
                         |);
                         M.read (| n |)
                       ]
@@ -754,10 +777,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
-                              "iter";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
+                              "iter"
+                            |);
                             M.read (| min |)
                           ]
                         |)
@@ -766,7 +790,7 @@ Module iter.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Ok",
                                 0
@@ -775,7 +799,7 @@ Module iter.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Err",
                                 0
@@ -798,10 +822,11 @@ Module iter.
                   M.alloc (| BinOp.Panic.sub (| M.read (| min |), M.read (| rem |) |) |) in
                 let _ :=
                   let β :=
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::take::Take"
-                      "n" in
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::take::Take",
+                      "n"
+                    |) in
                   M.write (| β, BinOp.Panic.sub (| M.read (| β |), M.read (| advanced |) |) |) in
                 M.alloc (|
                   M.call_closure (|
@@ -880,10 +905,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::take::Take"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::take::Take",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -971,10 +997,11 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::take::Take"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::take::Take",
                                     "n"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -985,17 +1012,19 @@ Module iter.
                       ltac:(M.monadic
                         (let n :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
                               "n"
+                            |)
                           |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
-                              "n" in
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
+                              "n"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -1010,10 +1039,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::take::Take"
-                                "iter";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "usize",
@@ -1030,10 +1060,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::take::Take"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::take::Take",
                                         "iter"
+                                      |)
                                     ]
                                   |);
                                   M.read (| n |)
@@ -1082,10 +1113,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::take::Take"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::take::Take",
                           "iter"
+                        |)
                       ]
                     |)
                   |) in
@@ -1099,10 +1131,11 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::take::Take"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::take::Take",
                                     "n"
+                                  |)
                                 |))
                                 (M.read (| n |))
                             |)) in
@@ -1120,10 +1153,11 @@ Module iter.
                                 [
                                   M.read (| len |);
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::take::Take"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::take::Take",
                                       "n"
+                                    |)
                                   |)
                                 ]
                               |),
@@ -1132,10 +1166,11 @@ Module iter.
                           |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
-                              "n" in
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
+                              "n"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.sub (|
@@ -1153,10 +1188,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::take::Take"
-                                "iter";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |);
                               M.read (| m |)
                             ]
                           |)
@@ -1192,10 +1228,11 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::take::Take"
-                                            "iter";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::take::Take",
+                                            "iter"
+                                          |);
                                           BinOp.Panic.sub (|
                                             M.read (| len |),
                                             Value.Integer Integer.Usize 1
@@ -1252,10 +1289,11 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::take::Take"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::take::Take",
                                     "n"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -1286,10 +1324,11 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::take::Take"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::take::Take",
                                   "iter"
+                                |)
                               ]
                             |)
                           |) in
@@ -1305,10 +1344,11 @@ Module iter.
                                         BinOp.Pure.gt
                                           (M.read (| len |))
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::iter::adapters::take::Take"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::take::Take",
                                               "n"
+                                            |)
                                           |)),
                                         ltac:(M.monadic
                                           (M.call_closure (|
@@ -1330,18 +1370,20 @@ Module iter.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::iter::adapters::take::Take"
-                                                      "iter";
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::iter::adapters::take::Take",
+                                                      "iter"
+                                                    |);
                                                     BinOp.Panic.sub (|
                                                       BinOp.Panic.sub (|
                                                         M.read (| len |),
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::iter::adapters::take::Take"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::iter::adapters::take::Take",
                                                             "n"
+                                                          |)
                                                         |)
                                                       |),
                                                       Value.Integer Integer.Usize 1
@@ -1382,10 +1424,11 @@ Module iter.
                                       [ Acc; Fold; R ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::take::Take"
-                                        "iter";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::take::Take",
+                                        "iter"
+                                      |);
                                       M.read (| init |);
                                       M.read (| fold |)
                                     ]
@@ -1436,10 +1479,11 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "core::iter::adapters::take::Take"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::take::Take",
                                     "n"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -1459,10 +1503,11 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::take::Take"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::take::Take",
                                   "iter"
+                                |)
                               ]
                             |)
                           |) in
@@ -1478,10 +1523,11 @@ Module iter.
                                         BinOp.Pure.gt
                                           (M.read (| len |))
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              self
-                                              "core::iter::adapters::take::Take"
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "core::iter::adapters::take::Take",
                                               "n"
+                                            |)
                                           |)),
                                         ltac:(M.monadic
                                           (M.call_closure (|
@@ -1503,18 +1549,20 @@ Module iter.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      self
-                                                      "core::iter::adapters::take::Take"
-                                                      "iter";
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "core::iter::adapters::take::Take",
+                                                      "iter"
+                                                    |);
                                                     BinOp.Panic.sub (|
                                                       BinOp.Panic.sub (|
                                                         M.read (| len |),
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            self
-                                                            "core::iter::adapters::take::Take"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            self,
+                                                            "core::iter::adapters::take::Take",
                                                             "n"
+                                                          |)
                                                         |)
                                                       |),
                                                       Value.Integer Integer.Usize 1
@@ -1545,10 +1593,11 @@ Module iter.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          self
-                                          "core::iter::adapters::take::Take"
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::iter::adapters::take::Take",
                                           "iter"
+                                        |)
                                       |);
                                       M.read (| init |);
                                       M.read (| fold |)
@@ -1605,17 +1654,19 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
                               "iter"
+                            |)
                           ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::take::Take"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::take::Take",
                             "n"
+                          |)
                         |)
                       ]
                     |)
@@ -1640,10 +1691,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::take::Take"
-                              "iter";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take::Take",
+                              "iter"
+                            |);
                             M.read (| advance_by |)
                           ]
                         |)
@@ -1652,7 +1704,7 @@ Module iter.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Ok",
                                 0
@@ -1661,7 +1713,7 @@ Module iter.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Err",
                                 0
@@ -1690,10 +1742,11 @@ Module iter.
                   |) in
                 let _ :=
                   let β :=
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::take::Take"
-                      "n" in
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::take::Take",
+                      "n"
+                    |) in
                   M.write (| β, BinOp.Panic.sub (| M.read (| β |), M.read (| advanced_by |) |) |) in
                 M.alloc (|
                   M.call_closure (|
@@ -1825,8 +1878,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
@@ -1852,9 +1905,10 @@ Module iter.
                         |)
                       ]
                     |)
-                  |))
-                  "core::ops::try_trait::NeverShortCircuit"
+                  |),
+                  "core::ops::try_trait::NeverShortCircuit",
                   0
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -1889,7 +1943,11 @@ Module iter.
               M.read (|
                 let remaining :=
                   M.copy (|
-                    M.get_struct_record_field self "core::iter::adapters::take::Take" "n"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::take::Take",
+                      "n"
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1918,10 +1976,11 @@ Module iter.
                                 ]
                               |),
                               [
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::take::Take"
-                                  "iter";
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::take::Take",
+                                  "iter"
+                                |);
                                 BinOp.Panic.sub (|
                                   M.read (| remaining |),
                                   Value.Integer Integer.Usize 1
@@ -1990,7 +2049,11 @@ Module iter.
                       M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
                       [
                         M.read (|
-                          M.get_struct_record_field self "core::iter::adapters::take::Take" "n"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::take::Take",
+                            "n"
+                          |)
                         |);
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2000,7 +2063,12 @@ Module iter.
                             "size",
                             []
                           |),
-                          [ M.get_struct_record_field self "core::iter::adapters::take::Take" "iter"
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::take::Take",
+                              "iter"
+                            |)
                           ]
                         |)
                       ]
@@ -2059,7 +2127,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -2076,10 +2144,11 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "core::iter::adapters::take::Take"
-                                                    "iter";
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "core::iter::adapters::take::Take",
+                                                    "iter"
+                                                  |);
                                                   M.read (| i |)
                                                 ]
                                               |)
@@ -2137,7 +2206,11 @@ Module iter.
                       M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
                       [
                         M.read (|
-                          M.get_struct_record_field self "core::iter::adapters::take::Take" "n"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::take::Take",
+                            "n"
+                          |)
                         |);
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2147,7 +2220,12 @@ Module iter.
                             "size",
                             []
                           |),
-                          [ M.get_struct_record_field self "core::iter::adapters::take::Take" "iter"
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::take::Take",
+                              "iter"
+                            |)
                           ]
                         |)
                       ]
@@ -2203,7 +2281,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -2220,10 +2298,11 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  self
-                                                  "core::iter::adapters::take::Take"
-                                                  "iter";
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "core::iter::adapters::take::Take",
+                                                  "iter"
+                                                |);
                                                 M.read (| i |)
                                               ]
                                             |)

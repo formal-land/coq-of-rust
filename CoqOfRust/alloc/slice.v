@@ -39,8 +39,8 @@ Module slice.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let b := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -163,10 +163,11 @@ Module slice.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          guard
-                          "alloc::slice::hack::to_vec::DropGuard"
+                        M.SubPointer.get_struct_record_field (|
+                          guard,
+                          "alloc::slice::hack::to_vec::DropGuard",
                           "vec"
+                        |)
                       |)
                     ]
                   |)
@@ -274,21 +275,22 @@ Module slice.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let i := M.copy (| γ1_0 |) in
                                         let b := M.copy (| γ1_1 |) in
                                         let _ :=
                                           M.write (|
-                                            M.get_struct_record_field
-                                              guard
-                                              "alloc::slice::hack::to_vec::DropGuard"
-                                              "num_init",
+                                            M.SubPointer.get_struct_record_field (|
+                                              guard,
+                                              "alloc::slice::hack::to_vec::DropGuard",
+                                              "num_init"
+                                            |),
                                             M.read (| i |)
                                           |) in
                                         let _ :=
@@ -302,7 +304,10 @@ Module slice.
                                                 []
                                               |),
                                               [
-                                                M.get_array_field (| M.read (| slots |), i |);
+                                                M.SubPointer.get_array_field (|
+                                                  M.read (| slots |),
+                                                  i
+                                                |);
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::clone::Clone",
@@ -984,8 +989,15 @@ Module slice.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_tuple_field γ 0 in
-                                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    0
+                                                                  |) in
+                                                                let γ0_1 :=
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    1
+                                                                  |) in
                                                                 let i := M.copy (| γ0_0 |) in
                                                                 let k := M.copy (| γ0_1 |) in
                                                                 Value.Tuple
@@ -1095,7 +1107,7 @@ Module slice.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -1103,8 +1115,8 @@ Module slice.
                                                             let i := M.copy (| γ0_0 |) in
                                                             let index :=
                                                               M.copy (|
-                                                                M.get_tuple_field
-                                                                  (M.call_closure (|
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  M.call_closure (|
                                                                     M.get_trait_method (|
                                                                       "core::ops::index::Index",
                                                                       Ty.apply
@@ -1120,8 +1132,9 @@ Module slice.
                                                                       []
                                                                     |),
                                                                     [ indices; M.read (| i |) ]
-                                                                  |))
+                                                                  |),
                                                                   1
+                                                                |)
                                                               |) in
                                                             let _ :=
                                                               M.loop (|
@@ -1150,8 +1163,8 @@ Module slice.
                                                                             M.write (|
                                                                               index,
                                                                               M.read (|
-                                                                                M.get_tuple_field
-                                                                                  (M.call_closure (|
+                                                                                M.SubPointer.get_tuple_field (|
+                                                                                  M.call_closure (|
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::index::Index",
                                                                                       Ty.apply
@@ -1181,8 +1194,9 @@ Module slice.
                                                                                           index
                                                                                         |))
                                                                                     ]
-                                                                                  |))
+                                                                                  |),
                                                                                   1
+                                                                                |)
                                                                               |)
                                                                             |) in
                                                                           M.alloc (|
@@ -1212,8 +1226,8 @@ Module slice.
                                                               |) in
                                                             let _ :=
                                                               M.write (|
-                                                                M.get_tuple_field
-                                                                  (M.call_closure (|
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  M.call_closure (|
                                                                     M.get_trait_method (|
                                                                       "core::ops::index::IndexMut",
                                                                       Ty.apply
@@ -1229,8 +1243,9 @@ Module slice.
                                                                       []
                                                                     |),
                                                                     [ indices; M.read (| i |) ]
-                                                                  |))
-                                                                  1,
+                                                                  |),
+                                                                  1
+                                                                |),
                                                                 M.read (| index |)
                                                               |) in
                                                             let _ :=
@@ -1404,8 +1419,15 @@ Module slice.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_tuple_field γ 0 in
-                                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    0
+                                                                  |) in
+                                                                let γ0_1 :=
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    1
+                                                                  |) in
                                                                 let i := M.copy (| γ0_0 |) in
                                                                 let k := M.copy (| γ0_1 |) in
                                                                 Value.Tuple
@@ -1515,7 +1537,7 @@ Module slice.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -1523,8 +1545,8 @@ Module slice.
                                                             let i := M.copy (| γ0_0 |) in
                                                             let index :=
                                                               M.copy (|
-                                                                M.get_tuple_field
-                                                                  (M.call_closure (|
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  M.call_closure (|
                                                                     M.get_trait_method (|
                                                                       "core::ops::index::Index",
                                                                       Ty.apply
@@ -1540,8 +1562,9 @@ Module slice.
                                                                       []
                                                                     |),
                                                                     [ indices; M.read (| i |) ]
-                                                                  |))
+                                                                  |),
                                                                   1
+                                                                |)
                                                               |) in
                                                             let _ :=
                                                               M.loop (|
@@ -1570,8 +1593,8 @@ Module slice.
                                                                             M.write (|
                                                                               index,
                                                                               M.read (|
-                                                                                M.get_tuple_field
-                                                                                  (M.call_closure (|
+                                                                                M.SubPointer.get_tuple_field (|
+                                                                                  M.call_closure (|
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::index::Index",
                                                                                       Ty.apply
@@ -1601,8 +1624,9 @@ Module slice.
                                                                                           index
                                                                                         |))
                                                                                     ]
-                                                                                  |))
+                                                                                  |),
                                                                                   1
+                                                                                |)
                                                                               |)
                                                                             |) in
                                                                           M.alloc (|
@@ -1632,8 +1656,8 @@ Module slice.
                                                               |) in
                                                             let _ :=
                                                               M.write (|
-                                                                M.get_tuple_field
-                                                                  (M.call_closure (|
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  M.call_closure (|
                                                                     M.get_trait_method (|
                                                                       "core::ops::index::IndexMut",
                                                                       Ty.apply
@@ -1649,8 +1673,9 @@ Module slice.
                                                                       []
                                                                     |),
                                                                     [ indices; M.read (| i |) ]
-                                                                  |))
-                                                                  1,
+                                                                  |),
+                                                                  1
+                                                                |),
                                                                 M.read (| index |)
                                                               |) in
                                                             let _ :=
@@ -1824,8 +1849,15 @@ Module slice.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_tuple_field γ 0 in
-                                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    0
+                                                                  |) in
+                                                                let γ0_1 :=
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    1
+                                                                  |) in
                                                                 let i := M.copy (| γ0_0 |) in
                                                                 let k := M.copy (| γ0_1 |) in
                                                                 Value.Tuple
@@ -1935,7 +1967,7 @@ Module slice.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -1943,8 +1975,8 @@ Module slice.
                                                             let i := M.copy (| γ0_0 |) in
                                                             let index :=
                                                               M.copy (|
-                                                                M.get_tuple_field
-                                                                  (M.call_closure (|
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  M.call_closure (|
                                                                     M.get_trait_method (|
                                                                       "core::ops::index::Index",
                                                                       Ty.apply
@@ -1960,8 +1992,9 @@ Module slice.
                                                                       []
                                                                     |),
                                                                     [ indices; M.read (| i |) ]
-                                                                  |))
+                                                                  |),
                                                                   1
+                                                                |)
                                                               |) in
                                                             let _ :=
                                                               M.loop (|
@@ -1990,8 +2023,8 @@ Module slice.
                                                                             M.write (|
                                                                               index,
                                                                               M.read (|
-                                                                                M.get_tuple_field
-                                                                                  (M.call_closure (|
+                                                                                M.SubPointer.get_tuple_field (|
+                                                                                  M.call_closure (|
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::index::Index",
                                                                                       Ty.apply
@@ -2021,8 +2054,9 @@ Module slice.
                                                                                           index
                                                                                         |))
                                                                                     ]
-                                                                                  |))
+                                                                                  |),
                                                                                   1
+                                                                                |)
                                                                               |)
                                                                             |) in
                                                                           M.alloc (|
@@ -2052,8 +2086,8 @@ Module slice.
                                                               |) in
                                                             let _ :=
                                                               M.write (|
-                                                                M.get_tuple_field
-                                                                  (M.call_closure (|
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  M.call_closure (|
                                                                     M.get_trait_method (|
                                                                       "core::ops::index::IndexMut",
                                                                       Ty.apply
@@ -2069,8 +2103,9 @@ Module slice.
                                                                       []
                                                                     |),
                                                                     [ indices; M.read (| i |) ]
-                                                                  |))
-                                                                  1,
+                                                                  |),
+                                                                  1
+                                                                |),
                                                                 M.read (| index |)
                                                               |) in
                                                             let _ :=
@@ -2196,8 +2231,8 @@ Module slice.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                             let i := M.copy (| γ0_0 |) in
                                             let k := M.copy (| γ0_1 |) in
                                             Value.Tuple [ M.read (| k |); M.read (| M.use i |) ]))
@@ -2294,7 +2329,7 @@ Module slice.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -2302,8 +2337,8 @@ Module slice.
                                         let i := M.copy (| γ0_0 |) in
                                         let index :=
                                           M.copy (|
-                                            M.get_tuple_field
-                                              (M.call_closure (|
+                                            M.SubPointer.get_tuple_field (|
+                                              M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::ops::index::Index",
                                                   Ty.apply
@@ -2317,8 +2352,9 @@ Module slice.
                                                   []
                                                 |),
                                                 [ indices; M.read (| i |) ]
-                                              |))
+                                              |),
                                               1
+                                            |)
                                           |) in
                                         let _ :=
                                           M.loop (|
@@ -2344,8 +2380,8 @@ Module slice.
                                                         M.write (|
                                                           index,
                                                           M.read (|
-                                                            M.get_tuple_field
-                                                              (M.call_closure (|
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.call_closure (|
                                                                 M.get_trait_method (|
                                                                   "core::ops::index::Index",
                                                                   Ty.apply
@@ -2361,8 +2397,9 @@ Module slice.
                                                                 |),
                                                                 [ indices; M.read (| M.use index |)
                                                                 ]
-                                                              |))
+                                                              |),
                                                               1
+                                                            |)
                                                           |)
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)));
@@ -2386,8 +2423,8 @@ Module slice.
                                           |) in
                                         let _ :=
                                           M.write (|
-                                            M.get_tuple_field
-                                              (M.call_closure (|
+                                            M.SubPointer.get_tuple_field (|
+                                              M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::ops::index::IndexMut",
                                                   Ty.apply
@@ -2401,8 +2438,9 @@ Module slice.
                                                   []
                                                 |),
                                                 [ indices; M.read (| i |) ]
-                                              |))
-                                              1,
+                                              |),
+                                              1
+                                            |),
                                             M.read (| index |)
                                           |) in
                                         let _ :=
@@ -3288,7 +3326,7 @@ Module slice.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -3401,7 +3439,7 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -3601,7 +3639,7 @@ Module slice.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -3740,7 +3778,7 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -3950,7 +3988,7 @@ Module slice.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -4153,8 +4191,8 @@ Module slice.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let init := M.copy (| γ0_0 |) in
                     let tail := M.copy (| γ0_1 |) in
                     let _ :=

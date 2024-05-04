@@ -35,10 +35,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::fuse::Fuse"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::fuse::Fuse",
                           "iter"
+                        |)
                       ]
                     |))
                 ]))
@@ -79,10 +80,11 @@ Module iter.
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::fuse::Fuse"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::fuse::Fuse",
                         "iter"
+                      |)
                     |))
                 ]
               |)))
@@ -222,12 +224,16 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field self "core::iter::adapters::fuse::Fuse" "iter",
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -270,12 +276,16 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field self "core::iter::adapters::fuse::Fuse" "iter",
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -316,15 +326,16 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -417,12 +428,13 @@ Module iter.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.get_struct_record_field
-                              self
-                              "core::iter::adapters::fuse::Fuse"
-                              "iter" in
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::fuse::Fuse",
+                              "iter"
+                            |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -502,15 +514,16 @@ Module iter.
               let idx := M.alloc (| idx |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -673,12 +686,13 @@ Module iter.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.get_struct_record_field
-                              self
-                              "core::iter::adapters::fuse::Fuse"
-                              "iter" in
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::fuse::Fuse",
+                              "iter"
+                            |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -771,15 +785,16 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -820,15 +835,16 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -989,10 +1005,11 @@ Module iter.
                   ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |);
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     I,
@@ -1029,10 +1046,11 @@ Module iter.
                   ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1095,12 +1113,13 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::fuse::Fuse"
-                                  "iter" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::fuse::Fuse",
+                                  "iter"
+                                |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -1142,7 +1161,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -1169,7 +1188,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -1182,10 +1201,11 @@ Module iter.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::fuse::Fuse"
-                                    "iter",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::fuse::Fuse",
+                                    "iter"
+                                  |),
                                   Value.StructTuple "core::option::Option::None" []
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -1236,10 +1256,11 @@ Module iter.
                   ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1296,10 +1317,11 @@ Module iter.
                   ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1357,10 +1379,11 @@ Module iter.
                   ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1424,12 +1447,13 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::fuse::Fuse"
-                                  "iter" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::fuse::Fuse",
+                                  "iter"
+                                |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -1471,7 +1495,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -1498,7 +1522,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -1511,10 +1535,11 @@ Module iter.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::fuse::Fuse"
-                                    "iter",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::fuse::Fuse",
+                                    "iter"
+                                  |),
                                   Value.StructTuple "core::option::Option::None" []
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -1566,10 +1591,11 @@ Module iter.
                   ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::fuse::Fuse"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::fuse::Fuse",
+                    "iter"
+                  |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1667,10 +1693,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::fuse::Fuse"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::fuse::Fuse",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1680,7 +1707,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -1713,7 +1740,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -1773,10 +1800,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::fuse::Fuse"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::fuse::Fuse",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1786,7 +1814,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -1819,7 +1847,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -1867,12 +1895,13 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::fuse::Fuse"
-                                  "iter" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::fuse::Fuse",
+                                  "iter"
+                                |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -1914,7 +1943,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -1941,7 +1970,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -2020,10 +2049,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::fuse::Fuse"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::fuse::Fuse",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2033,7 +2063,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -2066,7 +2096,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -2129,10 +2159,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::fuse::Fuse"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::fuse::Fuse",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2142,7 +2173,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -2175,7 +2206,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -2238,10 +2269,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::fuse::Fuse"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::fuse::Fuse",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2251,7 +2283,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -2284,7 +2316,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -2333,12 +2365,13 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::fuse::Fuse"
-                                  "iter" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::fuse::Fuse",
+                                  "iter"
+                                |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -2380,7 +2413,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -2407,7 +2440,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -2487,10 +2520,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::fuse::Fuse"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::fuse::Fuse",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2500,7 +2534,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -2533,7 +2567,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -2607,10 +2641,11 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::fuse::Fuse"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::fuse::Fuse",
                             "iter"
+                          |)
                         ]
                       |)
                     ]
@@ -2694,7 +2729,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
@@ -2725,7 +2760,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0

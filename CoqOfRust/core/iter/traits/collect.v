@@ -207,8 +207,8 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        let γ1_0 := M.get_tuple_field γ 0 in
-                        let γ1_1 := M.get_tuple_field γ 1 in
+                        let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let a := M.alloc (| γ1_0 |) in
                         let b := M.alloc (| γ1_1 |) in
                         let iter :=
@@ -240,8 +240,8 @@ Module iter.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let lower_bound := M.copy (| γ0_0 |) in
                                 let _ :=
                                   M.match_operator (|
@@ -345,8 +345,8 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 0;
-                        M.read (| M.get_tuple_field item 0 |)
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
                       ]
                     |)
                   |) in
@@ -361,8 +361,8 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 1;
-                        M.read (| M.get_tuple_field item 1 |)
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
                       ]
                     |)
                   |) in
@@ -399,7 +399,10 @@ Module iter.
                         "extend_reserve",
                         []
                       |),
-                      [ M.get_tuple_field (M.read (| self |)) 0; M.read (| additional |) ]
+                      [
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.read (| additional |)
+                      ]
                     |)
                   |) in
                 let _ :=
@@ -412,7 +415,10 @@ Module iter.
                         "extend_reserve",
                         []
                       |),
-                      [ M.get_tuple_field (M.read (| self |)) 1; M.read (| additional |) ]
+                      [
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.read (| additional |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)

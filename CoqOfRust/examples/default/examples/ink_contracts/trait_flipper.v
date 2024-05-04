@@ -62,10 +62,18 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
         M.read (|
           let _ :=
             M.write (|
-              M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value",
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "trait_flipper::Flipper",
+                "value"
+              |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "trait_flipper::Flipper",
+                    "value"
+                  |)
                 |))
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -84,7 +92,11 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "trait_flipper::Flipper",
+            "value"
+          |)
         |)))
     | _, _ => M.impossible
     end.

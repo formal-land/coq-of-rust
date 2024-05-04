@@ -38,10 +38,18 @@ Module task.
             LogicalOp.and (|
               BinOp.Pure.eq
                 (M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "core::task::wake::RawWaker" "data"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::task::wake::RawWaker",
+                    "data"
+                  |)
                 |))
                 (M.read (|
-                  M.get_struct_record_field (M.read (| other |)) "core::task::wake::RawWaker" "data"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "core::task::wake::RawWaker",
+                    "data"
+                  |)
                 |)),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -53,14 +61,16 @@ Module task.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::task::wake::RawWaker"
-                      "vtable";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::task::wake::RawWaker"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::RawWaker",
                       "vtable"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::task::wake::RawWaker",
+                      "vtable"
+                    |)
                   ]
                 |)))
             |)))
@@ -97,18 +107,20 @@ Module task.
                 M.read (| Value.String "data" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::task::wake::RawWaker"
-                    "data");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::task::wake::RawWaker",
+                    "data"
+                  |));
                 M.read (| Value.String "vtable" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::task::wake::RawWaker"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::RawWaker",
                       "vtable"
+                    |)
                   |))
               ]
             |)))
@@ -156,7 +168,11 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::task::wake::RawWaker" "data"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::task::wake::RawWaker",
+                "data"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -174,7 +190,11 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::task::wake::RawWaker" "vtable"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::task::wake::RawWaker",
+                "vtable"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -225,60 +245,68 @@ Module task.
                 LogicalOp.and (|
                   BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::task::wake::RawWakerVTable"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::task::wake::RawWakerVTable",
                         "clone"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::task::wake::RawWakerVTable"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::task::wake::RawWakerVTable",
                         "clone"
+                      |)
                     |)),
                   ltac:(M.monadic
                     (BinOp.Pure.eq
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::task::wake::RawWakerVTable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::task::wake::RawWakerVTable",
                           "wake"
+                        |)
                       |))
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "core::task::wake::RawWakerVTable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::task::wake::RawWakerVTable",
                           "wake"
+                        |)
                       |))))
                 |),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::task::wake::RawWakerVTable"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::task::wake::RawWakerVTable",
                         "wake_by_ref"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::task::wake::RawWakerVTable"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::task::wake::RawWakerVTable",
                         "wake_by_ref"
+                      |)
                     |))))
               |),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::task::wake::RawWakerVTable"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::RawWakerVTable",
                       "drop"
+                    |)
                   |))
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::task::wake::RawWakerVTable"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::task::wake::RawWakerVTable",
                       "drop"
+                    |)
                   |))))
             |)))
         | _, _ => M.impossible
@@ -372,32 +400,36 @@ Module task.
                 M.read (| Value.String "clone" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::task::wake::RawWakerVTable"
-                    "clone");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::task::wake::RawWakerVTable",
+                    "clone"
+                  |));
                 M.read (| Value.String "wake" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::task::wake::RawWakerVTable"
-                    "wake");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::task::wake::RawWakerVTable",
+                    "wake"
+                  |));
                 M.read (| Value.String "wake_by_ref" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::task::wake::RawWakerVTable"
-                    "wake_by_ref");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::task::wake::RawWakerVTable",
+                    "wake_by_ref"
+                  |));
                 M.read (| Value.String "drop" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::task::wake::RawWakerVTable"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::RawWakerVTable",
                       "drop"
+                    |)
                   |))
               ]
             |)))
@@ -505,7 +537,11 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::task::wake::Context" "waker"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::task::wake::Context",
+                "waker"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -554,10 +590,11 @@ Module task.
                     M.read (| Value.String "waker" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::task::wake::Context"
-                        "waker")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::task::wake::Context",
+                        "waker"
+                      |))
                   ]
                 |)
               ]
@@ -640,22 +677,33 @@ Module task.
             M.read (|
               let wake :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.read (|
-                      M.get_struct_record_field
-                        (M.get_struct_record_field self "core::task::wake::Waker" "waker")
-                        "core::task::wake::RawWaker"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::task::wake::Waker",
+                          "waker"
+                        |),
+                        "core::task::wake::RawWaker",
                         "vtable"
-                    |))
-                    "core::task::wake::RawWakerVTable"
+                      |)
+                    |),
+                    "core::task::wake::RawWakerVTable",
                     "wake"
+                  |)
                 |) in
               let data :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.get_struct_record_field self "core::task::wake::Waker" "waker")
-                    "core::task::wake::RawWaker"
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::task::wake::Waker",
+                      "waker"
+                    |),
+                    "core::task::wake::RawWaker",
                     "data"
+                  |)
                 |) in
               let _ :=
                 M.alloc (|
@@ -689,28 +737,33 @@ Module task.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.read (|
-                M.get_struct_record_field
-                  (M.read (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::task::wake::Waker"
-                        "waker")
-                      "core::task::wake::RawWaker"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::task::wake::Waker",
+                        "waker"
+                      |),
+                      "core::task::wake::RawWaker",
                       "vtable"
-                  |))
-                  "core::task::wake::RawWakerVTable"
+                    |)
+                  |),
+                  "core::task::wake::RawWakerVTable",
                   "wake_by_ref"
+                |)
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::task::wake::Waker"
-                      "waker")
-                    "core::task::wake::RawWaker"
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::Waker",
+                      "waker"
+                    |),
+                    "core::task::wake::RawWaker",
                     "data"
+                  |)
                 |)
               ]
             |)))
@@ -739,8 +792,16 @@ Module task.
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| self |)) "core::task::wake::Waker" "waker";
-                M.get_struct_record_field (M.read (| other |)) "core::task::wake::Waker" "waker"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::Waker",
+                  "waker"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::task::wake::Waker",
+                  "waker"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -803,7 +864,11 @@ Module task.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_record_field (M.read (| self |)) "core::task::wake::Waker" "waker"))
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::task::wake::Waker",
+              "waker"
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -834,28 +899,33 @@ Module task.
                 ("waker",
                   M.call_closure (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (|
-                          M.get_struct_record_field
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::task::wake::Waker"
-                              "waker")
-                            "core::task::wake::RawWaker"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::task::wake::Waker",
+                              "waker"
+                            |),
+                            "core::task::wake::RawWaker",
                             "vtable"
-                        |))
-                        "core::task::wake::RawWakerVTable"
+                          |)
+                        |),
+                        "core::task::wake::RawWakerVTable",
                         "clone"
+                      |)
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::task::wake::Waker"
-                            "waker")
-                          "core::task::wake::RawWaker"
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::task::wake::Waker",
+                            "waker"
+                          |),
+                          "core::task::wake::RawWaker",
                           "data"
+                        |)
                       |)
                     ]
                   |))
@@ -946,28 +1016,33 @@ Module task.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.read (|
-                M.get_struct_record_field
-                  (M.read (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::task::wake::Waker"
-                        "waker")
-                      "core::task::wake::RawWaker"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::task::wake::Waker",
+                        "waker"
+                      |),
+                      "core::task::wake::RawWaker",
                       "vtable"
-                  |))
-                  "core::task::wake::RawWakerVTable"
+                    |)
+                  |),
+                  "core::task::wake::RawWakerVTable",
                   "drop"
+                |)
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::task::wake::Waker"
-                      "waker")
-                    "core::task::wake::RawWaker"
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::Waker",
+                      "waker"
+                    |),
+                    "core::task::wake::RawWaker",
                     "data"
+                  |)
                 |)
               ]
             |)))
@@ -1006,13 +1081,15 @@ Module task.
                   M.use
                     (M.alloc (|
                       M.read (|
-                        M.get_struct_record_field
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::task::wake::Waker"
-                            "waker")
-                          "core::task::wake::RawWaker"
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::task::wake::Waker",
+                            "waker"
+                          |),
+                          "core::task::wake::RawWaker",
                           "vtable"
+                        |)
                       |)
                     |))
                 |) in
@@ -1051,13 +1128,15 @@ Module task.
                             M.read (| Value.String "data" |);
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::task::wake::Waker"
-                                  "waker")
-                                "core::task::wake::RawWaker"
-                                "data")
+                              (M.SubPointer.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::task::wake::Waker",
+                                  "waker"
+                                |),
+                                "core::task::wake::RawWaker",
+                                "data"
+                              |))
                           ]
                         |);
                         M.read (| Value.String "vtable" |);

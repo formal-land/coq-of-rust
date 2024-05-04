@@ -37,7 +37,13 @@ Module pin.
               ("pointer",
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::pin::Pin" "pointer" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::pin::Pin",
+                      "pointer"
+                    |)
+                  ]
                 |))
             ]))
       | _, _ => M.impossible
@@ -555,7 +561,7 @@ Module pin.
       | [], [ pin ] =>
         ltac:(M.monadic
           (let pin := M.alloc (| pin |) in
-          M.read (| M.get_struct_record_field pin "core::pin::Pin" "pointer" |)))
+          M.read (| M.SubPointer.get_struct_record_field (| pin, "core::pin::Pin", "pointer" |) |)))
       | _, _ => M.impossible
       end.
     
@@ -602,7 +608,13 @@ Module pin.
             [
               M.call_closure (|
                 M.get_trait_method (| "core::ops::deref::Deref", P, [], "deref", [] |),
-                [ M.get_struct_record_field (M.read (| self |)) "core::pin::Pin" "pointer" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::pin::Pin",
+                    "pointer"
+                  |)
+                ]
               |)
             ]
           |)))
@@ -624,7 +636,7 @@ Module pin.
       | [], [ pin ] =>
         ltac:(M.monadic
           (let pin := M.alloc (| pin |) in
-          M.read (| M.get_struct_record_field pin "core::pin::Pin" "pointer" |)))
+          M.read (| M.SubPointer.get_struct_record_field (| pin, "core::pin::Pin", "pointer" |) |)))
       | _, _ => M.impossible
       end.
     
@@ -652,7 +664,13 @@ Module pin.
             [
               M.call_closure (|
                 M.get_trait_method (| "core::ops::deref::DerefMut", P, [], "deref_mut", [] |),
-                [ M.get_struct_record_field (M.read (| self |)) "core::pin::Pin" "pointer" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::pin::Pin",
+                    "pointer"
+                  |)
+                ]
               |)
             ]
           |)))
@@ -683,7 +701,13 @@ Module pin.
               M.write (|
                 M.call_closure (|
                   M.get_trait_method (| "core::ops::deref::DerefMut", P, [], "deref_mut", [] |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::pin::Pin" "pointer" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::pin::Pin",
+                      "pointer"
+                    |)
+                  ]
                 |),
                 M.read (| value |)
               |) in
@@ -725,7 +749,9 @@ Module pin.
           M.read (|
             let pointer :=
               M.alloc (|
-                M.read (| M.get_struct_record_field self "core::pin::Pin" "pointer" |)
+                M.read (|
+                  M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
+                |)
               |) in
             let new_pointer :=
               M.alloc (|
@@ -769,7 +795,9 @@ Module pin.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field self "core::pin::Pin" "pointer" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -822,7 +850,11 @@ Module pin.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::pin::Pin"
-            [ ("pointer", M.read (| M.get_struct_record_field self "core::pin::Pin" "pointer" |))
+            [
+              ("pointer",
+                M.read (|
+                  M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
+                |))
             ]))
       | _, _ => M.impossible
       end.
@@ -845,7 +877,9 @@ Module pin.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field self "core::pin::Pin" "pointer" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -864,7 +898,9 @@ Module pin.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field self "core::pin::Pin" "pointer" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1150,7 +1186,11 @@ Module pin.
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Debug", P, [], "fmt", [] |),
             [
-              M.get_struct_record_field (M.read (| self |)) "core::pin::Pin" "pointer";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::pin::Pin",
+                "pointer"
+              |);
               M.read (| f |)
             ]
           |)))
@@ -1184,7 +1224,11 @@ Module pin.
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Display", P, [], "fmt", [] |),
             [
-              M.get_struct_record_field (M.read (| self |)) "core::pin::Pin" "pointer";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::pin::Pin",
+                "pointer"
+              |);
               M.read (| f |)
             ]
           |)))
@@ -1218,7 +1262,11 @@ Module pin.
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Pointer", P, [], "fmt", [] |),
             [
-              M.get_struct_record_field (M.read (| self |)) "core::pin::Pin" "pointer";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::pin::Pin",
+                "pointer"
+              |);
               M.read (| f |)
             ]
           |)))

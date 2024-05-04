@@ -29,10 +29,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::enumerate::Enumerate"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::enumerate::Enumerate",
                           "iter"
+                        |)
                       ]
                     |));
                   ("count",
@@ -45,10 +46,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::enumerate::Enumerate"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::enumerate::Enumerate",
                           "count"
+                        |)
                       ]
                     |))
                 ]))
@@ -88,18 +90,20 @@ Module iter.
                   M.read (| Value.String "iter" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::enumerate::Enumerate"
-                      "iter");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::enumerate::Enumerate",
+                      "iter"
+                    |));
                   M.read (| Value.String "count" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::enumerate::Enumerate"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::enumerate::Enumerate",
                         "count"
+                      |)
                     |))
                 ]
               |)))
@@ -187,10 +191,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::enumerate::Enumerate"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::enumerate::Enumerate",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -200,7 +205,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -233,7 +238,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -245,17 +250,19 @@ Module iter.
                       |) in
                     let i :=
                       M.copy (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::enumerate::Enumerate"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::enumerate::Enumerate",
                           "count"
+                        |)
                       |) in
                     let _ :=
                       let β :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::enumerate::Enumerate"
-                          "count" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "count"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -290,10 +297,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::enumerate::Enumerate"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::enumerate::Enumerate",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -339,10 +347,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::enumerate::Enumerate"
-                                      "iter";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::enumerate::Enumerate",
+                                      "iter"
+                                    |);
                                     M.read (| n |)
                                   ]
                                 |)
@@ -353,7 +362,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -386,7 +395,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -400,20 +409,22 @@ Module iter.
                       M.alloc (|
                         BinOp.Panic.add (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::enumerate::Enumerate"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::enumerate::Enumerate",
                               "count"
+                            |)
                           |),
                           M.read (| n |)
                         |)
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::enumerate::Enumerate"
-                          "count",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "count"
+                        |),
                         BinOp.Panic.add (| M.read (| i |), Value.Integer Integer.Usize 1 |)
                       |) in
                     M.alloc (|
@@ -447,10 +458,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      self
-                      "core::iter::adapters::enumerate::Enumerate"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::enumerate::Enumerate",
                       "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -497,18 +509,20 @@ Module iter.
                   [ Acc; Ty.associated; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::enumerate::Enumerate"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::enumerate::Enumerate",
+                    "iter"
+                  |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_associated_function (| Self, "enumerate.try_fold", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::enumerate::Enumerate"
-                        "count";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::enumerate::Enumerate",
+                        "count"
+                      |);
                       M.read (| fold |)
                     ]
                   |)
@@ -556,20 +570,22 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      self
-                      "core::iter::adapters::enumerate::Enumerate"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::enumerate::Enumerate",
                       "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_associated_function (| Self, "enumerate.fold", [] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::enumerate::Enumerate"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::enumerate::Enumerate",
                           "count"
+                        |)
                       |);
                       M.read (| fold |)
                     ]
@@ -609,10 +625,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::enumerate::Enumerate"
-                          "iter";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "iter"
+                        |);
                         M.read (| n |)
                       ]
                     |)
@@ -625,7 +642,7 @@ Module iter.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Ok",
                                 0
@@ -634,7 +651,7 @@ Module iter.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Err",
                                 0
@@ -658,10 +675,11 @@ Module iter.
                   |) in
                 let _ :=
                   let β :=
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::enumerate::Enumerate"
-                      "count" in
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::enumerate::Enumerate",
+                      "count"
+                    |) in
                   M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| advanced |) |) |) in
                 remaining
               |)))
@@ -692,10 +710,11 @@ Module iter.
                     M.call_closure (|
                       M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::enumerate::Enumerate"
-                          "iter";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "iter"
+                        |);
                         M.read (| idx |)
                       ]
                     |)
@@ -705,10 +724,11 @@ Module iter.
                     [
                       BinOp.Panic.add (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::enumerate::Enumerate"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::enumerate::Enumerate",
                             "count"
+                          |)
                         |),
                         M.read (| idx |)
                       |);
@@ -783,10 +803,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::enumerate::Enumerate"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::enumerate::Enumerate",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -796,7 +817,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -829,7 +850,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -850,10 +871,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::enumerate::Enumerate"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::enumerate::Enumerate",
                               "iter"
+                            |)
                           ]
                         |)
                       |) in
@@ -865,10 +887,11 @@ Module iter.
                             [
                               BinOp.Panic.add (|
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::enumerate::Enumerate"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::enumerate::Enumerate",
                                     "count"
+                                  |)
                                 |),
                                 M.read (| len |)
                               |);
@@ -922,10 +945,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::enumerate::Enumerate"
-                                      "iter";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::enumerate::Enumerate",
+                                      "iter"
+                                    |);
                                     M.read (| n |)
                                   ]
                                 |)
@@ -936,7 +960,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -969,7 +993,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -990,10 +1014,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::enumerate::Enumerate"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::enumerate::Enumerate",
                               "iter"
+                            |)
                           ]
                         |)
                       |) in
@@ -1005,10 +1030,11 @@ Module iter.
                             [
                               BinOp.Panic.add (|
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::enumerate::Enumerate"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::enumerate::Enumerate",
                                     "count"
+                                  |)
                                 |),
                                 M.read (| len |)
                               |);
@@ -1057,10 +1083,11 @@ Module iter.
                   M.alloc (|
                     BinOp.Panic.add (|
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::enumerate::Enumerate"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::enumerate::Enumerate",
                           "count"
+                        |)
                       |),
                       M.call_closure (|
                         M.get_trait_method (|
@@ -1071,10 +1098,11 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::enumerate::Enumerate"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::enumerate::Enumerate",
                             "iter"
+                          |)
                         ]
                       |)
                     |)
@@ -1089,10 +1117,11 @@ Module iter.
                       [ Acc; Ty.associated; R ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::enumerate::Enumerate"
-                        "iter";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::enumerate::Enumerate",
+                        "iter"
+                      |);
                       M.read (| init |);
                       M.call_closure (|
                         M.get_associated_function (| Self, "enumerate.try_rfold", [] |),
@@ -1139,10 +1168,11 @@ Module iter.
                   M.alloc (|
                     BinOp.Panic.add (|
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::enumerate::Enumerate"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::enumerate::Enumerate",
                           "count"
+                        |)
                       |),
                       M.call_closure (|
                         M.get_trait_method (|
@@ -1153,10 +1183,11 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            self
-                            "core::iter::adapters::enumerate::Enumerate"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::enumerate::Enumerate",
                             "iter"
+                          |)
                         ]
                       |)
                     |)
@@ -1172,10 +1203,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::enumerate::Enumerate"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::enumerate::Enumerate",
                           "iter"
+                        |)
                       |);
                       M.read (| init |);
                       M.call_closure (|
@@ -1212,10 +1244,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::enumerate::Enumerate"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::enumerate::Enumerate",
+                    "iter"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -1262,10 +1295,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::enumerate::Enumerate"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::enumerate::Enumerate",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1291,10 +1325,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::enumerate::Enumerate"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::enumerate::Enumerate",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1410,10 +1445,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::enumerate::Enumerate"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::enumerate::Enumerate",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

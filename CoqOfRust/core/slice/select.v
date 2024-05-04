@@ -281,8 +281,8 @@ Module slice.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let pivot := M.copy (| γ0_0 |) in
                                   let _ :=
                                     M.match_operator (|
@@ -292,7 +292,7 @@ Module slice.
                                           ltac:(M.monadic
                                             (let γ := pred in
                                             let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -326,7 +326,7 @@ Module slice.
                                                                 Value.Tuple
                                                                   [
                                                                     M.read (| p |);
-                                                                    M.get_array_field (|
+                                                                    M.SubPointer.get_array_field (|
                                                                       M.read (| v |),
                                                                       pivot
                                                                     |)
@@ -451,8 +451,8 @@ Module slice.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                           let mid := M.copy (| γ0_0 |) in
                                           let _ :=
                                             M.write (|
@@ -504,8 +504,10 @@ Module slice.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let left := M.copy (| γ0_0 |) in
                                                   let right := M.copy (| γ0_1 |) in
                                                   M.match_operator (|
@@ -525,13 +527,21 @@ Module slice.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              0
+                                                            |) in
+                                                          let γ0_1 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              1
+                                                            |) in
                                                           let pivot := M.copy (| γ0_0 |) in
                                                           let right := M.copy (| γ0_1 |) in
                                                           let pivot :=
                                                             M.alloc (|
-                                                              M.get_array_field (|
+                                                              M.SubPointer.get_array_field (|
                                                                 M.read (| pivot |),
                                                                 M.alloc (|
                                                                   Value.Integer Integer.Usize 0
@@ -756,10 +766,16 @@ Module slice.
                                                               Value.Tuple
                                                                 [
                                                                   M.read (|
-                                                                    M.get_tuple_field t 1
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      t,
+                                                                      1
+                                                                    |)
                                                                   |);
                                                                   M.read (|
-                                                                    M.get_tuple_field acc 1
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      acc,
+                                                                      1
+                                                                    |)
                                                                   |)
                                                                 ]
                                                             ]
@@ -793,8 +809,8 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let i := M.copy (| γ0_0 |) in
                               M.read (| i |)))
                         ]
@@ -920,9 +936,17 @@ Module slice.
                                                               Value.Tuple
                                                                 [
                                                                   M.read (|
-                                                                    M.get_tuple_field acc 1
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      acc,
+                                                                      1
+                                                                    |)
                                                                   |);
-                                                                  M.read (| M.get_tuple_field t 1 |)
+                                                                  M.read (|
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      t,
+                                                                      1
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                             ]
                                                           |)
@@ -955,8 +979,8 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let i := M.copy (| γ0_0 |) in
                               M.read (| i |)))
                         ]
@@ -1260,8 +1284,8 @@ Module slice.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let left := M.copy (| γ0_0 |) in
                     let right := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -1278,13 +1302,13 @@ Module slice.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let pivot := M.copy (| γ0_0 |) in
                             let right := M.copy (| γ0_1 |) in
                             let pivot :=
                               M.alloc (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| pivot |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |)
@@ -2043,7 +2067,7 @@ Module slice.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -2142,8 +2166,8 @@ Module slice.
                   ]
                 |)
               |) in
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::slice::sort::partition", [ T; F ] |),
                   [
@@ -2152,8 +2176,9 @@ Module slice.
                     M.read (| is_less |)
                   ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -2272,8 +2297,8 @@ Module slice.
                                     M.read (| is_less |);
                                     Value.Tuple
                                       [
-                                        M.get_array_field (| M.read (| v |), h |);
-                                        M.get_array_field (| M.read (| v |), b |)
+                                        M.SubPointer.get_array_field (| M.read (| v |), h |);
+                                        M.SubPointer.get_array_field (| M.read (| v |), b |)
                                       ]
                                   ]
                                 |)
@@ -2316,8 +2341,8 @@ Module slice.
                                     M.read (| is_less |);
                                     Value.Tuple
                                       [
-                                        M.get_array_field (| M.read (| v |), f |);
-                                        M.get_array_field (| M.read (| v |), d |)
+                                        M.SubPointer.get_array_field (| M.read (| v |), f |);
+                                        M.SubPointer.get_array_field (| M.read (| v |), d |)
                                       ]
                                   ]
                                 |)
@@ -2360,8 +2385,8 @@ Module slice.
                                     M.read (| is_less |);
                                     Value.Tuple
                                       [
-                                        M.get_array_field (| M.read (| v |), e |);
-                                        M.get_array_field (| M.read (| v |), d |)
+                                        M.SubPointer.get_array_field (| M.read (| v |), e |);
+                                        M.SubPointer.get_array_field (| M.read (| v |), d |)
                                       ]
                                   ]
                                 |)
@@ -2397,8 +2422,11 @@ Module slice.
                                             M.read (| is_less |);
                                             Value.Tuple
                                               [
-                                                M.get_array_field (| M.read (| v |), f |);
-                                                M.get_array_field (| M.read (| v |), e |)
+                                                M.SubPointer.get_array_field (|
+                                                  M.read (| v |),
+                                                  f
+                                                |);
+                                                M.SubPointer.get_array_field (| M.read (| v |), e |)
                                               ]
                                           ]
                                         |)
@@ -2442,11 +2470,11 @@ Module slice.
                                                             M.read (| is_less |);
                                                             Value.Tuple
                                                               [
-                                                                M.get_array_field (|
+                                                                M.SubPointer.get_array_field (|
                                                                   M.read (| v |),
                                                                   e
                                                                 |);
-                                                                M.get_array_field (|
+                                                                M.SubPointer.get_array_field (|
                                                                   M.read (| v |),
                                                                   b
                                                                 |)
@@ -2507,11 +2535,11 @@ Module slice.
                                                                     M.read (| is_less |);
                                                                     Value.Tuple
                                                                       [
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| v |),
                                                                           h
                                                                         |);
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| v |),
                                                                           e
                                                                         |)
@@ -2580,8 +2608,8 @@ Module slice.
                                     M.read (| is_less |);
                                     Value.Tuple
                                       [
-                                        M.get_array_field (| M.read (| v |), d |);
-                                        M.get_array_field (| M.read (| v |), b |)
+                                        M.SubPointer.get_array_field (| M.read (| v |), d |);
+                                        M.SubPointer.get_array_field (| M.read (| v |), b |)
                                       ]
                                   ]
                                 |)
@@ -2618,8 +2646,11 @@ Module slice.
                                             M.read (| is_less |);
                                             Value.Tuple
                                               [
-                                                M.get_array_field (| M.read (| v |), h |);
-                                                M.get_array_field (| M.read (| v |), d |)
+                                                M.SubPointer.get_array_field (|
+                                                  M.read (| v |),
+                                                  h
+                                                |);
+                                                M.SubPointer.get_array_field (| M.read (| v |), d |)
                                               ]
                                           ]
                                         |)
@@ -2706,8 +2737,8 @@ Module slice.
                                     M.read (| is_less |);
                                     Value.Tuple
                                       [
-                                        M.get_array_field (| M.read (| v |), c |);
-                                        M.get_array_field (| M.read (| v |), a |)
+                                        M.SubPointer.get_array_field (| M.read (| v |), c |);
+                                        M.SubPointer.get_array_field (| M.read (| v |), a |)
                                       ]
                                   ]
                                 |)
@@ -2750,8 +2781,8 @@ Module slice.
                                     M.read (| is_less |);
                                     Value.Tuple
                                       [
-                                        M.get_array_field (| M.read (| v |), c |);
-                                        M.get_array_field (| M.read (| v |), b |)
+                                        M.SubPointer.get_array_field (| M.read (| v |), c |);
+                                        M.SubPointer.get_array_field (| M.read (| v |), b |)
                                       ]
                                   ]
                                 |)
@@ -2789,8 +2820,8 @@ Module slice.
                                     M.read (| is_less |);
                                     Value.Tuple
                                       [
-                                        M.get_array_field (| M.read (| v |), b |);
-                                        M.get_array_field (| M.read (| v |), a |)
+                                        M.SubPointer.get_array_field (| M.read (| v |), b |);
+                                        M.SubPointer.get_array_field (| M.read (| v |), a |)
                                       ]
                                   ]
                                 |)

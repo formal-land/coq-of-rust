@@ -52,7 +52,7 @@ Module hash.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -2118,7 +2118,7 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let _ :=
                         M.alloc (|
@@ -2165,8 +2165,8 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let _ :=
@@ -2221,9 +2221,9 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -2286,10 +2286,10 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -2360,11 +2360,11 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
-                      let γ0_4 := M.get_tuple_field γ 4 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -2443,12 +2443,12 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
-                      let γ0_4 := M.get_tuple_field γ 4 in
-                      let γ0_5 := M.get_tuple_field γ 5 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -2535,13 +2535,13 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
-                      let γ0_4 := M.get_tuple_field γ 4 in
-                      let γ0_5 := M.get_tuple_field γ 5 in
-                      let γ0_6 := M.get_tuple_field γ 6 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -2636,14 +2636,14 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
-                      let γ0_4 := M.get_tuple_field γ 4 in
-                      let γ0_5 := M.get_tuple_field γ 5 in
-                      let γ0_6 := M.get_tuple_field γ 6 in
-                      let γ0_7 := M.get_tuple_field γ 7 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -2746,15 +2746,15 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
-                      let γ0_4 := M.get_tuple_field γ 4 in
-                      let γ0_5 := M.get_tuple_field γ 5 in
-                      let γ0_6 := M.get_tuple_field γ 6 in
-                      let γ0_7 := M.get_tuple_field γ 7 in
-                      let γ0_8 := M.get_tuple_field γ 8 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                      let γ0_8 := M.SubPointer.get_tuple_field (| γ, 8 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -2866,16 +2866,16 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
-                      let γ0_4 := M.get_tuple_field γ 4 in
-                      let γ0_5 := M.get_tuple_field γ 5 in
-                      let γ0_6 := M.get_tuple_field γ 6 in
-                      let γ0_7 := M.get_tuple_field γ 7 in
-                      let γ0_8 := M.get_tuple_field γ 8 in
-                      let γ0_9 := M.get_tuple_field γ 9 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                      let γ0_8 := M.SubPointer.get_tuple_field (| γ, 8 |) in
+                      let γ0_9 := M.SubPointer.get_tuple_field (| γ, 9 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -2995,17 +2995,17 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
-                      let γ0_4 := M.get_tuple_field γ 4 in
-                      let γ0_5 := M.get_tuple_field γ 5 in
-                      let γ0_6 := M.get_tuple_field γ 6 in
-                      let γ0_7 := M.get_tuple_field γ 7 in
-                      let γ0_8 := M.get_tuple_field γ 8 in
-                      let γ0_9 := M.get_tuple_field γ 9 in
-                      let γ0_10 := M.get_tuple_field γ 10 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                      let γ0_8 := M.SubPointer.get_tuple_field (| γ, 8 |) in
+                      let γ0_9 := M.SubPointer.get_tuple_field (| γ, 9 |) in
+                      let γ0_10 := M.SubPointer.get_tuple_field (| γ, 10 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -3133,18 +3133,18 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
-                      let γ0_4 := M.get_tuple_field γ 4 in
-                      let γ0_5 := M.get_tuple_field γ 5 in
-                      let γ0_6 := M.get_tuple_field γ 6 in
-                      let γ0_7 := M.get_tuple_field γ 7 in
-                      let γ0_8 := M.get_tuple_field γ 8 in
-                      let γ0_9 := M.get_tuple_field γ 9 in
-                      let γ0_10 := M.get_tuple_field γ 10 in
-                      let γ0_11 := M.get_tuple_field γ 11 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                      let γ0_8 := M.SubPointer.get_tuple_field (| γ, 8 |) in
+                      let γ0_9 := M.SubPointer.get_tuple_field (| γ, 9 |) in
+                      let γ0_10 := M.SubPointer.get_tuple_field (| γ, 10 |) in
+                      let γ0_11 := M.SubPointer.get_tuple_field (| γ, 11 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
@@ -3412,8 +3412,8 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let address := M.copy (| γ0_0 |) in
                       let metadata := M.copy (| γ0_1 |) in
                       let _ :=
@@ -3494,8 +3494,8 @@ Module hash.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let address := M.copy (| γ0_0 |) in
                       let metadata := M.copy (| γ0_1 |) in
                       let _ :=

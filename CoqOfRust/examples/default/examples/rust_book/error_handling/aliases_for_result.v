@@ -122,7 +122,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|
@@ -168,7 +168,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|

@@ -30,18 +30,20 @@ Module vec.
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "sub_ptr", [] |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::in_place_drop::InPlaceDrop"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::in_place_drop::InPlaceDrop",
                     "dst"
+                  |)
                 |);
                 (* MutToConstPointer *)
                 M.pointer_coercion
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::vec::in_place_drop::InPlaceDrop"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::in_place_drop::InPlaceDrop",
                       "inner"
+                    |)
                   |))
               ]
             |)))
@@ -83,10 +85,11 @@ Module vec.
                         M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::vec::in_place_drop::InPlaceDrop"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::in_place_drop::InPlaceDrop",
                               "inner"
+                            |)
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
@@ -153,22 +156,25 @@ Module vec.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::vec::in_place_drop::InPlaceDstBufDrop"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::in_place_drop::InPlaceDstBufDrop",
                           "ptr"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::vec::in_place_drop::InPlaceDstBufDrop"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::in_place_drop::InPlaceDstBufDrop",
                           "len"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::vec::in_place_drop::InPlaceDstBufDrop"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::in_place_drop::InPlaceDstBufDrop",
                           "cap"
+                        |)
                       |)
                     ]
                   |)

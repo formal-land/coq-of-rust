@@ -51,10 +51,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::once_with::OnceWith"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::once_with::OnceWith",
                           "gen"
+                        |)
                       ]
                     |))
                 ]))
@@ -106,10 +107,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::sources::once_with::OnceWith"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::sources::once_with::OnceWith",
                                     "gen"
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -194,10 +196,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::sources::once_with::OnceWith"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::sources::once_with::OnceWith",
                                       "gen"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -207,7 +210,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -238,7 +241,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -297,10 +300,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::once_with::OnceWith"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::once_with::OnceWith",
                           "gen"
+                        |)
                       ]
                     |)
                   |)
@@ -392,10 +396,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::once_with::OnceWith"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::once_with::OnceWith",
                           "gen"
+                        |)
                       ]
                     |)
                   |)

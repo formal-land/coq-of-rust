@@ -59,9 +59,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
+                (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_0 |),
@@ -123,9 +123,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
+                (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_0 |),
@@ -177,9 +177,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
+                (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_0 |),
@@ -233,9 +233,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
+                (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_0 |),
@@ -297,9 +297,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                let γ0_rest := M.get_slice_rest_or_break_match (| γ, 1, 1 |) in
-                let γ0_rev0 := M.get_slice_rev_index_or_break_match (| γ, 0 |) in
+                (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                let γ0_rest := M.SubPointer.get_slice_rest (| γ, 1, 1 |) in
+                let γ0_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                 let first := M.copy (| γ0_0 |) in
                 let middle := M.copy (| γ0_rest |) in
                 let last := M.copy (| γ0_rev0 |) in

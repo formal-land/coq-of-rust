@@ -31,7 +31,12 @@ Module str.
                       "clone",
                       []
                     |),
-                    [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::Chars" "iter"
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::Chars",
+                        "iter"
+                      |)
                     ]
                   |))
               ]))
@@ -76,7 +81,13 @@ Module str.
                     "core::str::validations::next_code_point",
                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ]
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::Chars" "iter" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::Chars",
+                      "iter"
+                    |)
+                  ]
                 |);
                 M.closure
                   (fun γ =>
@@ -217,10 +228,11 @@ Module str.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::str::iter::Chars"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::iter::Chars",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -267,7 +279,7 @@ Module str.
                                           |)
                                         |) in
                                       let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -351,7 +363,7 @@ Module str.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                     γ,
                                                                     "core::option::Option::Some",
                                                                     0
@@ -359,7 +371,7 @@ Module str.
                                                                 let i := M.copy (| γ0_0 |) in
                                                                 let _ :=
                                                                   M.write (|
-                                                                    M.get_array_field (|
+                                                                    M.SubPointer.get_array_field (|
                                                                       start_bytes,
                                                                       i
                                                                     |),
@@ -371,7 +383,7 @@ Module str.
                                                                         |),
                                                                         [
                                                                           M.read (|
-                                                                            M.get_array_field (|
+                                                                            M.SubPointer.get_array_field (|
                                                                               M.read (| chunk |),
                                                                               i
                                                                             |)
@@ -498,10 +510,11 @@ Module str.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::str::iter::Chars"
-                                      "iter";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::iter::Chars",
+                                      "iter"
+                                    |);
                                     M.read (| bytes_skipped |)
                                   ]
                                 |)
@@ -530,10 +543,11 @@ Module str.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::iter::Chars"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::iter::Chars",
                                                   "iter"
+                                                |)
                                               ]
                                             |))
                                             (Value.Integer Integer.Usize 0)
@@ -545,7 +559,7 @@ Module str.
                                       |) in
                                     let b :=
                                       M.copy (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
@@ -555,10 +569,11 @@ Module str.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::iter::Chars"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::iter::Chars",
                                                 "iter"
+                                              |)
                                             ]
                                           |),
                                           M.alloc (| Value.Integer Integer.Usize 0 |)
@@ -618,10 +633,11 @@ Module str.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::iter::Chars"
-                                                  "iter";
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::iter::Chars",
+                                                  "iter"
+                                                |);
                                                 Value.Integer Integer.Usize 1
                                               ]
                                             |)
@@ -676,10 +692,11 @@ Module str.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::iter::Chars"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::iter::Chars",
                                               "iter"
+                                            |)
                                           ]
                                         |))
                                         (Value.Integer Integer.Usize 0)))
@@ -695,7 +712,7 @@ Module str.
                               |) in
                             let b :=
                               M.copy (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
@@ -703,10 +720,11 @@ Module str.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::Chars"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::Chars",
                                         "iter"
+                                      |)
                                     ]
                                   |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
@@ -744,10 +762,11 @@ Module str.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::iter::Chars"
-                                          "iter";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::iter::Chars",
+                                          "iter"
+                                        |);
                                         M.read (| slurp |)
                                       ]
                                     |)
@@ -830,7 +849,12 @@ Module str.
                       "len",
                       []
                     |),
-                    [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::Chars" "iter"
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::Chars",
+                        "iter"
+                      |)
                     ]
                   |)
                 |) in
@@ -953,7 +977,7 @@ Module str.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -989,7 +1013,7 @@ Module str.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -1057,7 +1081,7 @@ Module str.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -1093,7 +1117,7 @@ Module str.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -1145,7 +1169,7 @@ Module str.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -1181,7 +1205,7 @@ Module str.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -1231,7 +1255,13 @@ Module str.
                     "core::str::validations::next_code_point_reverse",
                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ]
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::Chars" "iter" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::Chars",
+                      "iter"
+                    |)
+                  ]
                 |);
                 M.closure
                   (fun γ =>
@@ -1303,7 +1333,13 @@ Module str.
                     "as_slice",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::Chars" "iter" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::Chars",
+                      "iter"
+                    |)
+                  ]
                 |)
               ]
             |)))
@@ -1336,10 +1372,11 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::CharIndices"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::CharIndices",
                         "front_offset"
+                      |)
                     ]
                   |));
                 ("iter",
@@ -1352,10 +1389,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::CharIndices"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::CharIndices",
                         "iter"
+                      |)
                     ]
                   |))
               ]))
@@ -1392,18 +1430,20 @@ Module str.
                 M.read (| Value.String "front_offset" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::iter::CharIndices"
-                    "front_offset");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::iter::CharIndices",
+                    "front_offset"
+                  |));
                 M.read (| Value.String "iter" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::iter::CharIndices"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::CharIndices",
                       "iter"
+                    |)
                   |))
               ]
             |)))
@@ -1455,13 +1495,15 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::str::iter::CharIndices"
-                          "iter")
-                        "core::str::iter::Chars"
+                      M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::iter::CharIndices",
+                          "iter"
+                        |),
+                        "core::str::iter::Chars",
                         "iter"
+                      |)
                     ]
                   |)
                 |) in
@@ -1476,10 +1518,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::CharIndices"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::CharIndices",
                         "iter"
+                      |)
                     ]
                   |)
                 |),
@@ -1490,7 +1533,7 @@ Module str.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -1498,10 +1541,11 @@ Module str.
                       let ch := M.copy (| γ0_0 |) in
                       let index :=
                         M.copy (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::CharIndices"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::CharIndices",
                             "front_offset"
+                          |)
                         |) in
                       let len :=
                         M.alloc (|
@@ -1514,22 +1558,25 @@ Module str.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::CharIndices"
-                                  "iter")
-                                "core::str::iter::Chars"
+                              M.SubPointer.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::CharIndices",
+                                  "iter"
+                                |),
+                                "core::str::iter::Chars",
                                 "iter"
+                              |)
                             ]
                           |)
                         |) in
                       let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::CharIndices"
-                            "front_offset" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::CharIndices",
+                            "front_offset"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.add (|
@@ -1566,7 +1613,15 @@ Module str.
                 "count",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::str::iter::CharIndices" "iter" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::str::iter::CharIndices",
+                    "iter"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1589,7 +1644,12 @@ Module str.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::CharIndices" "iter"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::CharIndices",
+                  "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1671,10 +1731,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::iter::CharIndices"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::CharIndices",
                       "iter"
+                    |)
                   ]
                 |);
                 M.closure
@@ -1693,10 +1754,11 @@ Module str.
                                     M.alloc (|
                                       BinOp.Panic.add (|
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::iter::CharIndices"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::iter::CharIndices",
                                             "front_offset"
+                                          |)
                                         |),
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -1709,13 +1771,15 @@ Module str.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::iter::CharIndices"
-                                                "iter")
-                                              "core::str::iter::Chars"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::iter::CharIndices",
+                                                "iter"
+                                              |),
+                                              "core::str::iter::Chars",
                                               "iter"
+                                            |)
                                           ]
                                         |)
                                       |)
@@ -1765,7 +1829,12 @@ Module str.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [] |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::CharIndices" "iter"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::CharIndices",
+                  "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1784,10 +1853,11 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::str::iter::CharIndices"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::str::iter::CharIndices",
                 "front_offset"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1829,7 +1899,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::Bytes",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -1865,7 +1941,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::Bytes",
+                      0
+                    |)
                   |))
               ]
             |)))
@@ -1906,7 +1986,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1931,7 +2017,13 @@ Module str.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1956,7 +2048,11 @@ Module str.
                 "count",
                 []
               |),
-              [ M.read (| M.get_struct_tuple_field self "core::str::iter::Bytes" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (| self, "core::str::iter::Bytes", 0 |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1981,7 +2077,11 @@ Module str.
                 "last",
                 []
               |),
-              [ M.read (| M.get_struct_tuple_field self "core::str::iter::Bytes" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (| self, "core::str::iter::Bytes", 0 |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2008,7 +2108,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| n |)
               ]
             |)))
@@ -2040,7 +2144,11 @@ Module str.
                 [ F ]
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -2072,7 +2180,11 @@ Module str.
                 [ F ]
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -2104,7 +2216,11 @@ Module str.
                 [ P ]
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| predicate |)
               ]
             |)))
@@ -2136,7 +2252,11 @@ Module str.
                 [ P ]
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| predicate |)
               ]
             |)))
@@ -2168,7 +2288,11 @@ Module str.
                 [ P ]
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| predicate |)
               ]
             |)))
@@ -2199,7 +2323,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| idx |)
               ]
             |)))
@@ -2251,7 +2379,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2278,7 +2412,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| n |)
               ]
             |)))
@@ -2310,7 +2448,11 @@ Module str.
                 [ P ]
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |);
                 M.read (| predicate |)
               ]
             |)))
@@ -2353,7 +2495,13 @@ Module str.
                 "len",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2378,7 +2526,13 @@ Module str.
                 "is_empty",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Bytes" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Bytes",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2474,10 +2628,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| s |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| s |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |))
                   ]
@@ -2587,46 +2742,51 @@ Module str.
                                     M.read (| Value.String "start" |);
                                     (* Unsize *)
                                     M.pointer_coercion
-                                      (M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::SplitInternal"
-                                        "start")
+                                      (M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::SplitInternal",
+                                        "start"
+                                      |))
                                   ]
                                 |);
                                 M.read (| Value.String "end" |);
                                 (* Unsize *)
                                 M.pointer_coercion
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::str::iter::SplitInternal"
-                                    "end")
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::str::iter::SplitInternal",
+                                    "end"
+                                  |))
                               ]
                             |);
                             M.read (| Value.String "matcher" |);
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::iter::SplitInternal"
-                                "matcher")
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::iter::SplitInternal",
+                                "matcher"
+                              |))
                           ]
                         |);
                         M.read (| Value.String "allow_trailing_empty" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
-                            "allow_trailing_empty")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
+                            "allow_trailing_empty"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "finished" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::SplitInternal"
-                        "finished")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::SplitInternal",
+                        "finished"
+                      |))
                   ]
                 |)
               ]
@@ -2682,20 +2842,22 @@ Module str.
                                 (M.alloc (|
                                   UnOp.Pure.not
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::SplitInternal"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::SplitInternal",
                                         "finished"
+                                      |)
                                     |))
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
-                                  "finished",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "finished"
+                                |),
                                 Value.Bool true
                               |) in
                             M.match_operator (|
@@ -2708,25 +2870,28 @@ Module str.
                                         (M.alloc (|
                                           LogicalOp.or (|
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::iter::SplitInternal"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::iter::SplitInternal",
                                                 "allow_trailing_empty"
+                                              |)
                                             |),
                                             ltac:(M.monadic
                                               (BinOp.Pure.gt
                                                 (BinOp.Panic.sub (|
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::iter::SplitInternal"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::iter::SplitInternal",
                                                       "end"
+                                                    |)
                                                   |),
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::iter::SplitInternal"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::iter::SplitInternal",
                                                       "start"
+                                                    |)
                                                   |)
                                                 |))
                                                 (Value.Integer Integer.Usize 0)))
@@ -2762,10 +2927,11 @@ Module str.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::str::iter::SplitInternal"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::str::iter::SplitInternal",
                                                         "matcher"
+                                                      |)
                                                     ]
                                                   |);
                                                   Value.StructRecord
@@ -2773,17 +2939,19 @@ Module str.
                                                     [
                                                       ("start",
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::str::iter::SplitInternal"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::str::iter::SplitInternal",
                                                             "start"
+                                                          |)
                                                         |));
                                                       ("end_",
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::str::iter::SplitInternal"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::str::iter::SplitInternal",
                                                             "end"
+                                                          |)
                                                         |))
                                                     ]
                                                 ]
@@ -2848,10 +3016,11 @@ Module str.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -2875,10 +3044,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |)
                     |) in
@@ -2893,10 +3063,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |)
                     |),
@@ -2904,13 +3075,13 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
                             |) in
-                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let a := M.copy (| γ1_0 |) in
                           let b := M.copy (| γ1_1 |) in
                           let elt :=
@@ -2929,10 +3100,11 @@ Module str.
                                     [
                                       ("start",
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::iter::SplitInternal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::iter::SplitInternal",
                                             "start"
+                                          |)
                                         |));
                                       ("end_", M.read (| a |))
                                     ]
@@ -2941,10 +3113,11 @@ Module str.
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::iter::SplitInternal"
-                                "start",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::iter::SplitInternal",
+                                "start"
+                              |),
                               M.read (| b |)
                             |) in
                           M.alloc (|
@@ -3010,10 +3183,11 @@ Module str.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -3037,10 +3211,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |)
                     |) in
@@ -3055,10 +3230,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |)
                     |),
@@ -3066,13 +3242,13 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
                             |) in
-                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let b := M.copy (| γ1_1 |) in
                           let elt :=
                             M.alloc (|
@@ -3090,10 +3266,11 @@ Module str.
                                     [
                                       ("start",
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::iter::SplitInternal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::iter::SplitInternal",
                                             "start"
+                                          |)
                                         |));
                                       ("end_", M.read (| b |))
                                     ]
@@ -3102,10 +3279,11 @@ Module str.
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::iter::SplitInternal"
-                                "start",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::iter::SplitInternal",
+                                "start"
+                              |),
                               M.read (| b |)
                             |) in
                           M.alloc (|
@@ -3188,10 +3366,11 @@ Module str.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -3215,20 +3394,22 @@ Module str.
                                 (M.alloc (|
                                   UnOp.Pure.not
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::SplitInternal"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::SplitInternal",
                                         "allow_trailing_empty"
+                                      |)
                                     |))
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
-                                  "allow_trailing_empty",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "allow_trailing_empty"
+                                |),
                                 Value.Bool true
                               |) in
                             M.match_operator (|
@@ -3246,7 +3427,7 @@ Module str.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -3289,10 +3470,11 @@ Module str.
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
-                                                (M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::iter::SplitInternal"
-                                                  "finished") in
+                                                (M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::iter::SplitInternal",
+                                                  "finished"
+                                                |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
@@ -3328,10 +3510,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |)
                     |) in
@@ -3346,10 +3529,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |)
                     |),
@@ -3357,13 +3541,13 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
                             |) in
-                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let a := M.copy (| γ1_0 |) in
                           let b := M.copy (| γ1_1 |) in
                           let elt :=
@@ -3383,10 +3567,11 @@ Module str.
                                       ("start", M.read (| b |));
                                       ("end_",
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::iter::SplitInternal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::iter::SplitInternal",
                                             "end"
+                                          |)
                                         |))
                                     ]
                                 ]
@@ -3394,10 +3579,11 @@ Module str.
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::iter::SplitInternal"
-                                "end",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::iter::SplitInternal",
+                                "end"
+                              |),
                               M.read (| a |)
                             |) in
                           M.alloc (|
@@ -3407,10 +3593,11 @@ Module str.
                         ltac:(M.monadic
                           (let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::iter::SplitInternal"
-                                "finished",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::iter::SplitInternal",
+                                "finished"
+                              |),
                               Value.Bool true
                             |) in
                           M.alloc (|
@@ -3434,17 +3621,19 @@ Module str.
                                       [
                                         ("start",
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::iter::SplitInternal"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::iter::SplitInternal",
                                               "start"
+                                            |)
                                           |));
                                         ("end_",
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::iter::SplitInternal"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::iter::SplitInternal",
                                               "end"
+                                            |)
                                           |))
                                       ]
                                   ]
@@ -3522,10 +3711,11 @@ Module str.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -3549,20 +3739,22 @@ Module str.
                                 (M.alloc (|
                                   UnOp.Pure.not
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::SplitInternal"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::SplitInternal",
                                         "allow_trailing_empty"
+                                      |)
                                     |))
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
-                                  "allow_trailing_empty",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "allow_trailing_empty"
+                                |),
                                 Value.Bool true
                               |) in
                             M.match_operator (|
@@ -3580,7 +3772,7 @@ Module str.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -3623,10 +3815,11 @@ Module str.
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
-                                                (M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::iter::SplitInternal"
-                                                  "finished") in
+                                                (M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::iter::SplitInternal",
+                                                  "finished"
+                                                |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
@@ -3662,10 +3855,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |)
                     |) in
@@ -3680,10 +3874,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitInternal",
                             "matcher"
+                          |)
                         ]
                       |)
                     |),
@@ -3691,13 +3886,13 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
                             |) in
-                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let b := M.copy (| γ1_1 |) in
                           let elt :=
                             M.alloc (|
@@ -3716,10 +3911,11 @@ Module str.
                                       ("start", M.read (| b |));
                                       ("end_",
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::iter::SplitInternal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::iter::SplitInternal",
                                             "end"
+                                          |)
                                         |))
                                     ]
                                 ]
@@ -3727,10 +3923,11 @@ Module str.
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::iter::SplitInternal"
-                                "end",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::iter::SplitInternal",
+                                "end"
+                              |),
                               M.read (| b |)
                             |) in
                           M.alloc (|
@@ -3740,10 +3937,11 @@ Module str.
                         ltac:(M.monadic
                           (let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::iter::SplitInternal"
-                                "finished",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::iter::SplitInternal",
+                                "finished"
+                              |),
                               Value.Bool true
                             |) in
                           M.alloc (|
@@ -3767,17 +3965,19 @@ Module str.
                                       [
                                         ("start",
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::iter::SplitInternal"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::iter::SplitInternal",
                                               "start"
+                                            |)
                                           |));
                                         ("end_",
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::iter::SplitInternal"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::iter::SplitInternal",
                                               "end"
+                                            |)
                                           |))
                                       ]
                                   ]
@@ -3823,10 +4023,11 @@ Module str.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -3859,10 +4060,11 @@ Module str.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::SplitInternal"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
                                   "matcher"
+                                |)
                               ]
                             |);
                             Value.StructRecord
@@ -3870,17 +4072,19 @@ Module str.
                               [
                                 ("start",
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::str::iter::SplitInternal"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::iter::SplitInternal",
                                       "start"
+                                    |)
                                   |));
                                 ("end_",
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::str::iter::SplitInternal"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::iter::SplitInternal",
                                       "end"
+                                    |)
                                   |))
                               ]
                           ]
@@ -3947,7 +4151,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Split" 0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::Split",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -3987,7 +4195,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Split" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Split",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4027,7 +4241,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Split" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::Split",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -4092,7 +4312,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplit" 0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::RSplit",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -4132,7 +4356,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplit" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RSplit",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4172,7 +4402,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplit" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RSplit",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -4231,7 +4467,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Split" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Split",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4265,7 +4507,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplit" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RSplit",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4299,7 +4547,13 @@ Module str.
                 "remainder",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Split" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Split",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4329,7 +4583,13 @@ Module str.
                 "remainder",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplit" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RSplit",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4390,10 +4650,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::str::iter::SplitTerminator"
-                        0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::SplitTerminator",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -4434,7 +4695,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitTerminator" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitTerminator",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4476,10 +4743,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::iter::SplitTerminator"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitTerminator",
                       0
+                    |)
                   ]
                 |)
               ]))
@@ -4546,10 +4814,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::str::iter::RSplitTerminator"
-                        0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::RSplitTerminator",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -4590,7 +4859,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplitTerminator" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RSplitTerminator",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4632,10 +4907,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::iter::RSplitTerminator"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RSplitTerminator",
                       0
+                    |)
                   ]
                 |)
               ]))
@@ -4698,7 +4974,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitTerminator" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitTerminator",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4733,7 +5015,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplitTerminator" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RSplitTerminator",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4768,7 +5056,13 @@ Module str.
                 "remainder",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitTerminator" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitTerminator",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4799,7 +5093,13 @@ Module str.
                 "remainder",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplitTerminator" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RSplitTerminator",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4841,10 +5141,11 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| s |))
-                            "core::str::iter::SplitNInternal"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| s |),
+                            "core::str::iter::SplitNInternal",
                             "iter"
+                          |)
                         ]
                       |))
                   ]
@@ -4926,19 +5227,21 @@ Module str.
                         M.read (| Value.String "iter" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitNInternal"
-                            "iter")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitNInternal",
+                            "iter"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "count" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::SplitNInternal"
-                        "count")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::SplitNInternal",
+                        "count"
+                      |))
                   ]
                 |)
               ]
@@ -4982,10 +5285,11 @@ Module str.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitNInternal"
-                  "count",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitNInternal",
+                  "count"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5004,10 +5308,11 @@ Module str.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitNInternal"
-                            "count",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitNInternal",
+                            "count"
+                          |),
                           Value.Integer Integer.Usize 0
                         |) in
                       M.alloc (|
@@ -5018,10 +5323,11 @@ Module str.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::iter::SplitNInternal"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::iter::SplitNInternal",
                               "iter"
+                            |)
                           ]
                         |)
                       |)));
@@ -5029,10 +5335,11 @@ Module str.
                     ltac:(M.monadic
                       (let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitNInternal"
-                            "count" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitNInternal",
+                            "count"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -5045,10 +5352,11 @@ Module str.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::iter::SplitNInternal"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::iter::SplitNInternal",
                               "iter"
+                            |)
                           ]
                         |)
                       |)))
@@ -5088,10 +5396,11 @@ Module str.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitNInternal"
-                  "count",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitNInternal",
+                  "count"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5110,10 +5419,11 @@ Module str.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitNInternal"
-                            "count",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitNInternal",
+                            "count"
+                          |),
                           Value.Integer Integer.Usize 0
                         |) in
                       M.alloc (|
@@ -5124,10 +5434,11 @@ Module str.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::iter::SplitNInternal"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::iter::SplitNInternal",
                               "iter"
+                            |)
                           ]
                         |)
                       |)));
@@ -5135,10 +5446,11 @@ Module str.
                     ltac:(M.monadic
                       (let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::iter::SplitNInternal"
-                            "count" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::iter::SplitNInternal",
+                            "count"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -5151,10 +5463,11 @@ Module str.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::iter::SplitNInternal"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::iter::SplitNInternal",
                               "iter"
+                            |)
                           ]
                         |)
                       |)))
@@ -5186,10 +5499,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitNInternal"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitNInternal",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5250,7 +5564,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitN" 0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::SplitN",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -5290,7 +5608,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitN" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitN",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -5330,7 +5654,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitN" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitN",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -5395,7 +5725,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplitN" 0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::RSplitN",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -5435,7 +5769,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplitN" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RSplitN",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -5475,7 +5815,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplitN" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RSplitN",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -5534,7 +5880,13 @@ Module str.
                 "remainder",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitN" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitN",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -5564,7 +5916,13 @@ Module str.
                 "remainder",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RSplitN" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RSplitN",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -5599,10 +5957,11 @@ Module str.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
                       [
-                        M.get_struct_tuple_field
-                          (M.read (| s |))
-                          "core::str::iter::MatchIndicesInternal"
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| s |),
+                          "core::str::iter::MatchIndicesInternal",
                           0
+                        |)
                       ]
                     |)
                   ]
@@ -5669,10 +6028,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::str::iter::MatchIndicesInternal"
-                        0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::MatchIndicesInternal",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -5730,10 +6090,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::iter::MatchIndicesInternal"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::MatchIndicesInternal",
                       0
+                    |)
                   ]
                 |);
                 M.closure
@@ -5746,8 +6107,8 @@ Module str.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let start := M.copy (| γ0_0 |) in
                                 let end_ := M.copy (| γ0_1 |) in
                                 Value.Tuple
@@ -5773,10 +6134,11 @@ Module str.
                                             []
                                           |),
                                           [
-                                            M.get_struct_tuple_field
-                                              (M.read (| self |))
-                                              "core::str::iter::MatchIndicesInternal"
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.read (| self |),
+                                              "core::str::iter::MatchIndicesInternal",
                                               0
+                                            |)
                                           ]
                                         |);
                                         Value.StructRecord
@@ -5841,10 +6203,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::iter::MatchIndicesInternal"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::MatchIndicesInternal",
                       0
+                    |)
                   ]
                 |);
                 M.closure
@@ -5857,8 +6220,8 @@ Module str.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let start := M.copy (| γ0_0 |) in
                                 let end_ := M.copy (| γ0_1 |) in
                                 Value.Tuple
@@ -5884,10 +6247,11 @@ Module str.
                                             []
                                           |),
                                           [
-                                            M.get_struct_tuple_field
-                                              (M.read (| self |))
-                                              "core::str::iter::MatchIndicesInternal"
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.read (| self |),
+                                              "core::str::iter::MatchIndicesInternal",
                                               0
+                                            |)
                                           ]
                                         |);
                                         Value.StructRecord
@@ -5963,10 +6327,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::str::iter::MatchIndices"
-                        0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::MatchIndices",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -6007,7 +6372,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::MatchIndices" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::MatchIndices",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6047,7 +6418,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::MatchIndices" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::MatchIndices",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -6113,10 +6490,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::str::iter::RMatchIndices"
-                        0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::RMatchIndices",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -6158,7 +6536,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RMatchIndices" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RMatchIndices",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6199,7 +6583,12 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RMatchIndices" 0
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RMatchIndices",
+                      0
+                    |)
                   ]
                 |)
               ]))
@@ -6260,7 +6649,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::MatchIndices" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::MatchIndices",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6295,7 +6690,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RMatchIndices" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RMatchIndices",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6334,10 +6735,11 @@ Module str.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
                       [
-                        M.get_struct_tuple_field
-                          (M.read (| s |))
-                          "core::str::iter::MatchesInternal"
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| s |),
+                          "core::str::iter::MatchesInternal",
                           0
+                        |)
                       ]
                     |)
                   ]
@@ -6404,10 +6806,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::str::iter::MatchesInternal"
-                        0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::MatchesInternal",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -6466,10 +6869,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::iter::MatchesInternal"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::MatchesInternal",
                       0
+                    |)
                   ]
                 |);
                 M.closure
@@ -6482,8 +6886,8 @@ Module str.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let a := M.copy (| γ0_0 |) in
                                 let b := M.copy (| γ0_1 |) in
                                 M.call_closure (|
@@ -6506,10 +6910,11 @@ Module str.
                                         []
                                       |),
                                       [
-                                        M.get_struct_tuple_field
-                                          (M.read (| self |))
-                                          "core::str::iter::MatchesInternal"
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.read (| self |),
+                                          "core::str::iter::MatchesInternal",
                                           0
+                                        |)
                                       ]
                                     |);
                                     Value.StructRecord
@@ -6571,10 +6976,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::iter::MatchesInternal"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::MatchesInternal",
                       0
+                    |)
                   ]
                 |);
                 M.closure
@@ -6587,8 +6993,8 @@ Module str.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let a := M.copy (| γ0_0 |) in
                                 let b := M.copy (| γ0_1 |) in
                                 M.call_closure (|
@@ -6611,10 +7017,11 @@ Module str.
                                         []
                                       |),
                                       [
-                                        M.get_struct_tuple_field
-                                          (M.read (| self |))
-                                          "core::str::iter::MatchesInternal"
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.read (| self |),
+                                          "core::str::iter::MatchesInternal",
                                           0
+                                        |)
                                       ]
                                     |);
                                     Value.StructRecord
@@ -6686,7 +7093,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Matches" 0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::Matches",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -6726,7 +7137,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Matches" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Matches",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6766,7 +7183,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Matches" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::Matches",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -6831,7 +7254,11 @@ Module str.
                     |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RMatches" 0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::RMatches",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -6871,7 +7298,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RMatches" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RMatches",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6911,7 +7344,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RMatches" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RMatches",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -6970,7 +7409,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Matches" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Matches",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7004,7 +7449,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::RMatches" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::RMatches",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7058,7 +7509,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Lines" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::Lines",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -7094,7 +7551,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Lines" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::Lines",
+                      0
+                    |)
                   |))
               ]
             |)))
@@ -7138,7 +7599,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Lines" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Lines",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7166,7 +7633,13 @@ Module str.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Lines" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Lines",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7234,7 +7707,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::Lines" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::Lines",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7285,7 +7764,13 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::LinesAny" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::LinesAny",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -7321,7 +7806,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::LinesAny" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::LinesAny",
+                      0
+                    |)
                   |))
               ]
             |)))
@@ -7360,7 +7849,13 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::LinesAny" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::LinesAny",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7383,7 +7878,13 @@ Module str.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::LinesAny" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::LinesAny",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7422,7 +7923,13 @@ Module str.
                 "next_back",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::LinesAny" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::LinesAny",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7491,10 +7998,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::SplitWhitespace"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::SplitWhitespace",
                         "inner"
+                      |)
                     ]
                   |))
               ]))
@@ -7532,10 +8040,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::iter::SplitWhitespace"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitWhitespace",
                       "inner"
+                    |)
                   |))
               ]
             |)))
@@ -7607,10 +8116,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::SplitAsciiWhitespace"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::SplitAsciiWhitespace",
                         "inner"
+                      |)
                     ]
                   |))
               ]))
@@ -7648,10 +8158,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::iter::SplitAsciiWhitespace"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitAsciiWhitespace",
                       "inner"
+                    |)
                   |))
               ]
             |)))
@@ -7705,10 +8216,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitWhitespace"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitWhitespace",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -7740,10 +8252,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitWhitespace"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitWhitespace",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -7815,10 +8328,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitWhitespace"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitWhitespace",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -7863,13 +8377,15 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::iter::SplitWhitespace"
-                    "inner")
-                  "core::iter::adapters::filter::Filter"
+                M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::iter::SplitWhitespace",
+                    "inner"
+                  |),
+                  "core::iter::adapters::filter::Filter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -7915,10 +8431,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitAsciiWhitespace"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitAsciiWhitespace",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -7955,10 +8472,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitAsciiWhitespace"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitAsciiWhitespace",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -8035,10 +8553,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::SplitAsciiWhitespace"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitAsciiWhitespace",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -8092,19 +8611,23 @@ Module str.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.get_struct_record_field
-                                    (M.get_struct_record_field
-                                      (M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::SplitAsciiWhitespace"
-                                        "inner")
-                                      "core::iter::adapters::map::Map"
-                                      "iter")
-                                    "core::iter::adapters::filter::Filter"
-                                    "iter")
-                                  "core::slice::iter::Split"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::SplitAsciiWhitespace",
+                                        "inner"
+                                      |),
+                                      "core::iter::adapters::map::Map",
+                                      "iter"
+                                    |),
+                                    "core::iter::adapters::filter::Filter",
+                                    "iter"
+                                  |),
+                                  "core::slice::iter::Split",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -8125,19 +8648,23 @@ Module str.
                           M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.get_struct_record_field
-                                  (M.get_struct_record_field
-                                    (M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::str::iter::SplitAsciiWhitespace"
-                                      "inner")
-                                    "core::iter::adapters::map::Map"
-                                    "iter")
-                                  "core::iter::adapters::filter::Filter"
-                                  "iter")
-                                "core::slice::iter::Split"
+                              M.SubPointer.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::iter::SplitAsciiWhitespace",
+                                      "inner"
+                                    |),
+                                    "core::iter::adapters::map::Map",
+                                    "iter"
+                                  |),
+                                  "core::iter::adapters::filter::Filter",
+                                  "iter"
+                                |),
+                                "core::slice::iter::Split",
                                 "v"
+                              |)
                             |)
                           ]
                         |)
@@ -8175,7 +8702,13 @@ Module str.
                 "next_inclusive",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitInclusive" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitInclusive",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -8233,10 +8766,11 @@ Module str.
                     M.read (| Value.String "0" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::str::iter::SplitInclusive"
-                        0)
+                      (M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::iter::SplitInclusive",
+                        0
+                      |))
                   ]
                 |)
               ]
@@ -8279,7 +8813,12 @@ Module str.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitInclusive" 0
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitInclusive",
+                      0
+                    |)
                   ]
                 |)
               ]))
@@ -8316,7 +8855,13 @@ Module str.
                 "next_back_inclusive",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitInclusive" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitInclusive",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -8364,7 +8909,13 @@ Module str.
                 "remainder",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::str::iter::SplitInclusive" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::iter::SplitInclusive",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -8403,20 +8954,22 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::EncodeUtf16"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::EncodeUtf16",
                         "chars"
+                      |)
                     ]
                   |));
                 ("extra",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::EncodeUtf16"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::EncodeUtf16",
                         "extra"
+                      |)
                     ]
                   |))
               ]))
@@ -8518,10 +9071,11 @@ Module str.
                                 (M.alloc (|
                                   BinOp.Pure.ne
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::EncodeUtf16"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::EncodeUtf16",
                                         "extra"
+                                      |)
                                     |))
                                     (Value.Integer Integer.U16 0)
                                 |)) in
@@ -8532,17 +9086,19 @@ Module str.
                                 M.read (|
                                   let tmp :=
                                     M.copy (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::EncodeUtf16"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::EncodeUtf16",
                                         "extra"
+                                      |)
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::iter::EncodeUtf16"
-                                        "extra",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::iter::EncodeUtf16",
+                                        "extra"
+                                      |),
                                       Value.Integer Integer.U16 0
                                     |) in
                                   M.return_ (|
@@ -8575,10 +9131,11 @@ Module str.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::iter::EncodeUtf16"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::iter::EncodeUtf16",
                               "chars"
+                            |)
                           ]
                         |);
                         M.closure
@@ -8636,12 +9193,13 @@ Module str.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::str::iter::EncodeUtf16"
-                                                          "extra",
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::str::iter::EncodeUtf16",
+                                                          "extra"
+                                                        |),
                                                         M.read (|
-                                                          M.get_array_field (|
+                                                          M.SubPointer.get_array_field (|
                                                             buf,
                                                             M.alloc (|
                                                               Value.Integer Integer.Usize 1
@@ -8654,7 +9212,7 @@ Module str.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          M.get_array_field (|
+                                          M.SubPointer.get_array_field (|
                                             buf,
                                             M.alloc (| Value.Integer Integer.Usize 0 |)
                                           |)
@@ -8708,13 +9266,15 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::str::iter::EncodeUtf16"
-                          "chars")
-                        "core::str::iter::Chars"
+                      M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::iter::EncodeUtf16",
+                          "chars"
+                        |),
+                        "core::str::iter::Chars",
                         "iter"
+                      |)
                     ]
                   |)
                 |) in
@@ -8728,10 +9288,11 @@ Module str.
                           (M.alloc (|
                             BinOp.Pure.eq
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::iter::EncodeUtf16"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::EncodeUtf16",
                                   "extra"
+                                |)
                               |))
                               (Value.Integer Integer.U16 0)
                           |)) in
@@ -8868,10 +9429,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::EscapeDebug"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::EscapeDebug",
                         "inner"
+                      |)
                     ]
                   |))
               ]))
@@ -8909,10 +9471,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::iter::EscapeDebug"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::EscapeDebug",
                       "inner"
+                    |)
                   |))
               ]
             |)))
@@ -8972,10 +9535,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::EscapeDefault"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::EscapeDefault",
                         "inner"
+                      |)
                     ]
                   |))
               ]))
@@ -9013,10 +9577,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::iter::EscapeDefault"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::EscapeDefault",
                       "inner"
+                    |)
                   |))
               ]
             |)))
@@ -9076,10 +9641,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::iter::EscapeUnicode"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::iter::EscapeUnicode",
                         "inner"
+                      |)
                     ]
                   |))
               ]))
@@ -9117,10 +9683,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::iter::EscapeUnicode"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::EscapeUnicode",
                       "inner"
+                    |)
                   |))
               ]
             |)))
@@ -9254,7 +9821,12 @@ Module str.
                 "next",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::EscapeDebug" "inner"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeDebug",
+                  "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -9291,7 +9863,12 @@ Module str.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::str::iter::EscapeDebug" "inner"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeDebug",
+                  "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -9337,10 +9914,11 @@ Module str.
                 [ Acc; Fold; R ]
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::EscapeDebug"
-                  "inner";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeDebug",
+                  "inner"
+                |);
                 M.read (| init |);
                 M.read (| fold |)
               ]
@@ -9388,7 +9966,13 @@ Module str.
                 [ Acc; Fold ]
               |),
               [
-                M.read (| M.get_struct_record_field self "core::str::iter::EscapeDebug" "inner" |);
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::str::iter::EscapeDebug",
+                    "inner"
+                  |)
+                |);
                 M.read (| init |);
                 M.read (| fold |)
               ]
@@ -9531,10 +10115,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::EscapeDefault"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeDefault",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -9561,10 +10146,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::EscapeDefault"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeDefault",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -9599,10 +10185,11 @@ Module str.
                 [ Acc; Fold; R ]
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::EscapeDefault"
-                  "inner";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeDefault",
+                  "inner"
+                |);
                 M.read (| init |);
                 M.read (| fold |)
               ]
@@ -9640,7 +10227,11 @@ Module str.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::str::iter::EscapeDefault" "inner"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::str::iter::EscapeDefault",
+                    "inner"
+                  |)
                 |);
                 M.read (| init |);
                 M.read (| fold |)
@@ -9784,10 +10375,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::EscapeUnicode"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeUnicode",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -9814,10 +10406,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::EscapeUnicode"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeUnicode",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -9852,10 +10445,11 @@ Module str.
                 [ Acc; Fold; R ]
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::iter::EscapeUnicode"
-                  "inner";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::EscapeUnicode",
+                  "inner"
+                |);
                 M.read (| init |);
                 M.read (| fold |)
               ]
@@ -9893,7 +10487,11 @@ Module str.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::str::iter::EscapeUnicode" "inner"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::str::iter::EscapeUnicode",
+                    "inner"
+                  |)
                 |);
                 M.read (| init |);
                 M.read (| fold |)

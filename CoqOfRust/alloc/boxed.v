@@ -362,7 +362,7 @@ Module boxed.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -401,7 +401,7 @@ Module boxed.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -500,21 +500,13 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let m := M.copy (| γ0_0 |) in
                     m));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
@@ -648,7 +640,7 @@ Module boxed.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -695,7 +687,7 @@ Module boxed.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -795,21 +787,13 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let m := M.copy (| γ0_0 |) in
                     m));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
@@ -943,7 +927,7 @@ Module boxed.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -990,7 +974,7 @@ Module boxed.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -1109,8 +1093,8 @@ Module boxed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let raw := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -1200,8 +1184,8 @@ Module boxed.
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (|
-            M.get_tuple_field
-              (M.alloc (|
+            M.SubPointer.get_tuple_field (|
+              M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
@@ -1210,8 +1194,9 @@ Module boxed.
                   |),
                   [ M.read (| b |) ]
                 |)
-              |))
+              |),
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -1247,8 +1232,8 @@ Module boxed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let leaked := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -1297,7 +1282,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::ptr::read", [ A ] |),
-                  [ M.get_struct_tuple_field b "alloc::boxed::Box" 1 ]
+                  [ M.SubPointer.get_struct_tuple_field (| b, "alloc::boxed::Box", 1 |) ]
                 |)
               |) in
             M.alloc (|
@@ -1344,7 +1329,7 @@ Module boxed.
       | [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
-          M.get_struct_tuple_field (M.read (| b |)) "alloc::boxed::Box" 1))
+          M.SubPointer.get_struct_tuple_field (| M.read (| b |), "alloc::boxed::Box", 1 |)))
       | _, _ => M.impossible
       end.
     
@@ -1374,8 +1359,8 @@ Module boxed.
             |),
             [
               M.read (|
-                M.get_struct_tuple_field
-                  (M.call_closure (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply
@@ -1399,9 +1384,10 @@ Module boxed.
                         |)
                       |)
                     ]
-                  |))
-                  "alloc::boxed::Box"
+                  |),
+                  "alloc::boxed::Box",
                   0
+                |)
               |)
             ]
           |)))
@@ -1603,7 +1589,7 @@ Module boxed.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -1613,7 +1599,7 @@ Module boxed.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -1683,7 +1669,7 @@ Module boxed.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -1734,7 +1720,7 @@ Module boxed.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -1876,7 +1862,7 @@ Module boxed.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -1886,7 +1872,7 @@ Module boxed.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -1956,7 +1942,7 @@ Module boxed.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -2007,7 +1993,7 @@ Module boxed.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -2186,8 +2172,8 @@ Module boxed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let raw := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -2303,8 +2289,8 @@ Module boxed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let raw := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -2357,7 +2343,9 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             let ptr :=
-              M.copy (| M.get_struct_tuple_field (M.read (| self |)) "alloc::boxed::Box" 0 |) in
+              M.copy (|
+                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "alloc::boxed::Box", 0 |)
+              |) in
             let layout :=
               M.alloc (|
                 M.call_closure (|
@@ -2411,7 +2399,11 @@ Module boxed.
                             []
                           |),
                           [
-                            M.get_struct_tuple_field (M.read (| self |)) "alloc::boxed::Box" 1;
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.read (| self |),
+                              "alloc::boxed::Box",
+                              1
+                            |);
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::convert::From",
@@ -2649,7 +2641,13 @@ Module boxed.
                   [
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                      [ M.get_struct_tuple_field (M.read (| self |)) "alloc::boxed::Box" 1 ]
+                      [
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| self |),
+                          "alloc::boxed::Box",
+                          1
+                        |)
+                      ]
                     |)
                   ]
                 |)
@@ -3670,7 +3668,7 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -3693,11 +3691,7 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let slice := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
@@ -3804,7 +3798,7 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -3827,11 +3821,7 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let s := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
@@ -3893,8 +3883,8 @@ Module boxed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let raw := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -4013,8 +4003,8 @@ Module boxed.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let left_val := M.copy (| γ0_0 |) in
                               let right_val := M.copy (| γ0_1 |) in
                               M.match_operator (|
@@ -4084,8 +4074,8 @@ Module boxed.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let ptr := M.copy (| γ0_0 |) in
                   let alloc := M.copy (| γ0_1 |) in
                   M.alloc (|
@@ -4438,8 +4428,8 @@ Module boxed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let raw := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -4604,8 +4594,8 @@ Module boxed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let raw := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -4771,8 +4761,8 @@ Module boxed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let raw := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|

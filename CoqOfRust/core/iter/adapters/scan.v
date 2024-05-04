@@ -29,30 +29,33 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::scan::Scan"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::scan::Scan",
                           "iter"
+                        |)
                       ]
                     |));
                   ("f",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::scan::Scan"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::scan::Scan",
                           "f"
+                        |)
                       ]
                     |));
                   ("state",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", St, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::scan::Scan"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::scan::Scan",
                           "state"
+                        |)
                       ]
                     |))
                 ]))
@@ -147,19 +150,21 @@ Module iter.
                           M.read (| Value.String "iter" |);
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::scan::Scan"
-                              "iter")
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::scan::Scan",
+                              "iter"
+                            |))
                         ]
                       |);
                       M.read (| Value.String "state" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::scan::Scan"
-                          "state")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::scan::Scan",
+                          "state"
+                        |))
                     ]
                   |)
                 ]
@@ -220,10 +225,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::scan::Scan"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::scan::Scan",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -233,7 +239,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -264,7 +270,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -284,16 +290,18 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::scan::Scan"
-                            "f";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::scan::Scan",
+                            "f"
+                          |);
                           Value.Tuple
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::scan::Scan"
-                                "state";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::scan::Scan",
+                                "state"
+                              |);
                               M.read (| a |)
                             ]
                         ]
@@ -328,18 +336,19 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::scan::Scan"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::scan::Scan",
                           "iter"
+                        |)
                       ]
                     |)
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let upper := M.copy (| γ0_1 |) in
                         M.alloc (|
                           Value.Tuple [ Value.Integer Integer.Usize 0; M.read (| upper |) ]
@@ -384,17 +393,19 @@ Module iter.
               M.read (|
                 let state :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::scan::Scan"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::scan::Scan",
                       "state"
+                    |)
                   |) in
                 let f :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::scan::Scan"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::scan::Scan",
                       "f"
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -419,10 +430,11 @@ Module iter.
                           ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::scan::Scan"
-                            "iter";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::scan::Scan",
+                            "iter"
+                          |);
                           M.read (| init |);
                           M.call_closure (|
                             M.get_associated_function (| Self, "scan.try_fold", [] |),
@@ -456,8 +468,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
@@ -483,9 +495,10 @@ Module iter.
                         |)
                       ]
                     |)
-                  |))
-                  "core::ops::try_trait::NeverShortCircuit"
+                  |),
+                  "core::ops::try_trait::NeverShortCircuit",
                   0
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -528,10 +541,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::scan::Scan"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::scan::Scan",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

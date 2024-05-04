@@ -76,12 +76,20 @@ Module num.
                 M.read (| Value.String "f" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "f");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::diy_float::Fp",
+                    "f"
+                  |));
                 M.read (| Value.String "e" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "e"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::diy_float::Fp",
+                      "e"
+                    |)
                   |))
               ]
             |)))
@@ -127,7 +135,11 @@ Module num.
                 M.alloc (|
                   BinOp.Panic.shr (|
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "f"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::diy_float::Fp",
+                        "f"
+                      |)
                     |),
                     Value.Integer Integer.I32 32
                   |)
@@ -136,7 +148,11 @@ Module num.
                 M.alloc (|
                   BinOp.Pure.bit_and
                     (M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "f"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::diy_float::Fp",
+                        "f"
+                      |)
                     |))
                     (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
                 |) in
@@ -144,7 +160,11 @@ Module num.
                 M.alloc (|
                   BinOp.Panic.shr (|
                     M.read (|
-                      M.get_struct_record_field (M.read (| other |)) "core::num::diy_float::Fp" "f"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::num::diy_float::Fp",
+                        "f"
+                      |)
                     |),
                     Value.Integer Integer.I32 32
                   |)
@@ -153,7 +173,11 @@ Module num.
                 M.alloc (|
                   BinOp.Pure.bit_and
                     (M.read (|
-                      M.get_struct_record_field (M.read (| other |)) "core::num::diy_float::Fp" "f"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::num::diy_float::Fp",
+                        "f"
+                      |)
                     |))
                     (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
                 |) in
@@ -196,13 +220,18 @@ Module num.
                   BinOp.Panic.add (|
                     BinOp.Panic.add (|
                       M.read (|
-                        M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "e"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::diy_float::Fp",
+                          "e"
+                        |)
                       |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "core::num::diy_float::Fp"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::num::diy_float::Fp",
                           "e"
+                        |)
                       |)
                     |),
                     Value.Integer Integer.I16 64
@@ -259,11 +288,19 @@ Module num.
             M.read (|
               let f :=
                 M.copy (|
-                  M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "f"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::diy_float::Fp",
+                    "f"
+                  |)
                 |) in
               let e :=
                 M.copy (|
-                  M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "e"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::diy_float::Fp",
+                    "e"
+                  |)
                 |) in
               let _ :=
                 M.match_operator (|
@@ -568,7 +605,11 @@ Module num.
                 M.alloc (|
                   BinOp.Panic.sub (|
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "e"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::diy_float::Fp",
+                        "e"
+                      |)
                     |),
                     M.read (| e |)
                   |)
@@ -608,24 +649,29 @@ Module num.
                           BinOp.Panic.shr (|
                             BinOp.Panic.shl (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::diy_float::Fp"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::diy_float::Fp",
                                   "f"
+                                |)
                               |),
                               M.read (| edelta |)
                             |),
                             M.read (| edelta |)
                           |)
                         |);
-                        M.get_struct_record_field (M.read (| self |)) "core::num::diy_float::Fp" "f"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::diy_float::Fp",
+                          "f"
+                        |)
                       ]
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
@@ -682,10 +728,11 @@ Module num.
                     ("f",
                       BinOp.Panic.shl (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::diy_float::Fp"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::diy_float::Fp",
                             "f"
+                          |)
                         |),
                         M.read (| edelta |)
                       |));

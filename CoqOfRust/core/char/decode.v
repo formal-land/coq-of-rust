@@ -29,10 +29,11 @@ Module char.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::char::decode::DecodeUtf16"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::char::decode::DecodeUtf16",
                         "iter"
+                      |)
                     ]
                   |));
                 ("buf",
@@ -45,10 +46,11 @@ Module char.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::char::decode::DecodeUtf16"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::char::decode::DecodeUtf16",
                         "buf"
+                      |)
                     ]
                   |))
               ]))
@@ -88,18 +90,20 @@ Module char.
                 M.read (| Value.String "iter" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::char::decode::DecodeUtf16"
-                    "iter");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::char::decode::DecodeUtf16",
+                    "iter"
+                  |));
                 M.read (| Value.String "buf" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::char::decode::DecodeUtf16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::char::decode::DecodeUtf16",
                       "buf"
+                    |)
                   |))
               ]
             |)))
@@ -145,10 +149,11 @@ Module char.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::char::decode::DecodeUtf16Error"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::char::decode::DecodeUtf16Error",
                       "code"
+                    |)
                   |))
               ]
             |)))
@@ -179,10 +184,11 @@ Module char.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::char::decode::DecodeUtf16Error"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::char::decode::DecodeUtf16Error",
                         "code"
+                      |)
                     ]
                   |))
               ]))
@@ -258,16 +264,18 @@ Module char.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::char::decode::DecodeUtf16Error"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::char::decode::DecodeUtf16Error",
                   "code"
+                |)
               |))
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::char::decode::DecodeUtf16Error"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::char::decode::DecodeUtf16Error",
                   "code"
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -372,10 +380,11 @@ Module char.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::char::decode::DecodeUtf16"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::char::decode::DecodeUtf16",
                                 "buf"
+                              |)
                             ]
                           |)
                         |),
@@ -383,7 +392,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -412,10 +421,11 @@ Module char.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::char::decode::DecodeUtf16"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::char::decode::DecodeUtf16",
                                             "iter"
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -425,7 +435,7 @@ Module char.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -466,7 +476,7 @@ Module char.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -563,10 +573,11 @@ Module char.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::char::decode::DecodeUtf16"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::char::decode::DecodeUtf16",
                                                 "iter"
+                                              |)
                                             ]
                                           |)
                                         |),
@@ -574,7 +585,7 @@ Module char.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -634,10 +645,11 @@ Module char.
                                                 M.read (|
                                                   let _ :=
                                                     M.write (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::char::decode::DecodeUtf16"
-                                                        "buf",
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::char::decode::DecodeUtf16",
+                                                        "buf"
+                                                      |),
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
                                                         [ M.read (| u2 |) ]
@@ -757,26 +769,28 @@ Module char.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::char::decode::DecodeUtf16"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::char::decode::DecodeUtf16",
                         "iter"
+                      |)
                     ]
                   |)
                 |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let low := M.copy (| γ0_0 |) in
                       let high := M.copy (| γ0_1 |) in
                       M.match_operator (|
                         M.match_operator (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::char::decode::DecodeUtf16"
-                            "buf",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::char::decode::DecodeUtf16",
+                            "buf"
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -787,7 +801,7 @@ Module char.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -817,7 +831,7 @@ Module char.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -861,7 +875,7 @@ Module char.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -876,8 +890,8 @@ Module char.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let low_buf := M.copy (| γ0_0 |) in
                               let high_buf := M.copy (| γ0_1 |) in
                               let low :=
@@ -987,10 +1001,11 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::char::decode::DecodeUtf16Error"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::char::decode::DecodeUtf16Error",
                 "code"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1037,10 +1052,11 @@ Module char.
                                 [ Ty.path "u16" ]
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::char::decode::DecodeUtf16Error"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::char::decode::DecodeUtf16Error",
                                   "code"
+                                |)
                               ]
                             |)
                           ]

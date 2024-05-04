@@ -45,10 +45,11 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
                     [
-                      M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::iter::sources::from_fn::FromFn"
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::iter::sources::from_fn::FromFn",
                         0
+                      |)
                     ]
                   |)
                 ]))
@@ -91,10 +92,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_tuple_field
-                    (M.read (| self |))
-                    "core::iter::sources::from_fn::FromFn"
-                    0;
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::iter::sources::from_fn::FromFn",
+                    0
+                  |);
                   Value.Tuple []
                 ]
               |)))

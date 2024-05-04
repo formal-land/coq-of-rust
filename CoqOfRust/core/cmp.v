@@ -663,8 +663,8 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0;
-              M.get_struct_tuple_field (M.read (| other |)) "core::cmp::Reverse" 0
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
+              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _ => M.impossible
@@ -742,7 +742,13 @@ Module cmp.
               M.read (| Value.String "Reverse" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0 |))
+                (M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::cmp::Reverse",
+                    0
+                  |)
+                |))
             ]
           |)))
       | _, _ => M.impossible
@@ -812,7 +818,7 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0;
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
               M.read (| state |)
             ]
           |)))
@@ -846,8 +852,8 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
             [
-              M.get_struct_tuple_field (M.read (| other |)) "core::cmp::Reverse" 0;
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0
+              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _ => M.impossible
@@ -868,8 +874,8 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
             [
-              M.get_struct_tuple_field (M.read (| other |)) "core::cmp::Reverse" 0;
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0
+              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _ => M.impossible
@@ -890,8 +896,8 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
             [
-              M.get_struct_tuple_field (M.read (| other |)) "core::cmp::Reverse" 0;
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0
+              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _ => M.impossible
@@ -912,8 +918,8 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
             [
-              M.get_struct_tuple_field (M.read (| other |)) "core::cmp::Reverse" 0;
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0
+              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _ => M.impossible
@@ -934,8 +940,8 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
             [
-              M.get_struct_tuple_field (M.read (| other |)) "core::cmp::Reverse" 0;
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0
+              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _ => M.impossible
@@ -975,8 +981,8 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
             [
-              M.get_struct_tuple_field (M.read (| other |)) "core::cmp::Reverse" 0;
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0
+              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _ => M.impossible
@@ -1010,7 +1016,13 @@ Module cmp.
             [
               M.call_closure (|
                 M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::cmp::Reverse",
+                    0
+                  |)
+                ]
               |)
             ]))
       | _, _ => M.impossible
@@ -1031,8 +1043,8 @@ Module cmp.
           M.call_closure (|
             M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::cmp::Reverse" 0;
-              M.get_struct_tuple_field (M.read (| other |)) "core::cmp::Reverse" 0
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
+              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _ => M.impossible
@@ -1229,7 +1241,7 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1269,7 +1281,7 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1322,7 +1334,7 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1362,7 +1374,7 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -2650,8 +2662,8 @@ Module cmp.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
@@ -2659,8 +2671,8 @@ Module cmp.
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
@@ -2672,8 +2684,8 @@ Module cmp.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
@@ -2685,8 +2697,8 @@ Module cmp.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
@@ -2796,8 +2808,8 @@ Module cmp.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
@@ -2805,8 +2817,8 @@ Module cmp.
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
@@ -2818,8 +2830,8 @@ Module cmp.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
@@ -2831,8 +2843,8 @@ Module cmp.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=

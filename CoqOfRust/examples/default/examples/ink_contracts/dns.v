@@ -229,8 +229,12 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (M.read (| self |)) "dns::AccountId" 0 |))
-          (M.read (| M.get_struct_tuple_field (M.read (| other |)) "dns::AccountId" 0 |))))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "dns::AccountId", 0 |)
+          |))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "dns::AccountId", 0 |)
+          |))))
     | _, _ => M.impossible
     end.
   
@@ -343,7 +347,9 @@ Module Impl_dns_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "dns::Env" "caller" |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (| M.read (| self |), "dns::Env", "caller" |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -751,10 +757,11 @@ Module Impl_dns_DomainNameService.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "dns::DomainNameService"
-                                    "name_to_owner";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "dns::DomainNameService",
+                                    "name_to_owner"
+                                  |);
                                   name
                                 ]
                               |)
@@ -786,10 +793,11 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "dns::DomainNameService"
-                        "name_to_owner";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "dns::DomainNameService",
+                        "name_to_owner"
+                      |);
                       M.read (| name |);
                       M.read (| caller |)
                     ]
@@ -857,18 +865,20 @@ Module Impl_dns_DomainNameService.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "dns::DomainNameService"
-                  "name_to_owner";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "dns::DomainNameService",
+                  "name_to_owner"
+                |);
                 name
               ]
             |);
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "dns::DomainNameService"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "dns::DomainNameService",
                 "default_address"
+              |)
             |)
           ]
         |)))
@@ -984,10 +994,11 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "dns::DomainNameService"
-                        "name_to_address";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "dns::DomainNameService",
+                        "name_to_address"
+                      |);
                       name
                     ]
                   |)
@@ -1003,10 +1014,11 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "dns::DomainNameService"
-                        "name_to_address";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "dns::DomainNameService",
+                        "name_to_address"
+                      |);
                       M.read (| name |);
                       M.read (| new_address |)
                     ]
@@ -1157,10 +1169,11 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "dns::DomainNameService"
-                        "name_to_owner";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "dns::DomainNameService",
+                        "name_to_owner"
+                      |);
                       name
                     ]
                   |)
@@ -1176,10 +1189,11 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "dns::DomainNameService"
-                        "name_to_owner";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "dns::DomainNameService",
+                        "name_to_owner"
+                      |);
                       M.read (| name |);
                       M.read (| to |)
                     ]
@@ -1252,18 +1266,20 @@ Module Impl_dns_DomainNameService.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "dns::DomainNameService"
-                  "name_to_address";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "dns::DomainNameService",
+                  "name_to_address"
+                |);
                 name
               ]
             |);
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "dns::DomainNameService"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "dns::DomainNameService",
                 "default_address"
+              |)
             |)
           ]
         |)))

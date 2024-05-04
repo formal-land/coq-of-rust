@@ -42,18 +42,20 @@ Module iter.
                   M.read (| Value.String "iter" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::array_chunks::ArrayChunks"
-                      "iter");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::array_chunks::ArrayChunks",
+                      "iter"
+                    |));
                   M.read (| Value.String "remainder" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::array_chunks::ArrayChunks"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::array_chunks::ArrayChunks",
                         "remainder"
+                      |)
                     |))
                 ]
               |)))
@@ -87,10 +89,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::array_chunks::ArrayChunks"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::array_chunks::ArrayChunks",
                           "iter"
+                        |)
                       ]
                     |));
                   ("remainder",
@@ -105,10 +108,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::array_chunks::ArrayChunks"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::array_chunks::ArrayChunks",
                           "remainder"
+                        |)
                       ]
                     |))
                 ]))
@@ -218,10 +222,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_struct_record_field
-                  self
-                  "core::iter::adapters::array_chunks::ArrayChunks"
+                M.SubPointer.get_struct_record_field (|
+                  self,
+                  "core::iter::adapters::array_chunks::ArrayChunks",
                   "remainder"
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -282,10 +287,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::iter::adapters::array_chunks::ArrayChunks"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::array_chunks::ArrayChunks",
                                           "remainder"
+                                        |)
                                       ]
                                     |)
                                   |)) in
@@ -312,10 +318,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::array_chunks::ArrayChunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::array_chunks::ArrayChunks",
                                 "iter"
+                              |)
                             ]
                           |),
                           M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
@@ -380,10 +387,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::array_chunks::ArrayChunks"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::array_chunks::ArrayChunks",
                                                 "iter"
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -419,10 +427,11 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::array_chunks::ArrayChunks"
-                          "remainder",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::array_chunks::ArrayChunks",
+                          "remainder"
+                        |),
                         Value.StructTuple "core::option::Option::Some" [ M.read (| remainder |) ]
                       |) in
                     M.alloc (| Value.Tuple [] |)
@@ -515,18 +524,19 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::array_chunks::ArrayChunks"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::array_chunks::ArrayChunks",
                           "iter"
+                        |)
                       ]
                     |)
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let lower := M.copy (| γ0_0 |) in
                         let upper := M.copy (| γ0_1 |) in
                         M.alloc (|
@@ -604,10 +614,11 @@ Module iter.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "core::iter::adapters::array_chunks::ArrayChunks"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::array_chunks::ArrayChunks",
                         "iter"
+                      |)
                     |)
                   ]
                 |),
@@ -663,10 +674,11 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::array_chunks::ArrayChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::array_chunks::ArrayChunks",
                                   "iter"
+                                |)
                               ]
                             |)
                           |),
@@ -674,7 +686,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Ok",
                                     0
@@ -720,7 +732,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -747,7 +759,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -761,7 +773,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Err",
                                     0
@@ -785,10 +797,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::array_chunks::ArrayChunks"
-                                                "remainder";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::array_chunks::ArrayChunks",
+                                                "remainder"
+                                              |);
                                               M.read (| remainder |)
                                             ]
                                           |)
@@ -996,10 +1009,11 @@ Module iter.
                             Value.StructTuple
                               "core::iter::adapters::by_ref_sized::ByRefSized"
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::array_chunks::ArrayChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::array_chunks::ArrayChunks",
                                   "iter"
+                                |)
                               ]
                           ]
                         |)
@@ -1033,7 +1047,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::result::Result::Ok",
                                       0
@@ -1091,7 +1105,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -1118,7 +1132,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -1181,8 +1195,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
@@ -1208,9 +1222,10 @@ Module iter.
                         |)
                       ]
                     |)
-                  |))
-                  "core::ops::try_trait::NeverShortCircuit"
+                  |),
+                  "core::ops::try_trait::NeverShortCircuit",
                   0
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -1281,10 +1296,11 @@ Module iter.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::array_chunks::ArrayChunks"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::array_chunks::ArrayChunks",
                       "iter"
+                    |)
                   ]
                 |),
                 M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
@@ -1313,10 +1329,11 @@ Module iter.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::array_chunks::ArrayChunks"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::array_chunks::ArrayChunks",
                       "iter"
+                    |)
                   ]
                 |))
                 (M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |))))
@@ -1359,8 +1376,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
@@ -1386,9 +1403,10 @@ Module iter.
                         |)
                       ]
                     |)
-                  |))
-                  "core::ops::try_trait::NeverShortCircuit"
+                  |),
+                  "core::ops::try_trait::NeverShortCircuit",
                   0
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -1456,10 +1474,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::array_chunks::ArrayChunks"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::array_chunks::ArrayChunks",
                           "iter"
+                        |)
                       ]
                     |)
                   |) in
@@ -1526,10 +1545,11 @@ Module iter.
                                                               []
                                                             |),
                                                             [
-                                                              M.get_struct_record_field
-                                                                self
-                                                                "core::iter::adapters::array_chunks::ArrayChunks"
-                                                                "iter";
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                self,
+                                                                "core::iter::adapters::array_chunks::ArrayChunks",
+                                                                "iter"
+                                                              |);
                                                               M.read (| idx |)
                                                             ]
                                                           |)
@@ -1621,10 +1641,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::array_chunks::ArrayChunks"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::array_chunks::ArrayChunks",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

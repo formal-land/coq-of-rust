@@ -129,7 +129,13 @@ Module char.
                   "clone",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeUnicode" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeUnicode",
+                    0
+                  |)
+                ]
               |)
             ]))
       | _, _ => M.impossible
@@ -165,7 +171,11 @@ Module char.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeUnicode" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeUnicode",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -253,7 +263,13 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "next", [] |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeUnicode" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeUnicode",
+                    0
+                  |)
+                ]
               |);
               M.get_trait_method (|
                 "core::convert::From",
@@ -287,7 +303,13 @@ Module char.
                     "len",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeUnicode" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::char::EscapeUnicode",
+                      0
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -311,7 +333,7 @@ Module char.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
-            [ M.get_struct_tuple_field self "core::char::EscapeUnicode" 0 ]
+            [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -339,7 +361,7 @@ Module char.
                   "next_back",
                   []
                 |),
-                [ M.get_struct_tuple_field self "core::char::EscapeUnicode" 0 ]
+                [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |) ]
               |);
               M.get_trait_method (|
                 "core::convert::From",
@@ -371,7 +393,11 @@ Module char.
               []
             |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeUnicode" 0;
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::EscapeUnicode",
+                0
+              |);
               M.read (| n |)
             ]
           |)))
@@ -409,7 +435,13 @@ Module char.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeUnicode" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::EscapeUnicode",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -457,7 +489,13 @@ Module char.
                   "as_str",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeUnicode" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeUnicode",
+                    0
+                  |)
+                ]
               |)
             ]
           |)))
@@ -499,7 +537,13 @@ Module char.
                   "clone",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDefault" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeDefault",
+                    0
+                  |)
+                ]
               |)
             ]))
       | _, _ => M.impossible
@@ -535,7 +579,11 @@ Module char.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDefault" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeDefault",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -638,7 +686,11 @@ Module char.
           (let esc := M.alloc (| esc |) in
           Value.StructTuple
             "core::char::EscapeDefault"
-            [ M.read (| M.get_struct_tuple_field esc "core::char::EscapeUnicode" 0 |) ]))
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| esc, "core::char::EscapeUnicode", 0 |)
+              |)
+            ]))
       | _, _ => M.impossible
       end.
     
@@ -670,7 +722,13 @@ Module char.
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "next", [] |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDefault" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeDefault",
+                    0
+                  |)
+                ]
               |);
               M.get_trait_method (|
                 "core::convert::From",
@@ -704,7 +762,13 @@ Module char.
                     "len",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDefault" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::char::EscapeDefault",
+                      0
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -728,7 +792,7 @@ Module char.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
-            [ M.get_struct_tuple_field self "core::char::EscapeDefault" 0 ]
+            [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -756,7 +820,7 @@ Module char.
                   "next_back",
                   []
                 |),
-                [ M.get_struct_tuple_field self "core::char::EscapeDefault" 0 ]
+                [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |) ]
               |);
               M.get_trait_method (|
                 "core::convert::From",
@@ -788,7 +852,11 @@ Module char.
               []
             |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDefault" 0;
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::EscapeDefault",
+                0
+              |);
               M.read (| n |)
             ]
           |)))
@@ -826,7 +894,13 @@ Module char.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDefault" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::EscapeDefault",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -874,7 +948,13 @@ Module char.
                   "as_str",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDefault" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeDefault",
+                    0
+                  |)
+                ]
               |)
             ]
           |)))
@@ -916,7 +996,13 @@ Module char.
                   "clone",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDebug" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeDebug",
+                    0
+                  |)
+                ]
               |)
             ]))
       | _, _ => M.impossible
@@ -952,7 +1038,11 @@ Module char.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDebug" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::EscapeDebug",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -1004,7 +1094,7 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Bytes",
                         0
@@ -1030,7 +1120,7 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Char",
                         0
@@ -1084,7 +1174,7 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Bytes",
                         0
@@ -1108,7 +1198,7 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Char",
                         0
@@ -1221,7 +1311,11 @@ Module char.
             [
               Value.StructTuple
                 "core::char::EscapeDebugInner::Bytes"
-                [ M.read (| M.get_struct_tuple_field esc "core::char::EscapeUnicode" 0 |) ]
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (| esc, "core::char::EscapeUnicode", 0 |)
+                  |)
+                ]
             ]))
       | _, _ => M.impossible
       end.
@@ -1253,7 +1347,11 @@ Module char.
               |) in
             let _ :=
               M.write (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDebug" 0,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::EscapeDebug",
+                  0
+                |),
                 Value.StructTuple "core::char::EscapeDebugInner::Bytes" [ M.read (| bytes |) ]
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1288,12 +1386,16 @@ Module char.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDebug" 0,
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::EscapeDebug",
+                0
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Bytes",
                         0
@@ -1328,7 +1430,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Char",
                         0
@@ -1444,14 +1546,18 @@ Module char.
           M.read (|
             M.match_operator (|
               M.alloc (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDebug" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::EscapeDebug",
+                  0
+                |)
               |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Bytes",
                         0
@@ -1471,7 +1577,7 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Char",
                         0
@@ -1522,14 +1628,18 @@ Module char.
           M.read (|
             M.match_operator (|
               M.alloc (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::char::EscapeDebug" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::EscapeDebug",
+                  0
+                |)
               |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Bytes",
                         0
@@ -1559,7 +1669,7 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::EscapeDebugInner::Char",
                         0
@@ -1620,7 +1730,11 @@ Module char.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "core::char::ToLowercase" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::ToLowercase",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -1655,7 +1769,13 @@ Module char.
                   "clone",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::ToLowercase" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::ToLowercase",
+                    0
+                  |)
+                ]
               |)
             ]))
       | _, _ => M.impossible
@@ -1693,7 +1813,13 @@ Module char.
               "next",
               []
             |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::char::ToLowercase" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1716,7 +1842,13 @@ Module char.
               "size_hint",
               []
             |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::char::ToLowercase" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1755,7 +1887,13 @@ Module char.
               "next_back",
               []
             |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::char::ToLowercase" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1819,7 +1957,11 @@ Module char.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "core::char::ToUppercase" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::ToUppercase",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -1854,7 +1996,13 @@ Module char.
                   "clone",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::char::ToUppercase" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::ToUppercase",
+                    0
+                  |)
+                ]
               |)
             ]))
       | _, _ => M.impossible
@@ -1892,7 +2040,13 @@ Module char.
               "next",
               []
             |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::char::ToUppercase" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToUppercase",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1915,7 +2069,13 @@ Module char.
               "size_hint",
               []
             |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::char::ToUppercase" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToUppercase",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1954,7 +2114,13 @@ Module char.
               "next_back",
               []
             |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::char::ToUppercase" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToUppercase",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -2037,19 +2203,19 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         0
                       |) in
                     let γ1_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         1
                       |) in
                     let γ1_2 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         2
@@ -2077,13 +2243,13 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Two",
                         0
                       |) in
                     let γ1_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Two",
                         1
@@ -2109,7 +2275,7 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::One",
                         0
@@ -2173,19 +2339,19 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         0
                       |) in
                     let γ1_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         1
                       |) in
                     let γ1_2 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         2
@@ -2233,13 +2399,13 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Two",
                         0
                       |) in
                     let γ1_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Two",
                         1
@@ -2276,7 +2442,7 @@ Module char.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::One",
                         0
@@ -2348,7 +2514,7 @@ Module char.
                         (M.alloc (|
                           BinOp.Pure.eq
                             (M.read (|
-                              M.get_array_field (|
+                              M.SubPointer.get_array_field (|
                                 chars,
                                 M.alloc (| Value.Integer Integer.Usize 2 |)
                               |)
@@ -2366,7 +2532,7 @@ Module char.
                                 (M.alloc (|
                                   BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_array_field (|
+                                      M.SubPointer.get_array_field (|
                                         chars,
                                         M.alloc (| Value.Integer Integer.Usize 1 |)
                                       |)
@@ -2380,7 +2546,7 @@ Module char.
                                 "core::char::CaseMappingIter::One"
                                 [
                                   M.read (|
-                                    M.get_array_field (|
+                                    M.SubPointer.get_array_field (|
                                       chars,
                                       M.alloc (| Value.Integer Integer.Usize 0 |)
                                     |)
@@ -2394,13 +2560,13 @@ Module char.
                                 "core::char::CaseMappingIter::Two"
                                 [
                                   M.read (|
-                                    M.get_array_field (|
+                                    M.SubPointer.get_array_field (|
                                       chars,
                                       M.alloc (| Value.Integer Integer.Usize 0 |)
                                     |)
                                   |);
                                   M.read (|
-                                    M.get_array_field (|
+                                    M.SubPointer.get_array_field (|
                                       chars,
                                       M.alloc (| Value.Integer Integer.Usize 1 |)
                                     |)
@@ -2416,19 +2582,19 @@ Module char.
                         "core::char::CaseMappingIter::Three"
                         [
                           M.read (|
-                            M.get_array_field (|
+                            M.SubPointer.get_array_field (|
                               chars,
                               M.alloc (| Value.Integer Integer.Usize 0 |)
                             |)
                           |);
                           M.read (|
-                            M.get_array_field (|
+                            M.SubPointer.get_array_field (|
                               chars,
                               M.alloc (| Value.Integer Integer.Usize 1 |)
                             |)
                           |);
                           M.read (|
-                            M.get_array_field (|
+                            M.SubPointer.get_array_field (|
                               chars,
                               M.alloc (| Value.Integer Integer.Usize 2 |)
                             |)
@@ -2481,19 +2647,19 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         0
                       |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         1
                       |) in
                     let γ0_2 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         2
@@ -2514,13 +2680,13 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Two",
                         0
                       |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Two",
                         1
@@ -2538,7 +2704,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::One",
                         0
@@ -2594,7 +2760,7 @@ Module char.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::char::CaseMappingIter::One",
                             0
@@ -2665,19 +2831,19 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         0
                       |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         1
                       |) in
                     let γ0_2 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Three",
                         2
@@ -2698,13 +2864,13 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Two",
                         0
                       |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::Two",
                         1
@@ -2722,7 +2888,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::char::CaseMappingIter::One",
                         0
@@ -2787,19 +2953,19 @@ Module char.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::char::CaseMappingIter::Three",
                             0
                           |) in
                         let γ0_1 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::char::CaseMappingIter::Three",
                             1
                           |) in
                         let γ0_2 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::char::CaseMappingIter::Three",
                             2
@@ -2838,7 +3004,7 @@ Module char.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -2874,7 +3040,7 @@ Module char.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -2914,7 +3080,7 @@ Module char.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -2950,7 +3116,7 @@ Module char.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -2974,13 +3140,13 @@ Module char.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::char::CaseMappingIter::Two",
                             0
                           |) in
                         let γ0_1 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::char::CaseMappingIter::Two",
                             1
@@ -3018,7 +3184,7 @@ Module char.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -3054,7 +3220,7 @@ Module char.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -3078,7 +3244,7 @@ Module char.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::char::CaseMappingIter::One",
                             0
@@ -3139,7 +3305,11 @@ Module char.
               []
             |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::char::ToLowercase" 0;
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |);
               M.read (| f |)
             ]
           |)))
@@ -3177,7 +3347,11 @@ Module char.
               []
             |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::char::ToUppercase" 0;
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToUppercase",
+                0
+              |);
               M.read (| f |)
             ]
           |)))
@@ -3221,7 +3395,11 @@ Module char.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "core::char::TryFromCharError" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::TryFromCharError",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -3297,8 +3475,16 @@ Module char.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", Ty.tuple [], [ Ty.tuple [] ], "eq", [] |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::char::TryFromCharError" 0;
-              M.get_struct_tuple_field (M.read (| other |)) "core::char::TryFromCharError" 0
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::TryFromCharError",
+                0
+              |);
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| other |),
+                "core::char::TryFromCharError",
+                0
+              |)
             ]
           |)))
       | _, _ => M.impossible

@@ -29,10 +29,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::skip_while::SkipWhile"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::skip_while::SkipWhile",
                           "iter"
+                        |)
                       ]
                     |));
                   ("flag",
@@ -45,20 +46,22 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::skip_while::SkipWhile"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::skip_while::SkipWhile",
                           "flag"
+                        |)
                       ]
                     |));
                   ("predicate",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::skip_while::SkipWhile"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::skip_while::SkipWhile",
                           "predicate"
+                        |)
                       ]
                     |))
                 ]))
@@ -155,19 +158,21 @@ Module iter.
                           M.read (| Value.String "iter" |);
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::skip_while::SkipWhile"
-                              "iter")
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::skip_while::SkipWhile",
+                              "iter"
+                            |))
                         ]
                       |);
                       M.read (| Value.String "flag" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::skip_while::SkipWhile"
-                          "flag")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::skip_while::SkipWhile",
+                          "flag"
+                        |))
                     ]
                   |)
                 ]
@@ -221,17 +226,19 @@ Module iter.
               M.read (|
                 let flag :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::skip_while::SkipWhile"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::skip_while::SkipWhile",
                       "flag"
+                    |)
                   |) in
                 let pred :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::skip_while::SkipWhile"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::skip_while::SkipWhile",
                       "predicate"
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -243,10 +250,11 @@ Module iter.
                       [ Ty.associated ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::skip_while::SkipWhile"
-                        "iter";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::skip_while::SkipWhile",
+                        "iter"
+                      |);
                       M.call_closure (|
                         M.get_associated_function (| Self, "check.next", [] |),
                         [ M.read (| flag |); M.read (| pred |) ]
@@ -282,18 +290,19 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::skip_while::SkipWhile"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::skip_while::SkipWhile",
                           "iter"
+                        |)
                       ]
                     |)
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let upper := M.copy (| γ0_1 |) in
                         M.alloc (|
                           Value.Tuple [ Value.Integer Integer.Usize 0; M.read (| upper |) ]
@@ -342,10 +351,11 @@ Module iter.
                                   (M.alloc (|
                                     UnOp.Pure.not
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::iter::adapters::skip_while::SkipWhile"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::skip_while::SkipWhile",
                                           "flag"
+                                        |)
                                       |))
                                   |)) in
                               let _ :=
@@ -372,7 +382,7 @@ Module iter.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -413,7 +423,7 @@ Module iter.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::ops::control_flow::ControlFlow::Break",
                                                       0
@@ -440,7 +450,7 @@ Module iter.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                       0
@@ -486,10 +496,11 @@ Module iter.
                           [ Acc; Fold; R ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::skip_while::SkipWhile"
-                            "iter";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::skip_while::SkipWhile",
+                            "iter"
+                          |);
                           M.read (| init |);
                           M.read (| fold |)
                         ]
@@ -536,10 +547,11 @@ Module iter.
                                   (M.alloc (|
                                     UnOp.Pure.not
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          self
-                                          "core::iter::adapters::skip_while::SkipWhile"
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::iter::adapters::skip_while::SkipWhile",
                                           "flag"
+                                        |)
                                       |))
                                   |)) in
                               let _ :=
@@ -566,7 +578,7 @@ Module iter.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -609,10 +621,11 @@ Module iter.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              self
-                              "core::iter::adapters::skip_while::SkipWhile"
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::skip_while::SkipWhile",
                               "iter"
+                            |)
                           |);
                           M.read (| init |);
                           M.read (| fold |)
@@ -688,10 +701,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::skip_while::SkipWhile"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::skip_while::SkipWhile",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

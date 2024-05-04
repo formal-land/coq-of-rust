@@ -16,8 +16,8 @@ Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             ltac:(M.monadic
-              (let γ0_0 := M.get_tuple_field γ 0 in
-              let γ0_1 := M.get_tuple_field γ 1 in
+              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
               let x := M.copy (| γ0_0 |) in
               let y := M.copy (| γ0_1 |) in
               BinOp.Panic.add (| M.read (| x |), M.read (| y |) |)))

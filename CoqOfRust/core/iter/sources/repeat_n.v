@@ -108,10 +108,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::repeat_n::RepeatN"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::repeat_n::RepeatN",
                           "count"
+                        |)
                       ]
                     |));
                   ("element",
@@ -124,10 +125,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::repeat_n::RepeatN"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::repeat_n::RepeatN",
                           "element"
+                        |)
                       ]
                     |))
                 ]))
@@ -167,18 +169,20 @@ Module iter.
                   M.read (| Value.String "count" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::sources::repeat_n::RepeatN"
-                      "count");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::sources::repeat_n::RepeatN",
+                      "count"
+                    |));
                   M.read (| Value.String "element" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::sources::repeat_n::RepeatN"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::sources::repeat_n::RepeatN",
                         "element"
+                      |)
                     |))
                 ]
               |)))
@@ -227,10 +231,11 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::sources::repeat_n::RepeatN"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::sources::repeat_n::RepeatN",
                                     "count"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -238,10 +243,11 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::sources::repeat_n::RepeatN"
-                              "count",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::sources::repeat_n::RepeatN",
+                              "count"
+                            |),
                             Value.Integer Integer.Usize 0
                           |) in
                         M.alloc (|
@@ -255,10 +261,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::sources::repeat_n::RepeatN"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::sources::repeat_n::RepeatN",
                                     "element"
+                                  |)
                                 ]
                               |)
                             ]
@@ -362,10 +369,11 @@ Module iter.
                                   (M.alloc (|
                                     BinOp.Pure.eq
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::iter::sources::repeat_n::RepeatN"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::sources::repeat_n::RepeatN",
                                           "count"
+                                        |)
                                       |))
                                       (Value.Integer Integer.Usize 0)
                                   |)) in
@@ -388,10 +396,11 @@ Module iter.
                       |) in
                     let _ :=
                       let β :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::repeat_n::RepeatN"
-                          "count" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::repeat_n::RepeatN",
+                          "count"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -411,10 +420,11 @@ Module iter.
                                         (M.alloc (|
                                           BinOp.Pure.eq
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::sources::repeat_n::RepeatN"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::sources::repeat_n::RepeatN",
                                                 "count"
+                                              |)
                                             |))
                                             (Value.Integer Integer.Usize 0)
                                         |)) in
@@ -433,10 +443,11 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::sources::repeat_n::RepeatN"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::sources::repeat_n::RepeatN",
                                             "element"
+                                          |)
                                         ]
                                       |)
                                     |)));
@@ -463,10 +474,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::sources::repeat_n::RepeatN"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::sources::repeat_n::RepeatN",
                                                 "element"
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -546,10 +558,11 @@ Module iter.
               M.read (|
                 let len :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::sources::repeat_n::RepeatN"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::sources::repeat_n::RepeatN",
                       "count"
+                    |)
                   |) in
                 let _ :=
                   M.match_operator (|
@@ -607,10 +620,11 @@ Module iter.
                       ltac:(M.monadic
                         (let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::sources::repeat_n::RepeatN"
-                              "count",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::sources::repeat_n::RepeatN",
+                              "count"
+                            |),
                             BinOp.Panic.sub (| M.read (| len |), M.read (| skip |) |)
                           |) in
                         M.alloc (|
@@ -701,10 +715,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::iter::sources::repeat_n::RepeatN"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::iter::sources::repeat_n::RepeatN",
                   "count"
+                |)
               |)))
           | _, _ => M.impossible
           end.

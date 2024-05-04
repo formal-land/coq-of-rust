@@ -555,7 +555,7 @@ Module error.
                 ]
               |)
             |) in
-          M.get_struct_tuple_field tagged "core::error::TaggedOption" 0
+          M.SubPointer.get_struct_tuple_field (| tagged, "core::error::TaggedOption", 0 |)
         |)))
     | _, _ => M.impossible
     end.
@@ -740,12 +740,17 @@ Module error.
                               "downcast_mut",
                               [ I ]
                             |),
-                            [ M.get_struct_tuple_field (M.read (| self |)) "core::error::Request" 0
+                            [
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "core::error::Request",
+                                0
+                              |)
                             ]
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -753,14 +758,18 @@ Module error.
                       let res := M.copy (| γ0_0 |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let γ3_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::error::TaggedOption",
                           0
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_tuple_field (M.read (| res |)) "core::error::TaggedOption" 0,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.read (| res |),
+                            "core::error::TaggedOption",
+                            0
+                          |),
                           Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -806,12 +815,17 @@ Module error.
                               "downcast_mut",
                               [ I ]
                             |),
-                            [ M.get_struct_tuple_field (M.read (| self |)) "core::error::Request" 0
+                            [
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "core::error::Request",
+                                0
+                              |)
                             ]
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -819,14 +833,18 @@ Module error.
                       let res := M.copy (| γ0_0 |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let γ3_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::error::TaggedOption",
                           0
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_tuple_field (M.read (| res |)) "core::error::TaggedOption" 0,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.read (| res |),
+                            "core::error::TaggedOption",
+                            0
+                          |),
                           Value.StructTuple
                             "core::option::Option::Some"
                             [
@@ -933,21 +951,27 @@ Module error.
                     "downcast",
                     [ I ]
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::error::Request" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::error::Request",
+                      0
+                    |)
+                  ]
                 |)
               |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
                       |) in
                     let γ0_0 := M.read (| γ0_0 |) in
                     let γ2_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ0_0,
                         "core::error::TaggedOption",
                         0
@@ -1060,7 +1084,11 @@ Module error.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field (M.read (| self |)) "core::error::tags::Value" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::error::tags::Value",
+                      0
+                    |)
                   |))
               ]
             |)))
@@ -1122,10 +1150,11 @@ Module error.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::error::tags::MaybeSizedValue"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::error::tags::MaybeSizedValue",
                       0
+                    |)
                   |))
               ]
             |)))
@@ -1187,7 +1216,11 @@ Module error.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field (M.read (| self |)) "core::error::tags::Ref" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::error::tags::Ref",
+                      0
+                    |)
                   |))
               ]
             |)))
@@ -1521,7 +1554,13 @@ Module error.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::error::Source" "current" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::error::Source",
+                      "current"
+                    |)
+                  ]
                 |))
             ]))
       | _, _ => M.impossible
@@ -1558,7 +1597,11 @@ Module error.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field (M.read (| self |)) "core::error::Source" "current"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::error::Source",
+                    "current"
+                  |)
                 |))
             ]
           |)))
@@ -1595,11 +1638,19 @@ Module error.
           M.read (|
             let current :=
               M.copy (|
-                M.get_struct_record_field (M.read (| self |)) "core::error::Source" "current"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::error::Source",
+                  "current"
+                |)
               |) in
             let _ :=
               M.write (|
-                M.get_struct_record_field (M.read (| self |)) "core::error::Source" "current",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::error::Source",
+                  "current"
+                |),
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
@@ -1618,7 +1669,11 @@ Module error.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::error::Source" "current"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::error::Source",
+                        "current"
+                      |)
                     |);
                     M.get_trait_method (|
                       "core::error::Error",

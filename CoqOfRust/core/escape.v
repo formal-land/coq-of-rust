@@ -165,7 +165,7 @@ Module escape.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -209,7 +209,7 @@ Module escape.
                           ltac:(M.monadic
                             (let hi :=
                               M.copy (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                                   M.alloc (|
                                     M.call_closure (|
@@ -232,7 +232,7 @@ Module escape.
                               |) in
                             let lo :=
                               M.copy (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                                   M.alloc (|
                                     M.call_closure (|
@@ -276,8 +276,8 @@ Module escape.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let data := M.copy (| γ0_0 |) in
                   let len := M.copy (| γ0_1 |) in
                   let _ := M.write (| M.read (| output |), M.read (| data |) |) in
@@ -348,7 +348,7 @@ Module escape.
         M.read (|
           let _ :=
             M.write (|
-              M.get_array_field (|
+              M.SubPointer.get_array_field (|
                 M.read (| output |),
                 M.alloc (| Value.Integer Integer.Usize 9 |)
               |),
@@ -357,12 +357,12 @@ Module escape.
           let ch := M.alloc (| M.rust_cast (M.read (| ch |)) |) in
           let _ :=
             M.write (|
-              M.get_array_field (|
+              M.SubPointer.get_array_field (|
                 M.read (| output |),
                 M.alloc (| Value.Integer Integer.Usize 3 |)
               |),
               M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
@@ -375,12 +375,12 @@ Module escape.
             |) in
           let _ :=
             M.write (|
-              M.get_array_field (|
+              M.SubPointer.get_array_field (|
                 M.read (| output |),
                 M.alloc (| Value.Integer Integer.Usize 4 |)
               |),
               M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
@@ -393,12 +393,12 @@ Module escape.
             |) in
           let _ :=
             M.write (|
-              M.get_array_field (|
+              M.SubPointer.get_array_field (|
                 M.read (| output |),
                 M.alloc (| Value.Integer Integer.Usize 5 |)
               |),
               M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
@@ -411,12 +411,12 @@ Module escape.
             |) in
           let _ :=
             M.write (|
-              M.get_array_field (|
+              M.SubPointer.get_array_field (|
                 M.read (| output |),
                 M.alloc (| Value.Integer Integer.Usize 6 |)
               |),
               M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
@@ -429,12 +429,12 @@ Module escape.
             |) in
           let _ :=
             M.write (|
-              M.get_array_field (|
+              M.SubPointer.get_array_field (|
                 M.read (| output |),
                 M.alloc (| Value.Integer Integer.Usize 7 |)
               |),
               M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
@@ -447,12 +447,12 @@ Module escape.
             |) in
           let _ :=
             M.write (|
-              M.get_array_field (|
+              M.SubPointer.get_array_field (|
                 M.read (| output |),
                 M.alloc (| Value.Integer Integer.Usize 8 |)
               |),
               M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
@@ -601,10 +601,11 @@ Module escape.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::escape::EscapeIterInner"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::escape::EscapeIterInner",
                       "data"
+                    |)
                   ]
                 |));
               ("alive",
@@ -617,10 +618,11 @@ Module escape.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::escape::EscapeIterInner"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::escape::EscapeIterInner",
                       "alive"
+                    |)
                   ]
                 |))
             ]))
@@ -657,18 +659,20 @@ Module escape.
               M.read (| Value.String "data" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::escape::EscapeIterInner"
-                  "data");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::escape::EscapeIterInner",
+                  "data"
+                |));
               M.read (| Value.String "alive" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::escape::EscapeIterInner"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::escape::EscapeIterInner",
                     "alive"
+                  |)
                 |))
             ]
           |)))
@@ -722,16 +726,18 @@ Module escape.
                                         (LogicalOp.and (|
                                           BinOp.Pure.le
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                alive
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                alive,
+                                                "core::ops::range::Range",
                                                 "start"
+                                              |)
                                             |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                alive
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                alive,
+                                                "core::ops::range::Range",
                                                 "end"
+                                              |)
                                             |)),
                                           ltac:(M.monadic
                                             (BinOp.Pure.le
@@ -745,10 +751,11 @@ Module escape.
                                                 |),
                                                 [
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      alive
-                                                      "core::ops::range::Range"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      alive,
+                                                      "core::ops::range::Range",
                                                       "end"
+                                                    |)
                                                   |)
                                                 ]
                                               |))
@@ -914,7 +921,11 @@ Module escape.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "core::escape::EscapeIterInner" "data";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::escape::EscapeIterInner",
+                "data"
+              |);
               Value.StructRecord
                 "core::ops::range::Range"
                 [
@@ -929,13 +940,15 @@ Module escape.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::escape::EscapeIterInner"
-                              "alive")
-                            "core::ops::range::Range"
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::escape::EscapeIterInner",
+                              "alive"
+                            |),
+                            "core::ops::range::Range",
                             "start"
+                          |)
                         |)
                       ]
                     |));
@@ -950,13 +963,15 @@ Module escape.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::escape::EscapeIterInner"
-                              "alive")
-                            "core::ops::range::Range"
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::escape::EscapeIterInner",
+                              "alive"
+                            |),
+                            "core::ops::range::Range",
                             "end"
+                          |)
                         |)
                       ]
                     |))
@@ -1021,22 +1036,26 @@ Module escape.
             [
               BinOp.Panic.sub (|
                 M.read (|
-                  M.get_struct_record_field
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::escape::EscapeIterInner"
-                      "alive")
-                    "core::ops::range::Range"
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::escape::EscapeIterInner",
+                      "alive"
+                    |),
+                    "core::ops::range::Range",
                     "end"
+                  |)
                 |),
                 M.read (|
-                  M.get_struct_record_field
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::escape::EscapeIterInner"
-                      "alive")
-                    "core::ops::range::Range"
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::escape::EscapeIterInner",
+                      "alive"
+                    |),
+                    "core::ops::range::Range",
                     "start"
+                  |)
                 |)
               |)
             ]
@@ -1072,10 +1091,11 @@ Module escape.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::escape::EscapeIterInner"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::escape::EscapeIterInner",
                     "alive"
+                  |)
                 ]
               |);
               M.closure
@@ -1097,11 +1117,12 @@ Module escape.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_array_field (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::escape::EscapeIterInner"
-                                        "data",
+                                    M.SubPointer.get_array_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::escape::EscapeIterInner",
+                                        "data"
+                                      |),
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -1155,10 +1176,11 @@ Module escape.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::escape::EscapeIterInner"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::escape::EscapeIterInner",
                     "alive"
+                  |)
                 ]
               |);
               M.closure
@@ -1180,11 +1202,12 @@ Module escape.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_array_field (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::escape::EscapeIterInner"
-                                        "data",
+                                    M.SubPointer.get_array_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::escape::EscapeIterInner",
+                                        "data"
+                                      |),
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -1232,7 +1255,11 @@ Module escape.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "core::escape::EscapeIterInner" "alive";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::escape::EscapeIterInner",
+                "alive"
+              |);
               M.read (| n |)
             ]
           |)))
@@ -1261,7 +1288,11 @@ Module escape.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "core::escape::EscapeIterInner" "alive";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::escape::EscapeIterInner",
+                "alive"
+              |);
               M.read (| n |)
             ]
           |)))

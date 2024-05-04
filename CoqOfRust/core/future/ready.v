@@ -33,7 +33,11 @@ Module future.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field (M.read (| self |)) "core::future::ready::Ready" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::future::ready::Ready",
+                      0
+                    |)
                   |))
               ]
             |)))
@@ -70,7 +74,13 @@ Module future.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::future::ready::Ready" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::future::ready::Ready",
+                      0
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -132,8 +142,8 @@ Module future.
                         []
                       |),
                       [
-                        M.get_struct_tuple_field
-                          (M.call_closure (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::DerefMut",
                               Ty.apply
@@ -148,9 +158,10 @@ Module future.
                               []
                             |),
                             [ self ]
-                          |))
-                          "core::future::ready::Ready"
+                          |),
+                          "core::future::ready::Ready",
                           0
+                        |)
                       ]
                     |);
                     M.read (| Value.String "`Ready` polled after completion" |)
@@ -191,7 +202,9 @@ Module future.
                 []
               |),
               [
-                M.read (| M.get_struct_tuple_field self "core::future::ready::Ready" 0 |);
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (| self, "core::future::ready::Ready", 0 |)
+                |);
                 M.read (| Value.String "Called `into_inner()` on `Ready` after completion" |)
               ]
             |)))

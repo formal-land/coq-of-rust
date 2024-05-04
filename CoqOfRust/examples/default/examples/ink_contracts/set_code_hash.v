@@ -95,7 +95,11 @@ Module Impl_set_code_hash_Incrementer.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_record_field (M.read (| self |)) "set_code_hash::Incrementer" "count" in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "set_code_hash::Incrementer",
+                "count"
+              |) in
             M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
           let _ :=
             let _ :=
@@ -131,10 +135,11 @@ Module Impl_set_code_hash_Incrementer.
                                     [ Ty.path "u32" ]
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "set_code_hash::Incrementer"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "set_code_hash::Incrementer",
                                       "count"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -163,7 +168,11 @@ Module Impl_set_code_hash_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "set_code_hash::Incrementer" "count"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "set_code_hash::Incrementer",
+            "count"
+          |)
         |)))
     | _, _ => M.impossible
     end.

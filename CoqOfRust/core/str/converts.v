@@ -32,11 +32,7 @@ Module str.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -50,11 +46,7 @@ Module str.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let err := M.copy (| γ0_0 |) in
                     M.alloc (|
                       Value.StructTuple "core::result::Result::Err" [ M.read (| err |) ]
@@ -94,11 +86,7 @@ Module str.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -112,11 +100,7 @@ Module str.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let err := M.copy (| γ0_0 |) in
                     M.alloc (|
                       Value.StructTuple "core::result::Result::Err" [ M.read (| err |) ]

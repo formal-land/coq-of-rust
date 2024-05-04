@@ -741,11 +741,7 @@ Module panicking.
                       |)
                     |) in
                   let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let msg := M.copy (| γ0_0 |) in
                   M.alloc (|
                     M.call_closure (|
@@ -947,10 +943,11 @@ Module panicking.
               [
                 M.read (| f |);
                 M.read (|
-                  M.get_struct_tuple_field
-                    (M.read (| self |))
-                    "core::panicking::assert_matches_failed::Pattern"
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::panicking::assert_matches_failed::Pattern",
                     0
+                  |)
                 |)
               ]
             |)))
@@ -1019,11 +1016,7 @@ Module panicking.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let args := M.copy (| γ0_0 |) in
                   M.alloc (|
                     M.call_closure (|

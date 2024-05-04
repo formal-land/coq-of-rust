@@ -29,7 +29,13 @@ Module ascii.
                   "clone",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::ascii::EscapeDefault" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::ascii::EscapeDefault",
+                    0
+                  |)
+                ]
               |)
             ]))
       | _, _ => M.impossible
@@ -103,7 +109,13 @@ Module ascii.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "next", [] |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::ascii::EscapeDefault" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::ascii::EscapeDefault",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -128,7 +140,13 @@ Module ascii.
                     "len",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::ascii::EscapeDefault" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::ascii::EscapeDefault",
+                      0
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -152,7 +170,7 @@ Module ascii.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
-            [ M.get_struct_tuple_field self "core::ascii::EscapeDefault" 0 ]
+            [ M.SubPointer.get_struct_tuple_field (| self, "core::ascii::EscapeDefault", 0 |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -173,7 +191,7 @@ Module ascii.
               "next_back",
               []
             |),
-            [ M.get_struct_tuple_field self "core::ascii::EscapeDefault" 0 ]
+            [ M.SubPointer.get_struct_tuple_field (| self, "core::ascii::EscapeDefault", 0 |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -196,7 +214,11 @@ Module ascii.
               []
             |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::ascii::EscapeDefault" 0;
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::ascii::EscapeDefault",
+                0
+              |);
               M.read (| n |)
             ]
           |)))
@@ -238,7 +260,13 @@ Module ascii.
               "next_back",
               []
             |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::ascii::EscapeDefault" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::ascii::EscapeDefault",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -261,7 +289,11 @@ Module ascii.
               []
             |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::ascii::EscapeDefault" 0;
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::ascii::EscapeDefault",
+                0
+              |);
               M.read (| n |)
             ]
           |)))
@@ -295,7 +327,13 @@ Module ascii.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
-            [ M.get_struct_tuple_field (M.read (| self |)) "core::ascii::EscapeDefault" 0 ]
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::ascii::EscapeDefault",
+                0
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -343,7 +381,13 @@ Module ascii.
                   "as_str",
                   []
                 |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "core::ascii::EscapeDefault" 0 ]
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::ascii::EscapeDefault",
+                    0
+                  |)
+                ]
               |)
             ]
           |)))

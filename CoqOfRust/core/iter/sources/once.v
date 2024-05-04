@@ -63,10 +63,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::once::Once"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::once::Once",
                           "inner"
+                        |)
                       ]
                     |))
                 ]))
@@ -107,10 +108,11 @@ Module iter.
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::sources::once::Once"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::sources::once::Once",
                         "inner"
+                      |)
                     |))
                 ]
               |)))
@@ -153,10 +155,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::sources::once::Once"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::sources::once::Once",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -182,10 +185,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::sources::once::Once"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::sources::once::Once",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -229,10 +233,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::sources::once::Once"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::sources::once::Once",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -271,10 +276,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::sources::once::Once"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::sources::once::Once",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

@@ -39,20 +39,22 @@ Module num.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
                           "num_digits"
+                        |)
                       ]
                     |));
                   ("decimal_point",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", Ty.path "i32", [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
                           "decimal_point"
+                        |)
                       ]
                     |));
                   ("truncated",
@@ -65,10 +67,11 @@ Module num.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
                           "truncated"
+                        |)
                       ]
                     |));
                   ("digits",
@@ -81,10 +84,11 @@ Module num.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
                           "digits"
+                        |)
                       ]
                     |))
                 ]))
@@ -186,10 +190,11 @@ Module num.
                               (M.alloc (|
                                 BinOp.Pure.lt
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::num::dec2flt::decimal::Decimal"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::num::dec2flt::decimal::Decimal",
                                       "num_digits"
+                                    |)
                                   |))
                                   (M.read (|
                                     M.get_constant (| "core::num::dec2flt::decimal::MAX_DIGITS" |)
@@ -199,15 +204,17 @@ Module num.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.write (|
-                              M.get_array_field (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::dec2flt::decimal::Decimal"
-                                  "digits",
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::dec2flt::decimal::Decimal"
+                              M.SubPointer.get_array_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::dec2flt::decimal::Decimal",
+                                  "digits"
+                                |),
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::dec2flt::decimal::Decimal",
                                   "num_digits"
+                                |)
                               |),
                               M.read (| digit |)
                             |) in
@@ -217,10 +224,11 @@ Module num.
                   |) in
                 let _ :=
                   let β :=
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::dec2flt::decimal::Decimal"
-                      "num_digits" in
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::dec2flt::decimal::Decimal",
+                      "num_digits"
+                    |) in
                   M.write (|
                     β,
                     BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -275,10 +283,11 @@ Module num.
                                           UnOp.Pure.not
                                             (BinOp.Pure.le
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::num::dec2flt::decimal::Decimal"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::num::dec2flt::decimal::Decimal",
                                                   "num_digits"
+                                                |)
                                               |))
                                               (M.read (|
                                                 M.get_constant (|
@@ -324,27 +333,30 @@ Module num.
                                   LogicalOp.and (|
                                     BinOp.Pure.ne
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
+                                        |)
                                       |))
                                       (Value.Integer Integer.Usize 0),
                                     ltac:(M.monadic
                                       (BinOp.Pure.eq
                                         (M.read (|
-                                          M.get_array_field (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::num::dec2flt::decimal::Decimal"
-                                              "digits",
+                                          M.SubPointer.get_array_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::num::dec2flt::decimal::Decimal",
+                                              "digits"
+                                            |),
                                             M.alloc (|
                                               BinOp.Panic.sub (|
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::num::dec2flt::decimal::Decimal"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::num::dec2flt::decimal::Decimal",
                                                     "num_digits"
+                                                  |)
                                                 |),
                                                 Value.Integer Integer.Usize 1
                                               |)
@@ -358,10 +370,11 @@ Module num.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               let β :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::dec2flt::decimal::Decimal"
-                                  "num_digits" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::dec2flt::decimal::Decimal",
+                                  "num_digits"
+                                |) in
                               M.write (|
                                 β,
                                 BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -435,19 +448,21 @@ Module num.
                                     LogicalOp.or (|
                                       BinOp.Pure.eq
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::num::dec2flt::decimal::Decimal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::num::dec2flt::decimal::Decimal",
                                             "num_digits"
+                                          |)
                                         |))
                                         (Value.Integer Integer.Usize 0),
                                       ltac:(M.monadic
                                         (BinOp.Pure.lt
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::num::dec2flt::decimal::Decimal"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::num::dec2flt::decimal::Decimal",
                                               "decimal_point"
+                                            |)
                                           |))
                                           (Value.Integer Integer.I32 0)))
                                     |)
@@ -474,10 +489,11 @@ Module num.
                                           (M.alloc (|
                                             BinOp.Pure.gt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::num::dec2flt::decimal::Decimal"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::num::dec2flt::decimal::Decimal",
                                                   "decimal_point"
+                                                |)
                                               |))
                                               (Value.Integer Integer.I32 18)
                                           |)) in
@@ -504,10 +520,11 @@ Module num.
                       M.alloc (|
                         M.rust_cast
                           (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::num::dec2flt::decimal::Decimal"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::num::dec2flt::decimal::Decimal",
                               "decimal_point"
+                            |)
                           |))
                       |) in
                     let n := M.alloc (| Value.Integer Integer.U64 0 |) in
@@ -564,7 +581,7 @@ Module num.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -590,10 +607,11 @@ Module num.
                                                             BinOp.Pure.lt
                                                               (M.read (| i |))
                                                               (M.read (|
-                                                                M.get_struct_record_field
-                                                                  (M.read (| self |))
-                                                                  "core::num::dec2flt::decimal::Decimal"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::num::dec2flt::decimal::Decimal",
                                                                   "num_digits"
+                                                                |)
                                                               |))
                                                           |)) in
                                                       let _ :=
@@ -609,11 +627,12 @@ Module num.
                                                             M.read (| β |),
                                                             M.rust_cast
                                                               (M.read (|
-                                                                M.get_array_field (|
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| self |))
-                                                                    "core::num::dec2flt::decimal::Decimal"
-                                                                    "digits",
+                                                                M.SubPointer.get_array_field (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::num::dec2flt::decimal::Decimal",
+                                                                    "digits"
+                                                                  |),
                                                                   i
                                                                 |)
                                                               |))
@@ -643,10 +662,11 @@ Module num.
                                     BinOp.Pure.lt
                                       (M.read (| dp |))
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
+                                        |)
                                       |))
                                   |)) in
                               let _ :=
@@ -659,11 +679,12 @@ Module num.
                                   round_up,
                                   BinOp.Pure.ge
                                     (M.read (|
-                                      M.get_array_field (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
-                                          "digits",
+                                      M.SubPointer.get_array_field (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
+                                          "digits"
+                                        |),
                                         dp
                                       |)
                                     |))
@@ -680,11 +701,12 @@ Module num.
                                             LogicalOp.and (|
                                               BinOp.Pure.eq
                                                 (M.read (|
-                                                  M.get_array_field (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::num::dec2flt::decimal::Decimal"
-                                                      "digits",
+                                                  M.SubPointer.get_array_field (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::num::dec2flt::decimal::Decimal",
+                                                      "digits"
+                                                    |),
                                                     dp
                                                   |)
                                                 |))
@@ -696,10 +718,11 @@ Module num.
                                                     Value.Integer Integer.Usize 1
                                                   |))
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::num::dec2flt::decimal::Decimal"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::num::dec2flt::decimal::Decimal",
                                                       "num_digits"
+                                                    |)
                                                   |))))
                                             |)
                                           |)) in
@@ -712,10 +735,11 @@ Module num.
                                         round_up,
                                         LogicalOp.or (|
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::num::dec2flt::decimal::Decimal"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::num::dec2flt::decimal::Decimal",
                                               "truncated"
+                                            |)
                                           |),
                                           ltac:(M.monadic
                                             (LogicalOp.and (|
@@ -727,11 +751,12 @@ Module num.
                                                   (BinOp.Pure.bit_and
                                                     (Value.Integer Integer.U8 1)
                                                     (M.read (|
-                                                      M.get_array_field (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::num::dec2flt::decimal::Decimal"
-                                                          "digits",
+                                                      M.SubPointer.get_array_field (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::num::dec2flt::decimal::Decimal",
+                                                          "digits"
+                                                        |),
                                                         M.alloc (|
                                                           BinOp.Panic.sub (|
                                                             M.read (| dp |),
@@ -841,10 +866,11 @@ Module num.
                                   (M.alloc (|
                                     BinOp.Pure.eq
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
+                                        |)
                                       |))
                                       (Value.Integer Integer.Usize 0)
                                   |)) in
@@ -871,19 +897,21 @@ Module num.
                       |) in
                     let read_index :=
                       M.copy (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
                           "num_digits"
+                        |)
                       |) in
                     let write_index :=
                       M.alloc (|
                         BinOp.Panic.add (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::num::dec2flt::decimal::Decimal"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::num::dec2flt::decimal::Decimal",
                               "num_digits"
+                            |)
                           |),
                           M.read (| num_new_digits |)
                         |)
@@ -936,11 +964,12 @@ Module num.
                                         BinOp.Panic.shl (|
                                           M.rust_cast
                                             (M.read (|
-                                              M.get_array_field (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::num::dec2flt::decimal::Decimal"
-                                                  "digits",
+                                              M.SubPointer.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::num::dec2flt::decimal::Decimal",
+                                                  "digits"
+                                                |),
                                                 read_index
                                               |)
                                             |)),
@@ -989,11 +1018,12 @@ Module num.
                                               |) in
                                             let _ :=
                                               M.write (|
-                                                M.get_array_field (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::num::dec2flt::decimal::Decimal"
-                                                    "digits",
+                                                M.SubPointer.get_array_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::num::dec2flt::decimal::Decimal",
+                                                    "digits"
+                                                  |),
                                                   write_index
                                                 |),
                                                 M.rust_cast (M.read (| remainder |))
@@ -1020,10 +1050,11 @@ Module num.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::num::dec2flt::decimal::Decimal"
-                                                          "truncated",
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::num::dec2flt::decimal::Decimal",
+                                                          "truncated"
+                                                        |),
                                                         Value.Bool true
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
@@ -1119,11 +1150,12 @@ Module num.
                                               |) in
                                             let _ :=
                                               M.write (|
-                                                M.get_array_field (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::num::dec2flt::decimal::Decimal"
-                                                    "digits",
+                                                M.SubPointer.get_array_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::num::dec2flt::decimal::Decimal",
+                                                    "digits"
+                                                  |),
                                                   write_index
                                                 |),
                                                 M.rust_cast (M.read (| remainder |))
@@ -1150,10 +1182,11 @@ Module num.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::num::dec2flt::decimal::Decimal"
-                                                          "truncated",
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::num::dec2flt::decimal::Decimal",
+                                                          "truncated"
+                                                        |),
                                                         Value.Bool true
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
@@ -1183,10 +1216,11 @@ Module num.
                       |) in
                     let _ :=
                       let β :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
-                          "num_digits" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
+                          "num_digits"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.add (| M.read (| β |), M.read (| num_new_digits |) |)
@@ -1202,10 +1236,11 @@ Module num.
                                   (M.alloc (|
                                     BinOp.Pure.gt
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
+                                        |)
                                       |))
                                       (M.read (|
                                         M.get_constant (|
@@ -1220,10 +1255,11 @@ Module num.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::num::dec2flt::decimal::Decimal"
-                                    "num_digits",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::num::dec2flt::decimal::Decimal",
+                                    "num_digits"
+                                  |),
                                   M.read (|
                                     M.get_constant (| "core::num::dec2flt::decimal::MAX_DIGITS" |)
                                   |)
@@ -1234,10 +1270,11 @@ Module num.
                       |) in
                     let _ :=
                       let β :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
-                          "decimal_point" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
+                          "decimal_point"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.add (|
@@ -1356,10 +1393,11 @@ Module num.
                                                 BinOp.Pure.lt
                                                   (M.read (| read_index |))
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::num::dec2flt::decimal::Decimal"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::num::dec2flt::decimal::Decimal",
                                                       "num_digits"
+                                                    |)
                                                   |))
                                               |)) in
                                           let _ :=
@@ -1377,11 +1415,12 @@ Module num.
                                                 |),
                                                 M.rust_cast
                                                   (M.read (|
-                                                    M.get_array_field (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::num::dec2flt::decimal::Decimal"
-                                                        "digits",
+                                                    M.SubPointer.get_array_field (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::num::dec2flt::decimal::Decimal",
+                                                        "digits"
+                                                      |),
                                                       read_index
                                                     |)
                                                   |))
@@ -1524,10 +1563,11 @@ Module num.
                       |) in
                     let _ :=
                       let β :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
-                          "decimal_point" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
+                          "decimal_point"
+                        |) in
                       M.write (|
                         β,
                         BinOp.Panic.sub (|
@@ -1549,10 +1589,11 @@ Module num.
                                   (M.alloc (|
                                     BinOp.Pure.lt
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
                                           "decimal_point"
+                                        |)
                                       |))
                                       (UnOp.Panic.neg (|
                                         M.read (|
@@ -1572,26 +1613,29 @@ Module num.
                                   M.read (|
                                     let _ :=
                                       M.write (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
-                                          "num_digits",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
+                                          "num_digits"
+                                        |),
                                         Value.Integer Integer.Usize 0
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
-                                          "decimal_point",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
+                                          "decimal_point"
+                                        |),
                                         Value.Integer Integer.I32 0
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
-                                          "truncated",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
+                                          "truncated"
+                                        |),
                                         Value.Bool false
                                       |) in
                                     M.return_ (| Value.Tuple [] |)
@@ -1622,10 +1666,11 @@ Module num.
                                         BinOp.Pure.lt
                                           (M.read (| read_index |))
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::num::dec2flt::decimal::Decimal"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::num::dec2flt::decimal::Decimal",
                                               "num_digits"
+                                            |)
                                           |))
                                       |)) in
                                   let _ :=
@@ -1648,11 +1693,12 @@ Module num.
                                         |),
                                         M.rust_cast
                                           (M.read (|
-                                            M.get_array_field (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::num::dec2flt::decimal::Decimal"
-                                                "digits",
+                                            M.SubPointer.get_array_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::num::dec2flt::decimal::Decimal",
+                                                "digits"
+                                              |),
                                               read_index
                                             |)
                                           |))
@@ -1669,11 +1715,12 @@ Module num.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_array_field (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::num::dec2flt::decimal::Decimal"
-                                          "digits",
+                                      M.SubPointer.get_array_field (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::num::dec2flt::decimal::Decimal",
+                                          "digits"
+                                        |),
                                         write_index
                                       |),
                                       M.read (| new_digit |)
@@ -1758,11 +1805,12 @@ Module num.
                                             |) in
                                           let _ :=
                                             M.write (|
-                                              M.get_array_field (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::num::dec2flt::decimal::Decimal"
-                                                  "digits",
+                                              M.SubPointer.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::num::dec2flt::decimal::Decimal",
+                                                  "digits"
+                                                |),
                                                 write_index
                                               |),
                                               M.read (| new_digit |)
@@ -1798,10 +1846,11 @@ Module num.
                                                     |) in
                                                   let _ :=
                                                     M.write (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::num::dec2flt::decimal::Decimal"
-                                                        "truncated",
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::num::dec2flt::decimal::Decimal",
+                                                        "truncated"
+                                                      |),
                                                       Value.Bool true
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
@@ -1829,10 +1878,11 @@ Module num.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::dec2flt::decimal::Decimal"
-                          "num_digits",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::dec2flt::decimal::Decimal",
+                          "num_digits"
+                        |),
                         M.read (| write_index |)
                       |) in
                     let _ :=
@@ -1973,13 +2023,13 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let γ1_0 := M.get_tuple_field γ0_0 0 in
-                            let γ1_1 := M.get_tuple_field γ0_0 1 in
+                            let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                            let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                             let γ1_0 := M.read (| γ1_0 |) in
                             let _ :=
                               M.is_constant_or_break_match (|
@@ -2060,13 +2110,13 @@ Module num.
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
-                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                         let γ1_0 := M.read (| γ1_0 |) in
                         let _ :=
                           M.is_constant_or_break_match (|
@@ -2087,10 +2137,11 @@ Module num.
                                       (M.alloc (|
                                         BinOp.Pure.eq
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              d
-                                              "core::num::dec2flt::decimal::Decimal"
+                                            M.SubPointer.get_struct_record_field (|
+                                              d,
+                                              "core::num::dec2flt::decimal::Decimal",
                                               "num_digits"
+                                            |)
                                           |))
                                           (Value.Integer Integer.Usize 0)
                                       |)) in
@@ -2118,13 +2169,15 @@ Module num.
                                                   |)
                                                 |) in
                                               let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
                                                 |) in
-                                              let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                              let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                              let γ1_1 :=
+                                                M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                               let γ1_0 := M.read (| γ1_0 |) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -2181,10 +2234,11 @@ Module num.
                                                 (BinOp.Pure.lt
                                                   (BinOp.Panic.add (|
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        d
-                                                        "core::num::dec2flt::decimal::Decimal"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        d,
+                                                        "core::num::dec2flt::decimal::Decimal",
                                                         "num_digits"
+                                                      |)
                                                     |),
                                                     Value.Integer Integer.Usize 8
                                                   |))
@@ -2266,19 +2320,21 @@ Module num.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    d
-                                                    "core::num::dec2flt::decimal::Decimal"
-                                                    "digits";
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    d,
+                                                    "core::num::dec2flt::decimal::Decimal",
+                                                    "digits"
+                                                  |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
                                                     [
                                                       ("start",
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            d
-                                                            "core::num::dec2flt::decimal::Decimal"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            d,
+                                                            "core::num::dec2flt::decimal::Decimal",
                                                             "num_digits"
+                                                          |)
                                                         |))
                                                     ]
                                                 ]
@@ -2292,10 +2348,11 @@ Module num.
                                         |) in
                                       let _ :=
                                         let β :=
-                                          M.get_struct_record_field
-                                            d
-                                            "core::num::dec2flt::decimal::Decimal"
-                                            "num_digits" in
+                                          M.SubPointer.get_struct_record_field (|
+                                            d,
+                                            "core::num::dec2flt::decimal::Decimal",
+                                            "num_digits"
+                                          |) in
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
@@ -2384,10 +2441,11 @@ Module num.
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              d
-                              "core::num::dec2flt::decimal::Decimal"
-                              "decimal_point",
+                            M.SubPointer.get_struct_record_field (|
+                              d,
+                              "core::num::dec2flt::decimal::Decimal",
+                              "decimal_point"
+                            |),
                             BinOp.Panic.sub (|
                               M.rust_cast
                                 (M.call_closure (|
@@ -2424,10 +2482,11 @@ Module num.
                             (M.alloc (|
                               BinOp.Pure.ne
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    d
-                                    "core::num::dec2flt::decimal::Decimal"
+                                  M.SubPointer.get_struct_record_field (|
+                                    d,
+                                    "core::num::dec2flt::decimal::Decimal",
                                     "num_digits"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -2556,7 +2615,7 @@ Module num.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::option::Option::Some",
                                                       0
@@ -2631,10 +2690,11 @@ Module num.
                             |)) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              d
-                              "core::num::dec2flt::decimal::Decimal"
-                              "decimal_point" in
+                            M.SubPointer.get_struct_record_field (|
+                              d,
+                              "core::num::dec2flt::decimal::Decimal",
+                              "decimal_point"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.add (|
@@ -2644,30 +2704,33 @@ Module num.
                           |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              d
-                              "core::num::dec2flt::decimal::Decimal"
-                              "num_digits" in
+                            M.SubPointer.get_struct_record_field (|
+                              d,
+                              "core::num::dec2flt::decimal::Decimal",
+                              "num_digits"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.sub (| M.read (| β |), M.read (| n_trailing_zeros |) |)
                           |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              d
-                              "core::num::dec2flt::decimal::Decimal"
-                              "decimal_point" in
+                            M.SubPointer.get_struct_record_field (|
+                              d,
+                              "core::num::dec2flt::decimal::Decimal",
+                              "decimal_point"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.add (|
                               M.read (| β |),
                               M.rust_cast
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    d
-                                    "core::num::dec2flt::decimal::Decimal"
+                                  M.SubPointer.get_struct_record_field (|
+                                    d,
+                                    "core::num::dec2flt::decimal::Decimal",
                                     "num_digits"
+                                  |)
                                 |))
                             |)
                           |) in
@@ -2681,10 +2744,11 @@ Module num.
                                     (M.alloc (|
                                       BinOp.Pure.gt
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            d
-                                            "core::num::dec2flt::decimal::Decimal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            d,
+                                            "core::num::dec2flt::decimal::Decimal",
                                             "num_digits"
+                                          |)
                                         |))
                                         (M.read (|
                                           M.get_constant (|
@@ -2699,18 +2763,20 @@ Module num.
                                   |) in
                                 let _ :=
                                   M.write (|
-                                    M.get_struct_record_field
-                                      d
-                                      "core::num::dec2flt::decimal::Decimal"
-                                      "truncated",
+                                    M.SubPointer.get_struct_record_field (|
+                                      d,
+                                      "core::num::dec2flt::decimal::Decimal",
+                                      "truncated"
+                                    |),
                                     Value.Bool true
                                   |) in
                                 let _ :=
                                   M.write (|
-                                    M.get_struct_record_field
-                                      d
-                                      "core::num::dec2flt::decimal::Decimal"
-                                      "num_digits",
+                                    M.SubPointer.get_struct_record_field (|
+                                      d,
+                                      "core::num::dec2flt::decimal::Decimal",
+                                      "num_digits"
+                                    |),
                                     M.read (|
                                       M.get_constant (| "core::num::dec2flt::decimal::MAX_DIGITS" |)
                                     |)
@@ -2740,13 +2806,13 @@ Module num.
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
-                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                         let γ1_0 := M.read (| γ1_0 |) in
                         let ch := M.copy (| γ1_0 |) in
                         let s_next := M.copy (| γ1_1 |) in
@@ -2793,13 +2859,13 @@ Module num.
                                               |)
                                             |) in
                                           let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let γ1_0 := M.read (| γ1_0 |) in
                                           let ch := M.copy (| γ1_0 |) in
                                           let s_next := M.copy (| γ1_1 |) in
@@ -2916,10 +2982,11 @@ Module num.
                                   |) in
                                 let _ :=
                                   let β :=
-                                    M.get_struct_record_field
-                                      d
-                                      "core::num::dec2flt::decimal::Decimal"
-                                      "decimal_point" in
+                                    M.SubPointer.get_struct_record_field (|
+                                      d,
+                                      "core::num::dec2flt::decimal::Decimal",
+                                      "decimal_point"
+                                    |) in
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
@@ -2970,10 +3037,11 @@ Module num.
                             [
                               ("start",
                                 M.read (|
-                                  M.get_struct_record_field
-                                    d
-                                    "core::num::dec2flt::decimal::Decimal"
+                                  M.SubPointer.get_struct_record_field (|
+                                    d,
+                                    "core::num::dec2flt::decimal::Decimal",
                                     "num_digits"
+                                  |)
                                 |));
                               ("end_",
                                 M.read (|
@@ -3016,7 +3084,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -3024,11 +3092,12 @@ Module num.
                                         let i := M.copy (| γ0_0 |) in
                                         let _ :=
                                           M.write (|
-                                            M.get_array_field (|
-                                              M.get_struct_record_field
-                                                d
-                                                "core::num::dec2flt::decimal::Decimal"
-                                                "digits",
+                                            M.SubPointer.get_array_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                d,
+                                                "core::num::dec2flt::decimal::Decimal",
+                                                "digits"
+                                              |),
                                               i
                                             |),
                                             Value.Integer Integer.U8 0
@@ -3142,7 +3211,7 @@ Module num.
                     |) in
                   let x_a :=
                     M.copy (|
-                      M.get_array_field (|
+                      M.SubPointer.get_array_field (|
                         M.get_constant (|
                           "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE"
                         |),
@@ -3151,7 +3220,7 @@ Module num.
                     |) in
                   let x_b :=
                     M.copy (|
-                      M.get_array_field (|
+                      M.SubPointer.get_array_field (|
                         M.get_constant (|
                           "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE"
                         |),
@@ -3292,13 +3361,15 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
                                               |) in
-                                            let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                            let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                            let γ1_0 :=
+                                              M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                            let γ1_1 :=
+                                              M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                             let i := M.copy (| γ1_0 |) in
                                             let γ1_1 := M.read (| γ1_1 |) in
                                             let p5 := M.copy (| γ1_1 |) in
@@ -3313,10 +3384,11 @@ Module num.
                                                           BinOp.Pure.ge
                                                             (M.read (| i |))
                                                             (M.read (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| d |))
-                                                                "core::num::dec2flt::decimal::Decimal"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| d |),
+                                                                "core::num::dec2flt::decimal::Decimal",
                                                                 "num_digits"
+                                                              |)
                                                             |))
                                                         |)) in
                                                     let _ :=
@@ -3348,11 +3420,12 @@ Module num.
                                                                 (M.alloc (|
                                                                   BinOp.Pure.eq
                                                                     (M.read (|
-                                                                      M.get_array_field (|
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| d |))
-                                                                          "core::num::dec2flt::decimal::Decimal"
-                                                                          "digits",
+                                                                      M.SubPointer.get_array_field (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| d |),
+                                                                          "core::num::dec2flt::decimal::Decimal",
+                                                                          "digits"
+                                                                        |),
                                                                         i
                                                                       |)
                                                                     |))
@@ -3380,11 +3453,12 @@ Module num.
                                                                         (M.alloc (|
                                                                           BinOp.Pure.lt
                                                                             (M.read (|
-                                                                              M.get_array_field (|
-                                                                                M.get_struct_record_field
-                                                                                  (M.read (| d |))
-                                                                                  "core::num::dec2flt::decimal::Decimal"
-                                                                                  "digits",
+                                                                              M.SubPointer.get_array_field (|
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.read (| d |),
+                                                                                  "core::num::dec2flt::decimal::Decimal",
+                                                                                  "digits"
+                                                                                |),
                                                                                 i
                                                                               |)
                                                                             |))

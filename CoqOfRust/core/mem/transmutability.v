@@ -45,60 +45,68 @@ Module mem.
                 LogicalOp.and (|
                   BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::mem::transmutability::Assume"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::mem::transmutability::Assume",
                         "alignment"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::mem::transmutability::Assume"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::mem::transmutability::Assume",
                         "alignment"
+                      |)
                     |)),
                   ltac:(M.monadic
                     (BinOp.Pure.eq
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::mem::transmutability::Assume"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::mem::transmutability::Assume",
                           "lifetimes"
+                        |)
                       |))
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "core::mem::transmutability::Assume"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::mem::transmutability::Assume",
                           "lifetimes"
+                        |)
                       |))))
                 |),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::mem::transmutability::Assume"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::mem::transmutability::Assume",
                         "safety"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::mem::transmutability::Assume"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::mem::transmutability::Assume",
                         "safety"
+                      |)
                     |))))
               |),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::mem::transmutability::Assume"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::mem::transmutability::Assume",
                       "validity"
+                    |)
                   |))
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::mem::transmutability::Assume"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::mem::transmutability::Assume",
                       "validity"
+                    |)
                   |))))
             |)))
         | _, _ => M.impossible
@@ -209,32 +217,36 @@ Module mem.
                 M.read (| Value.String "alignment" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::mem::transmutability::Assume"
-                    "alignment");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::mem::transmutability::Assume",
+                    "alignment"
+                  |));
                 M.read (| Value.String "lifetimes" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::mem::transmutability::Assume"
-                    "lifetimes");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::mem::transmutability::Assume",
+                    "lifetimes"
+                  |));
                 M.read (| Value.String "safety" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::mem::transmutability::Assume"
-                    "safety");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::mem::transmutability::Assume",
+                    "safety"
+                  |));
                 M.read (| Value.String "validity" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::mem::transmutability::Assume"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::mem::transmutability::Assume",
                       "validity"
+                    |)
                   |))
               ]
             |)))
@@ -363,59 +375,73 @@ Module mem.
                 ("alignment",
                   LogicalOp.or (|
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "core::mem::transmutability::Assume"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::transmutability::Assume",
                         "alignment"
+                      |)
                     |),
                     ltac:(M.monadic
                       (M.read (|
-                        M.get_struct_record_field
-                          other_assumptions
-                          "core::mem::transmutability::Assume"
+                        M.SubPointer.get_struct_record_field (|
+                          other_assumptions,
+                          "core::mem::transmutability::Assume",
                           "alignment"
+                        |)
                       |)))
                   |));
                 ("lifetimes",
                   LogicalOp.or (|
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "core::mem::transmutability::Assume"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::transmutability::Assume",
                         "lifetimes"
+                      |)
                     |),
                     ltac:(M.monadic
                       (M.read (|
-                        M.get_struct_record_field
-                          other_assumptions
-                          "core::mem::transmutability::Assume"
+                        M.SubPointer.get_struct_record_field (|
+                          other_assumptions,
+                          "core::mem::transmutability::Assume",
                           "lifetimes"
+                        |)
                       |)))
                   |));
                 ("safety",
                   LogicalOp.or (|
                     M.read (|
-                      M.get_struct_record_field self "core::mem::transmutability::Assume" "safety"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::transmutability::Assume",
+                        "safety"
+                      |)
                     |),
                     ltac:(M.monadic
                       (M.read (|
-                        M.get_struct_record_field
-                          other_assumptions
-                          "core::mem::transmutability::Assume"
+                        M.SubPointer.get_struct_record_field (|
+                          other_assumptions,
+                          "core::mem::transmutability::Assume",
                           "safety"
+                        |)
                       |)))
                   |));
                 ("validity",
                   LogicalOp.or (|
                     M.read (|
-                      M.get_struct_record_field self "core::mem::transmutability::Assume" "validity"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::transmutability::Assume",
+                        "validity"
+                      |)
                     |),
                     ltac:(M.monadic
                       (M.read (|
-                        M.get_struct_record_field
-                          other_assumptions
-                          "core::mem::transmutability::Assume"
+                        M.SubPointer.get_struct_record_field (|
+                          other_assumptions,
+                          "core::mem::transmutability::Assume",
                           "validity"
+                        |)
                       |)))
                   |))
               ]))
@@ -446,63 +472,77 @@ Module mem.
                 ("alignment",
                   LogicalOp.and (|
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "core::mem::transmutability::Assume"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::transmutability::Assume",
                         "alignment"
+                      |)
                     |),
                     ltac:(M.monadic
                       (UnOp.Pure.not
                         (M.read (|
-                          M.get_struct_record_field
-                            other_assumptions
-                            "core::mem::transmutability::Assume"
+                          M.SubPointer.get_struct_record_field (|
+                            other_assumptions,
+                            "core::mem::transmutability::Assume",
                             "alignment"
+                          |)
                         |))))
                   |));
                 ("lifetimes",
                   LogicalOp.and (|
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "core::mem::transmutability::Assume"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::transmutability::Assume",
                         "lifetimes"
+                      |)
                     |),
                     ltac:(M.monadic
                       (UnOp.Pure.not
                         (M.read (|
-                          M.get_struct_record_field
-                            other_assumptions
-                            "core::mem::transmutability::Assume"
+                          M.SubPointer.get_struct_record_field (|
+                            other_assumptions,
+                            "core::mem::transmutability::Assume",
                             "lifetimes"
+                          |)
                         |))))
                   |));
                 ("safety",
                   LogicalOp.and (|
                     M.read (|
-                      M.get_struct_record_field self "core::mem::transmutability::Assume" "safety"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::transmutability::Assume",
+                        "safety"
+                      |)
                     |),
                     ltac:(M.monadic
                       (UnOp.Pure.not
                         (M.read (|
-                          M.get_struct_record_field
-                            other_assumptions
-                            "core::mem::transmutability::Assume"
+                          M.SubPointer.get_struct_record_field (|
+                            other_assumptions,
+                            "core::mem::transmutability::Assume",
                             "safety"
+                          |)
                         |))))
                   |));
                 ("validity",
                   LogicalOp.and (|
                     M.read (|
-                      M.get_struct_record_field self "core::mem::transmutability::Assume" "validity"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::transmutability::Assume",
+                        "validity"
+                      |)
                     |),
                     ltac:(M.monadic
                       (UnOp.Pure.not
                         (M.read (|
-                          M.get_struct_record_field
-                            other_assumptions
-                            "core::mem::transmutability::Assume"
+                          M.SubPointer.get_struct_record_field (|
+                            other_assumptions,
+                            "core::mem::transmutability::Assume",
                             "validity"
+                          |)
                         |))))
                   |))
               ]))

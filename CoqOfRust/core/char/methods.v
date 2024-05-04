@@ -460,10 +460,11 @@ Module char.
                       (let _ :=
                         M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 34 |) in
                       let γ :=
-                        M.get_struct_record_field
-                          args
-                          "core::char::methods::EscapeDebugExtArgs"
-                          "escape_double_quote" in
+                        M.SubPointer.get_struct_record_field (|
+                          args,
+                          "core::char::methods::EscapeDebugExtArgs",
+                          "escape_double_quote"
+                        |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
@@ -481,10 +482,11 @@ Module char.
                       (let _ :=
                         M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 39 |) in
                       let γ :=
-                        M.get_struct_record_field
-                          args
-                          "core::char::methods::EscapeDebugExtArgs"
-                          "escape_single_quote" in
+                        M.SubPointer.get_struct_record_field (|
+                          args,
+                          "core::char::methods::EscapeDebugExtArgs",
+                          "escape_single_quote"
+                        |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
@@ -499,10 +501,11 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.get_struct_record_field
-                          args
-                          "core::char::methods::EscapeDebugExtArgs"
-                          "escape_grapheme_extended" in
+                        M.SubPointer.get_struct_record_field (|
+                          args,
+                          "core::char::methods::EscapeDebugExtArgs",
+                          "escape_grapheme_extended"
+                        |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let γ :=
                         M.alloc (|
@@ -2153,32 +2156,32 @@ Module char.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer Integer.Usize 1
                         |) in
                       let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.get_slice_index_or_break_match (| γ0_1, 0 |) in
-                      let γ2_rest := M.get_slice_rest_or_break_match (| γ0_1, 1, 0 |) in
+                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
                       let a := M.alloc (| γ2_0 |) in
                       let _ := M.write (| M.read (| a |), M.rust_cast (M.read (| code |)) |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer Integer.Usize 2
                         |) in
                       let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.get_slice_index_or_break_match (| γ0_1, 0 |) in
-                      let γ2_1 := M.get_slice_index_or_break_match (| γ0_1, 1 |) in
-                      let γ2_rest := M.get_slice_rest_or_break_match (| γ0_1, 2, 0 |) in
+                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                      let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
+                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 2, 0 |) in
                       let a := M.alloc (| γ2_0 |) in
                       let b := M.alloc (| γ2_1 |) in
                       let _ :=
@@ -2207,18 +2210,18 @@ Module char.
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer Integer.Usize 3
                         |) in
                       let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.get_slice_index_or_break_match (| γ0_1, 0 |) in
-                      let γ2_1 := M.get_slice_index_or_break_match (| γ0_1, 1 |) in
-                      let γ2_2 := M.get_slice_index_or_break_match (| γ0_1, 2 |) in
-                      let γ2_rest := M.get_slice_rest_or_break_match (| γ0_1, 3, 0 |) in
+                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                      let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
+                      let γ2_2 := M.SubPointer.get_slice_index (| γ0_1, 2 |) in
+                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 3, 0 |) in
                       let a := M.alloc (| γ2_0 |) in
                       let b := M.alloc (| γ2_1 |) in
                       let c := M.alloc (| γ2_2 |) in
@@ -2261,19 +2264,19 @@ Module char.
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer Integer.Usize 4
                         |) in
                       let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.get_slice_index_or_break_match (| γ0_1, 0 |) in
-                      let γ2_1 := M.get_slice_index_or_break_match (| γ0_1, 1 |) in
-                      let γ2_2 := M.get_slice_index_or_break_match (| γ0_1, 2 |) in
-                      let γ2_3 := M.get_slice_index_or_break_match (| γ0_1, 3 |) in
-                      let γ2_rest := M.get_slice_rest_or_break_match (| γ0_1, 4, 0 |) in
+                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                      let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
+                      let γ2_2 := M.SubPointer.get_slice_index (| γ0_1, 2 |) in
+                      let γ2_3 := M.SubPointer.get_slice_index (| γ0_1, 3 |) in
+                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 4, 0 |) in
                       let a := M.alloc (| γ2_0 |) in
                       let b := M.alloc (| γ2_1 |) in
                       let c := M.alloc (| γ2_2 |) in
