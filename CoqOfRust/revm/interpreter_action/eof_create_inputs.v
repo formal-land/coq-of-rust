@@ -24,7 +24,7 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -34,70 +34,88 @@ Module interpreter_action.
               let names :=
                 M.alloc (|
                   M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "caller" |);
-                        M.read (| Value.String "created_address" |);
-                        M.read (| Value.String "value" |);
-                        M.read (| Value.String "eof_init_code" |);
-                        M.read (| Value.String "gas_limit" |);
-                        M.read (| Value.String "return_memory_range" |)
-                      ]
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value (M.read (| M.of_value (| Value.String "caller" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "created_address" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "value" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "eof_init_code" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "gas_limit" |) |));
+                          A.to_value
+                            (M.read (| M.of_value (| Value.String "return_memory_range" |) |))
+                        ]
+                    |)
                   |)
                 |) in
               let values :=
                 M.alloc (|
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "caller"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "created_address"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "value"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "eof_init_code"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "gas_limit"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                                "return_memory_range"
-                              |)
-                            |))
-                        ]
-                    |))
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                  "caller"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                  "created_address"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                  "value"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                  "eof_init_code"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                  "gas_limit"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.alloc (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                    "return_memory_range"
+                                  |)
+                                |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -108,8 +126,8 @@ Module interpreter_action.
                   |),
                   [
                     M.read (| f |);
-                    M.read (| Value.String "EOFCreateInput" |);
-                    (* Unsize *) M.pointer_coercion (M.read (| names |));
+                    M.read (| M.of_value (| Value.String "EOFCreateInput" |) |);
+                    (* Unsize *) M.pointer_coercion (| M.read (| names |) |);
                     M.read (| values |)
                   ]
                 |)
@@ -131,80 +149,88 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
-              [
-                ("caller",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("created_address",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("value",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "ruint::Uint",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("eof_init_code",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "revm_primitives::bytecode::eof::Eof",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("gas_limit",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "u64",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("return_memory_range",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |))
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
+                [
+                  ("caller",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("created_address",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "ruint::Uint",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("eof_init_code",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "revm_primitives::bytecode::eof::Eof",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("gas_limit",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "u64",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("return_memory_range",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -221,111 +247,125 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
-              [
-                ("caller",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "caller"
-                      |)
-                    ]
-                  |));
-                ("created_address",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "created_address"
-                      |)
-                    ]
-                  |));
-                ("value",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "ruint::Uint",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "value"
-                      |)
-                    ]
-                  |));
-                ("eof_init_code",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "revm_primitives::bytecode::eof::Eof",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "eof_init_code"
-                      |)
-                    ]
-                  |));
-                ("gas_limit",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "gas_limit"
-                      |)
-                    ]
-                  |));
-                ("return_memory_range",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "return_memory_range"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
+                [
+                  ("caller",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                            "caller"
+                          |)
+                        ]
+                      |)));
+                  ("created_address",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                            "created_address"
+                          |)
+                        ]
+                      |)));
+                  ("value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "ruint::Uint",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                            "value"
+                          |)
+                        ]
+                      |)));
+                  ("eof_init_code",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "revm_primitives::bytecode::eof::Eof",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                            "eof_init_code"
+                          |)
+                        ]
+                      |)));
+                  ("gas_limit",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "u64",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                            "gas_limit"
+                          |)
+                        ]
+                      |)));
+                  ("return_memory_range",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                            "return_memory_range"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -354,7 +394,7 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -456,21 +496,22 @@ Module interpreter_action.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
                         "gas_limit"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
                         "gas_limit"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -523,37 +564,40 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Value.DeclaredButUndefined,
+                                M.of_value (| Value.DeclaredButUndefined |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Value.DeclaredButUndefined,
+                                        M.of_value (| Value.DeclaredButUndefined |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Value.DeclaredButUndefined,
+                                                M.of_value (| Value.DeclaredButUndefined |),
                                                 [
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -600,7 +644,7 @@ Module interpreter_action.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ caller; created_address; value; eof_init_code; gas_limit; return_memory_range ] =>
           ltac:(M.monadic
@@ -610,16 +654,18 @@ Module interpreter_action.
             let eof_init_code := M.alloc (| eof_init_code |) in
             let gas_limit := M.alloc (| gas_limit |) in
             let return_memory_range := M.alloc (| return_memory_range |) in
-            Value.StructRecord
-              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
-              [
-                ("caller", M.read (| caller |));
-                ("created_address", M.read (| created_address |));
-                ("value", M.read (| value |));
-                ("eof_init_code", M.read (| eof_init_code |));
-                ("gas_limit", M.read (| gas_limit |));
-                ("return_memory_range", M.read (| return_memory_range |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
+                [
+                  ("caller", A.to_value (M.read (| caller |)));
+                  ("created_address", A.to_value (M.read (| created_address |)));
+                  ("value", A.to_value (M.read (| value |)));
+                  ("eof_init_code", A.to_value (M.read (| eof_init_code |)));
+                  ("gas_limit", A.to_value (M.read (| gas_limit |)));
+                  ("return_memory_range", A.to_value (M.read (| return_memory_range |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       

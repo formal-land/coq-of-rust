@@ -9,7 +9,7 @@ fn create_box() {
     // `_box1` is destroyed here, and memory gets freed
 }
 *)
-Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
+Definition create_box (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -24,10 +24,10 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer 3 ]
+              [ M.of_value (| Value.Integer 3 |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -54,7 +54,7 @@ fn main() {
     // `_box2` is destroyed here, and memory gets freed
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -69,7 +69,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer 5 ]
+              [ M.of_value (| Value.Integer 5 |) ]
             |)
           |) in
         let _ :=
@@ -83,10 +83,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "new",
                   []
                 |),
-                [ Value.Integer 4 ]
+                [ M.of_value (| Value.Integer 4 |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         M.use
           (M.match_operator (|
             M.alloc (|
@@ -99,9 +99,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                 |),
                 [
-                  Value.StructRecord
-                    "core::ops::range::Range"
-                    [ ("start", Value.Integer 0); ("end_", Value.Integer 1000) ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      [
+                        ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                        ("end_", A.to_value (M.of_value (| Value.Integer 1000 |)))
+                      ]
+                  |)
                 ]
               |)
             |),
@@ -144,10 +149,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   |)))
             ]
           |))

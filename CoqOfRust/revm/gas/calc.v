@@ -53,7 +53,7 @@ Module gas.
         }
     }
     *)
-    Definition sstore_refund (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition sstore_refund (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ spec_id; original; current; new ] =>
         ltac:(M.monadic
@@ -63,7 +63,7 @@ Module gas.
           let new := M.alloc (| new |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -78,9 +78,11 @@ Module gas.
                             |),
                             [
                               M.read (| spec_id |);
-                              Value.StructTuple
-                                "revm_primitives::specification::SpecId::ISTANBUL"
-                                []
+                              M.of_value (|
+                                Value.StructTuple
+                                  "revm_primitives::specification::SpecId::ISTANBUL"
+                                  []
+                              |)
                             ]
                           |)
                         |)) in
@@ -88,7 +90,7 @@ Module gas.
                     let sstore_clears_schedule :=
                       M.copy (|
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -103,9 +105,11 @@ Module gas.
                                         |),
                                         [
                                           M.read (| spec_id |);
-                                          Value.StructTuple
-                                            "revm_primitives::specification::SpecId::LONDON"
-                                            []
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "revm_primitives::specification::SpecId::LONDON"
+                                              []
+                                          |)
                                         ]
                                       |)
                                     |)) in
@@ -115,8 +119,8 @@ Module gas.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
-                                  M.rust_cast
-                                    (BinOp.Panic.add (|
+                                  M.rust_cast (|
+                                    BinOp.Panic.add (|
                                       Integer.U64,
                                       BinOp.Panic.sub (|
                                         Integer.U64,
@@ -136,7 +140,8 @@ Module gas.
                                           "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
                                         |)
                                       |)
-                                    |))
+                                    |)
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -147,7 +152,7 @@ Module gas.
                         |)
                       |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -167,11 +172,11 @@ Module gas.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 0 |)));
+                            M.alloc (| M.of_value (| Value.Integer 0 |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -210,10 +215,10 @@ Module gas.
                                     sstore_clears_schedule));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let refund := M.alloc (| Value.Integer 0 |) in
+                                    (let refund := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
                                     let _ :=
                                       M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
@@ -238,7 +243,7 @@ Module gas.
                                                   Value.Bool true
                                                 |) in
                                               M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -274,11 +279,15 @@ Module gas.
                                                             M.read (| sstore_clears_schedule |)
                                                           |)
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)));
+                                                      M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        M.alloc (| Value.Tuple [] |),
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |),
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -318,20 +327,26 @@ Module gas.
                                                                     |)
                                                                   |)
                                                                 |) in
-                                                              M.alloc (| Value.Tuple [] |)));
+                                                              M.alloc (|
+                                                                M.of_value (| Value.Tuple [] |)
+                                                              |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (M.alloc (| Value.Tuple [] |)))
+                                                              (M.alloc (|
+                                                                M.of_value (| Value.Tuple [] |)
+                                                              |)))
                                                         ]
                                                       |)))
                                                 ]
                                               |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                         ]
                                       |) in
                                     let _ :=
                                       M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
@@ -356,7 +371,7 @@ Module gas.
                                                 |) in
                                               M.match_operator (|
                                                 M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -372,9 +387,11 @@ Module gas.
                                                                 |),
                                                                 [
                                                                   M.read (| spec_id |);
-                                                                  Value.StructTuple
-                                                                    "revm_primitives::specification::SpecId::BERLIN"
-                                                                    []
+                                                                  M.of_value (|
+                                                                    Value.StructTuple
+                                                                      "revm_primitives::specification::SpecId::BERLIN"
+                                                                      []
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |)) in
@@ -384,49 +401,59 @@ Module gas.
                                                             Value.Bool true
                                                           |) in
                                                         M.alloc (|
-                                                          Value.Tuple
-                                                            [
-                                                              BinOp.Panic.sub (|
-                                                                Integer.U64,
-                                                                M.read (|
-                                                                  M.get_constant (|
-                                                                    "revm_interpreter::gas::constants::SSTORE_RESET"
-                                                                  |)
-                                                                |),
-                                                                M.read (|
-                                                                  M.get_constant (|
-                                                                    "revm_interpreter::gas::constants::COLD_SLOAD_COST"
-                                                                  |)
-                                                                |)
-                                                              |);
-                                                              M.read (|
-                                                                M.get_constant (|
-                                                                  "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
-                                                                |)
-                                                              |)
-                                                            ]
+                                                          M.of_value (|
+                                                            Value.Tuple
+                                                              [
+                                                                A.to_value
+                                                                  (BinOp.Panic.sub (|
+                                                                    Integer.U64,
+                                                                    M.read (|
+                                                                      M.get_constant (|
+                                                                        "revm_interpreter::gas::constants::SSTORE_RESET"
+                                                                      |)
+                                                                    |),
+                                                                    M.read (|
+                                                                      M.get_constant (|
+                                                                        "revm_interpreter::gas::constants::COLD_SLOAD_COST"
+                                                                      |)
+                                                                    |)
+                                                                  |));
+                                                                A.to_value
+                                                                  (M.read (|
+                                                                    M.get_constant (|
+                                                                      "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
+                                                                    |)
+                                                                  |))
+                                                              ]
+                                                          |)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (M.alloc (|
-                                                          Value.Tuple
-                                                            [
-                                                              M.read (|
-                                                                M.get_constant (|
-                                                                  "revm_interpreter::gas::constants::SSTORE_RESET"
-                                                                |)
-                                                              |);
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "revm_interpreter::gas::calc::sload_cost",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| spec_id |);
-                                                                  Value.Bool false
-                                                                ]
-                                                              |)
-                                                            ]
+                                                          M.of_value (|
+                                                            Value.Tuple
+                                                              [
+                                                                A.to_value
+                                                                  (M.read (|
+                                                                    M.get_constant (|
+                                                                      "revm_interpreter::gas::constants::SSTORE_RESET"
+                                                                    |)
+                                                                  |));
+                                                                A.to_value
+                                                                  (M.call_closure (|
+                                                                    M.get_function (|
+                                                                      "revm_interpreter::gas::calc::sload_cost",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.read (| spec_id |);
+                                                                      M.of_value (|
+                                                                        Value.Bool false
+                                                                      |)
+                                                                    ]
+                                                                  |))
+                                                              ]
+                                                          |)
                                                         |)))
                                                   ]
                                                 |),
@@ -440,7 +467,9 @@ Module gas.
                                                       let gas_sstore_reset := M.copy (| γ0_0 |) in
                                                       let gas_sload := M.copy (| γ0_1 |) in
                                                       M.match_operator (|
-                                                        M.alloc (| Value.Tuple [] |),
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |),
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -475,8 +504,8 @@ Module gas.
                                                                   BinOp.Panic.add (|
                                                                     Integer.I64,
                                                                     M.read (| β |),
-                                                                    M.rust_cast
-                                                                      (BinOp.Panic.sub (|
+                                                                    M.rust_cast (|
+                                                                      BinOp.Panic.sub (|
                                                                         Integer.U64,
                                                                         M.read (|
                                                                           M.get_constant (|
@@ -484,10 +513,13 @@ Module gas.
                                                                           |)
                                                                         |),
                                                                         M.read (| gas_sload |)
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |) in
-                                                              M.alloc (| Value.Tuple [] |)));
+                                                              M.alloc (|
+                                                                M.of_value (| Value.Tuple [] |)
+                                                              |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let _ :=
@@ -497,22 +529,27 @@ Module gas.
                                                                   BinOp.Panic.add (|
                                                                     Integer.I64,
                                                                     M.read (| β |),
-                                                                    M.rust_cast
-                                                                      (BinOp.Panic.sub (|
+                                                                    M.rust_cast (|
+                                                                      BinOp.Panic.sub (|
                                                                         Integer.U64,
                                                                         M.read (|
                                                                           gas_sstore_reset
                                                                         |),
                                                                         M.read (| gas_sload |)
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |) in
-                                                              M.alloc (| Value.Tuple [] |)))
+                                                              M.alloc (|
+                                                                M.of_value (| Value.Tuple [] |)
+                                                              |)))
                                                         ]
                                                       |)))
                                                 ]
                                               |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                         ]
                                       |) in
                                     refund))
@@ -523,7 +560,7 @@ Module gas.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -559,7 +596,7 @@ Module gas.
                             M.get_constant (|
                               "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS"
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                       ]
                     |)))
               ]
@@ -573,7 +610,7 @@ Module gas.
         CREATE.checked_add(tri!(cost_per_word(len, KECCAK256WORD)))
     }
     *)
-    Definition create2_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition create2_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len ] =>
         ltac:(M.monadic
@@ -613,7 +650,11 @@ Module gas.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)))
@@ -649,7 +690,7 @@ Module gas.
         l
     }
     *)
-    Definition log2floor (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition log2floor (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ value ] =>
         ltac:(M.monadic
@@ -657,22 +698,22 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let l := M.alloc (| Value.Integer 256 |) in
-                let i := M.alloc (| Value.Integer 3 |) in
+                let l := M.alloc (| M.of_value (| Value.Integer 256 |) |) in
+                let i := M.alloc (| M.of_value (| Value.Integer 3 |) |) in
                 let _ :=
                   M.loop (|
                     ltac:(M.monadic
                       (let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.eq
-                                        (M.read (|
+                                      BinOp.Pure.eq (|
+                                        M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -684,8 +725,9 @@ Module gas.
                                             |),
                                             i
                                           |)
-                                        |))
-                                        (Value.Integer 0)
+                                        |),
+                                        M.of_value (| Value.Integer 0 |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -699,10 +741,10 @@ Module gas.
                                     BinOp.Panic.sub (|
                                       Integer.U64,
                                       M.read (| β |),
-                                      Value.Integer 64
+                                      M.of_value (| Value.Integer 64 |)
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let _ :=
@@ -712,8 +754,8 @@ Module gas.
                                     BinOp.Panic.sub (|
                                       Integer.U64,
                                       M.read (| β |),
-                                      M.rust_cast
-                                        (M.call_closure (|
+                                      M.rust_cast (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "leading_zeros",
@@ -734,18 +776,22 @@ Module gas.
                                               |)
                                             |)
                                           ]
-                                        |))
+                                        |)
+                                      |)
                                     |)
                                   |) in
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.eq (M.read (| l |)) (Value.Integer 0)
+                                              BinOp.Pure.eq (|
+                                                M.read (| l |),
+                                                M.of_value (| Value.Integer 0 |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -766,7 +812,7 @@ Module gas.
                                                 BinOp.Panic.sub (|
                                                   Integer.U64,
                                                   M.read (| l |),
-                                                  Value.Integer 1
+                                                  M.of_value (| Value.Integer 1 |)
                                                 |)
                                               |)
                                             |)
@@ -778,14 +824,17 @@ Module gas.
                         |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.eq (M.read (| i |)) (Value.Integer 0)
+                                      BinOp.Pure.eq (|
+                                        M.read (| i |),
+                                        M.of_value (| Value.Integer 0 |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -793,16 +842,21 @@ Module gas.
                                     Value.Bool true
                                   |) in
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
                       let _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Panic.sub (|
+                            Integer.Usize,
+                            M.read (| β |),
+                            M.of_value (| Value.Integer 1 |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   |) in
                 l
               |)))
@@ -828,7 +882,7 @@ Module gas.
         }
     }
     *)
-    Definition exp_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition exp_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ spec_id; power ] =>
         ltac:(M.monadic
@@ -838,7 +892,7 @@ Module gas.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -859,13 +913,16 @@ Module gas.
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::gas::constants::EXP" |)
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.get_constant (| "revm_interpreter::gas::constants::EXP" |)
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -880,7 +937,7 @@ Module gas.
                               [
                                 M.read (|
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
@@ -896,9 +953,11 @@ Module gas.
                                                   |),
                                                   [
                                                     M.read (| spec_id |);
-                                                    Value.StructTuple
-                                                      "revm_primitives::specification::SpecId::SPURIOUS_DRAGON"
-                                                      []
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "revm_primitives::specification::SpecId::SPURIOUS_DRAGON"
+                                                        []
+                                                    |)
                                                   ]
                                                 |)
                                               |)) in
@@ -907,8 +966,10 @@ Module gas.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          M.alloc (| Value.Integer 50 |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 10 |)))
+                                          M.alloc (| M.of_value (| Value.Integer 50 |) |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.of_value (| Value.Integer 10 |) |)))
                                     ]
                                   |)
                                 |)
@@ -991,9 +1052,9 @@ Module gas.
                                                                 |),
                                                                 [ M.read (| power |) ]
                                                               |),
-                                                              Value.Integer 8
+                                                              M.of_value (| Value.Integer 8 |)
                                                             |),
-                                                            Value.Integer 1
+                                                            M.of_value (| Value.Integer 1 |)
                                                           |)
                                                         ]
                                                       |)
@@ -1142,7 +1203,7 @@ Module gas.
         VERYLOW.checked_add(tri!(cost_per_word(len, COPY)))
     }
     *)
-    Definition verylowcopy_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition verylowcopy_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len ] =>
         ltac:(M.monadic
@@ -1182,7 +1243,11 @@ Module gas.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)))
@@ -1207,7 +1272,7 @@ Module gas.
         base_gas.checked_add(tri!(cost_per_word(len, COPY)))
     }
     *)
-    Definition extcodecopy_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extcodecopy_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ spec_id; len; is_cold ] =>
         ltac:(M.monadic
@@ -1220,7 +1285,7 @@ Module gas.
                 let base_gas :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1235,9 +1300,11 @@ Module gas.
                                     |),
                                     [
                                       M.read (| spec_id |);
-                                      Value.StructTuple
-                                        "revm_primitives::specification::SpecId::BERLIN"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_primitives::specification::SpecId::BERLIN"
+                                          []
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -1255,7 +1322,7 @@ Module gas.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -1270,9 +1337,11 @@ Module gas.
                                             |),
                                             [
                                               M.read (| spec_id |);
-                                              Value.StructTuple
-                                                "revm_primitives::specification::SpecId::TANGERINE"
-                                                []
+                                              M.of_value (|
+                                                Value.StructTuple
+                                                  "revm_primitives::specification::SpecId::TANGERINE"
+                                                  []
+                                              |)
                                             ]
                                           |)
                                         |)) in
@@ -1281,8 +1350,9 @@ Module gas.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.alloc (| Value.Integer 700 |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 20 |)))
+                                    M.alloc (| M.of_value (| Value.Integer 700 |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 20 |) |)))
                               ]
                             |)))
                       ]
@@ -1323,7 +1393,9 @@ Module gas.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -1344,7 +1416,7 @@ Module gas.
         tri!(LOG.checked_add(tri!(LOGDATA.checked_mul(len)))).checked_add(LOGTOPIC * n as u64)
     }
     *)
-    Definition log_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition log_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ n; len ] =>
         ltac:(M.monadic
@@ -1400,7 +1472,9 @@ Module gas.
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
-                                              Value.StructTuple "core::option::Option::None" []
+                                              M.of_value (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -1427,7 +1501,11 @@ Module gas.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)))
@@ -1437,7 +1515,7 @@ Module gas.
                   BinOp.Panic.mul (|
                     Integer.U64,
                     M.read (| M.get_constant (| "revm_interpreter::gas::constants::LOGTOPIC" |) |),
-                    M.rust_cast (M.read (| n |))
+                    M.rust_cast (| M.read (| n |) |)
                   |)
                 ]
               |)))
@@ -1450,7 +1528,7 @@ Module gas.
         KECCAK256.checked_add(tri!(cost_per_word(len, KECCAK256WORD)))
     }
     *)
-    Definition keccak256_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition keccak256_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len ] =>
         ltac:(M.monadic
@@ -1490,7 +1568,11 @@ Module gas.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)))
@@ -1508,7 +1590,7 @@ Module gas.
         multiple.checked_mul(num_words(len))
     }
     *)
-    Definition cost_per_word (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cost_per_word (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len; multiple ] =>
         ltac:(M.monadic
@@ -1535,7 +1617,7 @@ Module gas.
         cost
     }
     *)
-    Definition initcode_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition initcode_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len ] =>
         ltac:(M.monadic
@@ -1589,7 +1671,7 @@ Module gas.
         }
     }
     *)
-    Definition sload_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition sload_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ spec_id; is_cold ] =>
         ltac:(M.monadic
@@ -1597,7 +1679,7 @@ Module gas.
           let is_cold := M.alloc (| is_cold |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1612,13 +1694,17 @@ Module gas.
                             |),
                             [
                               M.read (| spec_id |);
-                              Value.StructTuple "revm_primitives::specification::SpecId::BERLIN" []
+                              M.of_value (|
+                                Value.StructTuple
+                                  "revm_primitives::specification::SpecId::BERLIN"
+                                  []
+                              |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1638,7 +1724,7 @@ Module gas.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1653,9 +1739,11 @@ Module gas.
                                     |),
                                     [
                                       M.read (| spec_id |);
-                                      Value.StructTuple
-                                        "revm_primitives::specification::SpecId::ISTANBUL"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_primitives::specification::SpecId::ISTANBUL"
+                                          []
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -1667,7 +1755,7 @@ Module gas.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -1682,9 +1770,11 @@ Module gas.
                                             |),
                                             [
                                               M.read (| spec_id |);
-                                              Value.StructTuple
-                                                "revm_primitives::specification::SpecId::TANGERINE"
-                                                []
+                                              M.of_value (|
+                                                Value.StructTuple
+                                                  "revm_primitives::specification::SpecId::TANGERINE"
+                                                  []
+                                              |)
                                             ]
                                           |)
                                         |)) in
@@ -1693,8 +1783,9 @@ Module gas.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.alloc (| Value.Integer 200 |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 50 |)))
+                                    M.alloc (| M.of_value (| Value.Integer 200 |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 50 |) |)))
                               ]
                             |)))
                       ]
@@ -1740,7 +1831,7 @@ Module gas.
         }
     }
     *)
-    Definition sstore_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition sstore_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ spec_id; original; current; new; gas; is_cold ] =>
         ltac:(M.monadic
@@ -1755,7 +1846,7 @@ Module gas.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -1771,19 +1862,22 @@ Module gas.
                                     |),
                                     [
                                       M.read (| spec_id |);
-                                      Value.StructTuple
-                                        "revm_primitives::specification::SpecId::ISTANBUL"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_primitives::specification::SpecId::ISTANBUL"
+                                          []
+                                      |)
                                     ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| gas |))
-                                      (M.read (|
+                                    (BinOp.Pure.le (|
+                                      M.read (| gas |),
+                                      M.read (|
                                         M.get_constant (|
                                           "revm_interpreter::gas::constants::CALL_STIPEND"
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1791,15 +1885,17 @@ Module gas.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                                |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1814,9 +1910,11 @@ Module gas.
                                 |),
                                 [
                                   M.read (| spec_id |);
-                                  Value.StructTuple
-                                    "revm_primitives::specification::SpecId::BERLIN"
-                                    []
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "revm_primitives::specification::SpecId::BERLIN"
+                                      []
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -1834,7 +1932,7 @@ Module gas.
                           |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1858,17 +1956,22 @@ Module gas.
                                         |)
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| gas_cost |) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ A.to_value (M.read (| gas_cost |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -1883,9 +1986,11 @@ Module gas.
                                         |),
                                         [
                                           M.read (| spec_id |);
-                                          Value.StructTuple
-                                            "revm_primitives::specification::SpecId::ISTANBUL"
-                                            []
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "revm_primitives::specification::SpecId::ISTANBUL"
+                                              []
+                                          |)
                                         ]
                                       |)
                                     |)) in
@@ -1895,36 +2000,42 @@ Module gas.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    [
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "revm_interpreter::gas::calc::istanbul_sstore_cost",
-                                          []
-                                        |),
-                                        [
-                                          M.read (| original |);
-                                          M.read (| current |);
-                                          M.read (| new |)
-                                        ]
-                                      |)
-                                    ]
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_function (|
+                                              "revm_interpreter::gas::calc::istanbul_sstore_cost",
+                                              []
+                                            |),
+                                            [
+                                              M.read (| original |);
+                                              M.read (| current |);
+                                              M.read (| new |)
+                                            ]
+                                          |))
+                                      ]
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    [
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "revm_interpreter::gas::calc::frontier_sstore_cost",
-                                          []
-                                        |),
-                                        [ M.read (| current |); M.read (| new |) ]
-                                      |)
-                                    ]
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_function (|
+                                              "revm_interpreter::gas::calc::frontier_sstore_cost",
+                                              []
+                                            |),
+                                            [ M.read (| current |); M.read (| new |) ]
+                                          |))
+                                      ]
+                                  |)
                                 |)))
                           ]
                         |)))
@@ -1952,7 +2063,7 @@ Module gas.
         }
     }
     *)
-    Definition istanbul_sstore_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition istanbul_sstore_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ original; current; new ] =>
         ltac:(M.monadic
@@ -1961,7 +2072,7 @@ Module gas.
           let new := M.alloc (| new |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1986,7 +2097,7 @@ Module gas.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -2023,7 +2134,7 @@ Module gas.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -2073,7 +2184,7 @@ Module gas.
         }
     }
     *)
-    Definition frontier_sstore_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition frontier_sstore_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ current; new ] =>
         ltac:(M.monadic
@@ -2081,7 +2192,7 @@ Module gas.
           let new := M.alloc (| new |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -2154,7 +2265,7 @@ Module gas.
         gas
     }
     *)
-    Definition selfdestruct_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition selfdestruct_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ spec_id; res ] =>
         ltac:(M.monadic
@@ -2164,7 +2275,7 @@ Module gas.
             let should_charge_topup :=
               M.copy (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -2179,9 +2290,11 @@ Module gas.
                                 |),
                                 [
                                   M.read (| spec_id |);
-                                  Value.StructTuple
-                                    "revm_primitives::specification::SpecId::SPURIOUS_DRAGON"
-                                    []
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "revm_primitives::specification::SpecId::SPURIOUS_DRAGON"
+                                      []
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -2197,27 +2310,29 @@ Module gas.
                               |)
                             |),
                             ltac:(M.monadic
-                              (UnOp.Pure.not
-                                (M.read (|
+                              (UnOp.Pure.not (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     res,
                                     "revm_interpreter::host::SelfDestructResult",
                                     "target_exists"
                                   |)
-                                |))))
+                                |)
+                              |)))
                           |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.read (|
+                          UnOp.Pure.not (|
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 res,
                                 "revm_interpreter::host::SelfDestructResult",
                                 "target_exists"
                               |)
-                            |))
+                            |)
+                          |)
                         |)))
                   ]
                 |)
@@ -2225,7 +2340,7 @@ Module gas.
             let selfdestruct_gas_topup :=
               M.copy (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -2241,9 +2356,11 @@ Module gas.
                                   |),
                                   [
                                     M.read (| spec_id |);
-                                    Value.StructTuple
-                                      "revm_primitives::specification::SpecId::TANGERINE"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_primitives::specification::SpecId::TANGERINE"
+                                        []
+                                    |)
                                   ]
                                 |),
                                 ltac:(M.monadic (M.read (| should_charge_topup |)))
@@ -2251,15 +2368,15 @@ Module gas.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer 25000 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                        M.alloc (| M.of_value (| Value.Integer 25000 |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                   ]
                 |)
               |) in
             let selfdestruct_gas :=
               M.copy (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -2274,16 +2391,18 @@ Module gas.
                                 |),
                                 [
                                   M.read (| spec_id |);
-                                  Value.StructTuple
-                                    "revm_primitives::specification::SpecId::TANGERINE"
-                                    []
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "revm_primitives::specification::SpecId::TANGERINE"
+                                      []
+                                  |)
                                 ]
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer 5000 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                        M.alloc (| M.of_value (| Value.Integer 5000 |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                   ]
                 |)
               |) in
@@ -2297,7 +2416,7 @@ Module gas.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2313,9 +2432,11 @@ Module gas.
                                 |),
                                 [
                                   M.read (| spec_id |);
-                                  Value.StructTuple
-                                    "revm_primitives::specification::SpecId::BERLIN"
-                                    []
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "revm_primitives::specification::SpecId::BERLIN"
+                                      []
+                                  |)
                                 ]
                               |),
                               ltac:(M.monadic
@@ -2342,7 +2463,7 @@ Module gas.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             gas
@@ -2388,7 +2509,7 @@ Module gas.
         gas
     }
     *)
-    Definition call_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition call_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ spec_id; transfers_value; is_cold; new_account_accounting ] =>
         ltac:(M.monadic
@@ -2400,7 +2521,7 @@ Module gas.
             let gas :=
               M.copy (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -2415,9 +2536,11 @@ Module gas.
                                 |),
                                 [
                                   M.read (| spec_id |);
-                                  Value.StructTuple
-                                    "revm_primitives::specification::SpecId::BERLIN"
-                                    []
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "revm_primitives::specification::SpecId::BERLIN"
+                                      []
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -2432,7 +2555,7 @@ Module gas.
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -2447,9 +2570,11 @@ Module gas.
                                         |),
                                         [
                                           M.read (| spec_id |);
-                                          Value.StructTuple
-                                            "revm_primitives::specification::SpecId::TANGERINE"
-                                            []
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "revm_primitives::specification::SpecId::TANGERINE"
+                                              []
+                                          |)
                                         ]
                                       |)
                                     |)) in
@@ -2458,8 +2583,9 @@ Module gas.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                M.alloc (| Value.Integer 700 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 40 |)))
+                                M.alloc (| M.of_value (| Value.Integer 700 |) |)));
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 40 |) |)))
                           ]
                         |)))
                   ]
@@ -2467,7 +2593,7 @@ Module gas.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2485,20 +2611,20 @@ Module gas.
                             |)
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use new_account_accounting in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -2513,9 +2639,11 @@ Module gas.
                                       |),
                                       [
                                         M.read (| spec_id |);
-                                        Value.StructTuple
-                                          "revm_primitives::specification::SpecId::SPURIOUS_DRAGON"
-                                          []
+                                        M.of_value (|
+                                          Value.StructTuple
+                                            "revm_primitives::specification::SpecId::SPURIOUS_DRAGON"
+                                            []
+                                        |)
                                       ]
                                     |)
                                   |)) in
@@ -2525,7 +2653,7 @@ Module gas.
                                   Value.Bool true
                                 |) in
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -2549,8 +2677,9 @@ Module gas.
                                             |)
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |)));
                           fun γ =>
@@ -2569,10 +2698,10 @@ Module gas.
                                     |)
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         ]
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             gas
@@ -2589,14 +2718,14 @@ Module gas.
         }
     }
     *)
-    Definition warm_cold_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition warm_cold_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ is_cold ] =>
         ltac:(M.monadic
           (let is_cold := M.alloc (| is_cold |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -2621,7 +2750,7 @@ Module gas.
         memory_gas(crate::interpreter::num_words(len as u64))
     }
     *)
-    Definition memory_gas_for_len (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition memory_gas_for_len (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len ] =>
         ltac:(M.monadic
@@ -2631,7 +2760,7 @@ Module gas.
             [
               M.call_closure (|
                 M.get_function (| "revm_interpreter::interpreter::shared_memory::num_words", [] |),
-                [ M.rust_cast (M.read (| len |)) ]
+                [ M.rust_cast (| M.read (| len |) |) ]
               |)
             ]
           |)))
@@ -2645,7 +2774,7 @@ Module gas.
             .saturating_add(num_words.saturating_mul(num_words) / 512)
     }
     *)
-    Definition memory_gas (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition memory_gas (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ num_words ] =>
         ltac:(M.monadic
@@ -2666,7 +2795,7 @@ Module gas.
                   M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
                   [ M.read (| num_words |); M.read (| num_words |) ]
                 |),
-                Value.Integer 512
+                M.of_value (| Value.Integer 512 |)
               |)
             ]
           |)))
@@ -2732,7 +2861,7 @@ Module gas.
         initial_gas
     }
     *)
-    Definition validate_initial_tx_gas (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition validate_initial_tx_gas (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ spec_id; input; is_create; access_list; initcodes ] =>
         ltac:(M.monadic
@@ -2742,11 +2871,11 @@ Module gas.
           let access_list := M.alloc (| access_list |) in
           let initcodes := M.alloc (| initcodes |) in
           M.read (|
-            let initial_gas := M.alloc (| Value.Integer 0 |) in
+            let initial_gas := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
             let zero_data_len :=
               M.alloc (|
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -2794,8 +2923,8 @@ Module gas.
                             |),
                             [ M.read (| input |) ]
                           |);
-                          M.closure
-                            (fun γ =>
+                          M.closure (|
+                            fun γ =>
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
@@ -2805,31 +2934,35 @@ Module gas.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let v := M.copy (| γ |) in
-                                          BinOp.Pure.eq
-                                            (M.read (| M.read (| M.read (| v |) |) |))
-                                            (Value.Integer 0)))
+                                          BinOp.Pure.eq (|
+                                            M.read (| M.read (| M.read (| v |) |) |),
+                                            M.of_value (| Value.Integer 0 |)
+                                          |)))
                                     ]
                                   |)
                                 | _ => M.impossible (||)
-                                end))
+                                end)
+                          |)
                         ]
                       |)
                     ]
-                  |))
+                  |)
+                |)
               |) in
             let non_zero_data_len :=
               M.alloc (|
                 BinOp.Panic.sub (|
                   Integer.U64,
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                         "len",
                         []
                       |),
                       [ M.read (| input |) ]
-                    |)),
+                    |)
+                  |),
                   M.read (| zero_data_len |)
                 |)
               |) in
@@ -2890,8 +3023,8 @@ Module gas.
                                       let initcode := M.copy (| γ0_0 |) in
                                       let zeros :=
                                         M.alloc (|
-                                          M.rust_cast
-                                            (M.call_closure (|
+                                          M.rust_cast (|
+                                            M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -2977,8 +3110,8 @@ Module gas.
                                                         |)
                                                       ]
                                                     |);
-                                                    M.closure
-                                                      (fun γ =>
+                                                    M.closure (|
+                                                      fun γ =>
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
@@ -2988,19 +3121,24 @@ Module gas.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let v := M.copy (| γ |) in
-                                                                    BinOp.Pure.eq
-                                                                      (M.read (|
+                                                                    BinOp.Pure.eq (|
+                                                                      M.read (|
                                                                         M.read (| M.read (| v |) |)
-                                                                      |))
-                                                                      (Value.Integer 0)))
+                                                                      |),
+                                                                      M.of_value (|
+                                                                        Value.Integer 0
+                                                                      |)
+                                                                    |)))
                                                               ]
                                                             |)
                                                           | _ => M.impossible (||)
-                                                          end))
+                                                          end)
+                                                    |)
                                                   ]
                                                 |)
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |) in
                                       let _ :=
                                         let β := zero_data_len in
@@ -3021,8 +3159,8 @@ Module gas.
                                             M.read (| β |),
                                             BinOp.Panic.sub (|
                                               Integer.U64,
-                                              M.rust_cast
-                                                (M.call_closure (|
+                                              M.rust_cast (|
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "bytes::bytes::Bytes",
                                                     "len",
@@ -3040,15 +3178,16 @@ Module gas.
                                                       [ M.read (| initcode |) ]
                                                     |)
                                                   ]
-                                                |)),
+                                                |)
+                                              |),
                                               M.read (| zeros |)
                                             |)
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |)) in
@@ -3080,7 +3219,7 @@ Module gas.
                     M.read (| non_zero_data_len |),
                     M.read (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -3095,9 +3234,11 @@ Module gas.
                                       |),
                                       [
                                         M.read (| spec_id |);
-                                        Value.StructTuple
-                                          "revm_primitives::specification::SpecId::ISTANBUL"
-                                          []
+                                        M.of_value (|
+                                          Value.StructTuple
+                                            "revm_primitives::specification::SpecId::ISTANBUL"
+                                            []
+                                        |)
                                       ]
                                     |)
                                   |)) in
@@ -3106,8 +3247,9 @@ Module gas.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.Integer 16 |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 68 |)))
+                              M.alloc (| M.of_value (| Value.Integer 16 |) |)));
+                          fun γ =>
+                            ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 68 |) |)))
                         ]
                       |)
                     |)
@@ -3116,7 +3258,7 @@ Module gas.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3131,9 +3273,11 @@ Module gas.
                               |),
                               [
                                 M.read (| spec_id |);
-                                Value.StructTuple
-                                  "revm_primitives::specification::SpecId::BERLIN"
-                                  []
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "revm_primitives::specification::SpecId::BERLIN"
+                                    []
+                                |)
                               ]
                             |)
                           |)) in
@@ -3202,9 +3346,9 @@ Module gas.
                                 |),
                                 [ M.read (| access_list |) ]
                               |);
-                              Value.Integer 0;
-                              M.closure
-                                (fun γ =>
+                              M.of_value (| Value.Integer 0 |);
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0; α1 ] =>
@@ -3228,8 +3372,8 @@ Module gas.
                                                       BinOp.Panic.add (|
                                                         Integer.U64,
                                                         M.read (| slot_count |),
-                                                        M.rust_cast
-                                                          (M.call_closure (|
+                                                        M.rust_cast (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
@@ -3241,14 +3385,16 @@ Module gas.
                                                               []
                                                             |),
                                                             [ M.read (| slots |) ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)))
                                                 ]
                                               |)))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |)
                         |) in
@@ -3261,8 +3407,8 @@ Module gas.
                             M.read (| β |),
                             BinOp.Panic.mul (|
                               Integer.U64,
-                              M.rust_cast
-                                (M.call_closure (|
+                              M.rust_cast (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -3282,7 +3428,8 @@ Module gas.
                                     []
                                   |),
                                   [ M.read (| access_list |) ]
-                                |)),
+                                |)
+                              |),
                               M.read (|
                                 M.get_constant (|
                                   "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
@@ -3309,8 +3456,8 @@ Module gas.
                             |)
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
@@ -3322,7 +3469,7 @@ Module gas.
                   M.read (| β |),
                   M.read (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -3330,7 +3477,7 @@ Module gas.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -3345,9 +3492,11 @@ Module gas.
                                             |),
                                             [
                                               M.read (| spec_id |);
-                                              Value.StructTuple
-                                                "revm_primitives::specification::SpecId::HOMESTEAD"
-                                                []
+                                              M.of_value (|
+                                                Value.StructTuple
+                                                  "revm_primitives::specification::SpecId::HOMESTEAD"
+                                                  []
+                                              |)
                                             ]
                                           |)
                                         |)) in
@@ -3356,11 +3505,14 @@ Module gas.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.alloc (| Value.Integer 53000 |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 21000 |)))
+                                    M.alloc (| M.of_value (| Value.Integer 53000 |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.alloc (| M.of_value (| Value.Integer 21000 |) |)))
                               ]
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 21000 |)))
+                        fun γ =>
+                          ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 21000 |) |)))
                       ]
                     |)
                   |)
@@ -3368,7 +3520,7 @@ Module gas.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3384,9 +3536,11 @@ Module gas.
                                 |),
                                 [
                                   M.read (| spec_id |);
-                                  Value.StructTuple
-                                    "revm_primitives::specification::SpecId::SHANGHAI"
-                                    []
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "revm_primitives::specification::SpecId::SHANGHAI"
+                                      []
+                                  |)
                                 ]
                               |),
                               ltac:(M.monadic (M.read (| is_create |)))
@@ -3402,20 +3556,21 @@ Module gas.
                           M.call_closure (|
                             M.get_function (| "revm_interpreter::gas::calc::initcode_cost", [] |),
                             [
-                              M.rust_cast
-                                (M.call_closure (|
+                              M.rust_cast (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| input |) ]
-                                |))
+                                |)
+                              |)
                             ]
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             initial_gas

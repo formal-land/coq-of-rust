@@ -6,7 +6,7 @@ fn print_one<'a>(x: &'a i32) {
     println!("`print_one`: x is {}", x);
 }
 *)
-Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
+Definition print_one (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ x ] =>
     ltac:(M.monadic
@@ -22,37 +22,45 @@ Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "`print_one`: x is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "`print_one`: x is " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                |),
-                                [ x ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                    |),
+                                    [ x ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -62,7 +70,7 @@ fn add_one<'a>(x: &'a mut i32) {
     *x += 1;
 }
 *)
-Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
+Definition add_one (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ x ] =>
     ltac:(M.monadic
@@ -70,8 +78,11 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (|
         let _ :=
           let β := M.read (| x |) in
-          M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |) |) in
-        M.alloc (| Value.Tuple [] |)
+          M.write (|
+            β,
+            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.of_value (| Value.Integer 1 |) |)
+          |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -81,7 +92,7 @@ fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
     println!("`print_multi`: x is {}, y is {}", x, y);
 }
 *)
-Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
+Definition print_multi (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ x; y ] =>
     ltac:(M.monadic
@@ -98,46 +109,57 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "`print_multi`: x is " |);
-                              M.read (| Value.String ", y is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "`print_multi`: x is " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String ", y is " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                |),
-                                [ x ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                |),
-                                [ y ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                    |),
+                                    [ x ]
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                    |),
+                                    [ y ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -147,7 +169,7 @@ fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
     x
 }
 *)
-Definition pass_x (τ : list Ty.t) (α : list Value.t) : M :=
+Definition pass_x (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ x; β1 ] =>
     ltac:(M.monadic
@@ -173,13 +195,13 @@ fn main() {
     print_one(&t);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 7 |) in
-        let y := M.alloc (| Value.Integer 9 |) in
+        let x := M.alloc (| M.of_value (| Value.Integer 7 |) |) in
+        let y := M.alloc (| M.of_value (| Value.Integer 9 |) |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -208,7 +230,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| z |) ]
             |)
           |) in
-        let t := M.alloc (| Value.Integer 3 |) in
+        let t := M.alloc (| M.of_value (| Value.Integer 3 |) |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -223,7 +245,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ t ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

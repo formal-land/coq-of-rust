@@ -15,7 +15,7 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -30,8 +30,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -45,12 +45,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4 ]
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.of_value (| Value.Integer 1 |));
+                                A.to_value (M.of_value (| Value.Integer 2 |));
+                                A.to_value (M.of_value (| Value.Integer 3 |));
+                                A.to_value (M.of_value (| Value.Integer 4 |))
+                              ]
+                          |)
                         |)
                       ]
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)
           |) in
@@ -90,22 +98,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let _ :=
           M.match_operator (|
             M.alloc (|
-              Value.Tuple
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                        "as_slice",
-                        []
-                      |),
-                      [ some_vector ]
-                    |)
-                  |);
-                  my_slice
-                ]
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value
+                      (M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                            "as_slice",
+                            []
+                          |),
+                          [ some_vector ]
+                        |)
+                      |));
+                    A.to_value my_slice
+                  ]
+              |)
             |),
             [
               fun γ =>
@@ -115,15 +126,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -138,7 +149,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -147,7 +159,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.read (|
                                 let kind :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    |)
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -166,19 +180,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.read (| kind |);
                                       M.read (| left_val |);
                                       M.read (| right_val |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::option::Option::None" []
+                                      |)
                                     ]
                                   |)
                                 |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |)))
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

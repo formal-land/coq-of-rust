@@ -13,19 +13,22 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let number := M.alloc (| Value.Integer 4 |) in
+        let number := M.alloc (| M.of_value (| Value.Integer 4 |) |) in
         M.match_operator (|
           number,
           [
             fun γ =>
               ltac:(M.monadic
                 (let i := M.copy (| γ |) in
-                let γ := M.alloc (| BinOp.Pure.eq (M.read (| i |)) (Value.Integer 0) |) in
+                let γ :=
+                  M.alloc (|
+                    BinOp.Pure.eq (| M.read (| i |), M.of_value (| Value.Integer 0 |) |)
+                  |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let _ :=
                   M.alloc (|
@@ -40,19 +43,31 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| Value.String "Zero
-" |) ] |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "Zero
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let i := M.copy (| γ |) in
-                let γ := M.alloc (| BinOp.Pure.gt (M.read (| i |)) (Value.Integer 0) |) in
+                let γ :=
+                  M.alloc (|
+                    BinOp.Pure.gt (| M.read (| i |), M.of_value (| Value.Integer 0 |) |)
+                  |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let _ :=
                   M.alloc (|
@@ -67,17 +82,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Greater than zero
-" |) ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "Greater than zero
+" |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
@@ -87,7 +111,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::panicking::unreachable_display",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       |),
-                      [ Value.String "Should never happen." ]
+                      [ M.of_value (| Value.String "Should never happen." |) ]
                     |)
                   |)
                 |)))

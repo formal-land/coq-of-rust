@@ -10,7 +10,7 @@ Module instructions.
         *op2 = U256::from(op1 < *op2);
     }
     *)
-    Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -21,15 +21,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -47,7 +47,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -61,28 +62,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -95,8 +98,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -110,15 +114,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -168,7 +174,7 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -183,7 +189,7 @@ Module instructions.
         *op2 = U256::from(op1 > *op2);
     }
     *)
-    Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -194,15 +200,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -220,7 +226,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -234,28 +241,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -268,8 +277,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -283,15 +293,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -341,7 +353,7 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -356,7 +368,7 @@ Module instructions.
         *op2 = U256::from(i256_cmp(&op1, op2) == Ordering::Less);
     }
     *)
-    Definition slt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -367,15 +379,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -393,7 +405,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -407,28 +420,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -441,8 +456,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -456,15 +472,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -519,13 +537,17 @@ Module instructions.
                                         [ op1; M.read (| op2 |) ]
                                       |)
                                     |);
-                                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.StructTuple "core::cmp::Ordering::Less" []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -540,7 +562,7 @@ Module instructions.
         *op2 = U256::from(i256_cmp(&op1, op2) == Ordering::Greater);
     }
     *)
-    Definition sgt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition sgt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -551,15 +573,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -577,7 +599,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -591,28 +614,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -625,8 +650,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -640,15 +666,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -704,14 +732,16 @@ Module instructions.
                                       |)
                                     |);
                                     M.alloc (|
-                                      Value.StructTuple "core::cmp::Ordering::Greater" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::cmp::Ordering::Greater" []
+                                      |)
                                     |)
                                   ]
                                 |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -726,7 +756,7 @@ Module instructions.
         *op2 = U256::from(op1 == *op2);
     }
     *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -737,15 +767,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -763,7 +793,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -777,28 +808,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -811,8 +844,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -826,15 +860,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -884,7 +920,7 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -899,7 +935,7 @@ Module instructions.
         *op1 = U256::from( *op1 == U256::ZERO);
     }
     *)
-    Definition iszero (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition iszero (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -910,15 +946,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -936,7 +972,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -950,28 +987,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -984,8 +1023,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 1)
+                                  |),
+                                  M.of_value (| Value.Integer 1 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -999,15 +1039,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let op1 :=
@@ -1050,7 +1092,7 @@ Module instructions.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           |)))
       | _, _ => M.impossible
@@ -1063,7 +1105,7 @@ Module instructions.
         *op2 = op1 & *op2;
     }
     *)
-    Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -1074,15 +1116,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1100,7 +1142,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1114,28 +1157,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -1148,8 +1193,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1163,15 +1209,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -1212,7 +1260,7 @@ Module instructions.
                               [ M.read (| op1 |); M.read (| M.read (| op2 |) |) ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -1227,7 +1275,7 @@ Module instructions.
         *op2 = op1 | *op2;
     }
     *)
-    Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -1238,15 +1286,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1264,7 +1312,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1278,28 +1327,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -1312,8 +1363,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1327,15 +1379,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -1376,7 +1430,7 @@ Module instructions.
                               [ M.read (| op1 |); M.read (| M.read (| op2 |) |) ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -1391,7 +1445,7 @@ Module instructions.
         *op2 = op1 ^ *op2;
     }
     *)
-    Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -1402,15 +1456,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1428,7 +1482,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1442,28 +1497,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -1476,8 +1533,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1491,15 +1549,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -1540,7 +1600,7 @@ Module instructions.
                               [ M.read (| op1 |); M.read (| M.read (| op2 |) |) ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -1555,7 +1615,7 @@ Module instructions.
         *op1 = !*op1;
     }
     *)
-    Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition not (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -1566,15 +1626,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1592,7 +1652,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1606,28 +1667,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -1640,8 +1703,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 1)
+                                  |),
+                                  M.of_value (| Value.Integer 1 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1655,15 +1719,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let op1 :=
@@ -1697,7 +1763,7 @@ Module instructions.
                       [ M.read (| M.read (| op1 |) |) ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           |)))
       | _, _ => M.impossible
@@ -1717,7 +1783,7 @@ Module instructions.
         };
     }
     *)
-    Definition byte (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition byte (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -1728,15 +1794,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1754,7 +1820,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1768,28 +1835,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -1802,8 +1871,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1817,15 +1887,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -1885,7 +1957,7 @@ Module instructions.
                                           |)
                                         |) in
                                       M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
@@ -1894,33 +1966,42 @@ Module instructions.
                                                   (M.alloc (|
                                                     LogicalOp.and (|
                                                       LogicalOp.and (|
-                                                        BinOp.Pure.eq
-                                                          (M.read (|
+                                                        BinOp.Pure.eq (|
+                                                          M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.read (| x |),
-                                                              M.alloc (| Value.Integer 1 |)
+                                                              M.alloc (|
+                                                                M.of_value (| Value.Integer 1 |)
+                                                              |)
                                                             |)
-                                                          |))
-                                                          (Value.Integer 0),
+                                                          |),
+                                                          M.of_value (| Value.Integer 0 |)
+                                                        |),
                                                         ltac:(M.monadic
-                                                          (BinOp.Pure.eq
-                                                            (M.read (|
+                                                          (BinOp.Pure.eq (|
+                                                            M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.read (| x |),
-                                                                M.alloc (| Value.Integer 2 |)
+                                                                M.alloc (|
+                                                                  M.of_value (| Value.Integer 2 |)
+                                                                |)
                                                               |)
-                                                            |))
-                                                            (Value.Integer 0)))
+                                                            |),
+                                                            M.of_value (| Value.Integer 0 |)
+                                                          |)))
                                                       |),
                                                       ltac:(M.monadic
-                                                        (BinOp.Pure.eq
-                                                          (M.read (|
+                                                        (BinOp.Pure.eq (|
+                                                          M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.read (| x |),
-                                                              M.alloc (| Value.Integer 3 |)
+                                                              M.alloc (|
+                                                                M.of_value (| Value.Integer 3 |)
+                                                              |)
                                                             |)
-                                                          |))
-                                                          (Value.Integer 0)))
+                                                          |),
+                                                          M.of_value (| Value.Integer 0 |)
+                                                        |)))
                                                     |)
                                                   |)) in
                                               let _ :=
@@ -1930,7 +2011,7 @@ Module instructions.
                                                 |) in
                                               M.SubPointer.get_array_field (|
                                                 M.read (| x |),
-                                                M.alloc (| Value.Integer 0 |)
+                                                M.alloc (| M.of_value (| Value.Integer 0 |) |)
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
@@ -1948,14 +2029,17 @@ Module instructions.
                             M.read (| op2 |),
                             M.read (|
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt (M.read (| o1 |)) (Value.Integer 32)
+                                            BinOp.Pure.lt (|
+                                              M.read (| o1 |),
+                                              M.of_value (| Value.Integer 32 |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -1980,7 +2064,7 @@ Module instructions.
                                                 M.read (| op2 |);
                                                 BinOp.Panic.sub (|
                                                   Integer.Usize,
-                                                  Value.Integer 31,
+                                                  M.of_value (| Value.Integer 31 |),
                                                   M.read (| o1 |)
                                                 |)
                                               ]
@@ -1993,7 +2077,7 @@ Module instructions.
                               |)
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -2009,7 +2093,7 @@ Module instructions.
         *op2 <<= as_usize_saturated!(op1);
     }
     *)
-    Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shl (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -2020,15 +2104,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "revm_primitives::specification::Spec",
                                       SPEC,
@@ -2037,11 +2121,14 @@ Module instructions.
                                       []
                                     |),
                                     [
-                                      Value.StructTuple
-                                        "revm_primitives::specification::SpecId::CONSTANTINOPLE"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_primitives::specification::SpecId::CONSTANTINOPLE"
+                                          []
+                                      |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2055,28 +2142,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::NotActivated"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -2094,7 +2183,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2108,28 +2198,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -2142,8 +2234,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2157,15 +2250,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -2236,7 +2331,7 @@ Module instructions.
                                               |)
                                             |) in
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -2245,33 +2340,44 @@ Module instructions.
                                                       (M.alloc (|
                                                         LogicalOp.and (|
                                                           LogicalOp.and (|
-                                                            BinOp.Pure.eq
-                                                              (M.read (|
+                                                            BinOp.Pure.eq (|
+                                                              M.read (|
                                                                 M.SubPointer.get_array_field (|
                                                                   M.read (| x |),
-                                                                  M.alloc (| Value.Integer 1 |)
+                                                                  M.alloc (|
+                                                                    M.of_value (| Value.Integer 1 |)
+                                                                  |)
                                                                 |)
-                                                              |))
-                                                              (Value.Integer 0),
+                                                              |),
+                                                              M.of_value (| Value.Integer 0 |)
+                                                            |),
                                                             ltac:(M.monadic
-                                                              (BinOp.Pure.eq
-                                                                (M.read (|
+                                                              (BinOp.Pure.eq (|
+                                                                M.read (|
                                                                   M.SubPointer.get_array_field (|
                                                                     M.read (| x |),
-                                                                    M.alloc (| Value.Integer 2 |)
+                                                                    M.alloc (|
+                                                                      M.of_value (|
+                                                                        Value.Integer 2
+                                                                      |)
+                                                                    |)
                                                                   |)
-                                                                |))
-                                                                (Value.Integer 0)))
+                                                                |),
+                                                                M.of_value (| Value.Integer 0 |)
+                                                              |)))
                                                           |),
                                                           ltac:(M.monadic
-                                                            (BinOp.Pure.eq
-                                                              (M.read (|
+                                                            (BinOp.Pure.eq (|
+                                                              M.read (|
                                                                 M.SubPointer.get_array_field (|
                                                                   M.read (| x |),
-                                                                  M.alloc (| Value.Integer 3 |)
+                                                                  M.alloc (|
+                                                                    M.of_value (| Value.Integer 3 |)
+                                                                  |)
                                                                 |)
-                                                              |))
-                                                              (Value.Integer 0)))
+                                                              |),
+                                                              M.of_value (| Value.Integer 0 |)
+                                                            |)))
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -2281,7 +2387,7 @@ Module instructions.
                                                     |) in
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| x |),
-                                                    M.alloc (| Value.Integer 0 |)
+                                                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -2297,7 +2403,7 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -2313,7 +2419,7 @@ Module instructions.
         *op2 >>= as_usize_saturated!(op1);
     }
     *)
-    Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shr (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -2324,15 +2430,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "revm_primitives::specification::Spec",
                                       SPEC,
@@ -2341,11 +2447,14 @@ Module instructions.
                                       []
                                     |),
                                     [
-                                      Value.StructTuple
-                                        "revm_primitives::specification::SpecId::CONSTANTINOPLE"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_primitives::specification::SpecId::CONSTANTINOPLE"
+                                          []
+                                      |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2359,28 +2468,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::NotActivated"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -2398,7 +2509,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2412,28 +2524,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -2446,8 +2560,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2461,15 +2576,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -2540,7 +2657,7 @@ Module instructions.
                                               |)
                                             |) in
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -2549,33 +2666,44 @@ Module instructions.
                                                       (M.alloc (|
                                                         LogicalOp.and (|
                                                           LogicalOp.and (|
-                                                            BinOp.Pure.eq
-                                                              (M.read (|
+                                                            BinOp.Pure.eq (|
+                                                              M.read (|
                                                                 M.SubPointer.get_array_field (|
                                                                   M.read (| x |),
-                                                                  M.alloc (| Value.Integer 1 |)
+                                                                  M.alloc (|
+                                                                    M.of_value (| Value.Integer 1 |)
+                                                                  |)
                                                                 |)
-                                                              |))
-                                                              (Value.Integer 0),
+                                                              |),
+                                                              M.of_value (| Value.Integer 0 |)
+                                                            |),
                                                             ltac:(M.monadic
-                                                              (BinOp.Pure.eq
-                                                                (M.read (|
+                                                              (BinOp.Pure.eq (|
+                                                                M.read (|
                                                                   M.SubPointer.get_array_field (|
                                                                     M.read (| x |),
-                                                                    M.alloc (| Value.Integer 2 |)
+                                                                    M.alloc (|
+                                                                      M.of_value (|
+                                                                        Value.Integer 2
+                                                                      |)
+                                                                    |)
                                                                   |)
-                                                                |))
-                                                                (Value.Integer 0)))
+                                                                |),
+                                                                M.of_value (| Value.Integer 0 |)
+                                                              |)))
                                                           |),
                                                           ltac:(M.monadic
-                                                            (BinOp.Pure.eq
-                                                              (M.read (|
+                                                            (BinOp.Pure.eq (|
+                                                              M.read (|
                                                                 M.SubPointer.get_array_field (|
                                                                   M.read (| x |),
-                                                                  M.alloc (| Value.Integer 3 |)
+                                                                  M.alloc (|
+                                                                    M.of_value (| Value.Integer 3 |)
+                                                                  |)
                                                                 |)
-                                                              |))
-                                                              (Value.Integer 0)))
+                                                              |),
+                                                              M.of_value (| Value.Integer 0 |)
+                                                            |)))
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -2585,7 +2713,7 @@ Module instructions.
                                                     |) in
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| x |),
-                                                    M.alloc (| Value.Integer 0 |)
+                                                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -2601,7 +2729,7 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -2639,7 +2767,7 @@ Module instructions.
         };
     }
     *)
-    Definition sar (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition sar (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
@@ -2650,15 +2778,15 @@ Module instructions.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "revm_primitives::specification::Spec",
                                       SPEC,
@@ -2667,11 +2795,14 @@ Module instructions.
                                       []
                                     |),
                                     [
-                                      Value.StructTuple
-                                        "revm_primitives::specification::SpecId::CONSTANTINOPLE"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_primitives::specification::SpecId::CONSTANTINOPLE"
+                                          []
+                                      |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2685,28 +2816,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::NotActivated"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -2724,7 +2857,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2738,28 +2872,30 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -2772,8 +2908,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  M.of_value (| Value.Integer 2 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2787,15 +2924,17 @@ Module instructions.
                                       "revm_interpreter::interpreter::Interpreter",
                                       "instruction_result"
                                     |),
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                        []
+                                    |)
                                   |) in
-                                M.return_ (| Value.Tuple [] |)
+                                M.return_ (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -2837,7 +2976,7 @@ Module instructions.
                             M.read (| op2 |),
                             M.read (|
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -2860,9 +2999,11 @@ Module instructions.
                                                 [
                                                   value_sign;
                                                   M.alloc (|
-                                                    Value.StructTuple
-                                                      "revm_interpreter::instructions::i256::Sign::Zero"
-                                                      []
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "revm_interpreter::instructions::i256::Sign::Zero"
+                                                        []
+                                                    |)
                                                   |)
                                                 ]
                                               |),
@@ -2884,7 +3025,7 @@ Module instructions.
                                                           "from",
                                                           [ Ty.path "i32" ]
                                                         |),
-                                                        [ Value.Integer 255 ]
+                                                        [ M.of_value (| Value.Integer 255 |) ]
                                                       |)
                                                     |)
                                                   ]
@@ -2904,16 +3045,21 @@ Module instructions.
                                               (M.find_or_pattern (|
                                                 γ,
                                                 [
-                                                  fun γ => ltac:(M.monadic (Value.Tuple []));
-                                                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.of_value (| Value.Tuple [] |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.of_value (| Value.Tuple [] |)))
                                                 ],
-                                                M.closure
-                                                  (fun γ =>
+                                                M.closure (|
+                                                  fun γ =>
                                                     ltac:(M.monadic
                                                       match γ with
                                                       | [] => M.get_constant (| "ruint::ZERO" |)
                                                       | _ => M.impossible (||)
-                                                      end))
+                                                      end)
+                                                |)
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic (M.get_constant (| "ruint::MAX" |)))
@@ -2958,11 +3104,15 @@ Module instructions.
                                               (M.find_or_pattern (|
                                                 γ,
                                                 [
-                                                  fun γ => ltac:(M.monadic (Value.Tuple []));
-                                                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.of_value (| Value.Tuple [] |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.of_value (| Value.Tuple [] |)))
                                                 ],
-                                                M.closure
-                                                  (fun γ =>
+                                                M.closure (|
+                                                  fun γ =>
                                                     ltac:(M.monadic
                                                       match γ with
                                                       | [] =>
@@ -2980,7 +3130,8 @@ Module instructions.
                                                           |)
                                                         |)
                                                       | _ => M.impossible (||)
-                                                      end))
+                                                      end)
+                                                |)
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
@@ -3039,7 +3190,7 @@ Module instructions.
                               |)
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)
               |)))
@@ -3048,13 +3199,22 @@ Module instructions.
       end.
     
     Module sar.
-      Definition value_ONE : Value.t :=
+      Definition value_ONE : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "ruint::Uint", "from_limbs", [] |),
-                [ Value.Array [ Value.Integer 1; Value.Integer 0; Value.Integer 0; Value.Integer 0 ]
+                [
+                  M.of_value (|
+                    Value.Array
+                      [
+                        A.to_value (M.of_value (| Value.Integer 1 |));
+                        A.to_value (M.of_value (| Value.Integer 0 |));
+                        A.to_value (M.of_value (| Value.Integer 0 |));
+                        A.to_value (M.of_value (| Value.Integer 0 |))
+                      ]
+                  |)
                 ]
               |)
             |))).

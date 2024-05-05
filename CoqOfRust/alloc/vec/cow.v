@@ -12,13 +12,15 @@ Module vec.
               Cow::Borrowed(s)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
-            Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| s |) ]))
+            M.of_value (|
+              Value.StructTuple "alloc::borrow::Cow::Borrowed" [ A.to_value (M.read (| s |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -41,13 +43,15 @@ Module vec.
               Cow::Owned(v)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| v |) ]))
+            M.of_value (|
+              Value.StructTuple "alloc::borrow::Cow::Owned" [ A.to_value (M.read (| v |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -70,24 +74,27 @@ Module vec.
               Cow::Borrowed(v.as_slice())
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructTuple
-              "alloc::borrow::Cow::Borrowed"
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
-                    "as_slice",
-                    []
-                  |),
-                  [ M.read (| v |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "alloc::borrow::Cow::Borrowed"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                        "as_slice",
+                        []
+                      |),
+                      [ M.read (| v |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -115,26 +122,29 @@ Module vec.
               Cow::Owned(FromIterator::from_iter(it))
           }
       *)
-      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ _ as I ], [ it ] =>
           ltac:(M.monadic
             (let it := M.alloc (| it |) in
-            Value.StructTuple
-              "alloc::borrow::Cow::Owned"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::iter::traits::collect::FromIterator",
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
-                    [ T ],
-                    "from_iter",
-                    [ I ]
-                  |),
-                  [ M.read (| it |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "alloc::borrow::Cow::Owned"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::FromIterator",
+                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                        [ T ],
+                        "from_iter",
+                        [ I ]
+                      |),
+                      [ M.read (| it |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       

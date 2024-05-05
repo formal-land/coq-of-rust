@@ -68,7 +68,7 @@ Module iter.
                 Self { inner: MapWindowsInner::new(iter), f }
             }
         *)
-        Definition new (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F in
           match τ, α with
           | [], [ iter; f ] =>
@@ -78,19 +78,21 @@ Module iter.
               M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.ne
-                                    (M.read (|
+                                UnOp.Pure.not (|
+                                  BinOp.Pure.ne (|
+                                    M.read (|
                                       M.get_constant (| "core::iter::adapters::map_windows::N" |)
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -107,54 +109,61 @@ Module iter.
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "array in `Iterator::map_windows` must contain more than 0 elements"
-                                              |)
-                                            ]
-                                        |))
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (|
+                                                    M.of_value (|
+                                                      Value.String
+                                                        "array in `Iterator::map_windows` must contain more than 0 elements"
+                                                    |)
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.call_closure (|
+                                BinOp.Pure.eq (|
+                                  M.call_closure (|
                                     M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
                                     []
-                                  |))
-                                  (Value.Integer 0)
+                                  |),
+                                  M.of_value (| Value.Integer 0 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.Pure.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -176,12 +185,13 @@ Module iter.
                                                           "core::iter::adapters::map_windows::N"
                                                         |)
                                                       |);
-                                                      Value.Integer 2
+                                                      M.of_value (| Value.Integer 2 |)
                                                     ]
                                                   |)
                                                 |)
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -201,46 +211,56 @@ Module iter.
                                               |),
                                               [
                                                 (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "array size of `Iterator::map_windows` is too large"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.pointer_coercion (|
+                                                  M.alloc (|
+                                                    M.of_value (|
+                                                      Value.Array
+                                                        [
+                                                          A.to_value
+                                                            (M.read (|
+                                                              M.of_value (|
+                                                                Value.String
+                                                                  "array size of `Iterator::map_windows` is too large"
+                                                              |)
+                                                            |))
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               ]
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.alloc (|
-                  Value.StructRecord
-                    "core::iter::adapters::map_windows::MapWindows"
-                    [
-                      ("inner",
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::map_windows::MapWindowsInner")
-                              [ I ],
-                            "new",
-                            []
-                          |),
-                          [ M.read (| iter |) ]
-                        |));
-                      ("f", M.read (| f |))
-                    ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::iter::adapters::map_windows::MapWindows"
+                      [
+                        ("inner",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::map_windows::MapWindowsInner")
+                                  [ I ],
+                                "new",
+                                []
+                              |),
+                              [ M.read (| iter |) ]
+                            |)));
+                        ("f", A.to_value (M.read (| f |)))
+                      ]
+                  |)
                 |)
               |)))
           | _, _ => M.impossible
@@ -260,18 +280,28 @@ Module iter.
                 Self { iter: Some(iter), buffer: None }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
-              Value.StructRecord
-                "core::iter::adapters::map_windows::MapWindowsInner"
-                [
-                  ("iter", Value.StructTuple "core::option::Option::Some" [ M.read (| iter |) ]);
-                  ("buffer", Value.StructTuple "core::option::Option::None" [])
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::map_windows::MapWindowsInner"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ A.to_value (M.read (| iter |)) ]
+                        |)));
+                    ("buffer",
+                      A.to_value
+                        (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -301,7 +331,7 @@ Module iter.
                 self.buffer.as_ref().map(Buffer::as_array_ref)
             }
         *)
-        Definition next_window (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_window (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -486,7 +516,7 @@ Module iter.
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
@@ -600,7 +630,7 @@ Module iter.
                 }
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -644,7 +674,7 @@ Module iter.
                                 let lo := M.copy (| γ0_0 |) in
                                 let hi := M.copy (| γ0_1 |) in
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -679,84 +709,97 @@ Module iter.
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
-                                          Value.Tuple [ M.read (| lo |); M.read (| hi |) ]
+                                          M.of_value (|
+                                            Value.Tuple
+                                              [
+                                                A.to_value (M.read (| lo |));
+                                                A.to_value (M.read (| hi |))
+                                              ]
+                                          |)
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.alloc (|
-                                          Value.Tuple
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "usize",
-                                                  "saturating_sub",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| lo |);
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "core::iter::adapters::map_windows::N"
-                                                      |)
+                                          M.of_value (|
+                                            Value.Tuple
+                                              [
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "usize",
+                                                      "saturating_sub",
+                                                      []
                                                     |),
-                                                    Value.Integer 1
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    [ Ty.path "usize" ],
-                                                  "map",
-                                                  [
-                                                    Ty.path "usize";
-                                                    Ty.function
-                                                      [ Ty.tuple [ Ty.path "usize" ] ]
-                                                      (Ty.path "usize")
-                                                  ]
-                                                |),
-                                                [
-                                                  M.read (| hi |);
-                                                  M.closure
-                                                    (fun γ =>
-                                                      ltac:(M.monadic
-                                                        match γ with
-                                                        | [ α0 ] =>
-                                                          M.match_operator (|
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let hi := M.copy (| γ |) in
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path "usize",
-                                                                      "saturating_sub",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.read (| hi |);
-                                                                      BinOp.Panic.sub (|
-                                                                        Integer.Usize,
-                                                                        M.read (|
-                                                                          M.get_constant (|
-                                                                            "core::iter::adapters::map_windows::N"
-                                                                          |)
-                                                                        |),
-                                                                        Value.Integer 1
-                                                                      |)
-                                                                    ]
-                                                                  |)))
-                                                            ]
+                                                    [
+                                                      M.read (| lo |);
+                                                      BinOp.Panic.sub (|
+                                                        Integer.Usize,
+                                                        M.read (|
+                                                          M.get_constant (|
+                                                            "core::iter::adapters::map_windows::N"
                                                           |)
-                                                        | _ => M.impossible (||)
-                                                        end))
-                                                ]
-                                              |)
-                                            ]
+                                                        |),
+                                                        M.of_value (| Value.Integer 1 |)
+                                                      |)
+                                                    ]
+                                                  |));
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        [ Ty.path "usize" ],
+                                                      "map",
+                                                      [
+                                                        Ty.path "usize";
+                                                        Ty.function
+                                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                                          (Ty.path "usize")
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.read (| hi |);
+                                                      M.closure (|
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ α0 ] =>
+                                                              M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let hi := M.copy (| γ |) in
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path "usize",
+                                                                          "saturating_sub",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (| hi |);
+                                                                          BinOp.Panic.sub (|
+                                                                            Integer.Usize,
+                                                                            M.read (|
+                                                                              M.get_constant (|
+                                                                                "core::iter::adapters::map_windows::N"
+                                                                              |)
+                                                                            |),
+                                                                            M.of_value (|
+                                                                              Value.Integer 1
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)))
+                                                                ]
+                                                              |)
+                                                            | _ => M.impossible (||)
+                                                            end)
+                                                      |)
+                                                    ]
+                                                  |))
+                                              ]
+                                          |)
                                         |)))
                                   ]
                                 |)))
@@ -784,7 +827,7 @@ Module iter.
                 Some(Self { buffer, start: 0 })
             }
         *)
-        Definition try_from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from_iter (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [ impl_Iterator_Item___T_ ], [ iter ] =>
@@ -886,47 +929,59 @@ Module iter.
                       |) in
                     let buffer :=
                       M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                  [ Ty.apply (Ty.path "array") [ T ] ],
-                                "transpose",
-                                []
-                              |),
-                              [
-                                M.call_closure (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                       [ Ty.apply (Ty.path "array") [ T ] ],
-                                    "new",
+                                    "transpose",
                                     []
                                   |),
-                                  [ M.read (| first_half |) ]
-                                |)
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
-                                "uninit_array",
-                                []
-                              |),
-                              []
-                            |)
-                          ]
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          [ Ty.apply (Ty.path "array") [ T ] ],
+                                        "new",
+                                        []
+                                      |),
+                                      [ M.read (| first_half |) ]
+                                    |)
+                                  ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                                    "uninit_array",
+                                    []
+                                  |),
+                                  []
+                                |))
+                            ]
+                        |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          Value.StructRecord
-                            "core::iter::adapters::map_windows::Buffer"
-                            [ ("buffer", M.read (| buffer |)); ("start", Value.Integer 0) ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::iter::adapters::map_windows::Buffer"
+                                  [
+                                    ("buffer", A.to_value (M.read (| buffer |)));
+                                    ("start", A.to_value (M.of_value (| Value.Integer 0 |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)
                   |)))
               |)))
@@ -942,7 +997,7 @@ Module iter.
                 self.buffer.as_ptr().cast()
             }
         *)
-        Definition buffer_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition buffer_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -975,12 +1030,13 @@ Module iter.
                     |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::map_windows::Buffer",
                           "buffer"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -997,7 +1053,7 @@ Module iter.
                 self.buffer.as_mut_ptr().cast()
             }
         *)
-        Definition buffer_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition buffer_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -1030,12 +1086,13 @@ Module iter.
                     |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::map_windows::Buffer",
                           "buffer"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -1055,7 +1112,7 @@ Module iter.
                 unsafe { &*self.buffer_ptr().add(self.start).cast() }
             }
         *)
-        Definition as_array_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_array_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -1064,25 +1121,25 @@ Module iter.
               M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (BinOp.Panic.add (|
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.le (|
+                                              BinOp.Panic.add (|
                                                 Integer.Usize,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
@@ -1096,16 +1153,18 @@ Module iter.
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
                                                 |)
-                                              |))
-                                              (BinOp.Panic.mul (|
+                                              |),
+                                              BinOp.Panic.mul (|
                                                 Integer.Usize,
-                                                Value.Integer 2,
+                                                M.of_value (| Value.Integer 2 |),
                                                 M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1118,18 +1177,21 @@ Module iter.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "assertion failed: self.start + N <= 2 * N"
+                                              M.of_value (|
+                                                Value.String
+                                                  "assertion failed: self.start + N <= 2 * N"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.alloc (|
@@ -1187,7 +1249,7 @@ Module iter.
                 unsafe { &mut *self.buffer_mut_ptr().add(self.start).cast() }
             }
         *)
-        Definition as_uninit_array_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_uninit_array_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -1196,25 +1258,25 @@ Module iter.
               M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (BinOp.Panic.add (|
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.le (|
+                                              BinOp.Panic.add (|
                                                 Integer.Usize,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
@@ -1228,16 +1290,18 @@ Module iter.
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
                                                 |)
-                                              |))
-                                              (BinOp.Panic.mul (|
+                                              |),
+                                              BinOp.Panic.mul (|
                                                 Integer.Usize,
-                                                Value.Integer 2,
+                                                M.of_value (| Value.Integer 2 |),
                                                 M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1250,18 +1314,21 @@ Module iter.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "assertion failed: self.start + N <= 2 * N"
+                                              M.of_value (|
+                                                Value.String
+                                                  "assertion failed: self.start + N <= 2 * N"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.alloc (|
@@ -1372,7 +1439,7 @@ Module iter.
                 unsafe { ptr::drop_in_place(to_drop.cast::<T>()) };
             }
         *)
-        Definition push (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition push (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self; next ] =>
@@ -1393,25 +1460,25 @@ Module iter.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (BinOp.Panic.add (|
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.le (|
+                                              BinOp.Panic.add (|
                                                 Integer.Usize,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
@@ -1425,16 +1492,18 @@ Module iter.
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
                                                 |)
-                                              |))
-                                              (BinOp.Panic.mul (|
+                                              |),
+                                              BinOp.Panic.mul (|
                                                 Integer.Usize,
-                                                Value.Integer 2,
+                                                M.of_value (| Value.Integer 2 |),
                                                 M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1447,41 +1516,45 @@ Module iter.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "assertion failed: self.start + N <= 2 * N"
+                                              M.of_value (|
+                                                Value.String
+                                                  "assertion failed: self.start + N <= 2 * N"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let to_drop :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (|
+                                  BinOp.Pure.eq (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::iter::adapters::map_windows::Buffer",
                                         "start"
                                       |)
-                                    |))
-                                    (M.read (|
+                                    |),
+                                    M.read (|
                                       M.get_constant (| "core::iter::adapters::map_windows::N" |)
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1500,8 +1573,8 @@ Module iter.
                                       |),
                                       [
                                         (* MutToConstPointer *)
-                                        M.pointer_coercion
-                                          (M.call_closure (|
+                                        M.pointer_coercion (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*mut")
@@ -1524,10 +1597,11 @@ Module iter.
                                                     "start"
                                                   |)
                                                 |),
-                                                Value.Integer 1
+                                                M.of_value (| Value.Integer 1 |)
                                               |)
                                             ]
-                                          |));
+                                          |)
+                                        |);
                                         M.read (| buffer_mut_ptr |);
                                         BinOp.Panic.sub (|
                                           Integer.Usize,
@@ -1536,7 +1610,7 @@ Module iter.
                                               "core::iter::adapters::map_windows::N"
                                             |)
                                           |),
-                                          Value.Integer 1
+                                          M.of_value (| Value.Integer 1 |)
                                         |)
                                       ]
                                     |)
@@ -1573,7 +1647,7 @@ Module iter.
                                                   "core::iter::adapters::map_windows::N"
                                                 |)
                                               |),
-                                              Value.Integer 1
+                                              M.of_value (| Value.Integer 1 |)
                                             |)
                                           ]
                                         |);
@@ -1614,7 +1688,7 @@ Module iter.
                                   "core::iter::adapters::map_windows::Buffer",
                                   "start"
                                 |),
-                                Value.Integer 0
+                                M.of_value (| Value.Integer 0 |)
                               |) in
                             to_drop));
                         fun γ =>
@@ -1702,7 +1776,11 @@ Module iter.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Panic.add (|
+                                  Integer.Usize,
+                                  M.read (| β |),
+                                  M.of_value (| Value.Integer 1 |)
+                                |)
                               |) in
                             to_drop))
                       ]
@@ -1726,7 +1804,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.
@@ -1750,7 +1828,7 @@ Module iter.
                 buffer
             }
         *)
-        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -1759,38 +1837,50 @@ Module iter.
               M.read (|
                 let buffer :=
                   M.alloc (|
-                    Value.StructRecord
-                      "core::iter::adapters::map_windows::Buffer"
-                      [
-                        ("buffer",
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
-                                  "uninit_array",
-                                  []
-                                |),
-                                []
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
-                                  "uninit_array",
-                                  []
-                                |),
-                                []
-                              |)
-                            ]);
-                        ("start",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::map_windows::Buffer",
-                              "start"
-                            |)
-                          |))
-                      ]
+                    M.of_value (|
+                      Value.StructRecord
+                        "core::iter::adapters::map_windows::Buffer"
+                        [
+                          ("buffer",
+                            A.to_value
+                              (M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            [ T ],
+                                          "uninit_array",
+                                          []
+                                        |),
+                                        []
+                                      |));
+                                    A.to_value
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            [ T ],
+                                          "uninit_array",
+                                          []
+                                        |),
+                                        []
+                                      |))
+                                  ]
+                              |)));
+                          ("start",
+                            A.to_value
+                              (M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::map_windows::Buffer",
+                                  "start"
+                                |)
+                              |)))
+                        ]
+                    |)
                   |) in
                 let _ :=
                   M.alloc (|
@@ -1858,56 +1948,60 @@ Module iter.
                 Self { iter: self.iter.clone(), buffer: self.buffer.clone() }
             }
         *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::map_windows::MapWindowsInner"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply (Ty.path "core::option::Option") [ I ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindowsInner",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("buffer",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply
-                          (Ty.path "core::option::Option")
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::map_windows::MapWindowsInner"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply (Ty.path "core::option::Option") [ I ],
+                            [],
+                            "clone",
+                            []
+                          |),
                           [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map_windows::MapWindowsInner",
+                              "iter"
+                            |)
+                          ]
+                        |)));
+                    ("buffer",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
                             Ty.apply
-                              (Ty.path "core::iter::adapters::map_windows::Buffer")
-                              [ Ty.associated ]
-                          ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindowsInner",
-                          "buffer"
-                        |)
-                      ]
-                    |))
-                ]))
+                              (Ty.path "core::option::Option")
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                  [ Ty.associated ]
+                              ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map_windows::MapWindowsInner",
+                              "buffer"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -1937,7 +2031,7 @@ Module iter.
                 }
             }
         *)
-        Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition drop (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -2003,7 +2097,7 @@ Module iter.
                       [ M.read (| initialized_part |) ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.
@@ -2031,7 +2125,7 @@ Module iter.
                 Some(out)
             }
         *)
-        Definition next (I F R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I F R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F R in
           match τ, α with
           | [], [ self ] =>
@@ -2146,12 +2240,16 @@ Module iter.
                               "core::iter::adapters::map_windows::MapWindows",
                               "f"
                             |);
-                            Value.Tuple [ M.read (| window |) ]
+                            M.of_value (| Value.Tuple [ A.to_value (M.read (| window |)) ] |)
                           ]
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| out |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| out |)) ]
+                      |)
                     |)
                   |)))
               |)))
@@ -2163,7 +2261,7 @@ Module iter.
                 self.inner.size_hint()
             }
         *)
-        Definition size_hint (I F R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I F R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F R in
           match τ, α with
           | [], [ self ] =>
@@ -2235,7 +2333,7 @@ Module iter.
                 f.debug_struct("MapWindows").field("iter", &self.inner.iter).finish()
             }
         *)
-        Definition fmt (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F in
           match τ, α with
           | [], [ self; f ] =>
@@ -2263,13 +2361,14 @@ Module iter.
                             "debug_struct",
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "MapWindows" |) ]
+                          [ M.read (| f |); M.read (| M.of_value (| Value.String "MapWindows" |) |)
+                          ]
                         |)
                       |);
-                      M.read (| Value.String "iter" |);
+                      M.read (| M.of_value (| Value.String "iter" |) |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::iter::adapters::map_windows::MapWindows",
@@ -2277,7 +2376,8 @@ Module iter.
                           |),
                           "core::iter::adapters::map_windows::MapWindowsInner",
                           "iter"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -2303,46 +2403,50 @@ Module iter.
                 Self { f: self.f.clone(), inner: self.inner.clone() }
             }
         *)
-        Definition clone (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::map_windows::MapWindows"
-                [
-                  ("f",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindows",
-                          "f"
-                        |)
-                      ]
-                    |));
-                  ("inner",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::map_windows::MapWindowsInner")
-                          [ I ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::MapWindows",
-                          "inner"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::map_windows::MapWindows"
+                  [
+                    ("f",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map_windows::MapWindows",
+                              "f"
+                            |)
+                          ]
+                        |)));
+                    ("inner",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map_windows::MapWindowsInner")
+                              [ I ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map_windows::MapWindows",
+                              "inner"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         

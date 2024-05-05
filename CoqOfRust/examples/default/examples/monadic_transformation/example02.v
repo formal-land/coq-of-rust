@@ -23,76 +23,78 @@ fn main() {
     };
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Integer 1 |),
+            M.alloc (| M.of_value (| Value.Integer 1 |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
-                  M.alloc (| Value.Bool false |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                  M.alloc (| M.of_value (| Value.Bool false |) |)));
+              fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)))
             ]
           |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                  (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Integer 0 |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 1 |)))
+                  M.alloc (| M.of_value (| Value.Integer 0 |) |)));
+              fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 1 |) |)))
             ]
           |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                  (let γ := M.use (M.alloc (| M.of_value (| Value.Bool false |) |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Integer 2 |)));
+                  M.alloc (| M.of_value (| Value.Integer 2 |) |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool false |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer 3 |)));
+                          M.alloc (| M.of_value (| Value.Integer 3 |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                                  (let γ :=
+                                    M.use (M.alloc (| M.of_value (| Value.Bool false |) |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  M.alloc (| Value.Integer 4 |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 5 |)))
+                                  M.alloc (| M.of_value (| Value.Integer 4 |) |)));
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 5 |) |)))
                             ]
                           |)))
                     ]
                   |)))
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

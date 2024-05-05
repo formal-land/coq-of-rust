@@ -55,7 +55,7 @@ Module collections.
                 (new_ref, Self { ptr, _marker: PhantomData })
             }
         *)
-        Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ t ] =>
@@ -87,16 +87,25 @@ Module collections.
                     |)
                   |) in
                 M.alloc (|
-                  Value.Tuple
-                    [
-                      M.read (| new_ref |);
-                      Value.StructRecord
-                        "alloc::collections::btree::borrow::DormantMutRef"
-                        [
-                          ("ptr", M.read (| ptr |));
-                          ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-                        ]
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value (M.read (| new_ref |));
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "alloc::collections::btree::borrow::DormantMutRef"
+                              [
+                                ("ptr", A.to_value (M.read (| ptr |)));
+                                ("_marker",
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructTuple "core::marker::PhantomData" []
+                                    |)))
+                              ]
+                          |))
+                      ]
+                  |)
                 |)
               |)))
           | _, _ => M.impossible
@@ -112,7 +121,7 @@ Module collections.
                 unsafe { &mut *self.ptr.as_ptr() }
             }
         *)
-        Definition awaken (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition awaken (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -147,7 +156,7 @@ Module collections.
                 unsafe { &mut *self.ptr.as_ptr() }
             }
         *)
-        Definition reborrow (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition reborrow (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -182,7 +191,7 @@ Module collections.
                 unsafe { &*self.ptr.as_ptr() }
             }
         *)
-        Definition reborrow_shared (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition reborrow_shared (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>

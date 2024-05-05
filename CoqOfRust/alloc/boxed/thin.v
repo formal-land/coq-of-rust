@@ -48,7 +48,7 @@ Module boxed.
               ThinBox { ptr, _marker: PhantomData }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ value ] =>
@@ -74,12 +74,16 @@ Module boxed.
                   |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "alloc::boxed::thin::ThinBox"
-                  [
-                    ("ptr", M.read (| ptr |));
-                    ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-                  ]
+                M.of_value (|
+                  Value.StructRecord
+                    "alloc::boxed::thin::ThinBox"
+                    [
+                      ("ptr", A.to_value (M.read (| ptr |)));
+                      ("_marker",
+                        A.to_value
+                          (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -95,7 +99,7 @@ Module boxed.
               unsafe { *self.with_header().header() }
           }
       *)
-      Definition meta (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition meta (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -132,7 +136,7 @@ Module boxed.
               self.with_header().value()
           }
       *)
-      Definition data (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition data (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -168,14 +172,14 @@ Module boxed.
               unsafe { &*((&self.ptr) as *const WithOpaqueHeader as *const WithHeader<_>) }
           }
       *)
-      Definition with_header (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition with_header (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
-              (M.read (|
+            M.rust_cast (|
+              M.read (|
                 M.use
                   (M.alloc (|
                     M.SubPointer.get_struct_record_field (|
@@ -184,7 +188,8 @@ Module boxed.
                       "ptr"
                     |)
                   |))
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -207,7 +212,7 @@ Module boxed.
               ThinBox { ptr, _marker: PhantomData }
           }
       *)
-      Definition new_unsize (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_unsize (Dyn : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Dyn in
         match τ, α with
         | [ T ], [ value ] =>
@@ -218,7 +223,8 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::metadata", [ Dyn ] |),
-                    [ M.read (| M.use (M.alloc (| (* Unsize *) M.pointer_coercion value |)) |) ]
+                    [ M.read (| M.use (M.alloc (| (* Unsize *) M.pointer_coercion (| value |) |)) |)
+                    ]
                   |)
                 |) in
               let ptr :=
@@ -233,12 +239,16 @@ Module boxed.
                   |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "alloc::boxed::thin::ThinBox"
-                  [
-                    ("ptr", M.read (| ptr |));
-                    ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-                  ]
+                M.of_value (|
+                  Value.StructRecord
+                    "alloc::boxed::thin::ThinBox"
+                    [
+                      ("ptr", A.to_value (M.read (| ptr |)));
+                      ("_marker",
+                        A.to_value
+                          (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -257,7 +267,7 @@ Module boxed.
               Debug::fmt(self.deref(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -300,7 +310,7 @@ Module boxed.
               Display::fmt(self.deref(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -349,7 +359,7 @@ Module boxed.
               unsafe { &*pointer }
           }
       *)
-      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -382,7 +392,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::from_raw_parts", [ T ] |),
-                    [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
+                    [ M.rust_cast (| M.read (| value |) |); M.read (| metadata |) ]
                   |)
                 |) in
               M.alloc (| M.read (| pointer |) |)
@@ -411,7 +421,7 @@ Module boxed.
               unsafe { &mut *pointer }
           }
       *)
-      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -444,7 +454,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ T ] |),
-                    [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
+                    [ M.rust_cast (| M.read (| value |) |); M.read (| metadata |) ]
                   |)
                 |) in
               M.alloc (| M.read (| pointer |) |)
@@ -473,7 +483,7 @@ Module boxed.
               }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -515,7 +525,7 @@ Module boxed.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -557,7 +567,7 @@ Module boxed.
               Self(ptr.0)
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H; T ], [ header; value ] =>
           ltac:(M.monadic
@@ -576,17 +586,20 @@ Module boxed.
                   |)
                 |) in
               M.alloc (|
-                Value.StructTuple
-                  "alloc::boxed::thin::WithOpaqueHeader"
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        ptr,
-                        "alloc::boxed::thin::WithHeader",
-                        0
-                      |)
-                    |)
-                  ]
+                M.of_value (|
+                  Value.StructTuple
+                    "alloc::boxed::thin::WithOpaqueHeader"
+                    [
+                      A.to_value
+                        (M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            ptr,
+                            "alloc::boxed::thin::WithHeader",
+                            0
+                          |)
+                        |))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -641,7 +654,7 @@ Module boxed.
               }
           }
       *)
-      Definition new (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self H in
         match τ, α with
         | [ T ], [ header; value ] =>
@@ -687,23 +700,24 @@ Module boxed.
                       let ptr :=
                         M.copy (|
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq
-                                          (M.call_closure (|
+                                        BinOp.Pure.eq (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "size",
                                               []
                                             |),
                                             [ layout ]
-                                          |))
-                                          (Value.Integer 0)
+                                          |),
+                                          M.of_value (| Value.Integer 0 |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -712,11 +726,13 @@ Module boxed.
                                     |) in
                                   let _ :=
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
@@ -724,19 +740,20 @@ Module boxed.
                                               |) in
                                             let _ :=
                                               M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            UnOp.Pure.not
-                                                              (LogicalOp.and (|
+                                                            UnOp.Pure.not (|
+                                                              LogicalOp.and (|
                                                                 LogicalOp.and (|
-                                                                  BinOp.Pure.eq
-                                                                    (M.read (| value_offset |))
-                                                                    (Value.Integer 0),
+                                                                  BinOp.Pure.eq (|
+                                                                    M.read (| value_offset |),
+                                                                    M.of_value (| Value.Integer 0 |)
+                                                                  |),
                                                                   ltac:(M.monadic
                                                                     (M.read (|
                                                                       M.get_constant (|
@@ -750,7 +767,8 @@ Module boxed.
                                                                       "core::mem::SizedTypeProperties::IS_ZST"
                                                                     |)
                                                                   |)))
-                                                              |))
+                                                              |)
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -766,19 +784,26 @@ Module boxed.
                                                             |),
                                                             [
                                                               M.read (|
-                                                                Value.String
-                                                                  "assertion failed: value_offset == 0 && T::IS_ZST && H::IS_ZST"
+                                                                M.of_value (|
+                                                                  Value.String
+                                                                    "assertion failed: value_offset == 0 && T::IS_ZST && H::IS_ZST"
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
                                                         |)
                                                       |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)))
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       ]
                                     |) in
                                   M.alloc (|
@@ -802,7 +827,7 @@ Module boxed.
                                     |) in
                                   let _ :=
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
@@ -834,20 +859,23 @@ Module boxed.
                                                 |)
                                               |)
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       ]
                                     |) in
                                   let ptr :=
                                     M.alloc (|
-                                      M.rust_cast
-                                        (M.call_closure (|
+                                      M.rust_cast (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
                                             "add",
                                             []
                                           |),
                                           [ M.read (| ptr |); M.read (| value_offset |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -866,9 +894,17 @@ Module boxed.
                         |) in
                       let result :=
                         M.alloc (|
-                          Value.StructTuple
-                            "alloc::boxed::thin::WithHeader"
-                            [ M.read (| ptr |); Value.StructTuple "core::marker::PhantomData" [] ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "alloc::boxed::thin::WithHeader"
+                              [
+                                A.to_value (M.read (| ptr |));
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple "core::marker::PhantomData" []
+                                  |))
+                              ]
+                          |)
                         |) in
                       let _ :=
                         M.alloc (|
@@ -966,7 +1002,7 @@ Module boxed.
               }
           }
       *)
-      Definition drop (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self H in
         match τ, α with
         | [ T ], [ self; value ] =>
@@ -976,28 +1012,35 @@ Module boxed.
             M.read (|
               let _guard :=
                 M.alloc (|
-                  Value.StructRecord
-                    "alloc::boxed::thin::drop::DropGuard"
-                    [
-                      ("ptr",
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.read (| self |),
-                            "alloc::boxed::thin::WithHeader",
-                            0
-                          |)
-                        |));
-                      ("value_layout",
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::alloc::layout::Layout",
-                            "for_value_raw",
-                            [ T ]
-                          |),
-                          [ (* MutToConstPointer *) M.pointer_coercion (M.read (| value |)) ]
-                        |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-                    ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "alloc::boxed::thin::drop::DropGuard"
+                      [
+                        ("ptr",
+                          A.to_value
+                            (M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "alloc::boxed::thin::WithHeader",
+                                0
+                              |)
+                            |)));
+                        ("value_layout",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::alloc::layout::Layout",
+                                "for_value_raw",
+                                [ T ]
+                              |),
+                              [ (* MutToConstPointer *) M.pointer_coercion (| M.read (| value |) |)
+                              ]
+                            |)));
+                        ("_marker",
+                          A.to_value
+                            (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                      ]
+                  |)
                 |) in
               let _ :=
                 M.alloc (|
@@ -1006,7 +1049,7 @@ Module boxed.
                     [ M.read (| value |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1029,7 +1072,7 @@ Module boxed.
               hp
           }
       *)
-      Definition header (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition header (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self H in
         match τ, α with
         | [], [ self ] =>
@@ -1038,8 +1081,8 @@ Module boxed.
             M.read (|
               let hp :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
                         "sub",
@@ -1071,35 +1114,37 @@ Module boxed.
                           []
                         |)
                       ]
-                    |))
+                    |)
+                  |)
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.Pure.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [ H ],
                                               "is_aligned",
                                               []
                                             |),
                                             [ M.read (| hp |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1112,17 +1157,20 @@ Module boxed.
                                         M.get_function (| "core::panicking::panic", [] |),
                                         [
                                           M.read (|
-                                            Value.String "assertion failed: hp.is_aligned()"
+                                            M.of_value (|
+                                              Value.String "assertion failed: hp.is_aligned()"
+                                            |)
                                           |)
                                         ]
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               hp
@@ -1139,7 +1187,7 @@ Module boxed.
               self.0.as_ptr()
           }
       *)
-      Definition value (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition value (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self H in
         match τ, α with
         | [], [ self ] =>
@@ -1173,7 +1221,7 @@ Module boxed.
               mem::size_of::<H>()
           }
       *)
-      Definition header_size (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition header_size (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self H in
         match τ, α with
         | [], [] =>
@@ -1191,7 +1239,7 @@ Module boxed.
               Layout::new::<H>().extend(value_layout)
           }
       *)
-      Definition alloc_layout (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition alloc_layout (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self H in
         match τ, α with
         | [], [ value_layout ] =>
@@ -1229,7 +1277,7 @@ Module boxed.
               self.deref().source()
           }
       *)
-      Definition source (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition source (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>

@@ -12,12 +12,16 @@ Module iter.
           FromFn(f)
       }
       *)
-      Definition from_fn (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_fn (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; F ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
-            Value.StructTuple "core::iter::sources::from_fn::FromFn" [ M.read (| f |) ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::iter::sources::from_fn::FromFn"
+                [ A.to_value (M.read (| f |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -33,26 +37,29 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [ F ].
         
         (* Clone *)
-        Definition clone (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self F in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructTuple
-                "core::iter::sources::from_fn::FromFn"
-                [
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::iter::sources::from_fn::FromFn",
-                        0
-                      |)
-                    ]
-                  |)
-                ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::iter::sources::from_fn::FromFn"
+                  [
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.read (| self |),
+                            "core::iter::sources::from_fn::FromFn",
+                            0
+                          |)
+                        ]
+                      |))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -77,7 +84,7 @@ Module iter.
                 (self.0)()
             }
         *)
-        Definition next (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T F in
           match τ, α with
           | [], [ self ] =>
@@ -97,7 +104,7 @@ Module iter.
                     "core::iter::sources::from_fn::FromFn",
                     0
                   |);
-                  Value.Tuple []
+                  M.of_value (| Value.Tuple [] |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -122,7 +129,7 @@ Module iter.
                 f.debug_struct("FromFn").finish()
             }
         *)
-        Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self F in
           match τ, α with
           | [], [ self; f ] =>
@@ -143,7 +150,7 @@ Module iter.
                         "debug_struct",
                         []
                       |),
-                      [ M.read (| f |); M.read (| Value.String "FromFn" |) ]
+                      [ M.read (| f |); M.read (| M.of_value (| Value.String "FromFn" |) |) ]
                     |)
                   |)
                 ]

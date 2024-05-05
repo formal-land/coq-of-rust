@@ -21,7 +21,7 @@ Module instructions.
           Some((input, ret_range))
       }
       *)
-      Definition get_memory_input_and_out_ranges (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_memory_input_and_out_ranges (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ interpreter ] =>
           ltac:(M.monadic
@@ -31,15 +31,15 @@ Module instructions.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt
-                                    (M.call_closure (|
+                                  BinOp.Pure.lt (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm_interpreter::interpreter::stack::Stack",
                                         "len",
@@ -52,8 +52,9 @@ Module instructions.
                                           "stack"
                                         |)
                                       ]
-                                    |))
-                                    (Value.Integer 4)
+                                    |),
+                                    M.of_value (| Value.Integer 4 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -67,15 +68,21 @@ Module instructions.
                                         "revm_interpreter::interpreter::Interpreter",
                                         "instruction_result"
                                       |),
-                                      Value.StructTuple
-                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                          []
+                                      |)
                                     |) in
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   M.match_operator (|
@@ -207,15 +214,15 @@ Module instructions.
                             |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.Pure.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::Range")
@@ -224,7 +231,8 @@ Module instructions.
                                                 []
                                               |),
                                               [ in_range ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -260,8 +268,9 @@ Module instructions.
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
                           let ret_range :=
@@ -353,9 +362,20 @@ Module instructions.
                               |)
                             |) in
                           M.alloc (|
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [ Value.Tuple [ M.read (| input |); M.read (| ret_range |) ] ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.Tuple
+                                        [
+                                          A.to_value (M.read (| input |));
+                                          A.to_value (M.read (| ret_range |))
+                                        ]
+                                    |))
+                                ]
+                            |)
                           |)))
                     ]
                   |)
@@ -381,7 +401,7 @@ Module instructions.
           Some(offset..offset + len)
       }
       *)
-      Definition resize_memory_and_return_range (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition resize_memory_and_return_range (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ interpreter; offset; len ] =>
           ltac:(M.monadic
@@ -402,7 +422,7 @@ Module instructions.
                         |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -411,33 +431,36 @@ Module instructions.
                                     (M.alloc (|
                                       LogicalOp.or (|
                                         LogicalOp.or (|
-                                          BinOp.Pure.ne
-                                            (M.read (|
+                                          BinOp.Pure.ne (|
+                                            M.read (|
                                               M.SubPointer.get_array_field (|
                                                 M.read (| x |),
-                                                M.alloc (| Value.Integer 1 |)
+                                                M.alloc (| M.of_value (| Value.Integer 1 |) |)
                                               |)
-                                            |))
-                                            (Value.Integer 0),
+                                            |),
+                                            M.of_value (| Value.Integer 0 |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.ne
-                                              (M.read (|
+                                            (BinOp.Pure.ne (|
+                                              M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   M.read (| x |),
-                                                  M.alloc (| Value.Integer 2 |)
+                                                  M.alloc (| M.of_value (| Value.Integer 2 |) |)
                                                 |)
-                                              |))
-                                              (Value.Integer 0)))
+                                              |),
+                                              M.of_value (| Value.Integer 0 |)
+                                            |)))
                                         |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.ne
-                                            (M.read (|
+                                          (BinOp.Pure.ne (|
+                                            M.read (|
                                               M.SubPointer.get_array_field (|
                                                 M.read (| x |),
-                                                M.alloc (| Value.Integer 3 |)
+                                                M.alloc (| M.of_value (| Value.Integer 3 |) |)
                                               |)
-                                            |))
-                                            (Value.Integer 0)))
+                                            |),
+                                            M.of_value (| Value.Integer 0 |)
+                                          |)))
                                       |)
                                     |)) in
                                 let _ :=
@@ -455,17 +478,22 @@ Module instructions.
                                             "revm_interpreter::interpreter::Interpreter",
                                             "instruction_result"
                                           |),
-                                          Value.StructTuple
-                                            "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
-                                            []
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                                              []
+                                          |)
                                         |) in
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)
                                       |)
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
                       M.match_operator (|
@@ -482,7 +510,7 @@ Module instructions.
                               M.read (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| x |),
-                                  M.alloc (| Value.Integer 0 |)
+                                  M.alloc (| M.of_value (| Value.Integer 0 |) |)
                                 |)
                               |)
                             ]
@@ -505,14 +533,17 @@ Module instructions.
                   let offset :=
                     M.copy (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ne (M.read (| len |)) (Value.Integer 0)
+                                    BinOp.Pure.ne (|
+                                      M.read (| len |),
+                                      M.of_value (| Value.Integer 0 |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -534,7 +565,7 @@ Module instructions.
                                     |) in
                                   let _ :=
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
@@ -543,33 +574,42 @@ Module instructions.
                                                 (M.alloc (|
                                                   LogicalOp.or (|
                                                     LogicalOp.or (|
-                                                      BinOp.Pure.ne
-                                                        (M.read (|
+                                                      BinOp.Pure.ne (|
+                                                        M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.read (| x |),
-                                                            M.alloc (| Value.Integer 1 |)
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Integer 1 |)
+                                                            |)
                                                           |)
-                                                        |))
-                                                        (Value.Integer 0),
+                                                        |),
+                                                        M.of_value (| Value.Integer 0 |)
+                                                      |),
                                                       ltac:(M.monadic
-                                                        (BinOp.Pure.ne
-                                                          (M.read (|
+                                                        (BinOp.Pure.ne (|
+                                                          M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.read (| x |),
-                                                              M.alloc (| Value.Integer 2 |)
+                                                              M.alloc (|
+                                                                M.of_value (| Value.Integer 2 |)
+                                                              |)
                                                             |)
-                                                          |))
-                                                          (Value.Integer 0)))
+                                                          |),
+                                                          M.of_value (| Value.Integer 0 |)
+                                                        |)))
                                                     |),
                                                     ltac:(M.monadic
-                                                      (BinOp.Pure.ne
-                                                        (M.read (|
+                                                      (BinOp.Pure.ne (|
+                                                        M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.read (| x |),
-                                                            M.alloc (| Value.Integer 3 |)
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Integer 3 |)
+                                                            |)
                                                           |)
-                                                        |))
-                                                        (Value.Integer 0)))
+                                                        |),
+                                                        M.of_value (| Value.Integer 0 |)
+                                                      |)))
                                                   |)
                                                 |)) in
                                             let _ :=
@@ -587,19 +627,25 @@ Module instructions.
                                                         "revm_interpreter::interpreter::Interpreter",
                                                         "instruction_result"
                                                       |),
-                                                      Value.StructTuple
-                                                        "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
-                                                        []
+                                                      M.of_value (|
+                                                        Value.StructTuple
+                                                          "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                                                          []
+                                                      |)
                                                     |) in
                                                   M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    |)
                                                   |)
                                                 |)
                                               |)
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       ]
                                     |) in
                                   M.match_operator (|
@@ -616,7 +662,7 @@ Module instructions.
                                           M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.read (| x |),
-                                              M.alloc (| Value.Integer 0 |)
+                                              M.alloc (| M.of_value (| Value.Integer 0 |) |)
                                             |)
                                           |)
                                         ]
@@ -649,16 +695,16 @@ Module instructions.
                                 |) in
                               let _ :=
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.gt
-                                                (M.read (| new_size |))
-                                                (M.call_closure (|
+                                              BinOp.Pure.gt (|
+                                                M.read (| new_size |),
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -672,7 +718,8 @@ Module instructions.
                                                       "shared_memory"
                                                     |)
                                                   ]
-                                                |))
+                                                |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -680,15 +727,15 @@ Module instructions.
                                             Value.Bool true
                                           |) in
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      UnOp.Pure.not
-                                                        (M.call_closure (|
+                                                      UnOp.Pure.not (|
+                                                        M.call_closure (|
                                                           M.get_function (|
                                                             "revm_interpreter::interpreter::resize_memory",
                                                             []
@@ -706,7 +753,8 @@ Module instructions.
                                                             |);
                                                             M.read (| new_size |)
                                                           ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -723,22 +771,30 @@ Module instructions.
                                                             "revm_interpreter::interpreter::Interpreter",
                                                             "instruction_result"
                                                           |),
-                                                          Value.StructTuple
-                                                            "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
-                                                            []
+                                                          M.of_value (|
+                                                            Value.StructTuple
+                                                              "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                                                              []
+                                                          |)
                                                         |) in
                                                       M.return_ (|
-                                                        Value.StructTuple
-                                                          "core::option::Option::None"
-                                                          []
+                                                        M.of_value (|
+                                                          Value.StructTuple
+                                                            "core::option::Option::None"
+                                                            []
+                                                        |)
                                                       |)
                                                     |)
                                                   |)
                                                 |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           ]
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
                               offset));
@@ -747,21 +803,27 @@ Module instructions.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [
-                        Value.StructRecord
-                          "core::ops::range::Range"
-                          [
-                            ("start", M.read (| offset |));
-                            ("end_",
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| offset |),
-                                M.read (| len |)
-                              |))
-                          ]
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.StructRecord
+                                "core::ops::range::Range"
+                                [
+                                  ("start", A.to_value (M.read (| offset |)));
+                                  ("end_",
+                                    A.to_value
+                                      (BinOp.Panic.add (|
+                                        Integer.Usize,
+                                        M.read (| offset |),
+                                        M.read (| len |)
+                                      |)))
+                                ]
+                            |))
+                        ]
+                    |)
                   |)
                 |)))
             |)))
@@ -792,7 +854,7 @@ Module instructions.
           Some(gas_limit)
       }
       *)
-      Definition calc_call_gas (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition calc_call_gas (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H; SPEC ],
             [ interpreter; is_cold; has_transfer; new_account_accounting; local_gas_limit ] =>
@@ -821,15 +883,15 @@ Module instructions.
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.Pure.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm_interpreter::gas::Gas",
                                         "record_cost",
@@ -843,7 +905,8 @@ Module instructions.
                                         |);
                                         M.read (| call_cost |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -857,21 +920,27 @@ Module instructions.
                                         "revm_interpreter::interpreter::Interpreter",
                                         "instruction_result"
                                       |),
-                                      Value.StructTuple
-                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                      |)
                                     |) in
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let gas_limit :=
                     M.copy (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -887,9 +956,11 @@ Module instructions.
                                         []
                                       |),
                                       [
-                                        Value.StructTuple
-                                          "revm_primitives::specification::SpecId::TANGERINE"
-                                          []
+                                        M.of_value (|
+                                          Value.StructTuple
+                                            "revm_primitives::specification::SpecId::TANGERINE"
+                                            []
+                                        |)
                                       ]
                                     |)
                                   |)) in
@@ -928,7 +999,7 @@ Module instructions.
                                       BinOp.Panic.div (|
                                         Integer.U64,
                                         M.read (| gas |),
-                                        Value.Integer 64
+                                        M.of_value (| Value.Integer 64 |)
                                       |)
                                     |);
                                     M.read (| local_gas_limit |)
@@ -940,7 +1011,11 @@ Module instructions.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| gas_limit |) ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ A.to_value (M.read (| gas_limit |)) ]
+                    |)
                   |)
                 |)))
             |)))

@@ -9,6 +9,26 @@ Class ToValue (A : Set) : Set := {
   φ : A -> Value.t;
 }.
 
+Module A.
+  Definition make {A : Set} `{ToValue A} (value : A): A.t :=
+    A.Make (to_value := φ) value.
+End A.
+
+Module Immediate.
+  Inductive t (A : Set) `{ToValue A} : Set :=
+  | Make : A -> t A.
+  Arguments Make {_ _}.
+
+  Global Instance IsToValue {A : Set} `{ToValue A} : ToValue (t A) := {
+    φ '(Make x) := Value.Pointer (Pointer.Immediate (φ x));
+  }.
+
+  Definition of_value {A : Set} `{ToValue A} (x : A) :
+      Value.Pointer (Pointer.Immediate (A.to_value (A.make x))) =
+      φ (Make x) :=
+    eq_refl.
+End Immediate.
+
 Global Instance ZIsToValue : ToValue Z := {
   φ z := Value.Integer z;
 }.

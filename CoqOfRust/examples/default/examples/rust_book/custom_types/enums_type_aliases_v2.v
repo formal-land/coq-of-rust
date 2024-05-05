@@ -32,7 +32,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
           }
       }
   *)
-  Definition run (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition run (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; x; y ] =>
       ltac:(M.monadic

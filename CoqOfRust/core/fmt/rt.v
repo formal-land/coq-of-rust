@@ -33,34 +33,34 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Placeholder".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Value.DeclaredButUndefined,
+                                M.of_value (| Value.DeclaredButUndefined |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Value.DeclaredButUndefined,
+                                        M.of_value (| Value.DeclaredButUndefined |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Value.DeclaredButUndefined,
+                                                M.of_value (| Value.DeclaredButUndefined |),
                                                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                                               |)))
                                         ]
@@ -98,7 +98,7 @@ Module fmt.
               Self { position, fill, align, flags, precision, width }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ position; fill; align; flags; precision; width ] =>
           ltac:(M.monadic
@@ -108,16 +108,18 @@ Module fmt.
             let flags := M.alloc (| flags |) in
             let precision := M.alloc (| precision |) in
             let width := M.alloc (| width |) in
-            Value.StructRecord
-              "core::fmt::rt::Placeholder"
-              [
-                ("position", M.read (| position |));
-                ("fill", M.read (| fill |));
-                ("align", M.read (| align |));
-                ("flags", M.read (| flags |));
-                ("precision", M.read (| precision |));
-                ("width", M.read (| width |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::fmt::rt::Placeholder"
+                [
+                  ("position", A.to_value (M.read (| position |)));
+                  ("fill", A.to_value (M.read (| fill |)));
+                  ("align", A.to_value (M.read (| align |)));
+                  ("flags", A.to_value (M.read (| flags |)));
+                  ("precision", A.to_value (M.read (| precision |)));
+                  ("width", A.to_value (M.read (| width |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -169,7 +171,7 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -201,7 +203,7 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -228,7 +230,7 @@ Module fmt.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -256,12 +258,12 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -314,14 +316,14 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Count".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
@@ -391,7 +393,7 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Flag".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -442,19 +444,19 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Argument".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                       |)))
                 ]
@@ -487,52 +489,56 @@ Module fmt.
               unsafe { Argument { formatter: mem::transmute(f), value: mem::transmute(x) } }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x; f ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             let f := M.alloc (| f |) in
-            Value.StructRecord
-              "core::fmt::rt::Argument"
-              [
-                ("formatter",
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [
-                        Ty.function
+            M.of_value (|
+              Value.StructRecord
+                "core::fmt::rt::Argument"
+                [
+                  ("formatter",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_function (|
+                          "core::intrinsics::transmute",
+                          [
+                            Ty.function
+                              [
+                                Ty.apply (Ty.path "&") [ T ];
+                                Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
+                            Ty.function
+                              [
+                                Ty.apply (Ty.path "&") [ Ty.path "core::fmt::rt::Opaque" ];
+                                Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                          ]
+                        |),
+                        [ M.read (| f |) ]
+                      |)));
+                  ("value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_function (|
+                          "core::intrinsics::transmute",
                           [
                             Ty.apply (Ty.path "&") [ T ];
-                            Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]
+                            Ty.apply (Ty.path "&") [ Ty.path "core::fmt::rt::Opaque" ]
                           ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
-                        Ty.function
-                          [
-                            Ty.apply (Ty.path "&") [ Ty.path "core::fmt::rt::Opaque" ];
-                            Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                      ]
-                    |),
-                    [ M.read (| f |) ]
-                  |));
-                ("value",
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [
-                        Ty.apply (Ty.path "&") [ T ];
-                        Ty.apply (Ty.path "&") [ Ty.path "core::fmt::rt::Opaque" ]
-                      ]
-                    |),
-                    [ M.read (| x |) ]
-                  |))
-              ]))
+                        |),
+                        [ M.read (| x |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -543,7 +549,7 @@ Module fmt.
               Self::new(x, Display::fmt)
           }
       *)
-      Definition new_display (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_display (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -553,7 +559,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -566,7 +574,7 @@ Module fmt.
               Self::new(x, Debug::fmt)
           }
       *)
-      Definition new_debug (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_debug (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -576,7 +584,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -589,7 +599,7 @@ Module fmt.
               Self::new(x, Octal::fmt)
           }
       *)
-      Definition new_octal (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_octal (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -599,7 +609,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -612,7 +624,7 @@ Module fmt.
               Self::new(x, LowerHex::fmt)
           }
       *)
-      Definition new_lower_hex (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_lower_hex (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -622,8 +634,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -637,7 +650,7 @@ Module fmt.
               Self::new(x, UpperHex::fmt)
           }
       *)
-      Definition new_upper_hex (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_upper_hex (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -647,8 +660,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -662,7 +676,7 @@ Module fmt.
               Self::new(x, Pointer::fmt)
           }
       *)
-      Definition new_pointer (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_pointer (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -672,7 +686,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Pointer", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::Pointer", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -685,7 +701,7 @@ Module fmt.
               Self::new(x, Binary::fmt)
           }
       *)
-      Definition new_binary (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_binary (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -695,7 +711,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -708,7 +726,7 @@ Module fmt.
               Self::new(x, LowerExp::fmt)
           }
       *)
-      Definition new_lower_exp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_lower_exp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -718,8 +736,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -733,7 +752,7 @@ Module fmt.
               Self::new(x, UpperExp::fmt)
           }
       *)
-      Definition new_upper_exp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_upper_exp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ x ] =>
           ltac:(M.monadic
@@ -743,8 +762,9 @@ Module fmt.
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -758,7 +778,7 @@ Module fmt.
               Self::new(x, USIZE_MARKER)
           }
       *)
-      Definition from_usize (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_usize (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
@@ -784,7 +804,7 @@ Module fmt.
               (self.formatter)(self.value, f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -829,59 +849,68 @@ Module fmt.
               }
           }
       *)
-      Definition as_usize (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_usize (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.rust_cast
-                                (M.read (|
+                            BinOp.Pure.eq (|
+                              M.rust_cast (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::fmt::rt::Argument",
                                     "formatter"
                                   |)
-                                |)))
-                              (M.rust_cast
-                                (M.read (|
+                                |)
+                              |),
+                              M.rust_cast (|
+                                M.read (|
                                   M.read (| M.get_constant (| "core::fmt::rt::USIZE_MARKER" |) |)
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.read (|
-                              M.rust_cast
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
                                 (M.read (|
-                                  M.use
-                                    (M.alloc (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::rt::Argument",
-                                          "value"
-                                        |)
-                                      |)
-                                    |))
+                                  M.rust_cast (|
+                                    M.read (|
+                                      M.use
+                                        (M.alloc (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::fmt::rt::Argument",
+                                              "value"
+                                            |)
+                                          |)
+                                        |))
+                                    |)
+                                  |)
                                 |))
-                            |)
-                          ]
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -895,8 +924,11 @@ Module fmt.
               []
           }
       *)
-      Definition none (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with | [], [] => ltac:(M.monadic (Value.Array [])) | _, _ => M.impossible end.
+      Definition none (τ : list Ty.t) (α : list A.t) : M :=
+        match τ, α with
+        | [], [] => ltac:(M.monadic (M.of_value (| Value.Array [] |)))
+        | _, _ => M.impossible
+        end.
       
       Axiom AssociatedFunction_none : M.IsAssociatedFunction Self "none" none.
     End Impl_core_fmt_rt_Argument.
@@ -916,11 +948,15 @@ Module fmt.
               Self { _private: () }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord "core::fmt::rt::UnsafeArg" [ ("_private", Value.Tuple []) ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::fmt::rt::UnsafeArg"
+                [ ("_private", A.to_value (M.of_value (| Value.Tuple [] |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -929,15 +965,15 @@ Module fmt.
     
     (* Unhandled foreign module here *)
     
-    Definition value_USIZE_MARKER : Value.t :=
+    Definition value_USIZE_MARKER : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.alloc (|
               (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
+              M.pointer_coercion (|
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0; α1 ] =>
@@ -967,7 +1003,8 @@ Module fmt.
                                             M.never_to_any (|
                                               M.read (|
                                                 M.loop (|
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                                 |)
                                               |)
                                             |)
@@ -978,7 +1015,9 @@ Module fmt.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end)))
+                      end)
+                |)
+              |)
             |)
           |))).
   End rt.

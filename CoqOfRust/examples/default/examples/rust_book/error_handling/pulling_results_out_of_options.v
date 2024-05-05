@@ -6,7 +6,7 @@ fn double_first(vec: Vec<&str>) -> Option<Result<i32, ParseIntError>> {
     vec.first().map(|first| first.parse::<i32>().map(|n| 2 * n))
 }
 *)
-Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+Definition double_first (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ vec ] =>
     ltac:(M.monadic
@@ -50,8 +50,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             ]
           |);
-          M.closure
-            (fun γ =>
+          M.closure (|
+            fun γ =>
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
@@ -81,8 +81,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [ M.read (| M.read (| first |) |) ]
                               |);
-                              M.closure
-                                (fun γ =>
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
@@ -94,19 +94,21 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                               (let n := M.copy (| γ |) in
                                               BinOp.Panic.mul (|
                                                 Integer.I32,
-                                                Value.Integer 2,
+                                                M.of_value (| Value.Integer 2 |),
                                                 M.read (| n |)
                                               |)))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |)))
                     ]
                   |)
                 | _ => M.impossible (||)
-                end))
+                end)
+          |)
         ]
       |)))
   | _, _ => M.impossible
@@ -127,7 +129,7 @@ fn main() {
     // Error 2: the element doesn't parse to a number
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -142,8 +144,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -157,16 +159,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "42" |);
-                              M.read (| Value.String "93" |);
-                              M.read (| Value.String "18" |)
-                            ]
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "42" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "93" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "18" |) |))
+                              ]
+                          |)
                         |)
                       ]
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)
           |) in
@@ -193,8 +198,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -208,16 +213,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "tofu" |);
-                              M.read (| Value.String "93" |);
-                              M.read (| Value.String "18" |)
-                            ]
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "tofu" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "93" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "18" |) |))
+                              ]
+                          |)
                         |)
                       ]
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)
           |) in
@@ -231,55 +239,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "The first doubled is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "The first doubled is " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
                                       [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                                          (Ty.path "core::option::Option")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              [
+                                                Ty.path "i32";
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ]
                                           ]
                                       ]
-                                  ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "pulling_results_out_of_options::double_first",
-                                        []
-                                      |),
-                                      [ M.read (| numbers |) ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "pulling_results_out_of_options::double_first",
+                                            []
+                                          |),
+                                          [ M.read (| numbers |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -290,55 +310,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "The first doubled is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "The first doubled is " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
                                       [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                                          (Ty.path "core::option::Option")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              [
+                                                Ty.path "i32";
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ]
                                           ]
                                       ]
-                                  ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "pulling_results_out_of_options::double_first",
-                                        []
-                                      |),
-                                      [ M.read (| empty |) ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "pulling_results_out_of_options::double_first",
+                                            []
+                                          |),
+                                          [ M.read (| empty |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -349,56 +381,68 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "The first doubled is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "The first doubled is " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
                                       [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                                          (Ty.path "core::option::Option")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              [
+                                                Ty.path "i32";
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ]
                                           ]
                                       ]
-                                  ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "pulling_results_out_of_options::double_first",
-                                        []
-                                      |),
-                                      [ M.read (| strings |) ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "pulling_results_out_of_options::double_first",
+                                            []
+                                          |),
+                                          [ M.read (| strings |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

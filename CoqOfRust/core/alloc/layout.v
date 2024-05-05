@@ -8,15 +8,19 @@ Module alloc.
         (mem::size_of::<T>(), mem::align_of::<T>())
     }
     *)
-    Definition size_align (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_align (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [] =>
         ltac:(M.monadic
-          (Value.Tuple
-            [
-              M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |);
-              M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
-            ]))
+          (M.of_value (|
+            Value.Tuple
+              [
+                A.to_value
+                  (M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |));
+                A.to_value
+                  (M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -43,19 +47,19 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                       |)))
                 ]
@@ -76,7 +80,7 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -90,25 +94,27 @@ Module alloc.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "Layout" |);
-                M.read (| Value.String "size" |);
+                M.read (| M.of_value (| Value.String "Layout" |) |);
+                M.read (| M.of_value (| Value.String "size" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::alloc::layout::Layout",
                     "size"
-                  |));
-                M.read (| Value.String "align" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "align" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::alloc::layout::Layout",
                       "align"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -137,28 +143,29 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::alloc::layout::Layout",
                     "size"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::alloc::layout::Layout",
                     "size"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -208,20 +215,21 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -242,7 +250,7 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -313,7 +321,7 @@ Module alloc.
               Layout::from_size_alignment(size, unsafe { Alignment::new_unchecked(align) })
           }
       *)
-      Definition from_size_align (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_size_align (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ size; align ] =>
           ltac:(M.monadic
@@ -324,22 +332,23 @@ Module alloc.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.Pure.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "is_power_of_two",
                                         []
                                       |),
                                       [ M.read (| align |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -347,14 +356,23 @@ Module alloc.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [
+                                          A.to_value
+                                            (M.of_value (|
+                                              Value.StructTuple
+                                                "core::alloc::layout::LayoutError"
+                                                []
+                                            |))
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   M.alloc (|
@@ -404,14 +422,14 @@ Module alloc.
               isize::MAX as usize - (align.as_usize() - 1)
           }
       *)
-      Definition max_size_for_align (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition max_size_for_align (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             BinOp.Panic.sub (|
               Integer.Usize,
-              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |),
               BinOp.Panic.sub (|
                 Integer.Usize,
                 M.call_closure (|
@@ -422,7 +440,7 @@ Module alloc.
                   |),
                   [ M.read (| align |) ]
                 |),
-                Value.Integer 1
+                M.of_value (| Value.Integer 1 |)
               |)
             |)))
         | _, _ => M.impossible
@@ -441,7 +459,7 @@ Module alloc.
               Ok(Layout { size, align })
           }
       *)
-      Definition from_size_alignment (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_size_alignment (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ size; align ] =>
           ltac:(M.monadic
@@ -452,23 +470,24 @@ Module alloc.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.read (| size |))
-                                    (M.call_closure (|
+                                  BinOp.Pure.gt (|
+                                    M.read (| size |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "max_size_for_align",
                                         []
                                       |),
                                       [ M.read (| align |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -476,24 +495,41 @@ Module alloc.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [
+                                          A.to_value
+                                            (M.of_value (|
+                                              Value.StructTuple
+                                                "core::alloc::layout::LayoutError"
+                                                []
+                                            |))
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [
-                        Value.StructRecord
-                          "core::alloc::layout::Layout"
-                          [ ("size", M.read (| size |)); ("align", M.read (| align |)) ]
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.StructRecord
+                                "core::alloc::layout::Layout"
+                                [
+                                  ("size", A.to_value (M.read (| size |)));
+                                  ("align", A.to_value (M.read (| align |)))
+                                ]
+                            |))
+                        ]
+                    |)
                   |)
                 |)))
             |)))
@@ -509,26 +545,29 @@ Module alloc.
               unsafe { Layout { size, align: Alignment::new_unchecked(align) } }
           }
       *)
-      Definition from_size_align_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_size_align_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ size; align ] =>
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
-            Value.StructRecord
-              "core::alloc::layout::Layout"
-              [
-                ("size", M.read (| size |));
-                ("align",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::ptr::alignment::Alignment",
-                      "new_unchecked",
-                      []
-                    |),
-                    [ M.read (| align |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::alloc::layout::Layout"
+                [
+                  ("size", A.to_value (M.read (| size |)));
+                  ("align",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::ptr::alignment::Alignment",
+                          "new_unchecked",
+                          []
+                        |),
+                        [ M.read (| align |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -540,7 +579,7 @@ Module alloc.
               self.size
           }
       *)
-      Definition size (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -562,7 +601,7 @@ Module alloc.
               self.align.as_usize()
           }
       *)
-      Definition align (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition align (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -597,7 +636,7 @@ Module alloc.
               unsafe { Layout::from_size_align_unchecked(size, align) }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [] =>
           ltac:(M.monadic
@@ -641,7 +680,7 @@ Module alloc.
               unsafe { Layout::from_size_align_unchecked(size, align) }
           }
       *)
-      Definition for_value (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition for_value (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ t ] =>
           ltac:(M.monadic
@@ -649,17 +688,21 @@ Module alloc.
             M.read (|
               M.match_operator (|
                 M.alloc (|
-                  Value.Tuple
-                    [
-                      M.call_closure (|
-                        M.get_function (| "core::mem::size_of_val", [ T ] |),
-                        [ M.read (| t |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_function (| "core::mem::align_of_val", [ T ] |),
-                        [ M.read (| t |) ]
-                      |)
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_function (| "core::mem::size_of_val", [ T ] |),
+                            [ M.read (| t |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_function (| "core::mem::align_of_val", [ T ] |),
+                            [ M.read (| t |) ]
+                          |))
+                      ]
+                  |)
                 |),
                 [
                   fun γ =>
@@ -694,7 +737,7 @@ Module alloc.
               unsafe { Layout::from_size_align_unchecked(size, align) }
           }
       *)
-      Definition for_value_raw (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition for_value_raw (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ t ] =>
           ltac:(M.monadic
@@ -702,17 +745,21 @@ Module alloc.
             M.read (|
               M.match_operator (|
                 M.alloc (|
-                  Value.Tuple
-                    [
-                      M.call_closure (|
-                        M.get_function (| "core::mem::size_of_val_raw", [ T ] |),
-                        [ M.read (| t |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_function (| "core::mem::align_of_val_raw", [ T ] |),
-                        [ M.read (| t |) ]
-                      |)
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_function (| "core::mem::size_of_val_raw", [ T ] |),
+                            [ M.read (| t |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_function (| "core::mem::align_of_val_raw", [ T ] |),
+                            [ M.read (| t |) ]
+                          |))
+                      ]
+                  |)
                 |),
                 [
                   fun γ =>
@@ -746,7 +793,7 @@ Module alloc.
               unsafe { NonNull::new_unchecked(crate::ptr::invalid_mut::<u8>(self.align())) }
           }
       *)
-      Definition dangling (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition dangling (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -783,7 +830,7 @@ Module alloc.
               Layout::from_size_align(self.size(), cmp::max(self.align(), align))
           }
       *)
-      Definition align_to (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition align_to (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; align ] =>
           ltac:(M.monadic
@@ -848,7 +895,7 @@ Module alloc.
               len_rounded_up.wrapping_sub(len)
           }
       *)
-      Definition padding_needed_for (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition padding_needed_for (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; align ] =>
           ltac:(M.monadic
@@ -868,22 +915,24 @@ Module alloc.
                 |) in
               let len_rounded_up :=
                 M.alloc (|
-                  BinOp.Pure.bit_and
-                    (M.call_closure (|
+                  BinOp.Pure.bit_and (|
+                    M.call_closure (|
                       M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
                           [ M.read (| len |); M.read (| align |) ]
                         |);
-                        Value.Integer 1
+                        M.of_value (| Value.Integer 1 |)
                       ]
-                    |))
-                    (UnOp.Pure.not
-                      (M.call_closure (|
+                    |),
+                    UnOp.Pure.not (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
-                        [ M.read (| align |); Value.Integer 1 ]
-                      |)))
+                        [ M.read (| align |); M.of_value (| Value.Integer 1 |) ]
+                      |)
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -911,7 +960,7 @@ Module alloc.
               unsafe { Layout::from_size_align_unchecked(new_size, self.align()) }
           }
       *)
-      Definition pad_to_align (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pad_to_align (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -994,7 +1043,7 @@ Module alloc.
               Ok((layout, padded_size))
           }
       *)
-      Definition repeat (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition repeat (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
@@ -1065,7 +1114,9 @@ Module alloc.
                                     |),
                                     [ M.read (| padded_size |); M.read (| n |) ]
                                   |);
-                                  Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  M.of_value (|
+                                    Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  |)
                                 ]
                               |)
                             ]
@@ -1224,9 +1275,20 @@ Module alloc.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [ Value.Tuple [ M.read (| layout |); M.read (| padded_size |) ] ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.Tuple
+                                [
+                                  A.to_value (M.read (| layout |));
+                                  A.to_value (M.read (| padded_size |))
+                                ]
+                            |))
+                        ]
+                    |)
                   |)
                 |)))
             |)))
@@ -1248,7 +1310,7 @@ Module alloc.
               Ok((layout, offset))
           }
       *)
-      Definition extend (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; next ] =>
           ltac:(M.monadic
@@ -1343,7 +1405,9 @@ Module alloc.
                                       M.read (| pad |)
                                     ]
                                   |);
-                                  Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  M.of_value (|
+                                    Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  |)
                                 ]
                               |)
                             ]
@@ -1446,7 +1510,9 @@ Module alloc.
                                       |)
                                     ]
                                   |);
-                                  Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  M.of_value (|
+                                    Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  |)
                                 ]
                               |)
                             ]
@@ -1596,9 +1662,18 @@ Module alloc.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [ Value.Tuple [ M.read (| layout |); M.read (| offset |) ] ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.Tuple
+                                [ A.to_value (M.read (| layout |)); A.to_value (M.read (| offset |))
+                                ]
+                            |))
+                        ]
+                    |)
                   |)
                 |)))
             |)))
@@ -1614,7 +1689,7 @@ Module alloc.
               Layout::from_size_alignment(size, self.align)
           }
       *)
-      Definition repeat_packed (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition repeat_packed (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
@@ -1663,7 +1738,9 @@ Module alloc.
                                       M.read (| n |)
                                     ]
                                   |);
-                                  Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  M.of_value (|
+                                    Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  |)
                                 ]
                               |)
                             ]
@@ -1756,7 +1833,7 @@ Module alloc.
               Layout::from_size_alignment(new_size, self.align)
           }
       *)
-      Definition extend_packed (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_packed (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; next ] =>
           ltac:(M.monadic
@@ -1812,7 +1889,9 @@ Module alloc.
                                       |)
                                     ]
                                   |);
-                                  Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  M.of_value (|
+                                    Value.StructTuple "core::alloc::layout::LayoutError" []
+                                  |)
                                 ]
                               |)
                             ]
@@ -1932,7 +2011,7 @@ Module alloc.
               }
           }
       *)
-      Definition array (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition array (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ n ] =>
           ltac:(M.monadic
@@ -1981,12 +2060,12 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::alloc::layout::LayoutError" []))
+            M.of_value (| Value.StructTuple "core::alloc::layout::LayoutError" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -2013,13 +2092,13 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.Bool true))
+            M.of_value (| Value.Bool true |)))
         | _, _ => M.impossible
         end.
       
@@ -2046,12 +2125,12 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -2068,7 +2147,7 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -2076,7 +2155,7 @@ Module alloc.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| Value.String "LayoutError" |) ]
+              [ M.read (| f |); M.read (| M.of_value (| Value.String "LayoutError" |) |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2108,7 +2187,7 @@ Module alloc.
               f.write_str("invalid parameters to Layout::from_size_align")
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -2118,7 +2197,9 @@ Module alloc.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [
                 M.read (| f |);
-                M.read (| Value.String "invalid parameters to Layout::from_size_align" |)
+                M.read (|
+                  M.of_value (| Value.String "invalid parameters to Layout::from_size_align" |)
+                |)
               ]
             |)))
         | _, _ => M.impossible

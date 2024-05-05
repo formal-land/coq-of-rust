@@ -6,7 +6,7 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+Definition add (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ a; b ] =>
     ltac:(M.monadic
@@ -25,7 +25,7 @@ pub fn div(a: i32, b: i32) -> i32 {
     a / b
 }
 *)
-Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+Definition div (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ a; b ] =>
     ltac:(M.monadic
@@ -34,12 +34,15 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (|
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
-                    M.use (M.alloc (| BinOp.Pure.eq (M.read (| b |)) (Value.Integer 0) |)) in
+                    M.use
+                      (M.alloc (|
+                        BinOp.Pure.eq (| M.read (| b |), M.of_value (| Value.Integer 0 |) |)
+                      |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.never_to_any (|
@@ -48,11 +51,11 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
                           "std::panicking::begin_panic",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "Divide-by-zero error" |) ]
+                        [ M.read (| M.of_value (| Value.String "Divide-by-zero error" |) |) ]
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |) in
         M.alloc (| BinOp.Panic.div (| Integer.I32, M.read (| a |), M.read (| b |) |) |)

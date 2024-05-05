@@ -28,7 +28,7 @@ Module mem.
               *self
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -56,7 +56,7 @@ Module mem.
               f.pad(type_name::<Self>())
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -97,25 +97,28 @@ Module mem.
               MaybeUninit { value: ManuallyDrop::new(val) }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ val ] =>
           ltac:(M.monadic
             (let val := M.alloc (| val |) in
-            Value.StructRecord
-              "core::mem::maybe_uninit::MaybeUninit"
-              [
-                ("value",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| val |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::mem::maybe_uninit::MaybeUninit"
+                [
+                  ("value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| val |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -128,14 +131,16 @@ Module mem.
               MaybeUninit { uninit: () }
           }
       *)
-      Definition uninit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition uninit (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::mem::maybe_uninit::MaybeUninit"
-              [ ("uninit", Value.Tuple []) ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::mem::maybe_uninit::MaybeUninit"
+                [ ("uninit", A.to_value (M.of_value (| Value.Tuple [] |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -149,7 +154,7 @@ Module mem.
               unsafe { MaybeUninit::<[MaybeUninit<T>; N]>::uninit().assume_init() }
           }
       *)
-      Definition uninit_array (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition uninit_array (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
@@ -198,7 +203,7 @@ Module mem.
               u
           }
       *)
-      Definition zeroed (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition zeroed (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
@@ -232,8 +237,8 @@ Module mem.
                         |),
                         [ u ]
                       |);
-                      Value.Integer 0;
-                      Value.Integer 1
+                      M.of_value (| Value.Integer 0 |);
+                      M.of_value (| Value.Integer 1 |)
                     ]
                   |)
                 |) in
@@ -253,7 +258,7 @@ Module mem.
               unsafe { self.assume_init_mut() }
           }
       *)
-      Definition write (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val ] =>
@@ -297,13 +302,13 @@ Module mem.
               self as *const _ as *const T
           }
       *)
-      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| self |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -317,13 +322,13 @@ Module mem.
               self as *mut _ as *mut T
           }
       *)
-      Definition as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| self |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -341,7 +346,7 @@ Module mem.
               }
           }
       *)
-      Definition assume_init (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -391,7 +396,7 @@ Module mem.
               }
           }
       *)
-      Definition assume_init_read (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init_read (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -436,7 +441,7 @@ Module mem.
               unsafe { ptr::drop_in_place(self.as_mut_ptr()) }
           }
       *)
-      Definition assume_init_drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init_drop (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -472,7 +477,7 @@ Module mem.
               }
           }
       *)
-      Definition assume_init_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -514,7 +519,7 @@ Module mem.
               }
           }
       *)
-      Definition assume_init_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -559,7 +564,7 @@ Module mem.
               }
           }
       *)
-      Definition array_assume_init (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition array_assume_init (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ array ] =>
@@ -607,13 +612,13 @@ Module mem.
               unsafe { &*(slice as *const [Self] as *const [T]) }
           }
       *)
-      Definition slice_assume_init_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_assume_init_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ slice ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| slice |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -628,13 +633,13 @@ Module mem.
               unsafe { &mut *(slice as *mut [Self] as *mut [T]) }
           }
       *)
-      Definition slice_assume_init_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_assume_init_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ slice ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| slice |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -647,14 +652,14 @@ Module mem.
               this.as_ptr() as *const T
           }
       *)
-      Definition slice_as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_as_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast
-              (M.call_closure (|
+            M.rust_cast (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
@@ -663,7 +668,8 @@ Module mem.
                   []
                 |),
                 [ M.read (| this |) ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -676,14 +682,14 @@ Module mem.
               this.as_mut_ptr() as *mut T
           }
       *)
-      Definition slice_as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast
-              (M.call_closure (|
+            M.rust_cast (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
@@ -692,7 +698,8 @@ Module mem.
                   []
                 |),
                 [ M.read (| this |) ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -714,7 +721,7 @@ Module mem.
               unsafe { MaybeUninit::slice_assume_init_mut(this) }
           }
       *)
-      Definition write_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_slice (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ this; src ] =>
@@ -817,7 +824,7 @@ Module mem.
               unsafe { MaybeUninit::slice_assume_init_mut(this) }
           }
       *)
-      Definition write_slice_cloned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_slice_cloned (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ this; src ] =>
@@ -828,31 +835,39 @@ Module mem.
               let _ :=
                 M.match_operator (|
                   M.alloc (|
-                    Value.Tuple
-                      [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
-                              "len",
-                              []
-                            |),
-                            [ M.read (| this |) ]
-                          |)
-                        |);
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ T ],
-                              "len",
-                              []
-                            |),
-                            [ M.read (| src |) ]
-                          |)
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        [ T ]
+                                    ],
+                                  "len",
+                                  []
+                                |),
+                                [ M.read (| this |) ]
+                              |)
+                            |));
+                          A.to_value
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [ T ],
+                                  "len",
+                                  []
+                                |),
+                                [ M.read (| src |) ]
+                              |)
+                            |))
+                        ]
+                    |)
                   |),
                   [
                     fun γ =>
@@ -862,17 +877,19 @@ Module mem.
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.eq
-                                          (M.read (| M.read (| left_val |) |))
-                                          (M.read (| M.read (| right_val |) |)))
+                                      UnOp.Pure.not (|
+                                        BinOp.Pure.eq (|
+                                          M.read (| M.read (| left_val |) |),
+                                          M.read (| M.read (| right_val |) |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -884,7 +901,9 @@ Module mem.
                                     M.read (|
                                       let kind :=
                                         M.alloc (|
-                                          Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                          M.of_value (|
+                                            Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                          |)
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
@@ -896,37 +915,47 @@ Module mem.
                                             M.read (| kind |);
                                             M.read (| left_val |);
                                             M.read (| right_val |);
-                                            Value.StructTuple
-                                              "core::option::Option::Some"
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::Arguments",
-                                                    "new_const",
-                                                    []
-                                                  |),
-                                                  [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "destination and source slices have different lengths"
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "core::option::Option::Some"
+                                                [
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Arguments",
+                                                        "new_const",
+                                                        []
+                                                      |),
+                                                      [
+                                                        (* Unsize *)
+                                                        M.pointer_coercion (|
+                                                          M.alloc (|
+                                                            M.of_value (|
+                                                              Value.Array
+                                                                [
+                                                                  A.to_value
+                                                                    (M.read (|
+                                                                      M.of_value (|
+                                                                        Value.String
+                                                                          "destination and source slices have different lengths"
+                                                                      |)
+                                                                    |))
+                                                                ]
                                                             |)
-                                                          ]
-                                                      |))
-                                                  ]
-                                                |)
-                                              ]
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |))
+                                                ]
+                                            |)
                                           ]
                                         |)
                                       |)
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)))
                   ]
@@ -956,15 +985,24 @@ Module mem.
                     |),
                     [
                       M.read (| src |);
-                      Value.StructRecord "core::ops::range::RangeTo" [ ("end_", M.read (| len |)) ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "core::ops::range::RangeTo"
+                          [ ("end_", A.to_value (M.read (| len |))) ]
+                      |)
                     ]
                   |)
                 |) in
               let guard :=
                 M.alloc (|
-                  Value.StructRecord
-                    "core::mem::maybe_uninit::write_slice_cloned::Guard"
-                    [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::mem::maybe_uninit::write_slice_cloned::Guard"
+                      [
+                        ("slice", A.to_value (M.read (| this |)));
+                        ("initialized", A.to_value (M.of_value (| Value.Integer 0 |)))
+                      ]
+                  |)
                 |) in
               let _ :=
                 M.use
@@ -979,9 +1017,14 @@ Module mem.
                           []
                         |),
                         [
-                          Value.StructRecord
-                            "core::ops::range::Range"
-                            [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
+                          M.of_value (|
+                            Value.StructRecord
+                              "core::ops::range::Range"
+                              [
+                                ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                                ("end_", A.to_value (M.read (| len |)))
+                              ]
+                          |)
                         ]
                       |)
                     |),
@@ -1073,13 +1116,13 @@ Module mem.
                                             BinOp.Panic.add (|
                                               Integer.Usize,
                                               M.read (| β |),
-                                              Value.Integer 1
+                                              M.of_value (| Value.Integer 1 |)
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -1123,7 +1166,7 @@ Module mem.
               }
           }
       *)
-      Definition as_bytes (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_bytes (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1135,15 +1178,16 @@ Module mem.
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]
               |),
               [
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
                       "as_ptr",
                       []
                     |),
                     [ M.read (| self |) ]
-                  |));
+                  |)
+                |);
                 M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
               ]
             |)))
@@ -1165,7 +1209,7 @@ Module mem.
               }
           }
       *)
-      Definition as_bytes_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_bytes_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1177,15 +1221,16 @@ Module mem.
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]
               |),
               [
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
                       "as_mut_ptr",
                       []
                     |),
                     [ M.read (| self |) ]
-                  |));
+                  |)
+                |);
                 M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
               ]
             |)))
@@ -1203,7 +1248,7 @@ Module mem.
               unsafe { slice::from_raw_parts(this.as_ptr() as *const MaybeUninit<u8>, bytes) }
           }
       *)
-      Definition slice_as_bytes (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_as_bytes (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ this ] =>
@@ -1231,8 +1276,8 @@ Module mem.
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]
                   |),
                   [
-                    M.rust_cast
-                      (M.call_closure (|
+                    M.rust_cast (|
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
@@ -1241,7 +1286,8 @@ Module mem.
                           []
                         |),
                         [ M.read (| this |) ]
-                      |));
+                      |)
+                    |);
                     M.read (| bytes |)
                   ]
                 |)
@@ -1261,7 +1307,7 @@ Module mem.
               unsafe { slice::from_raw_parts_mut(this.as_mut_ptr() as *mut MaybeUninit<u8>, bytes) }
           }
       *)
-      Definition slice_as_bytes_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_as_bytes_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ this ] =>
@@ -1289,8 +1335,8 @@ Module mem.
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]
                   |),
                   [
-                    M.rust_cast
-                      (M.call_closure (|
+                    M.rust_cast (|
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
@@ -1299,7 +1345,8 @@ Module mem.
                           []
                         |),
                         [ M.read (| this |) ]
-                      |));
+                      |)
+                    |);
                     M.read (| bytes |)
                   ]
                 |)
@@ -1325,7 +1372,7 @@ Module mem.
               unsafe { intrinsics::transmute_unchecked(self) }
           }
       *)
-      Definition transpose (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition transpose (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1365,7 +1412,7 @@ Module mem.
               unsafe { intrinsics::transmute_unchecked(self) }
           }
       *)
-      Definition transpose (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition transpose (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>

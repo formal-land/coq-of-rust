@@ -14,7 +14,7 @@ Module future.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -29,16 +29,17 @@ Module future.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "Ready" |);
+                M.read (| M.of_value (| Value.String "Ready" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
                       "core::future::ready::Ready",
                       0
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -57,32 +58,35 @@ Module future.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::future::ready::Ready"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ T ],
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::future::ready::Ready",
-                      0
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::future::ready::Ready"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.apply (Ty.path "core::option::Option") [ T ],
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| self |),
+                          "core::future::ready::Ready",
+                          0
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -118,56 +122,59 @@ Module future.
               Poll::Ready(self.0.take().expect("`Ready` polled after completion"))
           }
       *)
-      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; _cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _cx := M.alloc (| _cx |) in
-            Value.StructTuple
-              "core::task::poll::Poll::Ready"
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ T ],
-                    "expect",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
+            M.of_value (|
+              Value.StructTuple
+                "core::task::poll::Poll::Ready"
+                [
+                  A.to_value
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [ T ],
-                        "take",
+                        "expect",
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::DerefMut",
-                              Ty.apply
-                                (Ty.path "core::pin::Pin")
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "core::future::ready::Ready") [ T ] ]
-                                ],
-                              [],
-                              "deref_mut",
-                              []
-                            |),
-                            [ self ]
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::option::Option") [ T ],
+                            "take",
+                            []
                           |),
-                          "core::future::ready::Ready",
-                          0
-                        |)
+                          [
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply
+                                    (Ty.path "core::pin::Pin")
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        [ Ty.apply (Ty.path "core::future::ready::Ready") [ T ] ]
+                                    ],
+                                  [],
+                                  "deref_mut",
+                                  []
+                                |),
+                                [ self ]
+                              |),
+                              "core::future::ready::Ready",
+                              0
+                            |)
+                          ]
+                        |);
+                        M.read (| M.of_value (| Value.String "`Ready` polled after completion" |) |)
                       ]
-                    |);
-                    M.read (| Value.String "`Ready` polled after completion" |)
-                  ]
-                |)
-              ]))
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -189,7 +196,7 @@ Module future.
               self.0.expect("Called `into_inner()` on `Ready` after completion")
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -205,7 +212,9 @@ Module future.
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (| self, "core::future::ready::Ready", 0 |)
                 |);
-                M.read (| Value.String "Called `into_inner()` on `Ready` after completion" |)
+                M.read (|
+                  M.of_value (| Value.String "Called `into_inner()` on `Ready` after completion" |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -221,14 +230,21 @@ Module future.
         Ready(Some(t))
     }
     *)
-    Definition ready (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ready (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ t ] =>
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
-          Value.StructTuple
-            "core::future::ready::Ready"
-            [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::future::ready::Ready"
+              [
+                A.to_value
+                  (M.of_value (|
+                    Value.StructTuple "core::option::Option::Some" [ A.to_value (M.read (| t |)) ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
   End ready.

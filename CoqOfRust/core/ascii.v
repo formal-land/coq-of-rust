@@ -13,31 +13,34 @@ Module ascii.
     Definition Self : Ty.t := Ty.path "core::ascii::EscapeDefault".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple
-            "core::ascii::EscapeDefault"
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::clone::Clone",
-                  Ty.path "core::escape::EscapeIterInner",
-                  [],
-                  "clone",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::ascii::EscapeDefault",
-                    0
-                  |)
-                ]
-              |)
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::ascii::EscapeDefault"
+              [
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "core::escape::EscapeIterInner",
+                      [],
+                      "clone",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::ascii::EscapeDefault",
+                        0
+                      |)
+                    ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -56,7 +59,7 @@ Module ascii.
       EscapeDefault(escape::EscapeIterInner::new(data, range))
   }
   *)
-  Definition escape_default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition escape_default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ c ] =>
       ltac:(M.monadic
@@ -64,7 +67,10 @@ Module ascii.
         M.read (|
           let data :=
             M.alloc (|
-              repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) 4
+              repeat (|
+                M.of_value (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] |),
+                4
+              |)
             |) in
           let range :=
             M.alloc (|
@@ -74,18 +80,21 @@ Module ascii.
               |)
             |) in
           M.alloc (|
-            Value.StructTuple
-              "core::ascii::EscapeDefault"
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::escape::EscapeIterInner",
-                    "new",
-                    []
-                  |),
-                  [ M.read (| data |); M.read (| range |) ]
-                |)
-              ]
+            M.of_value (|
+              Value.StructTuple
+                "core::ascii::EscapeDefault"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::escape::EscapeIterInner",
+                        "new",
+                        []
+                      |),
+                      [ M.read (| data |); M.read (| range |) ]
+                    |))
+                ]
+            |)
           |)
         |)))
     | _, _ => M.impossible
@@ -102,7 +111,7 @@ Module ascii.
             self.0.next()
         }
     *)
-    Definition next (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -126,7 +135,7 @@ Module ascii.
             (n, Some(n))
         }
     *)
-    Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -150,9 +159,18 @@ Module ascii.
                 |)
               |) in
             M.alloc (|
-              Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
-                ]
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value (M.read (| n |));
+                    A.to_value
+                      (M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| n |)) ]
+                      |))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -163,7 +181,7 @@ Module ascii.
             self.0.len()
         }
     *)
-    Definition count (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition count (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -180,7 +198,7 @@ Module ascii.
             self.0.next_back()
         }
     *)
-    Definition last (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition last (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -201,7 +219,7 @@ Module ascii.
             self.0.advance_by(n)
         }
     *)
-    Definition advance_by (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition advance_by (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; n ] =>
         ltac:(M.monadic
@@ -249,7 +267,7 @@ Module ascii.
             self.0.next_back()
         }
     *)
-    Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_back (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -276,7 +294,7 @@ Module ascii.
             self.0.advance_back_by(n)
         }
     *)
-    Definition advance_back_by (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition advance_back_by (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; n ] =>
         ltac:(M.monadic
@@ -320,7 +338,7 @@ Module ascii.
             self.0.len()
         }
     *)
-    Definition len (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition len (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -365,7 +383,7 @@ Module ascii.
             f.write_str(self.0.as_str())
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -410,7 +428,7 @@ Module ascii.
             f.debug_struct("EscapeDefault").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -430,7 +448,7 @@ Module ascii.
                     "debug_struct",
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "EscapeDefault" |) ]
+                  [ M.read (| f |); M.read (| M.of_value (| Value.String "EscapeDefault" |) |) ]
                 |)
               |)
             ]

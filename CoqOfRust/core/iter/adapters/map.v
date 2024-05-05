@@ -16,38 +16,42 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [ I; F ].
         
         (* Clone *)
-        Definition clone (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::map::Map"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map::Map",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("f",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map::Map",
-                          "f"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::map::Map"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map::Map",
+                              "iter"
+                            |)
+                          ]
+                        |)));
+                    ("f",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map::Map",
+                              "f"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -69,16 +73,18 @@ Module iter.
                 Map { iter, f }
             }
         *)
-        Definition new (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F in
           match τ, α with
           | [], [ iter; f ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let f := M.alloc (| f |) in
-              Value.StructRecord
-                "core::iter::adapters::map::Map"
-                [ ("iter", M.read (| iter |)); ("f", M.read (| f |)) ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::map::Map"
+                  [ ("iter", A.to_value (M.read (| iter |))); ("f", A.to_value (M.read (| f |))) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -96,7 +102,7 @@ Module iter.
                 f.debug_struct("Map").field("iter", &self.iter).finish()
             }
         *)
-        Definition fmt (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F in
           match τ, α with
           | [], [ self; f ] =>
@@ -124,17 +130,18 @@ Module iter.
                             "debug_struct",
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Map" |) ]
+                          [ M.read (| f |); M.read (| M.of_value (| Value.String "Map" |) |) ]
                         |)
                       |);
-                      M.read (| Value.String "iter" |);
+                      M.read (| M.of_value (| Value.String "iter" |) |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::map::Map",
                           "iter"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -159,14 +166,14 @@ Module iter.
           move |acc, elt| g(acc, f(elt))
       }
       *)
-      Definition map_fold (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_fold (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; B; Acc; impl_FnMut_T__arrow_B; impl_FnMut_Acc__B__arrow_Acc ], [ f; g ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             let g := M.alloc (| g |) in
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
@@ -192,20 +199,28 @@ Module iter.
                                       |),
                                       [
                                         g;
-                                        Value.Tuple
-                                          [
-                                            M.read (| acc |);
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                impl_FnMut_T__arrow_B,
-                                                [ Ty.tuple [ T ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| elt |) ] ]
-                                            |)
-                                          ]
+                                        M.of_value (|
+                                          Value.Tuple
+                                            [
+                                              A.to_value (M.read (| acc |));
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    impl_FnMut_T__arrow_B,
+                                                    [ Ty.tuple [ T ] ],
+                                                    "call_mut",
+                                                    []
+                                                  |),
+                                                  [
+                                                    f;
+                                                    M.of_value (|
+                                                      Value.Tuple [ A.to_value (M.read (| elt |)) ]
+                                                    |)
+                                                  ]
+                                                |))
+                                            ]
+                                        |)
                                       ]
                                     |)))
                               ]
@@ -213,7 +228,8 @@ Module iter.
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))))
+                  end)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -229,14 +245,14 @@ Module iter.
           move |acc, elt| g(acc, f(elt))
       }
       *)
-      Definition map_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_try_fold (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; B; Acc; R; impl_FnMut_T__arrow_B; impl_FnMut_Acc__B__arrow_R__plus__'a ], [ f; g ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             let g := M.alloc (| g |) in
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
@@ -262,20 +278,28 @@ Module iter.
                                       |),
                                       [
                                         g;
-                                        Value.Tuple
-                                          [
-                                            M.read (| acc |);
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                impl_FnMut_T__arrow_B,
-                                                [ Ty.tuple [ T ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ M.read (| f |); Value.Tuple [ M.read (| elt |) ] ]
-                                            |)
-                                          ]
+                                        M.of_value (|
+                                          Value.Tuple
+                                            [
+                                              A.to_value (M.read (| acc |));
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    impl_FnMut_T__arrow_B,
+                                                    [ Ty.tuple [ T ] ],
+                                                    "call_mut",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (| f |);
+                                                    M.of_value (|
+                                                      Value.Tuple [ A.to_value (M.read (| elt |)) ]
+                                                    |)
+                                                  ]
+                                                |))
+                                            ]
+                                        |)
                                       ]
                                     |)))
                               ]
@@ -283,7 +307,8 @@ Module iter.
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))))
+                  end)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -303,7 +328,7 @@ Module iter.
                 self.iter.next().map(&mut self.f)
             }
         *)
-        Definition next (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [], [ self ] =>
@@ -347,7 +372,7 @@ Module iter.
                 self.iter.size_hint()
             }
         *)
-        Definition size_hint (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [], [ self ] =>
@@ -382,7 +407,7 @@ Module iter.
                 self.iter.try_fold(init, map_try_fold(&mut self.f, g))
             }
         *)
-        Definition try_fold (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [ Acc; G; R ], [ self; init; g ] =>
@@ -432,7 +457,7 @@ Module iter.
                 self.iter.fold(init, map_fold(self.f, g))
             }
         *)
-        Definition fold (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [ Acc; G ], [ self; init; g ] =>
@@ -488,7 +513,7 @@ Module iter.
                 unsafe { (self.f)(try_get_unchecked(&mut self.iter, idx)) }
             }
         *)
-        Definition __iterator_get_unchecked (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition __iterator_get_unchecked (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [], [ self; idx ] =>
@@ -509,20 +534,26 @@ Module iter.
                     "core::iter::adapters::map::Map",
                     "f"
                   |);
-                  Value.Tuple
-                    [
-                      M.call_closure (|
-                        M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::map::Map",
-                            "iter"
-                          |);
-                          M.read (| idx |)
-                        ]
-                      |)
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_function (|
+                              "core::iter::adapters::zip::try_get_unchecked",
+                              [ I ]
+                            |),
+                            [
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::map::Map",
+                                "iter"
+                              |);
+                              M.read (| idx |)
+                            ]
+                          |))
+                      ]
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -554,7 +585,7 @@ Module iter.
                 self.iter.next_back().map(&mut self.f)
             }
         *)
-        Definition next_back (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [], [ self ] =>
@@ -603,7 +634,7 @@ Module iter.
                 self.iter.try_rfold(init, map_try_fold(&mut self.f, g))
             }
         *)
-        Definition try_rfold (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [ Acc; G; R ], [ self; init; g ] =>
@@ -653,7 +684,7 @@ Module iter.
                 self.iter.rfold(init, map_fold(self.f, g))
             }
         *)
-        Definition rfold (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [ Acc; G ], [ self; init; g ] =>
@@ -722,7 +753,7 @@ Module iter.
                 self.iter.len()
             }
         *)
-        Definition len (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [], [ self ] =>
@@ -752,7 +783,7 @@ Module iter.
                 self.iter.is_empty()
             }
         *)
-        Definition is_empty (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [], [ self ] =>
@@ -841,7 +872,7 @@ Module iter.
                 (self.f)(item)
             }
         *)
-        Definition next_unchecked (B I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_unchecked (B I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I F in
           match τ, α with
           | [], [ self ] =>
@@ -882,7 +913,7 @@ Module iter.
                         "core::iter::adapters::map::Map",
                         "f"
                       |);
-                      Value.Tuple [ M.read (| item |) ]
+                      M.of_value (| Value.Tuple [ A.to_value (M.read (| item |)) ] |)
                     ]
                   |)
                 |)
@@ -918,9 +949,9 @@ Module iter.
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = true; *)
         (* Ty.path "bool" *)
-        Definition value_MAY_HAVE_SIDE_EFFECT (I F : Ty.t) : Value.t :=
+        Definition value_MAY_HAVE_SIDE_EFFECT (I F : Ty.t) : A.t :=
           let Self : Ty.t := Self I F in
-          M.run ltac:(M.monadic (M.alloc (| Value.Bool true |))).
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |))).
         
         Axiom Implements :
           forall (I F : Ty.t),
@@ -948,7 +979,7 @@ Module iter.
                 unsafe { SourceIter::as_inner(&mut self.iter) }
             }
         *)
-        Definition as_inner (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_inner (I F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I F in
           match τ, α with
           | [], [ self ] =>
@@ -988,7 +1019,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY (I F : Ty.t) : A.t :=
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
@@ -998,7 +1029,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
+        Definition value_MERGE_BY (I F : Ty.t) : A.t :=
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic

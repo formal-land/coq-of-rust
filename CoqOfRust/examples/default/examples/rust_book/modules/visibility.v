@@ -7,7 +7,7 @@ Module my_mod.
           println!("called `my_mod::private_function()`");
       }
   *)
-  Definition private_function (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition private_function (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -26,19 +26,29 @@ Module my_mod.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "called `my_mod::private_function()`
-" |) ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (|
+                                        Value.String "called `my_mod::private_function()`
+"
+                                      |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -48,7 +58,7 @@ Module my_mod.
           println!("called `my_mod::function()`");
       }
   *)
-  Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition function (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -67,18 +77,27 @@ Module my_mod.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array [ M.read (| Value.String "called `my_mod::function()`
-" |) ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "called `my_mod::function()`
+" |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -89,7 +108,7 @@ Module my_mod.
           private_function();
       }
   *)
-  Definition indirect_access (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition indirect_access (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -108,22 +127,28 @@ Module my_mod.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String "called `my_mod::indirect_access()`, that
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (|
+                                        Value.String "called `my_mod::indirect_access()`, that
 > "
-                                |)
-                              ]
-                          |))
+                                      |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -131,7 +156,7 @@ Module my_mod.
                 []
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -142,7 +167,7 @@ Module my_mod.
                 println!("called `my_mod::nested::function()`");
             }
     *)
-    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition function (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -161,19 +186,29 @@ Module my_mod.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "called `my_mod::nested::function()`
-" |) ]
-                            |))
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (|
+                                          Value.String "called `my_mod::nested::function()`
+"
+                                        |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -183,7 +218,7 @@ Module my_mod.
                 println!("called `my_mod::nested::private_function()`");
             }
     *)
-    Definition private_function (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition private_function (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -202,23 +237,30 @@ Module my_mod.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "called `my_mod::nested::private_function()`
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (|
+                                          Value.String
+                                            "called `my_mod::nested::private_function()`
 "
-                                  |)
-                                ]
-                            |))
+                                        |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -229,7 +271,7 @@ Module my_mod.
                 public_function_in_nested();
             }
     *)
-    Definition public_function_in_my_mod (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition public_function_in_my_mod (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -248,23 +290,29 @@ Module my_mod.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "called `my_mod::nested::public_function_in_my_mod()`, that
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (|
+                                          Value.String
+                                            "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
-                                  |)
-                                ]
-                            |))
+                                        |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
             let _ :=
               M.alloc (|
                 M.call_closure (|
@@ -272,7 +320,7 @@ Module my_mod.
                   []
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -282,7 +330,7 @@ Module my_mod.
                 println!("called `my_mod::nested::public_function_in_nested()`");
             }
     *)
-    Definition public_function_in_nested (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition public_function_in_nested (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -301,24 +349,30 @@ Module my_mod.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "called `my_mod::nested::public_function_in_nested()`
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (|
+                                          Value.String
+                                            "called `my_mod::nested::public_function_in_nested()`
 "
-                                  |)
-                                ]
-                            |))
+                                        |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -328,7 +382,7 @@ Module my_mod.
                 println!("called `my_mod::nested::public_function_in_super_mod()`");
             }
     *)
-    Definition public_function_in_super_mod (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition public_function_in_super_mod (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -347,24 +401,30 @@ Module my_mod.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "called `my_mod::nested::public_function_in_super_mod()`
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (|
+                                          Value.String
+                                            "called `my_mod::nested::public_function_in_super_mod()`
 "
-                                  |)
-                                ]
-                            |))
+                                        |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -378,7 +438,7 @@ Module my_mod.
           nested::public_function_in_super_mod();
       }
   *)
-  Definition call_public_function_in_my_mod (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition call_public_function_in_my_mod (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -397,23 +457,29 @@ Module my_mod.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String
-                                    "called `my_mod::call_public_function_in_my_mod()`, that
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (|
+                                        Value.String
+                                          "called `my_mod::call_public_function_in_my_mod()`, that
 > "
-                                |)
-                              ]
-                          |))
+                                      |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -435,14 +501,20 @@ Module my_mod.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| Value.String "> " |) ] |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [ A.to_value (M.read (| M.of_value (| Value.String "> " |) |)) ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -450,7 +522,7 @@ Module my_mod.
                 []
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -460,7 +532,7 @@ Module my_mod.
           println!("called `my_mod::public_function_in_crate()`");
       }
   *)
-  Definition public_function_in_crate (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition public_function_in_crate (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -479,23 +551,29 @@ Module my_mod.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String "called `my_mod::public_function_in_crate()`
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (|
+                                        Value.String "called `my_mod::public_function_in_crate()`
 "
-                                |)
-                              ]
-                          |))
+                                      |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -506,7 +584,7 @@ Module my_mod.
                 println!("called `my_mod::private_nested::function()`");
             }
     *)
-    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition function (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -525,23 +603,30 @@ Module my_mod.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "called `my_mod::private_nested::function()`
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (|
+                                          Value.String
+                                            "called `my_mod::private_nested::function()`
 "
-                                  |)
-                                ]
-                            |))
+                                        |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -551,7 +636,7 @@ Module my_mod.
                 println!("called `my_mod::private_nested::restricted_function()`");
             }
     *)
-    Definition restricted_function (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition restricted_function (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -570,24 +655,30 @@ Module my_mod.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "called `my_mod::private_nested::restricted_function()`
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (|
+                                          Value.String
+                                            "called `my_mod::private_nested::restricted_function()`
 "
-                                  |)
-                                ]
-                            |))
+                                        |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -599,7 +690,7 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+Definition function (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -614,18 +705,27 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "called `function()`
+" |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -670,7 +770,7 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -703,7 +803,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

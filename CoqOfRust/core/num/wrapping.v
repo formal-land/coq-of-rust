@@ -26,7 +26,7 @@ Module num.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -76,7 +76,7 @@ Module num.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -84,8 +84,8 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -105,7 +105,7 @@ Module num.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ T ].
       
       (* PartialOrd *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -143,7 +143,7 @@ Module num.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ T ].
       
       (* Ord *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -181,26 +181,29 @@ Module num.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                      [
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| self |),
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -229,19 +232,22 @@ Module num.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ T ].
       
       (* Default *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
-                  []
-                |)
-              ]))
+            (M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      []
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -258,7 +264,7 @@ Module num.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -296,7 +302,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -334,7 +340,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -372,7 +378,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -410,7 +416,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -448,7 +454,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -486,7 +492,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -528,33 +534,39 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (| M.get_constant (| "core::num::wrapping::shift_max::u8" |) |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (| M.get_constant (| "core::num::wrapping::shift_max::u8" |) |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -575,7 +587,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -596,7 +608,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -621,33 +633,39 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (| M.get_constant (| "core::num::wrapping::shift_max::u8" |) |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (| M.get_constant (| "core::num::wrapping::shift_max::u8" |) |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -668,7 +686,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -689,7 +707,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -715,35 +733,41 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u16" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::u16" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -765,7 +789,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -786,7 +810,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -812,35 +836,41 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u16" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::u16" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -862,7 +892,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -883,7 +913,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -909,35 +939,41 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u32" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::u32" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -959,7 +995,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -980,7 +1016,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1006,35 +1042,41 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u32" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::u32" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1056,7 +1098,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1077,7 +1119,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1103,35 +1145,41 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u64" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::u64" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1153,7 +1201,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1174,7 +1222,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1200,35 +1248,41 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u64" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::u64" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1250,7 +1304,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1271,7 +1325,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1297,35 +1351,41 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u128" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::u128" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1347,7 +1407,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1368,7 +1428,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1394,35 +1454,41 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u128" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::u128" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1444,7 +1510,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1465,7 +1531,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1491,35 +1557,43 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::platform::usize" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (|
+                                  "core::num::wrapping::shift_max::platform::usize"
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1541,7 +1615,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1562,7 +1636,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1588,35 +1662,43 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::platform::usize" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (|
+                                  "core::num::wrapping::shift_max::platform::usize"
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1638,7 +1720,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1659,7 +1741,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1684,33 +1766,39 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (| M.get_constant (| "core::num::wrapping::shift_max::i8" |) |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (| M.get_constant (| "core::num::wrapping::shift_max::i8" |) |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1731,7 +1819,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1752,7 +1840,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1777,33 +1865,39 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (| M.get_constant (| "core::num::wrapping::shift_max::i8" |) |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (| M.get_constant (| "core::num::wrapping::shift_max::i8" |) |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1824,7 +1918,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1845,7 +1939,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1871,35 +1965,41 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i16" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::i16" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1921,7 +2021,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1942,7 +2042,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1968,35 +2068,41 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i16" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::i16" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2018,7 +2124,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2039,7 +2145,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2065,35 +2171,41 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i32" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::i32" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2115,7 +2227,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2136,7 +2248,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2162,35 +2274,41 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i32" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::i32" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2212,7 +2330,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2233,7 +2351,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2259,35 +2377,41 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i64" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::i64" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2309,7 +2433,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2330,7 +2454,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2356,35 +2480,41 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i64" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::i64" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2406,7 +2536,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2427,7 +2557,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2453,35 +2583,41 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i128" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::i128" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2503,7 +2639,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2524,7 +2660,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2550,35 +2686,41 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i128" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (| "core::num::wrapping::shift_max::i128" |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2600,7 +2742,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2621,7 +2763,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2647,35 +2789,43 @@ Module num.
                       Wrapping(self.0.wrapping_shl((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_shl", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::platform::isize" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_shl", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (|
+                                  "core::num::wrapping::shift_max::platform::isize"
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2697,7 +2847,7 @@ Module num.
                       *self = *self << other;
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2718,7 +2868,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2744,35 +2894,43 @@ Module num.
                       Wrapping(self.0.wrapping_shr((other & self::shift_max::$t as $f) as u32))
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_shr", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (M.read (| other |))
-                        (M.rust_cast
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::platform::isize" |)
-                          |))))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_shr", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.rust_cast (|
+                          BinOp.Pure.bit_and (|
+                            M.read (| other |),
+                            M.rust_cast (|
+                              M.read (|
+                                M.get_constant (|
+                                  "core::num::wrapping::shift_max::platform::isize"
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2794,7 +2952,7 @@ Module num.
                       *self = *self >> other;
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2815,7 +2973,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2841,35 +2999,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2891,7 +3052,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2912,7 +3073,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2934,7 +3095,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2954,11 +3115,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2984,35 +3149,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3034,7 +3202,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3055,7 +3223,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3077,7 +3245,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3097,11 +3265,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3127,35 +3299,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3177,7 +3352,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3198,7 +3373,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3220,7 +3395,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3240,11 +3415,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3270,35 +3449,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3320,7 +3502,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3341,7 +3523,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3363,7 +3545,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3383,11 +3565,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3413,35 +3599,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3463,7 +3652,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3484,7 +3673,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3506,7 +3695,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3526,11 +3715,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3556,23 +3749,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3598,31 +3795,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3644,7 +3845,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3665,7 +3866,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3687,7 +3888,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3707,11 +3908,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3737,31 +3942,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3783,7 +3992,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3804,7 +4013,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3826,7 +4035,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3846,11 +4055,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3876,31 +4089,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3922,7 +4139,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3943,7 +4160,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3965,7 +4182,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3985,11 +4202,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4015,7 +4236,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4029,7 +4250,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -4057,35 +4282,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4106,7 +4334,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4127,7 +4355,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4148,7 +4376,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4168,11 +4396,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4197,35 +4429,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4246,7 +4481,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4267,7 +4502,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4288,7 +4523,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4308,11 +4543,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4337,35 +4576,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4386,7 +4628,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4407,7 +4649,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4428,7 +4670,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4448,11 +4690,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4477,35 +4723,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4526,7 +4775,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4547,7 +4796,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4568,7 +4817,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4588,11 +4837,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4617,35 +4870,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4666,7 +4922,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4687,7 +4943,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4708,7 +4964,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4728,11 +4984,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4757,23 +5017,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4798,31 +5062,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4843,7 +5111,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4864,7 +5132,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4885,7 +5153,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4905,11 +5173,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4934,31 +5206,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4979,7 +5255,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5000,7 +5276,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5021,7 +5297,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5041,11 +5317,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5070,31 +5350,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5115,7 +5399,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5136,7 +5420,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5157,7 +5441,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5177,11 +5461,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5206,7 +5494,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -5220,7 +5508,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -5249,35 +5541,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5299,7 +5594,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5320,7 +5615,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5342,7 +5637,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5362,11 +5657,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5392,35 +5691,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5442,7 +5744,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5463,7 +5765,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5485,7 +5787,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5505,11 +5807,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5535,35 +5841,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5585,7 +5894,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5606,7 +5915,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5628,7 +5937,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5648,11 +5957,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5678,35 +5991,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5728,7 +6044,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5749,7 +6065,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5771,7 +6087,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5791,11 +6107,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5821,35 +6141,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5871,7 +6194,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5892,7 +6215,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5914,7 +6237,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5934,11 +6257,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5964,23 +6291,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6006,31 +6337,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6052,7 +6387,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6073,7 +6408,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6095,7 +6430,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6115,11 +6450,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6145,31 +6484,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6191,7 +6534,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6212,7 +6555,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6234,7 +6577,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6254,11 +6597,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6284,31 +6631,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6330,7 +6681,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6351,7 +6702,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6373,7 +6724,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6393,11 +6744,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6423,7 +6778,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -6437,7 +6792,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -6466,35 +6825,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6516,7 +6878,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6537,7 +6899,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6559,7 +6921,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6579,11 +6941,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6609,35 +6975,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6659,7 +7028,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6680,7 +7049,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6702,7 +7071,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6722,11 +7091,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6752,35 +7125,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6802,7 +7178,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6823,7 +7199,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6845,7 +7221,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6865,11 +7241,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6895,35 +7275,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6945,7 +7328,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6966,7 +7349,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6988,7 +7371,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7008,11 +7391,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7038,35 +7425,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7088,7 +7478,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7109,7 +7499,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7131,7 +7521,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7151,11 +7541,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7181,23 +7575,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7223,31 +7621,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7269,7 +7671,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7290,7 +7692,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7312,7 +7714,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7332,11 +7734,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7362,31 +7768,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7408,7 +7818,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7429,7 +7839,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7451,7 +7861,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7471,11 +7881,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7501,31 +7915,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7547,7 +7965,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7568,7 +7986,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7590,7 +8008,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7610,11 +8028,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7640,7 +8062,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -7654,7 +8076,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -7683,35 +8109,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7733,7 +8162,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7754,7 +8183,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7776,7 +8205,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7796,11 +8225,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7826,35 +8259,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7876,7 +8312,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7897,7 +8333,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7919,7 +8355,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7939,11 +8375,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7969,35 +8409,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8019,7 +8462,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8040,7 +8483,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8062,7 +8505,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8082,11 +8525,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8112,35 +8559,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8162,7 +8612,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8183,7 +8633,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8205,7 +8655,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8225,11 +8675,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8255,35 +8709,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8305,7 +8762,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8326,7 +8783,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8348,7 +8805,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8368,11 +8825,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8398,23 +8859,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8440,31 +8905,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8486,7 +8955,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8507,7 +8976,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8529,7 +8998,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8549,11 +9018,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8579,31 +9052,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8625,7 +9102,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8646,7 +9123,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8668,7 +9145,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8688,11 +9165,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8718,31 +9199,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8764,7 +9249,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8785,7 +9270,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8807,7 +9292,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8827,11 +9312,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8857,7 +9346,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -8871,7 +9360,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -8900,35 +9393,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8950,7 +9446,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8971,7 +9467,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8993,7 +9489,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9013,11 +9509,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9043,35 +9543,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9093,7 +9596,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9114,7 +9617,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9136,7 +9639,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9156,11 +9659,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9186,35 +9693,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9236,7 +9746,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9257,7 +9767,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9279,7 +9789,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9299,11 +9809,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9329,35 +9843,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9379,7 +9896,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9400,7 +9917,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9422,7 +9939,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9442,11 +9959,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9472,35 +9993,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9522,7 +10046,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9543,7 +10067,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9565,7 +10089,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9585,11 +10109,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9615,23 +10143,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9657,31 +10189,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9703,7 +10239,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9724,7 +10260,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9746,7 +10282,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9766,11 +10302,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9796,31 +10336,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9842,7 +10386,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9863,7 +10407,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9885,7 +10429,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9905,11 +10449,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9935,31 +10483,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9981,7 +10533,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10002,7 +10554,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10024,7 +10576,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10044,11 +10596,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10074,7 +10630,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -10088,7 +10644,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -10117,35 +10677,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10167,7 +10730,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10188,7 +10751,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10210,7 +10773,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10230,11 +10793,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10260,35 +10827,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10310,7 +10880,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10331,7 +10901,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10353,7 +10923,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10373,11 +10943,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10403,35 +10977,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10453,7 +11030,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10474,7 +11051,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10496,7 +11073,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10516,11 +11093,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10546,35 +11127,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10596,7 +11180,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10617,7 +11201,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10639,7 +11223,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10659,11 +11243,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10689,35 +11277,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10739,7 +11330,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10760,7 +11351,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10782,7 +11373,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10802,11 +11393,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10832,23 +11427,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10874,31 +11473,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10920,7 +11523,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10941,7 +11544,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10963,7 +11566,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10983,11 +11586,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11013,31 +11620,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11059,7 +11670,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11080,7 +11691,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11102,7 +11713,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11122,11 +11733,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11152,31 +11767,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11198,7 +11817,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11219,7 +11838,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11241,7 +11860,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11261,11 +11880,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11291,7 +11914,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -11305,7 +11928,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -11333,35 +11960,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11382,7 +12012,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11403,7 +12033,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11424,7 +12054,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11444,11 +12074,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11473,35 +12107,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11522,7 +12159,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11543,7 +12180,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11564,7 +12201,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11584,11 +12221,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11613,35 +12254,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11662,7 +12306,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11683,7 +12327,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11704,7 +12348,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11724,11 +12368,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11753,35 +12401,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11802,7 +12453,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11823,7 +12474,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11844,7 +12495,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11864,11 +12515,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11893,35 +12548,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11942,7 +12600,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11963,7 +12621,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11984,7 +12642,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12004,11 +12662,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12033,23 +12695,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12074,31 +12740,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12119,7 +12789,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12140,7 +12810,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12161,7 +12831,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12181,11 +12851,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12210,31 +12884,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12255,7 +12933,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12276,7 +12954,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12297,7 +12975,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12317,11 +12995,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12346,31 +13028,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12391,7 +13077,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12412,7 +13098,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12433,7 +13119,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12453,11 +13139,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12482,7 +13172,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -12496,7 +13186,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -12525,35 +13219,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12575,7 +13272,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12596,7 +13293,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12618,7 +13315,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12638,11 +13335,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12668,35 +13369,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12718,7 +13422,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12739,7 +13443,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12761,7 +13465,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12781,11 +13485,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12811,35 +13519,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12861,7 +13572,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12882,7 +13593,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12904,7 +13615,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12924,11 +13635,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12954,35 +13669,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13004,7 +13722,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13025,7 +13743,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13047,7 +13765,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13067,11 +13785,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13097,35 +13819,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13147,7 +13872,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13168,7 +13893,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13190,7 +13915,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13210,11 +13935,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13240,23 +13969,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13282,31 +14015,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13328,7 +14065,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13349,7 +14086,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13371,7 +14108,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13391,11 +14128,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13421,31 +14162,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13467,7 +14212,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13488,7 +14233,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13510,7 +14255,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13530,11 +14275,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13560,31 +14309,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13606,7 +14359,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13627,7 +14380,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13649,7 +14402,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13669,11 +14422,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13699,7 +14456,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -13713,7 +14470,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -13742,35 +14503,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13792,7 +14556,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13813,7 +14577,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13835,7 +14599,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13855,11 +14619,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13885,35 +14653,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13935,7 +14706,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13956,7 +14727,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13978,7 +14749,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13998,11 +14769,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14028,35 +14803,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14078,7 +14856,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14099,7 +14877,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14121,7 +14899,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14141,11 +14919,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14171,35 +14953,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14221,7 +15006,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14242,7 +15027,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14264,7 +15049,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14284,11 +15069,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14314,35 +15103,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14364,7 +15156,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14385,7 +15177,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14407,7 +15199,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14427,11 +15219,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14457,23 +15253,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14499,31 +15299,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14545,7 +15349,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14566,7 +15370,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14588,7 +15392,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14608,11 +15412,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14638,31 +15446,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14684,7 +15496,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14705,7 +15517,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14727,7 +15539,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14747,11 +15559,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14777,31 +15593,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14823,7 +15643,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14844,7 +15664,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14866,7 +15686,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14886,11 +15706,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14916,7 +15740,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -14930,7 +15754,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -14959,35 +15787,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15009,7 +15840,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15030,7 +15861,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15052,7 +15883,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15072,11 +15903,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15102,35 +15937,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15152,7 +15990,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15173,7 +16011,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15195,7 +16033,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15215,11 +16053,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15245,35 +16087,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15295,7 +16140,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15316,7 +16161,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15338,7 +16183,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15358,11 +16203,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15388,35 +16237,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15438,7 +16290,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15459,7 +16311,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15481,7 +16333,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15501,11 +16353,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15531,35 +16387,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15581,7 +16440,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15602,7 +16461,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15624,7 +16483,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15644,11 +16503,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15674,23 +16537,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15716,31 +16583,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15762,7 +16633,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15783,7 +16654,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15805,7 +16676,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15825,11 +16696,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15855,31 +16730,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15901,7 +16780,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15922,7 +16801,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15944,7 +16823,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15964,11 +16843,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15994,31 +16877,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16040,7 +16927,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16061,7 +16948,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16083,7 +16970,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16103,11 +16990,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16133,7 +17024,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16147,7 +17038,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -16176,35 +17071,38 @@ Module num.
                       Wrapping(self.0.wrapping_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16226,7 +17124,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16247,7 +17145,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16269,7 +17167,7 @@ Module num.
                       *self = *self + Wrapping(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16289,11 +17187,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16319,35 +17221,38 @@ Module num.
                       Wrapping(self.0.wrapping_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16369,7 +17274,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16390,7 +17295,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16412,7 +17317,7 @@ Module num.
                       *self = *self - Wrapping(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16432,11 +17337,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16462,35 +17371,38 @@ Module num.
                       Wrapping(self.0.wrapping_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16512,7 +17424,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16533,7 +17445,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16555,7 +17467,7 @@ Module num.
                       *self = *self * Wrapping(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16575,11 +17487,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16605,35 +17521,38 @@ Module num.
                       Wrapping(self.0.wrapping_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16655,7 +17574,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16676,7 +17595,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16698,7 +17617,7 @@ Module num.
                       *self = *self / Wrapping(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16718,11 +17637,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16748,35 +17671,38 @@ Module num.
                       Wrapping(self.0.wrapping_rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_rem", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_rem", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16798,7 +17724,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16819,7 +17745,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16841,7 +17767,7 @@ Module num.
                       *self = *self % Wrapping(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16861,11 +17787,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16891,23 +17821,27 @@ Module num.
                       Wrapping(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16933,31 +17867,35 @@ Module num.
                       Wrapping(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16979,7 +17917,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17000,7 +17938,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17022,7 +17960,7 @@ Module num.
                       *self = *self ^ Wrapping(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17042,11 +17980,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17072,31 +18014,35 @@ Module num.
                       Wrapping(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17118,7 +18064,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17139,7 +18085,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17161,7 +18107,7 @@ Module num.
                       *self = *self | Wrapping(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17181,11 +18127,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17211,31 +18161,35 @@ Module num.
                       Wrapping(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::wrapping::Wrapping",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::wrapping::Wrapping",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17257,7 +18211,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17278,7 +18232,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17300,7 +18254,7 @@ Module num.
                       *self = *self & Wrapping(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17320,11 +18274,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::wrapping::Wrapping"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17350,7 +18308,7 @@ Module num.
                       Wrapping(0) - self
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17364,7 +18322,11 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                |);
                 M.read (| self |)
               ]
             |)))
@@ -17386,33 +18348,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -17422,7 +18388,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17445,7 +18411,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17468,7 +18434,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17492,29 +18458,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17525,29 +18494,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17559,27 +18531,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17590,27 +18565,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17622,27 +18600,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17653,27 +18634,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17684,27 +18668,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17715,27 +18702,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17746,29 +18736,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17778,7 +18771,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17802,7 +18795,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17826,27 +18819,34 @@ Module num.
                       Wrapping(self.0.wrapping_next_power_of_two())
                   }
       *)
-      Definition next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_next_power_of_two", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "usize",
+                        "wrapping_next_power_of_two",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17859,33 +18859,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -17895,7 +18899,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17918,7 +18922,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17941,7 +18945,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17965,29 +18969,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17998,29 +19005,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18032,27 +19042,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18063,27 +19076,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18095,27 +19111,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18126,27 +19145,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18157,27 +19179,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18188,27 +19213,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18219,29 +19247,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18251,7 +19282,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18275,7 +19306,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18299,27 +19330,34 @@ Module num.
                       Wrapping(self.0.wrapping_next_power_of_two())
                   }
       *)
-      Definition next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_next_power_of_two", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "u8",
+                        "wrapping_next_power_of_two",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18333,33 +19371,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -18369,7 +19411,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18392,7 +19434,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18415,7 +19457,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18439,29 +19481,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18472,29 +19517,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18506,27 +19554,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18537,27 +19588,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18569,27 +19623,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18600,27 +19657,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18631,27 +19691,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18662,27 +19725,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18693,29 +19759,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18725,7 +19794,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18749,7 +19818,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18773,27 +19842,34 @@ Module num.
                       Wrapping(self.0.wrapping_next_power_of_two())
                   }
       *)
-      Definition next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_next_power_of_two", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "u16",
+                        "wrapping_next_power_of_two",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18807,33 +19883,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -18843,7 +19923,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18866,7 +19946,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18889,7 +19969,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18913,29 +19993,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18946,29 +20029,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18980,27 +20066,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19011,27 +20100,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19043,27 +20135,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19074,27 +20169,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19105,27 +20203,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19136,27 +20237,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19167,29 +20271,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19199,7 +20306,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19223,7 +20330,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19247,27 +20354,34 @@ Module num.
                       Wrapping(self.0.wrapping_next_power_of_two())
                   }
       *)
-      Definition next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_next_power_of_two", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "u32",
+                        "wrapping_next_power_of_two",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19281,33 +20395,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -19317,7 +20435,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19340,7 +20458,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19363,7 +20481,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19387,29 +20505,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19420,29 +20541,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19454,27 +20578,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19485,27 +20612,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19517,27 +20647,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19548,27 +20681,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19579,27 +20715,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19610,27 +20749,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19641,29 +20783,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19673,7 +20818,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19697,7 +20842,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19721,27 +20866,34 @@ Module num.
                       Wrapping(self.0.wrapping_next_power_of_two())
                   }
       *)
-      Definition next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_next_power_of_two", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "u64",
+                        "wrapping_next_power_of_two",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19755,33 +20907,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -19791,7 +20947,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19814,7 +20970,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19837,7 +20993,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19861,29 +21017,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19894,29 +21053,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19928,27 +21090,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19959,27 +21124,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19991,27 +21159,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20022,27 +21193,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20053,27 +21227,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20084,27 +21261,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20115,29 +21295,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20147,7 +21330,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20171,7 +21354,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20195,27 +21378,34 @@ Module num.
                       Wrapping(self.0.wrapping_next_power_of_two())
                   }
       *)
-      Definition next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_next_power_of_two", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "u128",
+                        "wrapping_next_power_of_two",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20229,33 +21419,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -20265,7 +21459,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20288,7 +21482,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20311,7 +21505,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20335,29 +21529,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20368,29 +21565,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20402,27 +21602,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20433,27 +21636,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20465,27 +21671,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20496,27 +21705,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20527,27 +21739,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20558,27 +21773,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20589,29 +21807,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20621,7 +21842,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20645,27 +21866,30 @@ Module num.
                       Wrapping(self.0.wrapping_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "wrapping_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20676,27 +21900,30 @@ Module num.
                       Wrapping(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20707,7 +21934,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20730,7 +21957,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20754,33 +21981,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -20790,7 +22021,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20813,7 +22044,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20836,7 +22067,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20860,29 +22091,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20893,29 +22127,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20927,27 +22164,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20958,27 +22198,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20990,27 +22233,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21021,27 +22267,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21052,27 +22301,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21083,27 +22335,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21114,29 +22369,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21146,7 +22404,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21170,27 +22428,30 @@ Module num.
                       Wrapping(self.0.wrapping_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "wrapping_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21201,27 +22462,30 @@ Module num.
                       Wrapping(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21232,7 +22496,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21255,7 +22519,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21280,33 +22544,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -21316,7 +22584,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21339,7 +22607,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21362,7 +22630,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21386,29 +22654,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21419,29 +22690,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21453,27 +22727,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21484,27 +22761,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21516,27 +22796,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21547,27 +22830,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21578,27 +22864,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21609,27 +22898,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21640,29 +22932,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21672,7 +22967,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21696,27 +22991,30 @@ Module num.
                       Wrapping(self.0.wrapping_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "wrapping_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21727,27 +23025,30 @@ Module num.
                       Wrapping(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21758,7 +23059,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21781,7 +23082,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21806,33 +23107,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -21842,7 +23147,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21865,7 +23170,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21888,7 +23193,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -21912,29 +23217,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21945,29 +23253,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21979,27 +23290,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22010,27 +23324,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22042,27 +23359,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22073,27 +23393,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22104,27 +23427,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22135,27 +23461,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22166,29 +23495,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22198,7 +23530,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22222,27 +23554,30 @@ Module num.
                       Wrapping(self.0.wrapping_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "wrapping_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22253,27 +23588,30 @@ Module num.
                       Wrapping(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22284,7 +23622,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22307,7 +23645,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22332,33 +23670,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -22368,7 +23710,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22391,7 +23733,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22414,7 +23756,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22438,29 +23780,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22471,29 +23816,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22505,27 +23853,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22536,27 +23887,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22568,27 +23922,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22599,27 +23956,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22630,27 +23990,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22661,27 +24024,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22692,29 +24058,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22724,7 +24093,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22748,27 +24117,30 @@ Module num.
                       Wrapping(self.0.wrapping_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "wrapping_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22779,27 +24151,30 @@ Module num.
                       Wrapping(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22810,7 +24185,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22833,7 +24208,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22858,33 +24233,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::wrapping::Wrapping"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -22894,7 +24273,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22917,7 +24296,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22940,7 +24319,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -22964,29 +24343,32 @@ Module num.
                       Wrapping(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -22997,29 +24379,32 @@ Module num.
                       Wrapping(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23031,27 +24416,30 @@ Module num.
                       Wrapping(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23062,27 +24450,30 @@ Module num.
                       Wrapping(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23094,27 +24485,30 @@ Module num.
                       Wrapping(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23125,27 +24519,30 @@ Module num.
                       Wrapping(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23156,27 +24553,30 @@ Module num.
                       Wrapping(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23187,27 +24587,30 @@ Module num.
                       Wrapping(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23218,29 +24621,32 @@ Module num.
                       Wrapping(self.0.wrapping_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23250,7 +24656,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -23274,27 +24680,30 @@ Module num.
                       Wrapping(self.0.wrapping_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "wrapping_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23305,27 +24714,30 @@ Module num.
                       Wrapping(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::wrapping::Wrapping"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::wrapping::Wrapping",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::wrapping::Wrapping"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::wrapping::Wrapping",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -23336,7 +24748,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -23359,7 +24771,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -23392,81 +24804,96 @@ Module num.
     
     Module shift_max.
       Module platform.
-        Definition usize : Value.t :=
+        Definition usize : A.t :=
           M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::u64" |))).
         
-        Definition isize : Value.t :=
+        Definition isize : A.t :=
           M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i64" |))).
       End platform.
       
-      Definition i8 : Value.t :=
+      Definition i8 : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
                 Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 3 |),
-                Value.Integer 1
+                BinOp.Panic.shl (|
+                  M.of_value (| Value.Integer 1 |),
+                  M.of_value (| Value.Integer 3 |)
+                |),
+                M.of_value (| Value.Integer 1 |)
               |)
             |))).
       
-      Definition i16 : Value.t :=
+      Definition i16 : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
                 Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 4 |),
-                Value.Integer 1
+                BinOp.Panic.shl (|
+                  M.of_value (| Value.Integer 1 |),
+                  M.of_value (| Value.Integer 4 |)
+                |),
+                M.of_value (| Value.Integer 1 |)
               |)
             |))).
       
-      Definition i32 : Value.t :=
+      Definition i32 : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
                 Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 5 |),
-                Value.Integer 1
+                BinOp.Panic.shl (|
+                  M.of_value (| Value.Integer 1 |),
+                  M.of_value (| Value.Integer 5 |)
+                |),
+                M.of_value (| Value.Integer 1 |)
               |)
             |))).
       
-      Definition i64 : Value.t :=
+      Definition i64 : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
                 Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 6 |),
-                Value.Integer 1
+                BinOp.Panic.shl (|
+                  M.of_value (| Value.Integer 1 |),
+                  M.of_value (| Value.Integer 6 |)
+                |),
+                M.of_value (| Value.Integer 1 |)
               |)
             |))).
       
-      Definition i128 : Value.t :=
+      Definition i128 : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
                 Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 7 |),
-                Value.Integer 1
+                BinOp.Panic.shl (|
+                  M.of_value (| Value.Integer 1 |),
+                  M.of_value (| Value.Integer 7 |)
+                |),
+                M.of_value (| Value.Integer 1 |)
               |)
             |))).
       
-      Definition u8 : Value.t :=
+      Definition u8 : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i8" |))).
       
-      Definition u16 : Value.t :=
+      Definition u16 : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i16" |))).
       
-      Definition u32 : Value.t :=
+      Definition u32 : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i32" |))).
       
-      Definition u64 : Value.t :=
+      Definition u64 : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i64" |))).
       
-      Definition u128 : Value.t :=
+      Definition u128 : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i128" |))).
     End shift_max.
   End wrapping.

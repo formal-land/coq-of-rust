@@ -27,7 +27,7 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
@@ -104,20 +104,20 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    Value.DeclaredButUndefined,
-                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                    M.of_value (| Value.DeclaredButUndefined |),
+                    [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
                   |)))
             ]
           |)
@@ -138,7 +138,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
   (* Hash *)
-  Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition hash (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ __H ], [ self; state ] =>
       ltac:(M.monadic
@@ -235,7 +235,7 @@ fn try_logon<'a>(accounts: &Accounts<'a>, username: &'a str, password: &'a str) 
     }
 }
 *)
-Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
+Definition try_logon (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ accounts; username; password ] =>
     ltac:(M.monadic
@@ -253,34 +253,44 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Username: " |); M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Username: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [ username ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [ username ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -291,34 +301,44 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Password: " |); M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Password: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [ password ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [ password ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -329,22 +349,36 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Attempting logon...
-" |) ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "Attempting logon...
+" |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let logon :=
           M.alloc (|
-            Value.StructRecord
-              "hash_map_alternate_or_custom_key_types::Account"
-              [ ("username", M.read (| username |)); ("password", M.read (| password |)) ]
+            M.of_value (|
+              Value.StructRecord
+                "hash_map_alternate_or_custom_key_types::Account"
+                [
+                  ("username", A.to_value (M.read (| username |)));
+                  ("password", A.to_value (M.read (| password |)))
+                ]
+            |)
           |) in
         M.match_operator (|
           M.alloc (|
@@ -383,17 +417,26 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "Successful logon!
-" |) ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (| Value.String "Successful logon!
+" |)
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                 let _ :=
                   let _ :=
                     M.alloc (|
@@ -408,42 +451,50 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Name: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String "Name: " |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| account_info |),
-                                            "hash_map_alternate_or_custom_key_types::AccountInfo",
-                                            "name"
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| account_info |),
+                                                "hash_map_alternate_or_custom_key_types::AccountInfo",
+                                                "name"
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                 let _ :=
                   let _ :=
                     M.alloc (|
@@ -458,43 +509,51 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Email: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String "Email: " |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| account_info |),
-                                            "hash_map_alternate_or_custom_key_types::AccountInfo",
-                                            "email"
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| account_info |),
+                                                "hash_map_alternate_or_custom_key_types::AccountInfo",
+                                                "email"
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.Tuple [] |)));
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ :=
@@ -510,17 +569,26 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Login failed!
-" |) ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "Login failed!
+" |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))
@@ -548,7 +616,7 @@ fn main() {
     try_logon(&accounts, "j.everyman", "password123");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -572,21 +640,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let account :=
           M.alloc (|
-            Value.StructRecord
-              "hash_map_alternate_or_custom_key_types::Account"
-              [
-                ("username", M.read (| Value.String "j.everyman" |));
-                ("password", M.read (| Value.String "password123" |))
-              ]
+            M.of_value (|
+              Value.StructRecord
+                "hash_map_alternate_or_custom_key_types::Account"
+                [
+                  ("username",
+                    A.to_value (M.read (| M.of_value (| Value.String "j.everyman" |) |)));
+                  ("password",
+                    A.to_value (M.read (| M.of_value (| Value.String "password123" |) |)))
+                ]
+            |)
           |) in
         let account_info :=
           M.alloc (|
-            Value.StructRecord
-              "hash_map_alternate_or_custom_key_types::AccountInfo"
-              [
-                ("name", M.read (| Value.String "John Everyman" |));
-                ("email", M.read (| Value.String "j.everyman@email.com" |))
-              ]
+            M.of_value (|
+              Value.StructRecord
+                "hash_map_alternate_or_custom_key_types::AccountInfo"
+                [
+                  ("name", A.to_value (M.read (| M.of_value (| Value.String "John Everyman" |) |)));
+                  ("email",
+                    A.to_value (M.read (| M.of_value (| Value.String "j.everyman@email.com" |) |)))
+                ]
+            |)
           |) in
         let _ :=
           M.alloc (|
@@ -611,8 +686,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
               [
                 accounts;
-                M.read (| Value.String "j.everyman" |);
-                M.read (| Value.String "psasword123" |)
+                M.read (| M.of_value (| Value.String "j.everyman" |) |);
+                M.read (| M.of_value (| Value.String "psasword123" |) |)
               ]
             |)
           |) in
@@ -622,12 +697,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
               [
                 accounts;
-                M.read (| Value.String "j.everyman" |);
-                M.read (| Value.String "password123" |)
+                M.read (| M.of_value (| Value.String "j.everyman" |) |);
+                M.read (| M.of_value (| Value.String "password123" |) |)
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

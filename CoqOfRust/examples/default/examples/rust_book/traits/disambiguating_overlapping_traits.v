@@ -22,7 +22,7 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
           self.username.clone()
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -62,7 +62,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
           self.age
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -103,29 +103,32 @@ fn main() {
     assert_eq!(28, age);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let form :=
           M.alloc (|
-            Value.StructRecord
-              "disambiguating_overlapping_traits::Form"
-              [
-                ("username",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "alloc::borrow::ToOwned",
-                      Ty.path "str",
-                      [],
-                      "to_owned",
-                      []
-                    |),
-                    [ M.read (| Value.String "rustacean" |) ]
-                  |));
-                ("age", Value.Integer 28)
-              ]
+            M.of_value (|
+              Value.StructRecord
+                "disambiguating_overlapping_traits::Form"
+                [
+                  ("username",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "alloc::borrow::ToOwned",
+                          Ty.path "str",
+                          [],
+                          "to_owned",
+                          []
+                        |),
+                        [ M.read (| M.of_value (| Value.String "rustacean" |) |) ]
+                      |)));
+                  ("age", A.to_value (M.of_value (| Value.Integer 28 |)))
+                ]
+            |)
           |) in
         let username :=
           M.alloc (|
@@ -143,22 +146,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let _ :=
           M.match_operator (|
             M.alloc (|
-              Value.Tuple
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "alloc::string::ToString",
-                        Ty.path "str",
-                        [],
-                        "to_string",
-                        []
-                      |),
-                      [ M.read (| Value.String "rustacean" |) ]
-                    |)
-                  |);
-                  username
-                ]
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value
+                      (M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "alloc::string::ToString",
+                            Ty.path "str",
+                            [],
+                            "to_string",
+                            []
+                          |),
+                          [ M.read (| M.of_value (| Value.String "rustacean" |) |) ]
+                        |)
+                      |));
+                    A.to_value username
+                  ]
+              |)
             |),
             [
               fun γ =>
@@ -168,15 +174,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "alloc::string::String",
@@ -185,7 +191,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -194,7 +201,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.read (|
                                 let kind :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    |)
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -209,14 +218,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.read (| kind |);
                                       M.read (| left_val |);
                                       M.read (| right_val |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::option::Option::None" []
+                                      |)
                                     ]
                                   |)
                                 |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |)))
             ]
@@ -236,7 +247,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ M.alloc (| Value.Integer 28 |); age ] |),
+            M.alloc (|
+              M.of_value (|
+                Value.Tuple
+                  [ A.to_value (M.alloc (| M.of_value (| Value.Integer 28 |) |)); A.to_value age ]
+              |)
+            |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -245,17 +261,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |)))
+                                UnOp.Pure.not (|
+                                  BinOp.Pure.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -264,7 +282,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.read (|
                                 let kind :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    |)
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -276,19 +296,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.read (| kind |);
                                       M.read (| left_val |);
                                       M.read (| right_val |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::option::Option::None" []
+                                      |)
                                     ]
                                   |)
                                 |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |)))
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

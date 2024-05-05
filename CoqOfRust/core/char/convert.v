@@ -12,7 +12,7 @@ Module char.
         }
     }
     *)
-    Definition from_u32 (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_u32 (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ i ] =>
         ltac:(M.monadic
@@ -32,13 +32,19 @@ Module char.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let c := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| c |)) ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -51,18 +57,18 @@ Module char.
         if cfg!(debug_assertions) { char::from_u32(i).unwrap() } else { unsafe { transmute(i) } }
     }
     *)
-    Definition from_u32_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_u32_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
@@ -104,12 +110,12 @@ Module char.
               c as u32
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
-            M.rust_cast (M.read (| c |))))
+            M.rust_cast (| M.read (| c |) |)))
         | _, _ => M.impossible
         end.
       
@@ -131,12 +137,12 @@ Module char.
               c as u64
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
-            M.rust_cast (M.read (| c |))))
+            M.rust_cast (| M.read (| c |) |)))
         | _, _ => M.impossible
         end.
       
@@ -158,12 +164,12 @@ Module char.
               c as u128
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
-            M.rust_cast (M.read (| c |))))
+            M.rust_cast (| M.read (| c |) |)))
         | _, _ => M.impossible
         end.
       
@@ -186,7 +192,7 @@ Module char.
               u8::try_from(u32::from(c)).map_err(|_| TryFromCharError(()))
           }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ c ] =>
           ltac:(M.monadic
@@ -226,8 +232,8 @@ Module char.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -236,13 +242,16 @@ Module char.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (Value.StructTuple
-                                  "core::char::TryFromCharError"
-                                  [ Value.Tuple [] ]))
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::char::TryFromCharError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -268,7 +277,7 @@ Module char.
               u16::try_from(u32::from(c)).map_err(|_| TryFromCharError(()))
           }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ c ] =>
           ltac:(M.monadic
@@ -308,8 +317,8 @@ Module char.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -318,13 +327,16 @@ Module char.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (Value.StructTuple
-                                  "core::char::TryFromCharError"
-                                  [ Value.Tuple [] ]))
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::char::TryFromCharError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -347,12 +359,12 @@ Module char.
               i as char
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ i ] =>
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
-            M.rust_cast (M.read (| i |))))
+            M.rust_cast (| M.read (| i |) |)))
         | _, _ => M.impossible
         end.
       
@@ -375,32 +387,35 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::char::convert::ParseCharError"
-              [
-                ("kind",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "core::char::convert::CharErrorKind",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::char::convert::ParseCharError",
-                        "kind"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::char::convert::ParseCharError"
+                [
+                  ("kind",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "core::char::convert::CharErrorKind",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::char::convert::ParseCharError",
+                            "kind"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -416,7 +431,7 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -430,17 +445,18 @@ Module char.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "ParseCharError" |);
-                M.read (| Value.String "kind" |);
+                M.read (| M.of_value (| Value.String "ParseCharError" |) |);
+                M.read (| M.of_value (| Value.String "kind" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::char::convert::ParseCharError",
                       "kind"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -469,7 +485,7 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -522,15 +538,15 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -580,7 +596,7 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -601,7 +617,7 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -618,11 +634,11 @@ Module char.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "EmptyString" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "EmptyString" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "TooManyChars" |) |)))
+                          M.alloc (| M.read (| M.of_value (| Value.String "TooManyChars" |) |) |)))
                     ]
                   |)
                 |)
@@ -654,7 +670,7 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -681,7 +697,7 @@ Module char.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -709,12 +725,12 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -738,7 +754,7 @@ Module char.
               }
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition description (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -754,11 +770,15 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.read (| Value.String "cannot parse char from empty string" |)
+                        M.read (|
+                          M.of_value (| Value.String "cannot parse char from empty string" |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "too many characters in string" |) |)))
+                      (M.alloc (|
+                        M.read (| M.of_value (| Value.String "too many characters in string" |) |)
+                      |)))
                 ]
               |)
             |)))
@@ -782,7 +802,7 @@ Module char.
               self.description().fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -831,7 +851,7 @@ Module char.
               }
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ s ] =>
           ltac:(M.monadic
@@ -846,29 +866,33 @@ Module char.
                 |) in
               M.match_operator (|
                 M.alloc (|
-                  Value.Tuple
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::iter::traits::iterator::Iterator",
-                          Ty.path "core::str::iter::Chars",
-                          [],
-                          "next",
-                          []
-                        |),
-                        [ chars ]
-                      |);
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::iter::traits::iterator::Iterator",
-                          Ty.path "core::str::iter::Chars",
-                          [],
-                          "next",
-                          []
-                        |),
-                        [ chars ]
-                      |)
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
+                              Ty.path "core::str::iter::Chars",
+                              [],
+                              "next",
+                              []
+                            |),
+                            [ chars ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
+                              Ty.path "core::str::iter::Chars",
+                              [],
+                              "next",
+                              []
+                            |),
+                            [ chars ]
+                          |))
+                      ]
+                  |)
                 |),
                 [
                   fun γ =>
@@ -876,18 +900,26 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [
-                            Value.StructRecord
-                              "core::char::convert::ParseCharError"
-                              [
-                                ("kind",
-                                  Value.StructTuple
-                                    "core::char::convert::CharErrorKind::EmptyString"
-                                    [])
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructRecord
+                                    "core::char::convert::ParseCharError"
+                                    [
+                                      ("kind",
+                                        A.to_value
+                                          (M.of_value (|
+                                            Value.StructTuple
+                                              "core::char::convert::CharErrorKind::EmptyString"
+                                              []
+                                          |)))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -901,23 +933,35 @@ Module char.
                         |) in
                       let c := M.copy (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ M.read (| c |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.read (| c |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [
-                            Value.StructRecord
-                              "core::char::convert::ParseCharError"
-                              [
-                                ("kind",
-                                  Value.StructTuple
-                                    "core::char::convert::CharErrorKind::TooManyChars"
-                                    [])
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructRecord
+                                    "core::char::convert::ParseCharError"
+                                    [
+                                      ("kind",
+                                        A.to_value
+                                          (M.of_value (|
+                                            Value.StructTuple
+                                              "core::char::convert::CharErrorKind::TooManyChars"
+                                              []
+                                          |)))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -957,58 +1001,70 @@ Module char.
         }
     }
     *)
-    Definition char_try_from_u32 (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition char_try_from_u32 (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.ge
-                            (M.call_closure (|
+                          BinOp.Pure.ge (|
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
                               [
-                                BinOp.Pure.bit_xor (M.read (| i |)) (Value.Integer 55296);
-                                Value.Integer 2048
+                                BinOp.Pure.bit_xor (|
+                                  M.read (| i |),
+                                  M.of_value (| Value.Integer 55296 |)
+                                |);
+                                M.of_value (| Value.Integer 2048 |)
                               ]
-                            |))
-                            (BinOp.Panic.sub (|
+                            |),
+                            BinOp.Panic.sub (|
                               Integer.U32,
-                              Value.Integer 1114112,
-                              Value.Integer 2048
-                            |))
+                              M.of_value (| Value.Integer 1114112 |),
+                              M.of_value (| Value.Integer 2048 |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [
-                          Value.StructTuple
-                            "core::char::convert::CharTryFromError"
-                            [ Value.Tuple [] ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructTuple
+                                  "core::char::convert::CharTryFromError"
+                                  [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.call_closure (|
-                            M.get_function (|
-                              "core::intrinsics::transmute",
-                              [ Ty.path "u32"; Ty.path "char" ]
-                            |),
-                            [ M.read (| i |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_function (|
+                                  "core::intrinsics::transmute",
+                                  [ Ty.path "u32"; Ty.path "char" ]
+                                |),
+                                [ M.read (| i |) ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -1027,7 +1083,7 @@ Module char.
               char_try_from_u32(i)
           }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ i ] =>
           ltac:(M.monadic
@@ -1070,14 +1126,14 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
@@ -1096,7 +1152,7 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -1110,16 +1166,17 @@ Module char.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "CharTryFromError" |);
+                M.read (| M.of_value (| Value.String "CharTryFromError" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
                       "core::char::convert::CharTryFromError",
                       0
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1148,7 +1205,7 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1201,15 +1258,15 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -1232,7 +1289,7 @@ Module char.
               "converted integer out of range for `char`".fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -1241,7 +1298,9 @@ Module char.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
               [
-                M.read (| Value.String "converted integer out of range for `char`" |);
+                M.read (|
+                  M.of_value (| Value.String "converted integer out of range for `char`" |)
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -1269,7 +1328,7 @@ Module char.
         }
     }
     *)
-    Definition from_digit (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_digit (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ num; radix ] =>
         ltac:(M.monadic
@@ -1278,13 +1337,18 @@ Module char.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| radix |)) (Value.Integer 36) |)) in
+                          (M.alloc (|
+                            BinOp.Pure.gt (|
+                              M.read (| radix |),
+                              M.of_value (| Value.Integer 36 |)
+                            |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -1299,80 +1363,101 @@ Module char.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "from_digit: radix is too high (maximum 36)"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "from_digit: radix is too high (maximum 36)"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use (M.alloc (| BinOp.Pure.lt (M.read (| num |)) (M.read (| radix |)) |)) in
+                      M.use
+                        (M.alloc (| BinOp.Pure.lt (| M.read (| num |), M.read (| radix |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let num := M.alloc (| M.rust_cast (M.read (| num |)) |) in
+                    let num := M.alloc (| M.rust_cast (| M.read (| num |) |) |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| num |)) (Value.Integer 10)
+                                  BinOp.Pure.lt (|
+                                    M.read (| num |),
+                                    M.of_value (| Value.Integer 10 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [
-                                  M.rust_cast
-                                    (BinOp.Panic.add (|
-                                      Integer.U8,
-                                      M.read (| UnsupportedLiteral |),
-                                      M.read (| num |)
-                                    |))
-                                ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [
+                                    A.to_value
+                                      (M.rust_cast (|
+                                        BinOp.Panic.add (|
+                                          Integer.U8,
+                                          M.read (| M.of_value (| UnsupportedLiteral |) |),
+                                          M.read (| num |)
+                                        |)
+                                      |))
+                                  ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [
-                                  M.rust_cast
-                                    (BinOp.Panic.sub (|
-                                      Integer.U8,
-                                      BinOp.Panic.add (|
-                                        Integer.U8,
-                                        M.read (| UnsupportedLiteral |),
-                                        M.read (| num |)
-                                      |),
-                                      Value.Integer 10
-                                    |))
-                                ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [
+                                    A.to_value
+                                      (M.rust_cast (|
+                                        BinOp.Panic.sub (|
+                                          Integer.U8,
+                                          BinOp.Panic.add (|
+                                            Integer.U8,
+                                            M.read (| M.of_value (| UnsupportedLiteral |) |),
+                                            M.read (| num |)
+                                          |),
+                                          M.of_value (| Value.Integer 10 |)
+                                        |)
+                                      |))
+                                  ]
+                              |)
                             |)))
                       ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))

@@ -3,27 +3,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module slice.
   Module memchr.
-    Definition value_LO_USIZE : Value.t :=
+    Definition value_LO_USIZE : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-              [ Value.Integer 1 ]
+              [ M.of_value (| Value.Integer 1 |) ]
             |)
           |))).
     
-    Definition value_HI_USIZE : Value.t :=
+    Definition value_HI_USIZE : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-              [ Value.Integer 128 ]
+              [ M.of_value (| Value.Integer 128 |) ]
             |)
           |))).
     
-    Definition value_USIZE_BYTES : Value.t :=
+    Definition value_USIZE_BYTES : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
@@ -35,24 +35,27 @@ Module slice.
         x.wrapping_sub(LO_USIZE) & !x & HI_USIZE != 0
     }
     *)
-    Definition contains_zero_byte (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition contains_zero_byte (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
-              (BinOp.Pure.bit_and
-                (M.call_closure (|
+          BinOp.Pure.ne (|
+            BinOp.Pure.bit_and (|
+              BinOp.Pure.bit_and (|
+                M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
                   [
                     M.read (| x |);
                     M.read (| M.get_constant (| "core::slice::memchr::LO_USIZE" |) |)
                   ]
-                |))
-                (UnOp.Pure.not (M.read (| x |))))
-              (M.read (| M.get_constant (| "core::slice::memchr::HI_USIZE" |) |)))
-            (Value.Integer 0)))
+                |),
+                UnOp.Pure.not (| M.read (| x |) |)
+              |),
+              M.read (| M.get_constant (| "core::slice::memchr::HI_USIZE" |) |)
+            |),
+            M.of_value (| Value.Integer 0 |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -66,7 +69,7 @@ Module slice.
         memchr_aligned(x, text)
     }
     *)
-    Definition memchr (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition memchr (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ x; text ] =>
         ltac:(M.monadic
@@ -77,29 +80,30 @@ Module slice.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.Pure.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| text |) ]
-                                  |))
-                                  (BinOp.Panic.mul (|
+                                  |),
+                                  BinOp.Panic.mul (|
                                     Integer.Usize,
-                                    Value.Integer 2,
+                                    M.of_value (| Value.Integer 2 |),
                                     M.read (|
                                       M.get_constant (| "core::slice::memchr::USIZE_BYTES" |)
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -115,7 +119,7 @@ Module slice.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.alloc (|
@@ -145,7 +149,7 @@ Module slice.
         None
     }
     *)
-    Definition memchr_naive (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition memchr_naive (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ x; text ] =>
         ltac:(M.monadic
@@ -154,28 +158,29 @@ Module slice.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let i := M.alloc (| Value.Integer 0 |) in
+                let i := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
                 let _ :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (| i |))
-                                      (M.call_closure (|
+                                    BinOp.Pure.lt (|
+                                      M.read (| i |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| text |) ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -184,21 +189,22 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.eq
-                                                (M.read (|
+                                              BinOp.Pure.eq (|
+                                                M.read (|
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| text |),
                                                     i
                                                   |)
-                                                |))
-                                                (M.read (| x |))
+                                                |),
+                                                M.read (| x |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -209,14 +215,18 @@ Module slice.
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
-                                                Value.StructTuple
-                                                  "core::option::Option::Some"
-                                                  [ M.read (| i |) ]
+                                                M.of_value (|
+                                                  Value.StructTuple
+                                                    "core::option::Option::Some"
+                                                    [ A.to_value (M.read (| i |)) ]
+                                                |)
                                               |)
                                             |)
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
                               let _ :=
@@ -226,10 +236,10 @@ Module slice.
                                   BinOp.Panic.add (|
                                     Integer.Usize,
                                     M.read (| β |),
-                                    Value.Integer 1
+                                    M.of_value (| Value.Integer 1 |)
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -239,14 +249,14 @@ Module slice.
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                   |)
                                 |)
                               |)))
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                M.alloc (| M.of_value (| Value.StructTuple "core::option::Option::None" [] |) |)
               |)))
           |)))
       | _, _ => M.impossible
@@ -304,7 +314,7 @@ Module slice.
         if let Some(i) = memchr_naive(x, slice) { Some(offset + i) } else { None }
     }
     *)
-    Definition memchr_aligned (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition memchr_aligned (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ x; text ] =>
         ltac:(M.monadic
@@ -351,14 +361,17 @@ Module slice.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.gt (M.read (| offset |)) (Value.Integer 0)
+                                BinOp.Pure.gt (|
+                                  M.read (| offset |),
+                                  M.of_value (| Value.Integer 0 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -367,14 +380,17 @@ Module slice.
                               offset,
                               M.read (|
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.lt (M.read (| offset |)) (M.read (| len |))
+                                              BinOp.Pure.lt (|
+                                                M.read (| offset |),
+                                                M.read (| len |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -408,7 +424,7 @@ Module slice.
                               |)
                             |) in
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -433,17 +449,20 @@ Module slice.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructTuple
-                                            "core::option::Option::Some"
-                                            [ M.read (| index |) ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "core::option::Option::Some"
+                                              [ A.to_value (M.read (| index |)) ]
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let repeated_x :=
@@ -457,26 +476,27 @@ Module slice.
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.le
-                                      (M.read (| offset |))
-                                      (BinOp.Panic.sub (|
+                                    BinOp.Pure.le (|
+                                      M.read (| offset |),
+                                      BinOp.Panic.sub (|
                                         Integer.Usize,
                                         M.read (| len |),
                                         BinOp.Panic.mul (|
                                           Integer.Usize,
-                                          Value.Integer 2,
+                                          M.of_value (| Value.Integer 2 |),
                                           M.read (|
                                             M.get_constant (| "core::slice::memchr::USIZE_BYTES" |)
                                           |)
                                         |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -486,20 +506,21 @@ Module slice.
                               let _ :=
                                 let u :=
                                   M.copy (|
-                                    M.rust_cast
-                                      (M.call_closure (|
+                                    M.rust_cast (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
                                           "add",
                                           []
                                         |),
                                         [ M.read (| ptr |); M.read (| offset |) ]
-                                      |))
+                                      |)
+                                    |)
                                   |) in
                                 let v :=
                                   M.copy (|
-                                    M.rust_cast
-                                      (M.call_closure (|
+                                    M.rust_cast (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
                                           "add",
@@ -517,7 +538,8 @@ Module slice.
                                             |)
                                           |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |) in
                                 let zu :=
                                   M.alloc (|
@@ -527,9 +549,10 @@ Module slice.
                                         []
                                       |),
                                       [
-                                        BinOp.Pure.bit_xor
-                                          (M.read (| u |))
-                                          (M.read (| repeated_x |))
+                                        BinOp.Pure.bit_xor (|
+                                          M.read (| u |),
+                                          M.read (| repeated_x |)
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -541,14 +564,15 @@ Module slice.
                                         []
                                       |),
                                       [
-                                        BinOp.Pure.bit_xor
-                                          (M.read (| v |))
-                                          (M.read (| repeated_x |))
+                                        BinOp.Pure.bit_xor (|
+                                          M.read (| v |),
+                                          M.read (| repeated_x |)
+                                        |)
                                       ]
                                     |)
                                   |) in
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -568,7 +592,9 @@ Module slice.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
                               let _ :=
@@ -583,11 +609,11 @@ Module slice.
                                       M.read (|
                                         M.get_constant (| "core::slice::memchr::USIZE_BYTES" |)
                                       |),
-                                      Value.Integer 2
+                                      M.of_value (| Value.Integer 2 |)
                                     |)
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -597,7 +623,7 @@ Module slice.
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                   |)
                                 |)
                               |)))
@@ -643,7 +669,7 @@ Module slice.
                     |)
                   |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -662,19 +688,24 @@ Module slice.
                           |) in
                         let i := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| offset |),
-                                M.read (| i |)
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (BinOp.Panic.add (|
+                                    Integer.Usize,
+                                    M.read (| offset |),
+                                    M.read (| i |)
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                        |)))
                   ]
                 |)
               |)))
@@ -735,7 +766,7 @@ Module slice.
         text[..offset].iter().rposition(|elt| *elt == x)
     }
     *)
-    Definition memrchr (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition memrchr (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ x; text ] =>
         ltac:(M.monadic
@@ -787,29 +818,33 @@ Module slice.
                           let prefix := M.copy (| γ0_0 |) in
                           let suffix := M.copy (| γ0_2 |) in
                           M.alloc (|
-                            Value.Tuple
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ M.read (| prefix |) ]
-                                |);
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| len |),
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                      "len",
-                                      []
-                                    |),
-                                    [ M.read (| suffix |) ]
-                                  |)
-                                |)
-                              ]
+                            M.of_value (|
+                              Value.Tuple
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        "len",
+                                        []
+                                      |),
+                                      [ M.read (| prefix |) ]
+                                    |));
+                                  A.to_value
+                                    (BinOp.Panic.sub (|
+                                      Integer.Usize,
+                                      M.read (| len |),
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          "len",
+                                          []
+                                        |),
+                                        [ M.read (| suffix |) ]
+                                      |)
+                                    |))
+                                ]
+                            |)
                           |)))
                     ]
                   |),
@@ -823,7 +858,7 @@ Module slice.
                         let offset := M.copy (| max_aligned_offset |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -867,16 +902,21 @@ Module slice.
                                                   |),
                                                   [
                                                     M.read (| text |);
-                                                    Value.StructRecord
-                                                      "core::ops::range::RangeFrom"
-                                                      [ ("start", M.read (| offset |)) ]
+                                                    M.of_value (|
+                                                      Value.StructRecord
+                                                        "core::ops::range::RangeFrom"
+                                                        [
+                                                          ("start",
+                                                            A.to_value (M.read (| offset |)))
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
                                             |)
                                           |);
-                                          M.closure
-                                            (fun γ =>
+                                          M.closure (|
+                                            fun γ =>
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
@@ -886,13 +926,15 @@ Module slice.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let elt := M.copy (| γ |) in
-                                                          BinOp.Pure.eq
-                                                            (M.read (| M.read (| elt |) |))
-                                                            (M.read (| x |))))
+                                                          BinOp.Pure.eq (|
+                                                            M.read (| M.read (| elt |) |),
+                                                            M.read (| x |)
+                                                          |)))
                                                     ]
                                                   |)
                                                 | _ => M.impossible (||)
-                                                end))
+                                                end)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -907,20 +949,24 @@ Module slice.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructTuple
-                                            "core::option::Option::Some"
-                                            [
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| offset |),
-                                                M.read (| index |)
-                                              |)
-                                            ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "core::option::Option::Some"
+                                              [
+                                                A.to_value
+                                                  (BinOp.Panic.add (|
+                                                    Integer.Usize,
+                                                    M.read (| offset |),
+                                                    M.read (| index |)
+                                                  |))
+                                              ]
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
                         let repeated_x :=
@@ -941,16 +987,17 @@ Module slice.
                           M.loop (|
                             ltac:(M.monadic
                               (M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.gt
-                                              (M.read (| offset |))
-                                              (M.read (| min_aligned_offset |))
+                                            BinOp.Pure.gt (|
+                                              M.read (| offset |),
+                                              M.read (| min_aligned_offset |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -960,8 +1007,8 @@ Module slice.
                                       let _ :=
                                         let u :=
                                           M.copy (|
-                                            M.rust_cast
-                                              (M.call_closure (|
+                                            M.rust_cast (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
                                                   "add",
@@ -974,17 +1021,18 @@ Module slice.
                                                     M.read (| offset |),
                                                     BinOp.Panic.mul (|
                                                       Integer.Usize,
-                                                      Value.Integer 2,
+                                                      M.of_value (| Value.Integer 2 |),
                                                       M.read (| chunk_bytes |)
                                                     |)
                                                   |)
                                                 ]
-                                              |))
+                                              |)
+                                            |)
                                           |) in
                                         let v :=
                                           M.copy (|
-                                            M.rust_cast
-                                              (M.call_closure (|
+                                            M.rust_cast (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
                                                   "add",
@@ -998,7 +1046,8 @@ Module slice.
                                                     M.read (| chunk_bytes |)
                                                   |)
                                                 ]
-                                              |))
+                                              |)
+                                            |)
                                           |) in
                                         let zu :=
                                           M.alloc (|
@@ -1008,9 +1057,10 @@ Module slice.
                                                 []
                                               |),
                                               [
-                                                BinOp.Pure.bit_xor
-                                                  (M.read (| u |))
-                                                  (M.read (| repeated_x |))
+                                                BinOp.Pure.bit_xor (|
+                                                  M.read (| u |),
+                                                  M.read (| repeated_x |)
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -1022,14 +1072,15 @@ Module slice.
                                                 []
                                               |),
                                               [
-                                                BinOp.Pure.bit_xor
-                                                  (M.read (| v |))
-                                                  (M.read (| repeated_x |))
+                                                BinOp.Pure.bit_xor (|
+                                                  M.read (| v |),
+                                                  M.read (| repeated_x |)
+                                                |)
                                               ]
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -1049,7 +1100,9 @@ Module slice.
                                                 M.alloc (|
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           ]
                                         |) in
                                       let _ :=
@@ -1061,12 +1114,12 @@ Module slice.
                                             M.read (| β |),
                                             BinOp.Panic.mul (|
                                               Integer.Usize,
-                                              Value.Integer 2,
+                                              M.of_value (| Value.Integer 2 |),
                                               M.read (| chunk_bytes |)
                                             |)
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
@@ -1076,7 +1129,7 @@ Module slice.
                                               M.alloc (|
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                           |)
                                         |)
                                       |)))
@@ -1119,16 +1172,18 @@ Module slice.
                                       |),
                                       [
                                         M.read (| text |);
-                                        Value.StructRecord
-                                          "core::ops::range::RangeTo"
-                                          [ ("end_", M.read (| offset |)) ]
+                                        M.of_value (|
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [ ("end_", A.to_value (M.read (| offset |))) ]
+                                        |)
                                       ]
                                     |)
                                   ]
                                 |)
                               |);
-                              M.closure
-                                (fun γ =>
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
@@ -1138,13 +1193,15 @@ Module slice.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let elt := M.copy (| γ |) in
-                                              BinOp.Pure.eq
-                                                (M.read (| M.read (| elt |) |))
-                                                (M.read (| x |))))
+                                              BinOp.Pure.eq (|
+                                                M.read (| M.read (| elt |) |),
+                                                M.read (| x |)
+                                              |)))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |)
                         |)))

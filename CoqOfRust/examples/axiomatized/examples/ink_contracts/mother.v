@@ -15,7 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_mother_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -29,13 +29,13 @@ End Impl_core_default_Default_where_core_default_Default_K_where_core_default_De
 Module Impl_mother_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -52,7 +52,7 @@ End Impl_mother_Mapping_K_V.
 Module Impl_core_default_Default_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -65,7 +65,7 @@ End Impl_core_default_Default_for_mother_AccountId.
 Module Impl_core_clone_Clone_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -96,7 +96,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
 Module Impl_core_cmp_PartialEq_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -120,7 +120,7 @@ End Impl_core_marker_StructuralEq_for_mother_AccountId.
 Module Impl_core_cmp_Eq_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -169,7 +169,7 @@ Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u
 Module Impl_core_default_Default_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -193,7 +193,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Bids.
 Module Impl_core_cmp_PartialEq_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -217,7 +217,7 @@ End Impl_core_marker_StructuralEq_for_mother_Bids.
 Module Impl_core_cmp_Eq_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -231,7 +231,7 @@ End Impl_core_cmp_Eq_for_mother_Bids.
 Module Impl_core_clone_Clone_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -280,7 +280,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Outline.
 Module Impl_core_cmp_PartialEq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -304,7 +304,7 @@ End Impl_core_marker_StructuralEq_for_mother_Outline.
 Module Impl_core_cmp_Eq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -318,7 +318,7 @@ End Impl_core_cmp_Eq_for_mother_Outline.
 Module Impl_core_clone_Clone_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -377,7 +377,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Status.
 Module Impl_core_cmp_PartialEq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -401,7 +401,7 @@ End Impl_core_marker_StructuralEq_for_mother_Status.
 Module Impl_core_cmp_Eq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -415,7 +415,7 @@ End Impl_core_cmp_Eq_for_mother_Status.
 Module Impl_core_clone_Clone_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -456,7 +456,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Auction.
 Module Impl_core_cmp_PartialEq_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -480,7 +480,7 @@ End Impl_core_marker_StructuralEq_for_mother_Auction.
 Module Impl_core_cmp_Eq_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -494,7 +494,7 @@ End Impl_core_cmp_Eq_for_mother_Auction.
 Module Impl_core_clone_Clone_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -507,7 +507,7 @@ End Impl_core_clone_Clone_for_mother_Auction.
 Module Impl_core_default_Default_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -551,7 +551,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Failure.
 Module Impl_core_cmp_PartialEq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -575,7 +575,7 @@ End Impl_core_marker_StructuralEq_for_mother_Failure.
 Module Impl_core_cmp_Eq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -611,11 +611,11 @@ Enum Event
 Module Impl_mother_Env.
   Definition Self : Ty.t := Ty.path "mother::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_mother_Env.
@@ -635,7 +635,7 @@ End Impl_mother_Env.
 Module Impl_core_default_Default_for_mother_Mother.
   Definition Self : Ty.t := Ty.path "mother::Mother".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -648,36 +648,36 @@ End Impl_core_default_Default_for_mother_Mother.
 Module Impl_mother_Mother.
   Definition Self : Ty.t := Ty.path "mother::Mother".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new_default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
-  Parameter failed_new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter failed_new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_failed_new : M.IsAssociatedFunction Self "failed_new" failed_new.
   
-  Parameter echo_auction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter echo_auction : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_echo_auction : M.IsAssociatedFunction Self "echo_auction" echo_auction.
   
-  Parameter revert_or_trap : (list Ty.t) -> (list Value.t) -> M.
+  Parameter revert_or_trap : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_revert_or_trap :
     M.IsAssociatedFunction Self "revert_or_trap" revert_or_trap.
   
-  Parameter debug_log : (list Ty.t) -> (list Value.t) -> M.
+  Parameter debug_log : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_debug_log : M.IsAssociatedFunction Self "debug_log" debug_log.
 End Impl_mother_Mother.

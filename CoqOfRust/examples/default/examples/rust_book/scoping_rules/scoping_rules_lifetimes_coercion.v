@@ -6,7 +6,7 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
     first * second
 }
 *)
-Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
+Definition multiply (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ first; second ] =>
     ltac:(M.monadic
@@ -30,7 +30,7 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
     first
 }
 *)
-Definition choose_first (τ : list Ty.t) (α : list Value.t) : M :=
+Definition choose_first (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ first; β1 ] =>
     ltac:(M.monadic
@@ -52,14 +52,14 @@ fn main() {
     };
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let first := M.alloc (| Value.Integer 2 |) in
+        let first := M.alloc (| M.of_value (| Value.Integer 2 |) |) in
         let _ :=
-          let second := M.alloc (| Value.Integer 3 |) in
+          let second := M.alloc (| M.of_value (| Value.Integer 3 |) |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -70,46 +70,54 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "The product is " |);
-                                M.read (| Value.String "
-" |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (| M.of_value (| Value.String "The product is " |) |));
+                                  A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "i32" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "scoping_rules_lifetimes_coercion::multiply",
-                                          []
-                                        |),
-                                        [ first; second ]
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "scoping_rules_lifetimes_coercion::multiply",
+                                              []
+                                            |),
+                                            [ first; second ]
+                                          |)
+                                        |)
+                                      ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -120,48 +128,56 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String " is the first
-" |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                  A.to_value
+                                    (M.read (| M.of_value (| Value.String " is the first
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "scoping_rules_lifetimes_coercion::choose_first",
-                                          []
-                                        |),
-                                        [ first; second ]
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "scoping_rules_lifetimes_coercion::choose_first",
+                                              []
+                                            |),
+                                            [ first; second ]
+                                          |)
+                                        |)
+                                      ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

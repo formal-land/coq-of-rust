@@ -9,14 +9,24 @@ Module iter.
           OnceWith { gen: Some(gen) }
       }
       *)
-      Definition once_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition once_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ A; F ], [ gen ] =>
           ltac:(M.monadic
             (let gen := M.alloc (| gen |) in
-            Value.StructRecord
-              "core::iter::sources::once_with::OnceWith"
-              [ ("gen", Value.StructTuple "core::option::Option::Some" [ M.read (| gen |) ]) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::iter::sources::once_with::OnceWith"
+                [
+                  ("gen",
+                    A.to_value
+                      (M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| gen |)) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -32,33 +42,36 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ].
         
         (* Clone *)
-        Definition clone (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self F in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::sources::once_with::OnceWith"
-                [
-                  ("gen",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply (Ty.path "core::option::Option") [ F ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once_with::OnceWith",
-                          "gen"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::sources::once_with::OnceWith"
+                  [
+                    ("gen",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply (Ty.path "core::option::Option") [ F ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::sources::once_with::OnceWith",
+                              "gen"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -84,7 +97,7 @@ Module iter.
                 }
             }
         *)
-        Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self F in
           match τ, α with
           | [], [ self; f ] =>
@@ -93,7 +106,7 @@ Module iter.
               let f := M.alloc (| f |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -124,7 +137,10 @@ Module iter.
                               "write_str",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "OnceWith(Some(_))" |) ]
+                            [
+                              M.read (| f |);
+                              M.read (| M.of_value (| Value.String "OnceWith(Some(_))" |) |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -136,7 +152,10 @@ Module iter.
                               "write_str",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "OnceWith(None)" |) ]
+                            [
+                              M.read (| f |);
+                              M.read (| M.of_value (| Value.String "OnceWith(None)" |) |)
+                            ]
                           |)
                         |)))
                   ]
@@ -167,7 +186,7 @@ Module iter.
                 Some(f())
             }
         *)
-        Definition next (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self ] =>
@@ -252,20 +271,23 @@ Module iter.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::function::FnOnce",
-                              F,
-                              [ Ty.tuple [] ],
-                              "call_once",
-                              []
-                            |),
-                            [ M.read (| f |); Value.Tuple [] ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::function::FnOnce",
+                                  F,
+                                  [ Ty.tuple [] ],
+                                  "call_once",
+                                  []
+                                |),
+                                [ M.read (| f |); M.of_value (| Value.Tuple [] |) ]
+                              |))
+                          ]
+                      |)
                     |)
                   |)))
               |)))
@@ -277,7 +299,7 @@ Module iter.
                 self.gen.iter().size_hint()
             }
         *)
-        Definition size_hint (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self ] =>
@@ -336,7 +358,7 @@ Module iter.
                 self.next()
             }
         *)
-        Definition next_back (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self ] =>
@@ -373,7 +395,7 @@ Module iter.
                 self.gen.iter().len()
             }
         *)
-        Definition len (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self ] =>

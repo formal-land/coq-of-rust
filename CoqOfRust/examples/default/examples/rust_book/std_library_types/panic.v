@@ -11,7 +11,7 @@ fn division(dividend: i32, divisor: i32) -> i32 {
     }
 }
 *)
-Definition division (τ : list Ty.t) (α : list Value.t) : M :=
+Definition division (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ dividend; divisor ] =>
     ltac:(M.monadic
@@ -19,12 +19,15 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
       let divisor := M.alloc (| divisor |) in
       M.read (|
         M.match_operator (|
-          M.alloc (| Value.Tuple [] |),
+          M.alloc (| M.of_value (| Value.Tuple [] |) |),
           [
             fun γ =>
               ltac:(M.monadic
                 (let γ :=
-                  M.use (M.alloc (| BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer 0) |)) in
+                  M.use
+                    (M.alloc (|
+                      BinOp.Pure.eq (| M.read (| divisor |), M.of_value (| Value.Integer 0 |) |)
+                    |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.never_to_any (|
@@ -33,7 +36,7 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
                         "std::panicking::begin_panic",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| Value.String "division by zero" |) ]
+                      [ M.read (| M.of_value (| Value.String "division by zero" |) |) ]
                     |)
                   |)
                 |)));
@@ -61,7 +64,7 @@ fn main() {
     // `_x` should get destroyed at this point
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -76,14 +79,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer 0 ]
+              [ M.of_value (| Value.Integer 0 |) ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "panic::division", [] |),
-              [ Value.Integer 3; Value.Integer 0 ]
+              [ M.of_value (| Value.Integer 3 |); M.of_value (| Value.Integer 0 |) ]
             |)
           |) in
         let _ :=
@@ -96,18 +99,27 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "This point won't be reached!
-" |) ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "This point won't be reached!
+" |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

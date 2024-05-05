@@ -23,42 +23,42 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 (* fn reg_fn(_s: S) {} *)
-Definition reg_fn (τ : list Ty.t) (α : list Value.t) : M :=
+Definition reg_fn (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ _s ] =>
     ltac:(M.monadic
       (let _s := M.alloc (| _s |) in
-      Value.Tuple []))
+      M.of_value (| Value.Tuple [] |)))
   | _, _ => M.impossible
   end.
 
 (* fn gen_spec_t(_s: SGen<A>) {} *)
-Definition gen_spec_t (τ : list Ty.t) (α : list Value.t) : M :=
+Definition gen_spec_t (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ _s ] =>
     ltac:(M.monadic
       (let _s := M.alloc (| _s |) in
-      Value.Tuple []))
+      M.of_value (| Value.Tuple [] |)))
   | _, _ => M.impossible
   end.
 
 (* fn gen_spec_i32(_s: SGen<i32>) {} *)
-Definition gen_spec_i32 (τ : list Ty.t) (α : list Value.t) : M :=
+Definition gen_spec_i32 (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ _s ] =>
     ltac:(M.monadic
       (let _s := M.alloc (| _s |) in
-      Value.Tuple []))
+      M.of_value (| Value.Tuple [] |)))
   | _, _ => M.impossible
   end.
 
 (* fn generic<T>(_s: SGen<T>) {} *)
-Definition generic (τ : list Ty.t) (α : list Value.t) : M :=
+Definition generic (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [ T ], [ _s ] =>
     ltac:(M.monadic
       (let _s := M.alloc (| _s |) in
-      Value.Tuple []))
+      M.of_value (| Value.Tuple [] |)))
   | _, _ => M.impossible
   end.
 
@@ -76,7 +76,7 @@ fn main() {
     generic(SGen('c'));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -86,9 +86,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (| "generics_functions::reg_fn", [] |),
               [
-                Value.StructTuple
-                  "generics_functions::S"
-                  [ Value.StructTuple "generics_functions::A" [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "generics_functions::S"
+                    [ A.to_value (M.of_value (| Value.StructTuple "generics_functions::A" [] |)) ]
+                |)
               ]
             |)
           |) in
@@ -97,9 +99,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (| "generics_functions::gen_spec_t", [] |),
               [
-                Value.StructTuple
-                  "generics_functions::SGen"
-                  [ Value.StructTuple "generics_functions::A" [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "generics_functions::SGen"
+                    [ A.to_value (M.of_value (| Value.StructTuple "generics_functions::A" [] |)) ]
+                |)
               ]
             |)
           |) in
@@ -107,24 +111,42 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "generics_functions::gen_spec_i32", [] |),
-              [ Value.StructTuple "generics_functions::SGen" [ Value.Integer 6 ] ]
+              [
+                M.of_value (|
+                  Value.StructTuple
+                    "generics_functions::SGen"
+                    [ A.to_value (M.of_value (| Value.Integer 6 |)) ]
+                |)
+              ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "generics_functions::generic", [ Ty.path "char" ] |),
-              [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 97 ] ]
+              [
+                M.of_value (|
+                  Value.StructTuple
+                    "generics_functions::SGen"
+                    [ A.to_value (M.of_value (| Value.UnicodeChar 97 |)) ]
+                |)
+              ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "generics_functions::generic", [ Ty.path "char" ] |),
-              [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 99 ] ]
+              [
+                M.of_value (|
+                  Value.StructTuple
+                    "generics_functions::SGen"
+                    [ A.to_value (M.of_value (| Value.UnicodeChar 99 |)) ]
+                |)
+              ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

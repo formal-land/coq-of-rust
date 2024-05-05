@@ -14,7 +14,7 @@ Module vec.
               self.extend_desugared(iter)
           }
       *)
-      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T I A in
         match τ, α with
         | [], [ self; iter ] =>
@@ -49,7 +49,7 @@ Module vec.
               self.extend_trusted(iterator)
           }
       *)
-      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T I A in
         match τ, α with
         | [], [ self; iterator ] =>
@@ -87,7 +87,7 @@ Module vec.
               iterator.forget_remaining_elements();
           }
       *)
-      Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; iterator ] =>
@@ -124,7 +124,7 @@ Module vec.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -138,7 +138,7 @@ Module vec.
                     [ iterator ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -167,7 +167,7 @@ Module vec.
               self.spec_extend(iterator.cloned())
           }
       *)
-      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T I A in
         match τ, α with
         | [], [ self; iterator ] =>
@@ -217,7 +217,7 @@ Module vec.
               unsafe { self.append_elements(slice) };
           }
       *)
-      Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; iterator ] =>
@@ -247,7 +247,7 @@ Module vec.
                     [ M.read (| self |); M.read (| slice |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.

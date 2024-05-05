@@ -13,7 +13,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -39,7 +39,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -65,7 +65,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -91,7 +91,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -117,7 +117,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -143,7 +143,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -169,7 +169,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -195,7 +195,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -221,7 +221,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -247,7 +247,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -273,7 +273,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -299,7 +299,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -325,7 +325,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -351,7 +351,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -380,7 +380,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -406,7 +406,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -432,7 +432,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -458,7 +458,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -484,7 +484,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -510,7 +510,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -536,7 +536,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -562,7 +562,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -588,7 +588,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -614,7 +614,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -640,7 +640,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -666,7 +666,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -692,7 +692,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -718,7 +718,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -747,7 +747,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -773,7 +773,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -799,7 +799,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -825,7 +825,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -851,7 +851,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -877,7 +877,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -903,7 +903,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -929,7 +929,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -955,7 +955,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -981,7 +981,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1007,7 +1007,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1033,7 +1033,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1059,7 +1059,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1085,7 +1085,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1114,7 +1114,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1140,7 +1140,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1166,7 +1166,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1192,7 +1192,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1218,7 +1218,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1244,7 +1244,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1270,7 +1270,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1296,7 +1296,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1322,7 +1322,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1348,7 +1348,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1374,7 +1374,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1400,7 +1400,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1426,7 +1426,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1452,7 +1452,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1481,7 +1481,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1507,7 +1507,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1533,7 +1533,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1559,7 +1559,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1585,7 +1585,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1611,7 +1611,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1637,7 +1637,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1663,7 +1663,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1689,7 +1689,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1715,7 +1715,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1741,7 +1741,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1767,7 +1767,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1793,7 +1793,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1819,7 +1819,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1848,7 +1848,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1873,7 +1873,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1898,7 +1898,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1923,7 +1923,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1948,7 +1948,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1973,7 +1973,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1998,7 +1998,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2023,7 +2023,7 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2048,7 +2048,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2076,7 +2076,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2101,7 +2101,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2126,7 +2126,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2151,7 +2151,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2176,7 +2176,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2204,7 +2204,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2232,7 +2232,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2257,7 +2257,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2282,7 +2282,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2307,7 +2307,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2332,7 +2332,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2360,7 +2360,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2388,7 +2388,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2419,7 +2419,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2447,7 +2447,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2472,7 +2472,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2497,7 +2497,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2522,7 +2522,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2547,7 +2547,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2575,7 +2575,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2603,7 +2603,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2628,7 +2628,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2653,7 +2653,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2678,7 +2678,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2703,7 +2703,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2731,7 +2731,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2759,7 +2759,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2790,7 +2790,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2818,7 +2818,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2843,7 +2843,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2868,7 +2868,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2893,7 +2893,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2918,7 +2918,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2946,7 +2946,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2974,7 +2974,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2999,7 +2999,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3024,7 +3024,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3049,7 +3049,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3074,7 +3074,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3102,7 +3102,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3130,7 +3130,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3161,7 +3161,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3189,7 +3189,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3214,7 +3214,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3239,7 +3239,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3264,7 +3264,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3289,7 +3289,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3317,7 +3317,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3345,7 +3345,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3370,7 +3370,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3395,7 +3395,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3420,7 +3420,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3445,7 +3445,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3473,7 +3473,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3501,7 +3501,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3532,7 +3532,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3560,7 +3560,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3585,7 +3585,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3610,7 +3610,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3635,7 +3635,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3660,7 +3660,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3688,7 +3688,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3716,7 +3716,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3741,7 +3741,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3766,7 +3766,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3791,7 +3791,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3816,7 +3816,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3844,7 +3844,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3872,7 +3872,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic

@@ -16,12 +16,14 @@ Module Impl_core_convert_From_i32_for_into_Number.
           Number { value: item }
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ item ] =>
       ltac:(M.monadic
         (let item := M.alloc (| item |) in
-        Value.StructRecord "into::Number" [ ("value", M.read (| item |)) ]))
+        M.of_value (|
+          Value.StructRecord "into::Number" [ ("value", A.to_value (M.read (| item |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -38,7 +40,7 @@ fn main() {
     <i32 as std::convert::Into<Number>>::into(5);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -53,10 +55,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "into",
                 []
               |),
-              [ Value.Integer 5 ]
+              [ M.of_value (| Value.Integer 5 |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

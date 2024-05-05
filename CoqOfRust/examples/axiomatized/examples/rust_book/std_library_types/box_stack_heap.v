@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,7 +24,7 @@ End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -52,8 +52,8 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
       ];
   } *)
 
-Parameter origin : (list Ty.t) -> (list Value.t) -> M.
+Parameter origin : (list Ty.t) -> (list A.t) -> M.
 
-Parameter boxed_origin : (list Ty.t) -> (list Value.t) -> M.
+Parameter boxed_origin : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

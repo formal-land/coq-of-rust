@@ -47,25 +47,29 @@ Module ptr.
               Unique { pointer: NonNull::dangling(), _marker: PhantomData }
           }
       *)
-      Definition dangling (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition dangling (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::ptr::unique::Unique"
-              [
-                ("pointer",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                      "dangling",
-                      []
-                    |),
-                    []
-                  |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::ptr::unique::Unique"
+                [
+                  ("pointer",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                          "dangling",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("_marker",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -78,26 +82,30 @@ Module ptr.
               unsafe { Unique { pointer: NonNull::new_unchecked(ptr), _marker: PhantomData } }
           }
       *)
-      Definition new_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
-            Value.StructRecord
-              "core::ptr::unique::Unique"
-              [
-                ("pointer",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                      "new_unchecked",
-                      []
-                    |),
-                    [ M.read (| ptr |) ]
-                  |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::unique::Unique"
+                [
+                  ("pointer",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                          "new_unchecked",
+                          []
+                        |),
+                        [ M.read (| ptr |) ]
+                      |)));
+                  ("_marker",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -114,7 +122,7 @@ Module ptr.
               }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ ptr ] =>
@@ -122,7 +130,7 @@ Module ptr.
             (let ptr := M.alloc (| ptr |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -145,20 +153,31 @@ Module ptr.
                         |) in
                       let pointer := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            Value.StructRecord
-                              "core::ptr::unique::Unique"
-                              [
-                                ("pointer", M.read (| pointer |));
-                                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructRecord
+                                    "core::ptr::unique::Unique"
+                                    [
+                                      ("pointer", A.to_value (M.read (| pointer |)));
+                                      ("_marker",
+                                        A.to_value
+                                          (M.of_value (|
+                                            Value.StructTuple "core::marker::PhantomData" []
+                                          |)))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -174,7 +193,7 @@ Module ptr.
               self.pointer.as_ptr()
           }
       *)
-      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -210,7 +229,7 @@ Module ptr.
               unsafe { self.pointer.as_ref() }
           }
       *)
-      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -244,7 +263,7 @@ Module ptr.
               unsafe { self.pointer.as_mut() }
           }
       *)
-      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -278,7 +297,7 @@ Module ptr.
               unsafe { Unique::new_unchecked(self.pointer.cast().as_ptr()) }
           }
       *)
-      Definition cast (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cast (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ U ], [ self ] =>
@@ -335,7 +354,7 @@ Module ptr.
               *self
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -400,7 +419,7 @@ Module ptr.
               fmt::Pointer::fmt(&self.as_ptr(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -449,7 +468,7 @@ Module ptr.
               fmt::Pointer::fmt(&self.as_ptr(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -498,7 +517,7 @@ Module ptr.
               Self::from(NonNull::from(reference))
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ reference ] =>
@@ -545,18 +564,21 @@ Module ptr.
               Unique { pointer, _marker: PhantomData }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ pointer ] =>
           ltac:(M.monadic
             (let pointer := M.alloc (| pointer |) in
-            Value.StructRecord
-              "core::ptr::unique::Unique"
-              [
-                ("pointer", M.read (| pointer |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::unique::Unique"
+                [
+                  ("pointer", A.to_value (M.read (| pointer |)));
+                  ("_marker",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       

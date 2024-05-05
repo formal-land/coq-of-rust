@@ -16,7 +16,7 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_elem (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ A ], [ elem; n; alloc ] =>
@@ -74,7 +74,7 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_elem (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ A ], [ elem; n; alloc ] =>
@@ -87,7 +87,7 @@ Module vec.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -111,25 +111,30 @@ Module vec.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructRecord
-                                      "alloc::vec::Vec"
-                                      [
-                                        ("buf",
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
-                                              "with_capacity_zeroed_in",
-                                              []
-                                            |),
-                                            [ M.read (| n |); M.read (| alloc |) ]
-                                          |));
-                                        ("len", M.read (| n |))
-                                      ]
+                                    M.of_value (|
+                                      Value.StructRecord
+                                        "alloc::vec::Vec"
+                                        [
+                                          ("buf",
+                                            A.to_value
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::raw_vec::RawVec")
+                                                    [ T; A ],
+                                                  "with_capacity_zeroed_in",
+                                                  []
+                                                |),
+                                                [ M.read (| n |); M.read (| alloc |) ]
+                                              |)));
+                                          ("len", A.to_value (M.read (| n |)))
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let v :=
@@ -185,7 +190,7 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_elem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ A ], [ elem; n; alloc ] =>
           ltac:(M.monadic
@@ -197,14 +202,17 @@ Module vec.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| elem |)) (Value.Integer 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| elem |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -212,27 +220,30 @@ Module vec.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructRecord
-                                      "alloc::vec::Vec"
-                                      [
-                                        ("buf",
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::raw_vec::RawVec")
-                                                [ Ty.path "i8"; A ],
-                                              "with_capacity_zeroed_in",
-                                              []
-                                            |),
-                                            [ M.read (| n |); M.read (| alloc |) ]
-                                          |));
-                                        ("len", M.read (| n |))
-                                      ]
+                                    M.of_value (|
+                                      Value.StructRecord
+                                        "alloc::vec::Vec"
+                                        [
+                                          ("buf",
+                                            A.to_value
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::raw_vec::RawVec")
+                                                    [ Ty.path "i8"; A ],
+                                                  "with_capacity_zeroed_in",
+                                                  []
+                                                |),
+                                                [ M.read (| n |); M.read (| alloc |) ]
+                                              |)));
+                                          ("len", A.to_value (M.read (| n |)))
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let v :=
@@ -260,7 +271,7 @@ Module vec.
                               |),
                               [ v ]
                             |);
-                            M.rust_cast (M.read (| elem |));
+                            M.rust_cast (| M.read (| elem |) |);
                             M.read (| n |)
                           ]
                         |)
@@ -276,7 +287,7 @@ Module vec.
                           [ v; M.read (| n |) ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                   v
                 |)))
             |)))
@@ -307,7 +318,7 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_elem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ A ], [ elem; n; alloc ] =>
           ltac:(M.monadic
@@ -319,14 +330,17 @@ Module vec.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| elem |)) (Value.Integer 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| elem |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -334,27 +348,30 @@ Module vec.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructRecord
-                                      "alloc::vec::Vec"
-                                      [
-                                        ("buf",
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::raw_vec::RawVec")
-                                                [ Ty.path "u8"; A ],
-                                              "with_capacity_zeroed_in",
-                                              []
-                                            |),
-                                            [ M.read (| n |); M.read (| alloc |) ]
-                                          |));
-                                        ("len", M.read (| n |))
-                                      ]
+                                    M.of_value (|
+                                      Value.StructRecord
+                                        "alloc::vec::Vec"
+                                        [
+                                          ("buf",
+                                            A.to_value
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::raw_vec::RawVec")
+                                                    [ Ty.path "u8"; A ],
+                                                  "with_capacity_zeroed_in",
+                                                  []
+                                                |),
+                                                [ M.read (| n |); M.read (| alloc |) ]
+                                              |)));
+                                          ("len", A.to_value (M.read (| n |)))
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let v :=
@@ -398,7 +415,7 @@ Module vec.
                           [ v; M.read (| n |) ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                   v
                 |)))
             |)))
@@ -427,7 +444,7 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_elem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ A ], [ _elem; n; alloc ] =>
           ltac:(M.monadic
@@ -458,7 +475,7 @@ Module vec.
                       [ v; M.read (| n |) ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               v
             |)))
         | _, _ => M.impossible

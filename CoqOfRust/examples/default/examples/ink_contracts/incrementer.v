@@ -16,12 +16,16 @@ Module Impl_incrementer_Incrementer.
           Self { value: init_value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord "incrementer::Incrementer" [ ("value", M.read (| init_value |)) ]))
+        M.of_value (|
+          Value.StructRecord
+            "incrementer::Incrementer"
+            [ ("value", A.to_value (M.read (| init_value |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -32,7 +36,7 @@ Module Impl_incrementer_Incrementer.
           Self::new(Default::default())
       }
   *)
-  Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new_default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -55,7 +59,7 @@ Module Impl_incrementer_Incrementer.
           self.value += by;
       }
   *)
-  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition inc (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; by_ ] =>
       ltac:(M.monadic
@@ -70,7 +74,7 @@ Module Impl_incrementer_Incrementer.
                 "value"
               |) in
             M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| by_ |) |) |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -82,7 +86,7 @@ Module Impl_incrementer_Incrementer.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic

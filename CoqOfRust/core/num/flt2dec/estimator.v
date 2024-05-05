@@ -13,7 +13,7 @@ Module num.
           (((nbits + exp as i64) * 1292913986) >> 32) as i16
       }
       *)
-      Definition estimate_scaling_factor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition estimate_scaling_factor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ mant; exp ] =>
           ltac:(M.monadic
@@ -24,28 +24,36 @@ Module num.
                 M.alloc (|
                   BinOp.Panic.sub (|
                     Integer.I64,
-                    Value.Integer 64,
-                    M.rust_cast
-                      (M.call_closure (|
+                    M.of_value (| Value.Integer 64 |),
+                    M.rust_cast (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
-                        [ BinOp.Panic.sub (| Integer.U64, M.read (| mant |), Value.Integer 1 |) ]
-                      |))
+                        [
+                          BinOp.Panic.sub (|
+                            Integer.U64,
+                            M.read (| mant |),
+                            M.of_value (| Value.Integer 1 |)
+                          |)
+                        ]
+                      |)
+                    |)
                   |)
                 |) in
               M.alloc (|
-                M.rust_cast
-                  (BinOp.Panic.shr (|
+                M.rust_cast (|
+                  BinOp.Panic.shr (|
                     BinOp.Panic.mul (|
                       Integer.I64,
                       BinOp.Panic.add (|
                         Integer.I64,
                         M.read (| nbits |),
-                        M.rust_cast (M.read (| exp |))
+                        M.rust_cast (| M.read (| exp |) |)
                       |),
-                      Value.Integer 1292913986
+                      M.of_value (| Value.Integer 1292913986 |)
                     |),
-                    Value.Integer 32
-                  |))
+                    M.of_value (| Value.Integer 32 |)
+                  |)
+                |)
               |)
             |)))
         | _, _ => M.impossible

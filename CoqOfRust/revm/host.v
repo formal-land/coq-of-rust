@@ -22,7 +22,7 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -36,41 +36,45 @@ Module host.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "SStoreResult" |);
-              M.read (| Value.String "original_value" |);
+              M.read (| M.of_value (| Value.String "SStoreResult" |) |);
+              M.read (| M.of_value (| Value.String "original_value" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SStoreResult",
                   "original_value"
-                |));
-              M.read (| Value.String "present_value" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "present_value" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SStoreResult",
                   "present_value"
-                |));
-              M.read (| Value.String "new_value" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "new_value" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SStoreResult",
                   "new_value"
-                |));
-              M.read (| Value.String "is_cold" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "is_cold" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::SStoreResult",
                     "is_cold"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -88,77 +92,89 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "revm_interpreter::host::SStoreResult"
-            [
-              ("original_value",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.path "ruint::Uint",
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::SStoreResult",
-                      "original_value"
-                    |)
-                  ]
-                |));
-              ("present_value",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.path "ruint::Uint",
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::SStoreResult",
-                      "present_value"
-                    |)
-                  ]
-                |));
-              ("new_value",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.path "ruint::Uint",
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::SStoreResult",
-                      "new_value"
-                    |)
-                  ]
-                |));
-              ("is_cold",
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::SStoreResult",
-                      "is_cold"
-                    |)
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::host::SStoreResult"
+              [
+                ("original_value",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "ruint::Uint",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::SStoreResult",
+                          "original_value"
+                        |)
+                      ]
+                    |)));
+                ("present_value",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "ruint::Uint",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::SStoreResult",
+                          "present_value"
+                        |)
+                      ]
+                    |)));
+                ("new_value",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "ruint::Uint",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::SStoreResult",
+                          "new_value"
+                        |)
+                      ]
+                    |)));
+                ("is_cold",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "bool",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::SStoreResult",
+                          "is_cold"
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -185,7 +201,7 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -262,21 +278,22 @@ Module host.
                 |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::SStoreResult",
                     "is_cold"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::host::SStoreResult",
                     "is_cold"
                   |)
-                |))))
+                |)
+              |)))
           |)))
       | _, _ => M.impossible
       end.
@@ -304,20 +321,20 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
+              M.of_value (| Value.DeclaredButUndefined |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      M.of_value (| Value.DeclaredButUndefined |),
+                      [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
                     |)))
               ]
             |)
@@ -345,7 +362,7 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -359,25 +376,27 @@ Module host.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "LoadAccountResult" |);
-              M.read (| Value.String "is_cold" |);
+              M.read (| M.of_value (| Value.String "LoadAccountResult" |) |);
+              M.read (| M.of_value (| Value.String "is_cold" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::LoadAccountResult",
                   "is_cold"
-                |));
-              M.read (| Value.String "is_empty" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "is_empty" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::LoadAccountResult",
                     "is_empty"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -395,37 +414,53 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "revm_interpreter::host::LoadAccountResult"
-            [
-              ("is_cold",
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::LoadAccountResult",
-                      "is_cold"
-                    |)
-                  ]
-                |));
-              ("is_empty",
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::LoadAccountResult",
-                      "is_empty"
-                    |)
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::host::LoadAccountResult"
+              [
+                ("is_cold",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "bool",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::LoadAccountResult",
+                          "is_cold"
+                        |)
+                      ]
+                    |)));
+                ("is_empty",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "bool",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::LoadAccountResult",
+                          "is_empty"
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -441,36 +476,40 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "revm_interpreter::host::LoadAccountResult"
-            [
-              ("is_cold",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "bool",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |));
-              ("is_empty",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "bool",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |))
-            ]))
+          (M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::host::LoadAccountResult"
+              [
+                ("is_cold",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "bool",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)));
+                ("is_empty",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "bool",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -497,44 +536,46 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.Pure.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::LoadAccountResult",
                   "is_cold"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| other |),
                   "revm_interpreter::host::LoadAccountResult",
                   "is_cold"
                 |)
-              |)),
+              |)
+            |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::LoadAccountResult",
                     "is_empty"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::host::LoadAccountResult",
                     "is_empty"
                   |)
-                |))))
+                |)
+              |)))
           |)))
       | _, _ => M.impossible
       end.
@@ -562,15 +603,15 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              M.of_value (| Value.DeclaredButUndefined |),
+              [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
             |)
           |)))
       | _, _ => M.impossible
@@ -602,58 +643,64 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "revm_interpreter::host::SelfDestructResult"
-            [
-              ("had_value",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "bool",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |));
-              ("target_exists",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "bool",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |));
-              ("is_cold",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "bool",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |));
-              ("previously_destroyed",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "bool",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |))
-            ]))
+          (M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::host::SelfDestructResult"
+              [
+                ("had_value",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "bool",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)));
+                ("target_exists",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "bool",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)));
+                ("is_cold",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "bool",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)));
+                ("previously_destroyed",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "bool",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -669,59 +716,89 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "revm_interpreter::host::SelfDestructResult"
-            [
-              ("had_value",
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::SelfDestructResult",
-                      "had_value"
-                    |)
-                  ]
-                |));
-              ("target_exists",
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::SelfDestructResult",
-                      "target_exists"
-                    |)
-                  ]
-                |));
-              ("is_cold",
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::SelfDestructResult",
-                      "is_cold"
-                    |)
-                  ]
-                |));
-              ("previously_destroyed",
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::SelfDestructResult",
-                      "previously_destroyed"
-                    |)
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::host::SelfDestructResult"
+              [
+                ("had_value",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "bool",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::SelfDestructResult",
+                          "had_value"
+                        |)
+                      ]
+                    |)));
+                ("target_exists",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "bool",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::SelfDestructResult",
+                          "target_exists"
+                        |)
+                      ]
+                    |)));
+                ("is_cold",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "bool",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::SelfDestructResult",
+                          "is_cold"
+                        |)
+                      ]
+                    |)));
+                ("previously_destroyed",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "bool",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::host::SelfDestructResult",
+                          "previously_destroyed"
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -737,7 +814,7 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -751,41 +828,45 @@ Module host.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "SelfDestructResult" |);
-              M.read (| Value.String "had_value" |);
+              M.read (| M.of_value (| Value.String "SelfDestructResult" |) |);
+              M.read (| M.of_value (| Value.String "had_value" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SelfDestructResult",
                   "had_value"
-                |));
-              M.read (| Value.String "target_exists" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "target_exists" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SelfDestructResult",
                   "target_exists"
-                |));
-              M.read (| Value.String "is_cold" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "is_cold" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SelfDestructResult",
                   "is_cold"
-                |));
-              M.read (| Value.String "previously_destroyed" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "previously_destroyed" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::SelfDestructResult",
                     "previously_destroyed"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -814,7 +895,7 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -823,71 +904,75 @@ Module host.
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
-                BinOp.Pure.eq
-                  (M.read (|
+                BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::host::SelfDestructResult",
                       "had_value"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::host::SelfDestructResult",
                       "had_value"
                     |)
-                  |)),
+                  |)
+                |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_interpreter::host::SelfDestructResult",
                         "target_exists"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_interpreter::host::SelfDestructResult",
                         "target_exists"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::host::SelfDestructResult",
                       "is_cold"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::host::SelfDestructResult",
                       "is_cold"
                     |)
-                  |))))
+                  |)
+                |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::SelfDestructResult",
                     "previously_destroyed"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::host::SelfDestructResult",
                     "previously_destroyed"
                   |)
-                |))))
+                |)
+              |)))
           |)))
       | _, _ => M.impossible
       end.
@@ -915,15 +1000,15 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              M.of_value (| Value.DeclaredButUndefined |),
+              [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
             |)
           |)))
       | _, _ => M.impossible
@@ -942,7 +1027,7 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ __H ], [ self; state ] =>
         ltac:(M.monadic

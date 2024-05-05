@@ -73,7 +73,7 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -93,27 +93,30 @@ Module interpreter_action.
                       |) in
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructRecord
-                        "revm_interpreter::interpreter_action::InterpreterAction::Call"
-                        [
-                          ("inputs",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  [
-                                    Ty.path
-                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "clone",
-                                []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
-                        ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "revm_interpreter::interpreter_action::InterpreterAction::Call"
+                          [
+                            ("inputs",
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    "clone",
+                                    []
+                                  |),
+                                  [ M.read (| __self_0 |) ]
+                                |)))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -126,27 +129,30 @@ Module interpreter_action.
                       |) in
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructRecord
-                        "revm_interpreter::interpreter_action::InterpreterAction::Create"
-                        [
-                          ("inputs",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  [
-                                    Ty.path
-                                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "clone",
-                                []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
-                        ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "revm_interpreter::interpreter_action::InterpreterAction::Create"
+                          [
+                            ("inputs",
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    "clone",
+                                    []
+                                  |),
+                                  [ M.read (| __self_0 |) ]
+                                |)))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -159,27 +165,30 @@ Module interpreter_action.
                       |) in
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructRecord
-                        "revm_interpreter::interpreter_action::InterpreterAction::EOFCreate"
-                        [
-                          ("inputs",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  [
-                                    Ty.path
-                                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "clone",
-                                []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
-                        ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "revm_interpreter::interpreter_action::InterpreterAction::EOFCreate"
+                          [
+                            ("inputs",
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    "clone",
+                                    []
+                                  |),
+                                  [ M.read (| __self_0 |) ]
+                                |)))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -192,29 +201,34 @@ Module interpreter_action.
                       |) in
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructRecord
-                        "revm_interpreter::interpreter_action::InterpreterAction::Return"
-                        [
-                          ("result",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "revm_interpreter::interpreter::InterpreterResult",
-                                [],
-                                "clone",
-                                []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
-                        ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "revm_interpreter::interpreter_action::InterpreterAction::Return"
+                          [
+                            ("result",
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    Ty.path "revm_interpreter::interpreter::InterpreterResult",
+                                    [],
+                                    "clone",
+                                    []
+                                  |),
+                                  [ M.read (| __self_0 |) ]
+                                |)))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::interpreter_action::InterpreterAction::None"
-                        []
+                      M.of_value (|
+                        Value.StructTuple
+                          "revm_interpreter::interpreter_action::InterpreterAction::None"
+                          []
+                      |)
                     |)))
               ]
             |)
@@ -234,7 +248,7 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -263,9 +277,9 @@ Module interpreter_action.
                         |),
                         [
                           M.read (| f |);
-                          M.read (| Value.String "Call" |);
-                          M.read (| Value.String "inputs" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          M.read (| M.of_value (| Value.String "Call" |) |);
+                          M.read (| M.of_value (| Value.String "inputs" |) |);
+                          (* Unsize *) M.pointer_coercion (| __self_0 |)
                         ]
                       |)
                     |)));
@@ -288,9 +302,9 @@ Module interpreter_action.
                         |),
                         [
                           M.read (| f |);
-                          M.read (| Value.String "Create" |);
-                          M.read (| Value.String "inputs" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          M.read (| M.of_value (| Value.String "Create" |) |);
+                          M.read (| M.of_value (| Value.String "inputs" |) |);
+                          (* Unsize *) M.pointer_coercion (| __self_0 |)
                         ]
                       |)
                     |)));
@@ -313,9 +327,9 @@ Module interpreter_action.
                         |),
                         [
                           M.read (| f |);
-                          M.read (| Value.String "EOFCreate" |);
-                          M.read (| Value.String "inputs" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          M.read (| M.of_value (| Value.String "EOFCreate" |) |);
+                          M.read (| M.of_value (| Value.String "inputs" |) |);
+                          (* Unsize *) M.pointer_coercion (| __self_0 |)
                         ]
                       |)
                     |)));
@@ -338,9 +352,9 @@ Module interpreter_action.
                         |),
                         [
                           M.read (| f |);
-                          M.read (| Value.String "Return" |);
-                          M.read (| Value.String "result" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          M.read (| M.of_value (| Value.String "Return" |) |);
+                          M.read (| M.of_value (| Value.String "result" |) |);
+                          (* Unsize *) M.pointer_coercion (| __self_0 |)
                         ]
                       |)
                     |)));
@@ -354,7 +368,7 @@ Module interpreter_action.
                           "write_str",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "None" |) ]
+                        [ M.read (| f |); M.read (| M.of_value (| Value.String "None" |) |) ]
                       |)
                     |)))
               ]
@@ -375,11 +389,13 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []))
+          (M.of_value (|
+            Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -406,7 +422,7 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -435,11 +451,16 @@ Module interpreter_action.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Tuple
+                            [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                        |)
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -611,7 +632,7 @@ Module interpreter_action.
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)))
                       ]
                     |)
                   |)))
@@ -644,30 +665,34 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
+              M.of_value (| Value.DeclaredButUndefined |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Value.DeclaredButUndefined,
+                      M.of_value (| Value.DeclaredButUndefined |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Value.DeclaredButUndefined,
+                              M.of_value (| Value.DeclaredButUndefined |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Value.DeclaredButUndefined,
-                                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                      M.of_value (| Value.DeclaredButUndefined |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -696,7 +721,7 @@ Module interpreter_action.
             matches!(self, InterpreterAction::Call { .. })
         }
     *)
-    Definition is_call (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_call (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -708,8 +733,8 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -723,7 +748,7 @@ Module interpreter_action.
             matches!(self, InterpreterAction::Create { .. })
         }
     *)
-    Definition is_create (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_create (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -735,8 +760,8 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -750,7 +775,7 @@ Module interpreter_action.
             matches!(self, InterpreterAction::Return { .. })
         }
     *)
-    Definition is_return (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_return (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -762,8 +787,8 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -777,7 +802,7 @@ Module interpreter_action.
             matches!(self, InterpreterAction::None)
         }
     *)
-    Definition is_none (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_none (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -789,8 +814,8 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -804,20 +829,21 @@ Module interpreter_action.
             !self.is_none()
         }
     *)
-    Definition is_some (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_some (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.Pure.not (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -831,7 +857,7 @@ Module interpreter_action.
             }
         }
     *)
-    Definition into_result_return (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_result_return (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -850,10 +876,17 @@ Module interpreter_action.
                       |) in
                     let result := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| result |)) ]
+                      |)
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))

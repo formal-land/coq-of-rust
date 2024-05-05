@@ -24,7 +24,7 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -32,7 +32,7 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
+          [ M.read (| f |); M.read (| M.of_value (| Value.String "EmptyVec" |) |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -49,12 +49,12 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.StructTuple "boxing_errors::EmptyVec" []))
+        M.of_value (| Value.StructTuple "boxing_errors::EmptyVec" [] |)))
     | _, _ => M.impossible
     end.
   
@@ -74,7 +74,7 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
           write!(f, "invalid first item to double")
       }
   *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -88,10 +88,19 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array [ M.read (| Value.String "invalid first item to double" |) ]
-                  |))
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.read (|
+                              M.of_value (| Value.String "invalid first item to double" |)
+                            |))
+                        ]
+                    |)
+                  |)
+                |)
               ]
             |)
           ]
@@ -125,7 +134,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
         })
 }
 *)
-Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+Definition double_first (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ vec ] =>
     ltac:(M.monadic
@@ -197,8 +206,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -222,16 +231,17 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                   "into",
                                   []
                                 |),
-                                [ Value.StructTuple "boxing_errors::EmptyVec" [] ]
+                                [ M.of_value (| Value.StructTuple "boxing_errors::EmptyVec" [] |) ]
                               |)))
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |);
-          M.closure
-            (fun γ =>
+          M.closure (|
+            fun γ =>
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
@@ -293,8 +303,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [ M.read (| M.read (| s |) |) ]
                                   |);
-                                  M.closure
-                                    (fun γ =>
+                                  M.closure (|
+                                    fun γ =>
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
@@ -325,11 +335,12 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                             ]
                                           |)
                                         | _ => M.impossible (||)
-                                        end))
+                                        end)
+                                  |)
                                 ]
                               |);
-                              M.closure
-                                (fun γ =>
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
@@ -341,19 +352,21 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                               (let i := M.copy (| γ |) in
                                               BinOp.Panic.mul (|
                                                 Integer.I32,
-                                                Value.Integer 2,
+                                                M.of_value (| Value.Integer 2 |),
                                                 M.read (| i |)
                                               |)))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |)))
                     ]
                   |)
                 | _ => M.impossible (||)
-                end))
+                end)
+          |)
         ]
       |)))
   | _, _ => M.impossible
@@ -367,7 +380,7 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+Definition print (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ result ] =>
     ltac:(M.monadic
@@ -394,36 +407,46 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "The first doubled is " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "The first doubled is " |)
+                                        |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ n ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ n ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -442,43 +465,51 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Error: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "Error: " |) |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
                                             [
-                                              Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                              Ty.path "alloc::alloc::Global"
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                [
+                                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
                                             ]
-                                        ]
-                                      |),
-                                      [ e ]
-                                    |)
-                                  ]
-                              |))
+                                          |),
+                                          [ e ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))
@@ -496,7 +527,7 @@ fn main() {
     print(double_first(strings));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -511,8 +542,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -526,16 +557,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "42" |);
-                              M.read (| Value.String "93" |);
-                              M.read (| Value.String "18" |)
-                            ]
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "42" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "93" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "18" |) |))
+                              ]
+                          |)
                         |)
                       ]
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)
           |) in
@@ -562,8 +596,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -577,16 +611,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "tofu" |);
-                              M.read (| Value.String "93" |);
-                              M.read (| Value.String "18" |)
-                            ]
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "tofu" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "93" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "18" |) |))
+                              ]
+                          |)
                         |)
                       ]
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)
           |) in
@@ -626,7 +663,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

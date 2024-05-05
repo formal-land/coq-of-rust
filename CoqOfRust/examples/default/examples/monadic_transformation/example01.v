@@ -6,7 +6,7 @@ fn id(x: u64) -> u64 {
     x
 }
 *)
-Definition id (τ : list Ty.t) (α : list Value.t) : M :=
+Definition id (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ x ] =>
     ltac:(M.monadic
@@ -16,14 +16,14 @@ Definition id (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 (* fn tri(a: u64, b: u64, c: u64) {} *)
-Definition tri (τ : list Ty.t) (α : list Value.t) : M :=
+Definition tri (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ a; b; c ] =>
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
       let c := M.alloc (| c |) in
-      Value.Tuple []))
+      M.of_value (| Value.Tuple [] |)))
   | _, _ => M.impossible
   end.
 
@@ -36,20 +36,28 @@ fn main() {
     tri(id(1), id(2), 3);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 0 ] |)
+            M.call_closure (|
+              M.get_function (| "example01::id", [] |),
+              [ M.of_value (| Value.Integer 0 |) ]
+            |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "example01::id", [] |),
-              [ M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 0 ] |) ]
+              [
+                M.call_closure (|
+                  M.get_function (| "example01::id", [] |),
+                  [ M.of_value (| Value.Integer 0 |) ]
+                |)
+              ]
             |)
           |) in
         let _ :=
@@ -62,7 +70,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     M.call_closure (|
                       M.get_function (| "example01::id", [] |),
-                      [ Value.Integer 0 ]
+                      [ M.of_value (| Value.Integer 0 |) ]
                     |)
                   ]
                 |)
@@ -82,7 +90,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         M.call_closure (|
                           M.get_function (| "example01::id", [] |),
-                          [ Value.Integer 0 ]
+                          [ M.of_value (| Value.Integer 0 |) ]
                         |)
                       ]
                     |)
@@ -96,13 +104,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (| "example01::tri", [] |),
               [
-                M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 1 ] |);
-                M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 2 ] |);
-                Value.Integer 3
+                M.call_closure (|
+                  M.get_function (| "example01::id", [] |),
+                  [ M.of_value (| Value.Integer 1 |) ]
+                |);
+                M.call_closure (|
+                  M.get_function (| "example01::id", [] |),
+                  [ M.of_value (| Value.Integer 2 |) ]
+                |);
+                M.of_value (| Value.Integer 3 |)
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

@@ -16,37 +16,41 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "multisig::Mapping"
-          [
-            ("_key",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("_value",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "multisig::Mapping"
+            [
+              ("_key",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("_value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -67,7 +71,21 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -78,7 +96,21 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -89,7 +121,22 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -100,7 +147,21 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -111,7 +172,21 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -122,7 +197,21 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -140,18 +229,27 @@ Module Impl_core_default_Default_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "multisig::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "multisig::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -167,7 +265,7 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -181,16 +279,17 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
           |),
           [
             M.read (| f |);
-            M.read (| Value.String "AccountId" |);
+            M.read (| M.of_value (| Value.String "AccountId" |) |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
+            M.pointer_coercion (|
+              M.alloc (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "multisig::AccountId",
                   0
                 |)
-              |))
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -208,14 +307,14 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -252,19 +351,20 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.Pure.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
-          |))))
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -291,15 +391,15 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+            M.of_value (| Value.DeclaredButUndefined |),
+            [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -318,7 +418,7 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* PartialOrd *)
-  Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
@@ -352,7 +452,7 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Ord *)
-  Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
@@ -385,12 +485,15 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
     fields := [ ("caller", Ty.path "multisig::AccountId") ];
   } *)
 
-Definition value_MAX_OWNERS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 50 |))).
+Definition value_MAX_OWNERS : A.t :=
+  M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 50 |) |))).
 
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
-Definition value_WRONG_TRANSACTION_ID : Value.t :=
-  M.run ltac:(M.monadic (Value.String "The user specified an invalid transaction id. Abort.")).
+Definition value_WRONG_TRANSACTION_ID : A.t :=
+  M.run
+    ltac:(M.monadic
+      (M.of_value (| Value.String "The user specified an invalid transaction id. Abort." |))).
 
 (* StructTuple
   {
@@ -423,14 +526,14 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   Definition Self : Ty.t := Ty.path "multisig::ConfirmationStatus".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -472,76 +575,90 @@ Module Impl_core_default_Default_for_multisig_Transaction.
   Definition Self : Ty.t := Ty.path "multisig::Transaction".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "multisig::Transaction"
-          [
-            ("callee",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "multisig::AccountId",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("selector",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("input",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("transferred_value",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "u128",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("gas_limit",
-              M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u64", [], "default", [] |),
-                []
-              |));
-            ("allow_reentry",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "bool",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "multisig::Transaction"
+            [
+              ("callee",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "multisig::AccountId",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("selector",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("input",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("transferred_value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u128",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("gas_limit",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u64",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("allow_reentry",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "bool",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -572,7 +689,7 @@ Module Impl_core_clone_Clone_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -611,13 +728,13 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        Value.Bool true))
+        M.of_value (| Value.Bool true |)))
     | _, _ => M.impossible
     end.
   
@@ -644,12 +761,12 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.Tuple []))
+        M.of_value (| Value.Tuple [] |)))
     | _, _ => M.impossible
     end.
   
@@ -678,32 +795,42 @@ Module Impl_core_default_Default_for_multisig_Transactions.
   Definition Self : Ty.t := Ty.path "multisig::Transactions".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "multisig::Transactions"
-          [
-            ("transactions",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("next_id",
-              M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u32", [], "default", [] |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "multisig::Transactions"
+            [
+              ("transactions",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("next_id",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u32",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -850,7 +977,7 @@ Module Impl_multisig_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -868,7 +995,20 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
@@ -877,7 +1017,19 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
+  Definition transferred_value (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
@@ -887,7 +1039,19 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter account_id : (list Ty.t) -> (list Value.t) -> M.
+  Definition account_id (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
 End Impl_multisig_Env.
@@ -923,93 +1087,108 @@ Module Impl_core_default_Default_for_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "multisig::Multisig"
-          [
-            ("confirmations",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "multisig::Mapping")
-                    [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("confirmation_count",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("transactions",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "multisig::Mapping")
-                    [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("transaction_list",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "multisig::Transactions",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("owners",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("is_owner",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "multisig::Mapping")
-                    [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("requirement",
-              M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u32", [], "default", [] |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "multisig::Multisig"
+            [
+              ("confirmations",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "multisig::Mapping")
+                        [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("confirmation_count",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("transactions",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "multisig::Mapping")
+                        [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("transaction_list",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "multisig::Transactions",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("owners",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("is_owner",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "multisig::Mapping")
+                        [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("requirement",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u32",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -1026,7 +1205,7 @@ fn ensure_requirement_is_valid(owners: u32, requirement: u32) {
     assert!(0 < requirement && requirement <= owners && owners <= MAX_OWNERS);
 }
 *)
-Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M :=
+Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ owners; requirement ] =>
     ltac:(M.monadic
@@ -1035,25 +1214,30 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
       M.read (|
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.and (|
+                        UnOp.Pure.not (|
+                          LogicalOp.and (|
                             LogicalOp.and (|
-                              BinOp.Pure.lt (Value.Integer 0) (M.read (| requirement |)),
+                              BinOp.Pure.lt (|
+                                M.of_value (| Value.Integer 0 |),
+                                M.read (| requirement |)
+                              |),
                               ltac:(M.monadic
-                                (BinOp.Pure.le (M.read (| requirement |)) (M.read (| owners |))))
+                                (BinOp.Pure.le (| M.read (| requirement |), M.read (| owners |) |)))
                             |),
                             ltac:(M.monadic
-                              (BinOp.Pure.le
-                                (M.read (| owners |))
-                                (M.read (| M.get_constant (| "multisig::MAX_OWNERS" |) |))))
-                          |))
+                              (BinOp.Pure.le (|
+                                M.read (| owners |),
+                                M.read (| M.get_constant (| "multisig::MAX_OWNERS" |) |)
+                              |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -1062,17 +1246,19 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
                         M.get_function (| "core::panicking::panic", [] |),
                         [
                           M.read (|
-                            Value.String
-                              "assertion failed: 0 < requirement && requirement <= owners && owners <= MAX_OWNERS"
+                            M.of_value (|
+                              Value.String
+                                "assertion failed: 0 < requirement && requirement <= owners && owners <= MAX_OWNERS"
+                            |)
                           |)
                         ]
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -1085,7 +1271,18 @@ Module Impl_multisig_Multisig.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -1094,7 +1291,7 @@ Module Impl_multisig_Multisig.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -1125,7 +1322,7 @@ Module Impl_multisig_Multisig.
           contract
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ requirement; owners ] =>
       ltac:(M.monadic
@@ -1187,8 +1384,8 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
                 [
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -1197,7 +1394,8 @@ Module Impl_multisig_Multisig.
                         []
                       |),
                       [ owners ]
-                    |));
+                    |)
+                  |);
                   M.read (| requirement |)
                 ]
               |)
@@ -1275,14 +1473,14 @@ Module Impl_multisig_Multisig.
                                               "is_owner"
                                             |);
                                             M.read (| M.read (| owner |) |);
-                                            Value.Tuple []
+                                            M.of_value (| Value.Tuple [] |)
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       |)))
                 ]
               |)) in
@@ -1335,7 +1533,7 @@ Module Impl_multisig_Multisig.
           );
       }
   *)
-  Definition ensure_confirmed (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ensure_confirmed (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; trans_id ] =>
       ltac:(M.monadic
@@ -1344,16 +1542,16 @@ Module Impl_multisig_Multisig.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.ge
-                              (M.call_closure (|
+                          UnOp.Pure.not (|
+                            BinOp.Pure.ge (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
                                   "expect",
@@ -1379,14 +1577,16 @@ Module Impl_multisig_Multisig.
                                   |);
                                   M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1395,18 +1595,20 @@ Module Impl_multisig_Multisig.
                           M.get_function (| "core::panicking::panic", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=
+                              M.of_value (|
+                                Value.String
+                                  "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=
     self.requirement"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1421,7 +1623,7 @@ Module Impl_multisig_Multisig.
               .expect(WRONG_TRANSACTION_ID);
       }
   *)
-  Definition ensure_transaction_exists (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ensure_transaction_exists (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; trans_id ] =>
       ltac:(M.monadic
@@ -1458,7 +1660,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1471,7 +1673,7 @@ Module Impl_multisig_Multisig.
           assert!(self.is_owner.contains(owner));
       }
   *)
-  Definition ensure_owner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ensure_owner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner ] =>
       ltac:(M.monadic
@@ -1480,15 +1682,15 @@ Module Impl_multisig_Multisig.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "multisig::Mapping")
@@ -1504,7 +1706,8 @@ Module Impl_multisig_Multisig.
                                 |);
                                 M.read (| owner |)
                               ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1513,16 +1716,18 @@ Module Impl_multisig_Multisig.
                           M.get_function (| "core::panicking::panic", [] |),
                           [
                             M.read (|
-                              Value.String "assertion failed: self.is_owner.contains(owner)"
+                              M.of_value (|
+                                Value.String "assertion failed: self.is_owner.contains(owner)"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1534,7 +1739,7 @@ Module Impl_multisig_Multisig.
           self.ensure_owner(&self.env().caller());
       }
   *)
-  Definition ensure_caller_is_owner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ensure_caller_is_owner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -1562,7 +1767,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1575,7 +1780,7 @@ Module Impl_multisig_Multisig.
           assert_eq!(self.env().caller(), self.env().account_id());
       }
   *)
-  Definition ensure_from_wallet (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ensure_from_wallet (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -1584,43 +1789,51 @@ Module Impl_multisig_Multisig.
           let _ :=
             M.match_operator (|
               M.alloc (|
-                Value.Tuple
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "multisig::Env", "caller", [] |),
-                        [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "multisig::Multisig",
-                                "env",
-                                []
-                              |),
-                              [ M.read (| self |) ]
-                            |)
+                M.of_value (|
+                  Value.Tuple
+                    [
+                      A.to_value
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "multisig::Env", "caller", [] |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "multisig::Multisig",
+                                    "env",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
-                      |)
-                    |);
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "multisig::Env", "account_id", [] |),
-                        [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "multisig::Multisig",
-                                "env",
-                                []
-                              |),
-                              [ M.read (| self |) ]
-                            |)
+                        |));
+                      A.to_value
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "multisig::Env",
+                              "account_id",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "multisig::Multisig",
+                                    "env",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
-                      |)
-                    |)
-                  ]
+                        |))
+                    ]
+                |)
               |),
               [
                 fun γ =>
@@ -1630,15 +1843,15 @@ Module Impl_multisig_Multisig.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.Pure.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "multisig::AccountId",
@@ -1647,7 +1860,8 @@ Module Impl_multisig_Multisig.
                                         []
                                       |),
                                       [ M.read (| left_val |); M.read (| right_val |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1656,7 +1870,9 @@ Module Impl_multisig_Multisig.
                                 M.read (|
                                   let kind :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      |)
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -1671,19 +1887,21 @@ Module Impl_multisig_Multisig.
                                         M.read (| kind |);
                                         M.read (| left_val |);
                                         M.read (| right_val |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)
                                       ]
                                     |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |)))
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1696,7 +1914,7 @@ Module Impl_multisig_Multisig.
           assert!(!self.is_owner.contains(owner));
       }
   *)
-  Definition ensure_no_owner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ensure_no_owner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner ] =>
       ltac:(M.monadic
@@ -1705,16 +1923,16 @@ Module Impl_multisig_Multisig.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (UnOp.Pure.not
-                              (M.call_closure (|
+                          UnOp.Pure.not (|
+                            UnOp.Pure.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "multisig::Mapping")
@@ -1730,7 +1948,9 @@ Module Impl_multisig_Multisig.
                                   |);
                                   M.read (| owner |)
                                 ]
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1739,16 +1959,18 @@ Module Impl_multisig_Multisig.
                           M.get_function (| "core::panicking::panic", [] |),
                           [
                             M.read (|
-                              Value.String "assertion failed: !self.is_owner.contains(owner)"
+                              M.of_value (|
+                                Value.String "assertion failed: !self.is_owner.contains(owner)"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1767,7 +1989,7 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
       }
   *)
-  Definition add_owner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition add_owner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; new_owner ] =>
       ltac:(M.monadic
@@ -1799,8 +2021,8 @@ Module Impl_multisig_Multisig.
                 [
                   BinOp.Panic.add (|
                     Integer.U32,
-                    M.rust_cast
-                      (M.call_closure (|
+                    M.rust_cast (|
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -1815,8 +2037,9 @@ Module Impl_multisig_Multisig.
                             "owners"
                           |)
                         ]
-                      |)),
-                    Value.Integer 1
+                      |)
+                    |),
+                    M.of_value (| Value.Integer 1 |)
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -1845,7 +2068,7 @@ Module Impl_multisig_Multisig.
                     "is_owner"
                   |);
                   M.read (| new_owner |);
-                  Value.Tuple []
+                  M.of_value (| Value.Tuple [] |)
                 ]
               |)
             |) in
@@ -1880,17 +2103,22 @@ Module Impl_multisig_Multisig.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "multisig::Event::OwnerAddition"
-                    [
-                      Value.StructRecord
-                        "multisig::OwnerAddition"
-                        [ ("owner", M.read (| new_owner |)) ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "multisig::Event::OwnerAddition"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "multisig::OwnerAddition"
+                              [ ("owner", A.to_value (M.read (| new_owner |))) ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1905,14 +2133,14 @@ Module Impl_multisig_Multisig.
           ) as u32
       }
   *)
-  Definition owner_index (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition owner_index (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
-        M.rust_cast
-          (M.call_closure (|
+        M.rust_cast (|
+          M.call_closure (|
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
               "expect",
@@ -1961,8 +2189,8 @@ Module Impl_multisig_Multisig.
                       ]
                     |)
                   |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -1985,16 +2213,20 @@ Module Impl_multisig_Multisig.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |);
               M.read (|
-                Value.String
-                  "This is only called after it was already verified that the id is
+                M.of_value (|
+                  Value.String
+                    "This is only called after it was already verified that the id is
                actually an owner."
+                |)
               |)
             ]
-          |))))
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -2013,7 +2245,7 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition clean_owner_confirmations (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clean_owner_confirmations (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner ] =>
       ltac:(M.monadic
@@ -2085,14 +2317,16 @@ Module Impl_multisig_Multisig.
                                   let trans_id := M.copy (| γ0_0 |) in
                                   let key :=
                                     M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          M.read (| M.read (| trans_id |) |);
-                                          M.read (| M.read (| owner |) |)
-                                        ]
+                                      M.of_value (|
+                                        Value.Tuple
+                                          [
+                                            A.to_value (M.read (| M.read (| trans_id |) |));
+                                            A.to_value (M.read (| M.read (| owner |) |))
+                                          ]
+                                      |)
                                     |) in
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
@@ -2184,7 +2418,12 @@ Module Impl_multisig_Multisig.
                                                       M.read (| trans_id |)
                                                     ]
                                                   |);
-                                                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+                                                  M.read (|
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.of_value (| Value.Integer 0 |)
+                                                      |))
+                                                  |)
                                                 ]
                                               |)
                                             |) in
@@ -2195,7 +2434,7 @@ Module Impl_multisig_Multisig.
                                               BinOp.Panic.sub (|
                                                 Integer.U32,
                                                 M.read (| β |),
-                                                Value.Integer 1
+                                                M.of_value (| Value.Integer 1 |)
                                               |)
                                             |) in
                                           let _ :=
@@ -2219,13 +2458,15 @@ Module Impl_multisig_Multisig.
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                     ]
                                   |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     |)))
               ]
             |))
@@ -2252,7 +2493,7 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerRemoval(OwnerRemoval { owner }));
       }
   *)
-  Definition remove_owner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition remove_owner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner ] =>
       ltac:(M.monadic
@@ -2281,8 +2522,8 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               BinOp.Panic.sub (|
                 Integer.U32,
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -2297,8 +2538,9 @@ Module Impl_multisig_Multisig.
                         "owners"
                       |)
                     ]
-                  |)),
-                Value.Integer 1
+                  |)
+                |),
+                M.of_value (| Value.Integer 1 |)
               |)
             |) in
           let requirement :=
@@ -2326,11 +2568,12 @@ Module Impl_multisig_Multisig.
             |) in
           let owner_index :=
             M.alloc (|
-              M.rust_cast
-                (M.call_closure (|
+              M.rust_cast (|
+                M.call_closure (|
                   M.get_associated_function (| Ty.path "multisig::Multisig", "owner_index", [] |),
                   [ M.read (| self |); owner ]
-                |))
+                |)
+              |)
             |) in
           let _ :=
             M.alloc (|
@@ -2403,14 +2646,22 @@ Module Impl_multisig_Multisig.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "multisig::Event::OwnerRemoval"
-                    [ Value.StructRecord "multisig::OwnerRemoval" [ ("owner", M.read (| owner |)) ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "multisig::Event::OwnerRemoval"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "multisig::OwnerRemoval"
+                              [ ("owner", A.to_value (M.read (| owner |))) ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -2433,7 +2684,7 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
       }
   *)
-  Definition replace_owner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition replace_owner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; old_owner; new_owner ] =>
       ltac:(M.monadic
@@ -2491,7 +2742,7 @@ Module Impl_multisig_Multisig.
                     "multisig::Multisig",
                     "owners"
                   |);
-                  M.rust_cast (M.read (| owner_index |))
+                  M.rust_cast (| M.read (| owner_index |) |)
                 ]
               |),
               M.read (| new_owner |)
@@ -2533,7 +2784,7 @@ Module Impl_multisig_Multisig.
                     "is_owner"
                   |);
                   M.read (| new_owner |);
-                  Value.Tuple []
+                  M.of_value (| Value.Tuple [] |)
                 ]
               |)
             |) in
@@ -2559,13 +2810,18 @@ Module Impl_multisig_Multisig.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "multisig::Event::OwnerRemoval"
-                    [
-                      Value.StructRecord
-                        "multisig::OwnerRemoval"
-                        [ ("owner", M.read (| old_owner |)) ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "multisig::Event::OwnerRemoval"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "multisig::OwnerRemoval"
+                              [ ("owner", A.to_value (M.read (| old_owner |))) ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
@@ -2580,17 +2836,22 @@ Module Impl_multisig_Multisig.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "multisig::Event::OwnerAddition"
-                    [
-                      Value.StructRecord
-                        "multisig::OwnerAddition"
-                        [ ("owner", M.read (| new_owner |)) ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "multisig::Event::OwnerAddition"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "multisig::OwnerAddition"
+                              [ ("owner", A.to_value (M.read (| new_owner |))) ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -2609,7 +2870,7 @@ Module Impl_multisig_Multisig.
               }));
       }
   *)
-  Definition change_requirement (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition change_requirement (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; new_requirement ] =>
       ltac:(M.monadic
@@ -2632,8 +2893,8 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
                 [
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -2648,7 +2909,8 @@ Module Impl_multisig_Multisig.
                           "owners"
                         |)
                       ]
-                    |));
+                    |)
+                  |);
                   M.read (| new_requirement |)
                 ]
               |)
@@ -2673,17 +2935,22 @@ Module Impl_multisig_Multisig.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "multisig::Event::RequirementChange"
-                    [
-                      Value.StructRecord
-                        "multisig::RequirementChange"
-                        [ ("new_requirement", M.read (| new_requirement |)) ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "multisig::Event::RequirementChange"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "multisig::RequirementChange"
+                              [ ("new_requirement", A.to_value (M.read (| new_requirement |))) ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -2725,7 +2992,7 @@ Module Impl_multisig_Multisig.
           status
       }
   *)
-  Definition confirm_by_caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition confirm_by_caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; confirmer; transaction ] =>
       ltac:(M.monadic
@@ -2757,16 +3024,21 @@ Module Impl_multisig_Multisig.
                       transaction
                     ]
                   |);
-                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+                  M.read (| M.use (M.alloc (| M.of_value (| Value.Integer 0 |) |)) |)
                 ]
               |)
             |) in
           let key :=
-            M.alloc (| Value.Tuple [ M.read (| transaction |); M.read (| confirmer |) ] |) in
+            M.alloc (|
+              M.of_value (|
+                Value.Tuple
+                  [ A.to_value (M.read (| transaction |)); A.to_value (M.read (| confirmer |)) ]
+              |)
+            |) in
           let new_confirmation :=
             M.alloc (|
-              UnOp.Pure.not
-                (M.call_closure (|
+              UnOp.Pure.not (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "multisig::Mapping")
@@ -2782,11 +3054,12 @@ Module Impl_multisig_Multisig.
                     |);
                     key
                   ]
-                |))
+                |)
+              |)
             |) in
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -2796,7 +3069,11 @@ Module Impl_multisig_Multisig.
                       let β := count in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Panic.add (|
+                          Integer.U32,
+                          M.read (| β |),
+                          M.of_value (| Value.Integer 1 |)
+                        |)
                       |) in
                     let _ :=
                       M.alloc (|
@@ -2818,7 +3095,7 @@ Module Impl_multisig_Multisig.
                               "confirmations"
                             |);
                             M.read (| key |);
-                            Value.Tuple []
+                            M.of_value (| Value.Tuple [] |)
                           ]
                         |)
                       |) in
@@ -2841,59 +3118,65 @@ Module Impl_multisig_Multisig.
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           let status :=
             M.copy (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.ge
-                              (M.read (| count |))
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "multisig::Multisig",
-                                  "requirement"
-                                |)
-                              |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Value.StructTuple "multisig::ConfirmationStatus::Confirmed" []
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Value.StructTuple
-                          "multisig::ConfirmationStatus::ConfirmationsNeeded"
-                          [
-                            BinOp.Panic.sub (|
-                              Integer.U32,
+                            BinOp.Pure.ge (|
+                              M.read (| count |),
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
-                              |),
-                              M.read (| count |)
+                              |)
                             |)
-                          ]
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.of_value (|
+                          Value.StructTuple "multisig::ConfirmationStatus::Confirmed" []
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.of_value (|
+                          Value.StructTuple
+                            "multisig::ConfirmationStatus::ConfirmationsNeeded"
+                            [
+                              A.to_value
+                                (BinOp.Panic.sub (|
+                                  Integer.U32,
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "multisig::Multisig",
+                                      "requirement"
+                                    |)
+                                  |),
+                                  M.read (| count |)
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
             |) in
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -2914,22 +3197,27 @@ Module Impl_multisig_Multisig.
                                 [ M.read (| self |) ]
                               |)
                             |);
-                            Value.StructTuple
-                              "multisig::Event::Confirmation"
-                              [
-                                Value.StructRecord
-                                  "multisig::Confirmation"
-                                  [
-                                    ("transaction", M.read (| transaction |));
-                                    ("from", M.read (| confirmer |));
-                                    ("status", M.read (| status |))
-                                  ]
-                              ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "multisig::Event::Confirmation"
+                                [
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructRecord
+                                        "multisig::Confirmation"
+                                        [
+                                          ("transaction", A.to_value (M.read (| transaction |)));
+                                          ("from", A.to_value (M.read (| confirmer |)));
+                                          ("status", A.to_value (M.read (| status |)))
+                                        ]
+                                    |))
+                                ]
+                            |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           status
@@ -2961,7 +3249,7 @@ Module Impl_multisig_Multisig.
           )
       }
   *)
-  Definition submit_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition submit_transaction (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; transaction ] =>
       ltac:(M.monadic
@@ -3011,9 +3299,12 @@ Module Impl_multisig_Multisig.
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u32", "checked_add", [] |),
-                    [ M.read (| trans_id |); M.read (| M.use (M.alloc (| Value.Integer 1 |)) |) ]
+                    [
+                      M.read (| trans_id |);
+                      M.read (| M.use (M.alloc (| M.of_value (| Value.Integer 1 |) |)) |)
+                    ]
                   |);
-                  M.read (| Value.String "Transaction ids exhausted." |)
+                  M.read (| M.of_value (| Value.String "Transaction ids exhausted." |) |)
                 ]
               |)
             |) in
@@ -3073,43 +3364,55 @@ Module Impl_multisig_Multisig.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "multisig::Event::Submission"
-                    [
-                      Value.StructRecord
-                        "multisig::Submission"
-                        [ ("transaction", M.read (| trans_id |)) ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "multisig::Event::Submission"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "multisig::Submission"
+                              [ ("transaction", A.to_value (M.read (| trans_id |))) ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
           M.alloc (|
-            Value.Tuple
-              [
-                M.read (| trans_id |);
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "multisig::Multisig",
-                    "confirm_by_caller",
-                    []
-                  |),
-                  [
-                    M.read (| self |);
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "multisig::Env", "caller", [] |),
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value (M.read (| trans_id |));
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "multisig::Multisig",
+                        "confirm_by_caller",
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (| Ty.path "multisig::Multisig", "env", [] |),
-                            [ M.read (| self |) ]
-                          |)
-                        |)
+                        M.read (| self |);
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "multisig::Env", "caller", [] |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "multisig::Multisig",
+                                  "env",
+                                  []
+                                |),
+                                [ M.read (| self |) ]
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.read (| trans_id |)
                       ]
-                    |);
-                    M.read (| trans_id |)
-                  ]
-                |)
-              ]
+                    |))
+                ]
+            |)
           |)
         |)))
     | _, _ => M.impossible
@@ -3138,7 +3441,7 @@ Module Impl_multisig_Multisig.
           transaction
       }
   *)
-  Definition take_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition take_transaction (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; trans_id ] =>
       ltac:(M.monadic
@@ -3167,7 +3470,7 @@ Module Impl_multisig_Multisig.
             |) in
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -3261,8 +3564,8 @@ Module Impl_multisig_Multisig.
                                     ]
                                   |)
                                 |);
-                                M.closure
-                                  (fun γ =>
+                                M.closure (|
+                                  fun γ =>
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
@@ -3285,12 +3588,15 @@ Module Impl_multisig_Multisig.
                                           ]
                                         |)
                                       | _ => M.impossible (||)
-                                      end))
+                                      end)
+                                |)
                               ]
                             |);
                             M.read (|
-                              Value.String
-                                "The transaction exists hence it must also be in the list."
+                              M.of_value (|
+                                Value.String
+                                  "The transaction exists hence it must also be in the list."
+                              |)
                             |)
                           ]
                         |)
@@ -3427,18 +3733,21 @@ Module Impl_multisig_Multisig.
                                                         "multisig::Multisig",
                                                         "confirmations"
                                                       |);
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (| trans_id |);
-                                                          M.read (| M.read (| owner |) |)
-                                                        ]
+                                                      M.of_value (|
+                                                        Value.Tuple
+                                                          [
+                                                            A.to_value (M.read (| trans_id |));
+                                                            A.to_value
+                                                              (M.read (| M.read (| owner |) |))
+                                                          ]
+                                                      |)
                                                     ]
                                                   |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 |)))
                           ]
                         |)) in
@@ -3460,8 +3769,8 @@ Module Impl_multisig_Multisig.
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           transaction
@@ -3482,7 +3791,7 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition cancel_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition cancel_transaction (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; trans_id ] =>
       ltac:(M.monadic
@@ -3501,7 +3810,7 @@ Module Impl_multisig_Multisig.
               |)
             |) in
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -3546,18 +3855,23 @@ Module Impl_multisig_Multisig.
                               [ M.read (| self |) ]
                             |)
                           |);
-                          Value.StructTuple
-                            "multisig::Event::Cancellation"
-                            [
-                              Value.StructRecord
-                                "multisig::Cancellation"
-                                [ ("transaction", M.read (| trans_id |)) ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "multisig::Event::Cancellation"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructRecord
+                                      "multisig::Cancellation"
+                                      [ ("transaction", A.to_value (M.read (| trans_id |))) ]
+                                  |))
+                              ]
+                          |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+              fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |)
         |)))
@@ -3574,7 +3888,7 @@ Module Impl_multisig_Multisig.
           self.confirm_by_caller(self.env().caller(), trans_id)
       }
   *)
-  Definition confirm_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition confirm_transaction (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; trans_id ] =>
       ltac:(M.monadic
@@ -3650,7 +3964,7 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition revoke_confirmation (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition revoke_confirmation (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; trans_id ] =>
       ltac:(M.monadic
@@ -3683,7 +3997,7 @@ Module Impl_multisig_Multisig.
               |)
             |) in
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -3707,7 +4021,15 @@ Module Impl_multisig_Multisig.
                               "multisig::Multisig",
                               "confirmations"
                             |);
-                            M.alloc (| Value.Tuple [ M.read (| trans_id |); M.read (| caller |) ] |)
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Tuple
+                                  [
+                                    A.to_value (M.read (| trans_id |));
+                                    A.to_value (M.read (| caller |))
+                                  ]
+                              |)
+                            |)
                           ]
                         |)
                       |)) in
@@ -3729,7 +4051,11 @@ Module Impl_multisig_Multisig.
                             "multisig::Multisig",
                             "confirmations"
                           |);
-                          Value.Tuple [ M.read (| trans_id |); M.read (| caller |) ]
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| trans_id |)); A.to_value (M.read (| caller |))
+                              ]
+                          |)
                         ]
                       |)
                     |) in
@@ -3760,8 +4086,10 @@ Module Impl_multisig_Multisig.
                             ]
                           |);
                           M.read (|
-                            Value.String
-                              "There is a entry in `self.confirmations`. Hence a count must exit."
+                            M.of_value (|
+                              Value.String
+                                "There is a entry in `self.confirmations`. Hence a count must exit."
+                            |)
                           |)
                         ]
                       |)
@@ -3770,7 +4098,11 @@ Module Impl_multisig_Multisig.
                     let β := confirmation_count in
                     M.write (|
                       β,
-                      BinOp.Panic.sub (| Integer.U32, M.read (| β |), Value.Integer 1 |)
+                      BinOp.Panic.sub (|
+                        Integer.U32,
+                        M.read (| β |),
+                        M.of_value (| Value.Integer 1 |)
+                      |)
                     |) in
                   let _ :=
                     M.alloc (|
@@ -3806,21 +4138,26 @@ Module Impl_multisig_Multisig.
                               [ M.read (| self |) ]
                             |)
                           |);
-                          Value.StructTuple
-                            "multisig::Event::Revocation"
-                            [
-                              Value.StructRecord
-                                "multisig::Revocation"
-                                [
-                                  ("transaction", M.read (| trans_id |));
-                                  ("from", M.read (| caller |))
-                                ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "multisig::Event::Revocation"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructRecord
+                                      "multisig::Revocation"
+                                      [
+                                        ("transaction", A.to_value (M.read (| trans_id |)));
+                                        ("from", A.to_value (M.read (| caller |)))
+                                      ]
+                                  |))
+                              ]
+                          |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+              fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |)
         |)))
@@ -3857,7 +4194,7 @@ Module Impl_multisig_Multisig.
           result
       }
   *)
-  Definition invoke_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition invoke_transaction (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; trans_id ] =>
       ltac:(M.monadic
@@ -3898,16 +4235,16 @@ Module Impl_multisig_Multisig.
             |) in
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.eq
-                              (M.call_closure (|
+                          UnOp.Pure.not (|
+                            BinOp.Pure.eq (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "multisig::Env",
                                   "transferred_value",
@@ -3925,14 +4262,16 @@ Module Impl_multisig_Multisig.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   t,
                                   "multisig::Transaction",
                                   "transferred_value"
                                 |)
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -3941,14 +4280,16 @@ Module Impl_multisig_Multisig.
                           M.get_function (| "core::panicking::panic", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "assertion failed: self.env().transferred_value() == t.transferred_value"
+                              M.of_value (|
+                                Value.String
+                                  "assertion failed: self.env().transferred_value() == t.transferred_value"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           let result :=
@@ -3956,7 +4297,7 @@ Module Impl_multisig_Multisig.
               M.never_to_any (|
                 M.call_closure (|
                   M.get_function (| "core::panicking::panic", [] |),
-                  [ M.read (| Value.String "not yet implemented" |) ]
+                  [ M.read (| M.of_value (| Value.String "not yet implemented" |) |) ]
                 |)
               |)
             |) in
@@ -3980,14 +4321,25 @@ Module Impl_multisig_Multisig.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "multisig::Error::TransactionFailed" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple "multisig::Error::TransactionFailed" []
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4003,60 +4355,71 @@ Module Impl_multisig_Multisig.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "multisig::Event::Execution"
-                    [
-                      Value.StructRecord
-                        "multisig::Execution"
-                        [
-                          ("transaction", M.read (| trans_id |));
-                          ("result",
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  [ Ty.tuple []; Ty.path "multisig::Error" ],
-                                "map",
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                    ];
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                      ])
-                                ]
-                              |),
+                  M.of_value (|
+                    Value.StructTuple
+                      "multisig::Event::Execution"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "multisig::Execution"
                               [
-                                M.read (| result |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (Value.StructTuple "core::option::Option::None" []))
-                                          ]
+                                ("transaction", A.to_value (M.read (| trans_id |)));
+                                ("result",
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          [ Ty.tuple []; Ty.path "multisig::Error" ],
+                                        "map",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                            ];
+                                          Ty.function
+                                            [ Ty.tuple [ Ty.tuple [] ] ]
+                                            (Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              ])
+                                        ]
+                                      |),
+                                      [
+                                        M.read (| result |);
+                                        M.closure (|
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.of_value (|
+                                                          Value.StructTuple
+                                                            "core::option::Option::None"
+                                                            []
+                                                        |)))
+                                                  ]
+                                                |)
+                                              | _ => M.impossible (||)
+                                              end)
                                         |)
-                                      | _ => M.impossible (||)
-                                      end))
+                                      ]
+                                    |)))
                               ]
-                            |))
-                        ]
-                    ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
@@ -4094,7 +4457,7 @@ Module Impl_multisig_Multisig.
           result
       }
   *)
-  Parameter eval_transaction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eval_transaction : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_eval_transaction :
     M.IsAssociatedFunction Self "eval_transaction" eval_transaction.

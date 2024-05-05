@@ -16,14 +16,14 @@ Module array.
               }
           }
       *)
-      Definition as_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -36,27 +36,32 @@ Module array.
                                 "is_ascii",
                                 []
                               |),
-                              [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                              [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                                "as_ascii_unchecked",
-                                []
-                              |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                    "as_ascii_unchecked",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -73,14 +78,14 @@ Module array.
               unsafe { &*ascii_ptr }
           }
       *)
-      Definition as_ascii_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ascii_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               let byte_ptr := M.alloc (| M.read (| self |) |) in
-              let ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
+              let ascii_ptr := M.alloc (| M.rust_cast (| M.read (| byte_ptr |) |) |) in
               M.alloc (| M.read (| ascii_ptr |) |)
             |)))
         | _, _ => M.impossible

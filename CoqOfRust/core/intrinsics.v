@@ -13,17 +13,18 @@ Module hint.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| UnOp.Pure.not (Value.Bool false) |)) in
+                    (let γ :=
+                      M.use (M.alloc (| UnOp.Pure.not (| M.of_value (| Value.Bool false |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -31,14 +32,16 @@ Module hint.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: hint::unreachable_unchecked must never be reached"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: hint::unreachable_unchecked must never be reached"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -46,8 +49,11 @@ Module hint.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
+      match τ, α with
+      | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+      | _, _ => M.impossible
+      end.
   End unreachable_unchecked.
 End hint.
 
@@ -58,7 +64,7 @@ Module intrinsics.
       unsafe { crate::ptr::drop_in_place(to_drop) }
   }
   *)
-  Definition drop_in_place (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition drop_in_place (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ to_drop ] =>
       ltac:(M.monadic
@@ -77,17 +83,18 @@ Module intrinsics.
       !ptr.is_null() && ptr.is_aligned()
   }
   *)
-  Definition is_aligned_and_not_null (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_aligned_and_not_null (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ ptr ] =>
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         LogicalOp.and (|
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.Pure.not (|
+            M.call_closure (|
               M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_null", [] |),
               [ M.read (| ptr |) ]
-            |)),
+            |)
+          |),
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_aligned", [] |),
@@ -106,7 +113,7 @@ Module intrinsics.
       len <= max_len
   }
   *)
-  Definition is_valid_allocation_size (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_valid_allocation_size (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ len ] =>
       ltac:(M.monadic
@@ -116,7 +123,7 @@ Module intrinsics.
             M.copy (|
               M.get_constant (| "core::intrinsics::is_valid_allocation_size_discriminant" |)
             |) in
-          M.alloc (| BinOp.Pure.le (M.read (| len |)) (M.read (| max_len |)) |)
+          M.alloc (| BinOp.Pure.le (| M.read (| len |), M.read (| max_len |) |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -134,7 +141,7 @@ Module intrinsics.
       diff >= size
   }
   *)
-  Definition is_nonoverlapping (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_nonoverlapping (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ src; dst; count ] =>
       ltac:(M.monadic
@@ -173,7 +180,9 @@ Module intrinsics.
                     ]
                   |);
                   M.read (|
-                    Value.String "is_nonoverlapping: `size_of::<T>() * count` overflows a usize"
+                    M.of_value (|
+                      Value.String "is_nonoverlapping: `size_of::<T>() * count` overflows a usize"
+                    |)
                   |)
                 ]
               |)
@@ -185,7 +194,7 @@ Module intrinsics.
                 [ M.read (| src_usize |); M.read (| dst_usize |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.ge (M.read (| diff |)) (M.read (| size |)) |)
+          M.alloc (| BinOp.Pure.ge (| M.read (| diff |), M.read (| size |) |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -213,7 +222,7 @@ Module intrinsics.
       }
   }
   *)
-  Definition copy_nonoverlapping (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition copy_nonoverlapping (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ src; dst; count ] =>
       ltac:(M.monadic
@@ -223,11 +232,11 @@ Module intrinsics.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       M.alloc (|
@@ -259,7 +268,14 @@ Module intrinsics.
                             ]
                           |),
                           [
-                            Value.Tuple [ M.read (| src |); M.read (| dst |); M.read (| count |) ];
+                            M.of_value (|
+                              Value.Tuple
+                                [
+                                  A.to_value (M.read (| src |));
+                                  A.to_value (M.read (| dst |));
+                                  A.to_value (M.read (| count |))
+                                ]
+                            |);
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping.comptime",
                               []
@@ -268,8 +284,8 @@ Module intrinsics.
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           M.alloc (|
@@ -298,7 +314,7 @@ Module intrinsics.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ src; dst; count ] =>
         ltac:(M.monadic
@@ -307,15 +323,15 @@ Module intrinsics.
           let count := M.alloc (| count |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.Pure.not (|
+                            LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -330,7 +346,9 @@ Module intrinsics.
                                       "core::intrinsics::is_aligned_and_not_null",
                                       [ T ]
                                     |),
-                                    [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |))
+                                    [
+                                      (* MutToConstPointer *)
+                                      M.pointer_coercion (| M.read (| dst |) |)
                                     ]
                                   |)))
                               |),
@@ -339,11 +357,13 @@ Module intrinsics.
                                   M.get_function (| "core::intrinsics::is_nonoverlapping", [ T ] |),
                                   [
                                     M.read (| src |);
-                                    (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |));
+                                    (* MutToConstPointer *)
+                                    M.pointer_coercion (| M.read (| dst |) |);
                                     M.read (| count |)
                                   ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -352,14 +372,16 @@ Module intrinsics.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::copy_nonoverlapping requires that both pointer arguments are aligned and non-null and the specified memory ranges do not overlap"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::copy_nonoverlapping requires that both pointer arguments are aligned and non-null and the specified memory ranges do not overlap"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -367,7 +389,7 @@ Module intrinsics.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0; β1; β2 ] =>
         ltac:(M.monadic
@@ -386,7 +408,7 @@ Module intrinsics.
                         ltac:(M.monadic
                           (M.match_operator (|
                             β2,
-                            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
                           |)))
                     ]
                   |)))
@@ -415,7 +437,7 @@ Module intrinsics.
       }
   }
   *)
-  Definition copy (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition copy (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ src; dst; count ] =>
       ltac:(M.monadic
@@ -425,11 +447,11 @@ Module intrinsics.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       M.alloc (|
@@ -452,14 +474,17 @@ Module intrinsics.
                             ]
                           |),
                           [
-                            Value.Tuple [ M.read (| src |); M.read (| dst |) ];
+                            M.of_value (|
+                              Value.Tuple
+                                [ A.to_value (M.read (| src |)); A.to_value (M.read (| dst |)) ]
+                            |);
                             M.get_function (| "core::intrinsics::copy.comptime", [] |);
                             M.get_function (| "core::intrinsics::copy.runtime", [] |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           M.alloc (|
@@ -485,7 +510,7 @@ Module intrinsics.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ src; dst ] =>
         ltac:(M.monadic
@@ -493,15 +518,15 @@ Module intrinsics.
           let dst := M.alloc (| dst |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.Pure.not (|
+                            LogicalOp.and (|
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_aligned_and_not_null",
@@ -515,9 +540,13 @@ Module intrinsics.
                                     "core::intrinsics::is_aligned_and_not_null",
                                     [ T ]
                                   |),
-                                  [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
+                                  [
+                                    (* MutToConstPointer *)
+                                    M.pointer_coercion (| M.read (| dst |) |)
+                                  ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -526,14 +555,16 @@ Module intrinsics.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::copy requires that both pointer arguments are aligned and non-null"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::copy requires that both pointer arguments are aligned and non-null"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -541,7 +572,7 @@ Module intrinsics.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0; β1 ] =>
         ltac:(M.monadic
@@ -552,7 +583,10 @@ Module intrinsics.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+                  (M.match_operator (|
+                    β1,
+                    [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+                  |)))
             ]
           |)))
       | _, _ => M.impossible
@@ -577,7 +611,7 @@ Module intrinsics.
       }
   }
   *)
-  Definition write_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition write_bytes (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ dst; val; count ] =>
       ltac:(M.monadic
@@ -587,11 +621,11 @@ Module intrinsics.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       M.alloc (|
@@ -606,14 +640,14 @@ Module intrinsics.
                             ]
                           |),
                           [
-                            Value.Tuple [ M.read (| dst |) ];
+                            M.of_value (| Value.Tuple [ A.to_value (M.read (| dst |)) ] |);
                             M.get_function (| "core::intrinsics::write_bytes.comptime", [] |);
                             M.get_function (| "core::intrinsics::write_bytes.runtime", [] |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           M.alloc (|
@@ -639,28 +673,29 @@ Module intrinsics.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
-                              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
-                            |))
+                              [ (* MutToConstPointer *) M.pointer_coercion (| M.read (| dst |) |) ]
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -669,14 +704,16 @@ Module intrinsics.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::write_bytes requires that the destination pointer is aligned and non-null"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::write_bytes requires that the destination pointer is aligned and non-null"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -684,12 +721,15 @@ Module intrinsics.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
-          M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            β0,
+            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+          |)))
       | _, _ => M.impossible
       end.
   End write_bytes.
@@ -707,7 +747,7 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ x; y; count ] =>
         ltac:(M.monadic
@@ -716,22 +756,23 @@ Module ptr.
           let count := M.alloc (| count |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.Pure.not (|
+                            LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::is_aligned_and_not_null",
                                     [ T ]
                                   |),
-                                  [ (* MutToConstPointer *) M.pointer_coercion (M.read (| x |)) ]
+                                  [ (* MutToConstPointer *) M.pointer_coercion (| M.read (| x |) |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -739,19 +780,23 @@ Module ptr.
                                       "core::intrinsics::is_aligned_and_not_null",
                                       [ T ]
                                     |),
-                                    [ (* MutToConstPointer *) M.pointer_coercion (M.read (| y |)) ]
+                                    [
+                                      (* MutToConstPointer *)
+                                      M.pointer_coercion (| M.read (| y |) |)
+                                    ]
                                   |)))
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
                                   M.get_function (| "core::intrinsics::is_nonoverlapping", [ T ] |),
                                   [
-                                    (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
-                                    (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
+                                    (* MutToConstPointer *) M.pointer_coercion (| M.read (| x |) |);
+                                    (* MutToConstPointer *) M.pointer_coercion (| M.read (| y |) |);
                                     M.read (| count |)
                                   ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -760,14 +805,16 @@ Module ptr.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::swap_nonoverlapping requires that both pointer arguments are aligned and non-null and the specified memory ranges do not overlap"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::swap_nonoverlapping requires that both pointer arguments are aligned and non-null and the specified memory ranges do not overlap"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -775,7 +822,7 @@ Module ptr.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0; β1; β2 ] =>
         ltac:(M.monadic
@@ -794,7 +841,7 @@ Module ptr.
                         ltac:(M.monadic
                           (M.match_operator (|
                             β2,
-                            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
                           |)))
                     ]
                   |)))
@@ -815,28 +862,29 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
-                              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
-                            |))
+                              [ (* MutToConstPointer *) M.pointer_coercion (| M.read (| dst |) |) ]
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -845,14 +893,16 @@ Module ptr.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::replace requires that the pointer argument is aligned and non-null"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::replace requires that the pointer argument is aligned and non-null"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -860,12 +910,15 @@ Module ptr.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
-          M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            β0,
+            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+          |)))
       | _, _ => M.impossible
       end.
   End replace.
@@ -881,28 +934,29 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ src ] =>
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
                               [ M.read (| src |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -911,14 +965,16 @@ Module ptr.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::read requires that the pointer argument is aligned and non-null"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::read requires that the pointer argument is aligned and non-null"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -926,12 +982,15 @@ Module ptr.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
-          M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            β0,
+            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+          |)))
       | _, _ => M.impossible
       end.
   End read.
@@ -947,28 +1006,29 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
-                              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
-                            |))
+                              [ (* MutToConstPointer *) M.pointer_coercion (| M.read (| dst |) |) ]
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -977,14 +1037,16 @@ Module ptr.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::write requires that the pointer argument is aligned and non-null"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::write requires that the pointer argument is aligned and non-null"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -992,12 +1054,15 @@ Module ptr.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
-          M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            β0,
+            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+          |)))
       | _, _ => M.impossible
       end.
   End write.
@@ -1013,28 +1078,29 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ src ] =>
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
                               [ M.read (| src |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1043,14 +1109,16 @@ Module ptr.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::read_volatile requires that the pointer argument is aligned and non-null"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::read_volatile requires that the pointer argument is aligned and non-null"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -1058,12 +1126,15 @@ Module ptr.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
-          M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            β0,
+            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+          |)))
       | _, _ => M.impossible
       end.
   End read_volatile.
@@ -1079,28 +1150,29 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
-                              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
-                            |))
+                              [ (* MutToConstPointer *) M.pointer_coercion (| M.read (| dst |) |) ]
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1109,14 +1181,16 @@ Module ptr.
                           M.get_function (| "core::panicking::panic_nounwind", [] |),
                           [
                             M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::write_volatile requires that the pointer argument is aligned and non-null"
+                              M.of_value (|
+                                Value.String
+                                  "unsafe precondition(s) violated: ptr::write_volatile requires that the pointer argument is aligned and non-null"
+                              |)
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))
@@ -1124,12 +1198,15 @@ Module ptr.
       end.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
-          M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            β0,
+            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+          |)))
       | _, _ => M.impossible
       end.
   End write_volatile.
@@ -1148,7 +1225,7 @@ Module slice.
                       }
                   }
       *)
-      Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ data; len ] =>
           ltac:(M.monadic
@@ -1156,15 +1233,15 @@ Module slice.
             let len := M.alloc (| len |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (LogicalOp.and (|
+                            UnOp.Pure.not (|
+                              LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::is_aligned_and_not_null",
@@ -1180,7 +1257,8 @@ Module slice.
                                     |),
                                     [ M.read (| len |) ]
                                   |)))
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1189,14 +1267,16 @@ Module slice.
                             M.get_function (| "core::panicking::panic_nounwind", [] |),
                             [
                               M.read (|
-                                Value.String
-                                  "unsafe precondition(s) violated: slice::from_raw_parts requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`"
+                                M.of_value (|
+                                  Value.String
+                                    "unsafe precondition(s) violated: slice::from_raw_parts requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`"
+                                |)
                               |)
                             ]
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -1204,7 +1284,7 @@ Module slice.
         end.
       
       (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-      Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ β0; β1 ] =>
           ltac:(M.monadic
@@ -1215,7 +1295,10 @@ Module slice.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+                    (M.match_operator (|
+                      β1,
+                      [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+                    |)))
               ]
             |)))
         | _, _ => M.impossible
@@ -1233,7 +1316,7 @@ Module slice.
                       }
                   }
       *)
-      Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ data; len ] =>
           ltac:(M.monadic
@@ -1241,21 +1324,24 @@ Module slice.
             let len := M.alloc (| len |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (LogicalOp.and (|
+                            UnOp.Pure.not (|
+                              LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::is_aligned_and_not_null",
                                     [ T ]
                                   |),
-                                  [ (* MutToConstPointer *) M.pointer_coercion (M.read (| data |)) ]
+                                  [
+                                    (* MutToConstPointer *)
+                                    M.pointer_coercion (| M.read (| data |) |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -1265,7 +1351,8 @@ Module slice.
                                     |),
                                     [ M.read (| len |) ]
                                   |)))
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1274,14 +1361,16 @@ Module slice.
                             M.get_function (| "core::panicking::panic_nounwind", [] |),
                             [
                               M.read (|
-                                Value.String
-                                  "unsafe precondition(s) violated: slice::from_raw_parts_mut requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`"
+                                M.of_value (|
+                                  Value.String
+                                    "unsafe precondition(s) violated: slice::from_raw_parts_mut requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`"
+                                |)
                               |)
                             ]
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -1289,7 +1378,7 @@ Module slice.
         end.
       
       (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-      Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ β0; β1 ] =>
           ltac:(M.monadic
@@ -1300,7 +1389,10 @@ Module slice.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+                    (M.match_operator (|
+                      β1,
+                      [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+                    |)))
               ]
             |)))
         | _, _ => M.impossible

@@ -25,119 +25,127 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::contract::Contract".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "revm_interpreter::interpreter::contract::Contract"
-              [
-                ("input",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "alloy_primitives::bytes_::Bytes",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::contract::Contract",
-                        "input"
-                      |)
-                    ]
-                  |));
-                ("bytecode",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "revm_primitives::bytecode::Bytecode",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::contract::Contract",
-                        "bytecode"
-                      |)
-                    ]
-                  |));
-                ("hash",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::contract::Contract",
-                        "hash"
-                      |)
-                    ]
-                  |));
-                ("target_address",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::contract::Contract",
-                        "target_address"
-                      |)
-                    ]
-                  |));
-                ("caller",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::contract::Contract",
-                        "caller"
-                      |)
-                    ]
-                  |));
-                ("call_value",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "ruint::Uint",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::contract::Contract",
-                        "call_value"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::interpreter::contract::Contract"
+                [
+                  ("input",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bytes_::Bytes",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter::contract::Contract",
+                            "input"
+                          |)
+                        ]
+                      |)));
+                  ("bytecode",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "revm_primitives::bytecode::Bytecode",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter::contract::Contract",
+                            "bytecode"
+                          |)
+                        ]
+                      |)));
+                  ("hash",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter::contract::Contract",
+                            "hash"
+                          |)
+                        ]
+                      |)));
+                  ("target_address",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter::contract::Contract",
+                            "target_address"
+                          |)
+                        ]
+                      |)));
+                  ("caller",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter::contract::Contract",
+                            "caller"
+                          |)
+                        ]
+                      |)));
+                  ("call_value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "ruint::Uint",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter::contract::Contract",
+                            "call_value"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -153,7 +161,7 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::contract::Contract".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -163,70 +171,87 @@ Module interpreter.
               let names :=
                 M.alloc (|
                   M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "input" |);
-                        M.read (| Value.String "bytecode" |);
-                        M.read (| Value.String "hash" |);
-                        M.read (| Value.String "target_address" |);
-                        M.read (| Value.String "caller" |);
-                        M.read (| Value.String "call_value" |)
-                      ]
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value (M.read (| M.of_value (| Value.String "input" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "bytecode" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "hash" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "target_address" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "caller" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "call_value" |) |))
+                        ]
+                    |)
                   |)
                 |) in
               let values :=
                 M.alloc (|
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "input"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "bytecode"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "hash"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "target_address"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "caller"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_interpreter::interpreter::contract::Contract",
-                                "call_value"
-                              |)
-                            |))
-                        ]
-                    |))
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter::contract::Contract",
+                                  "input"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter::contract::Contract",
+                                  "bytecode"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter::contract::Contract",
+                                  "hash"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter::contract::Contract",
+                                  "target_address"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter::contract::Contract",
+                                  "caller"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.alloc (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "revm_interpreter::interpreter::contract::Contract",
+                                    "call_value"
+                                  |)
+                                |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -237,8 +262,8 @@ Module interpreter.
                   |),
                   [
                     M.read (| f |);
-                    M.read (| Value.String "Contract" |);
-                    (* Unsize *) M.pointer_coercion (M.read (| names |));
+                    M.read (| M.of_value (| Value.String "Contract" |) |);
+                    (* Unsize *) M.pointer_coercion (| M.read (| names |) |);
                     M.read (| values |)
                   ]
                 |)
@@ -259,82 +284,90 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::contract::Contract".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "revm_interpreter::interpreter::contract::Contract"
-              [
-                ("input",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "alloy_primitives::bytes_::Bytes",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("bytecode",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "revm_primitives::bytecode::Bytecode",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("hash",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("target_address",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("caller",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("call_value",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "ruint::Uint",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |))
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::interpreter::contract::Contract"
+                [
+                  ("input",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "alloy_primitives::bytes_::Bytes",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("bytecode",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "revm_primitives::bytecode::Bytecode",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("hash",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("target_address",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("caller",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("call_value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "ruint::Uint",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -370,7 +403,7 @@ Module interpreter.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ input; bytecode; hash; target_address; caller; call_value ] =>
           ltac:(M.monadic
@@ -389,16 +422,18 @@ Module interpreter.
                   |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "revm_interpreter::interpreter::contract::Contract"
-                  [
-                    ("input", M.read (| input |));
-                    ("bytecode", M.read (| bytecode |));
-                    ("hash", M.read (| hash |));
-                    ("target_address", M.read (| target_address |));
-                    ("caller", M.read (| caller |));
-                    ("call_value", M.read (| call_value |))
-                  ]
+                M.of_value (|
+                  Value.StructRecord
+                    "revm_interpreter::interpreter::contract::Contract"
+                    [
+                      ("input", A.to_value (M.read (| input |)));
+                      ("bytecode", A.to_value (M.read (| bytecode |)));
+                      ("hash", A.to_value (M.read (| hash |)));
+                      ("target_address", A.to_value (M.read (| target_address |)));
+                      ("caller", A.to_value (M.read (| caller |)));
+                      ("call_value", A.to_value (M.read (| call_value |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -422,7 +457,7 @@ Module interpreter.
               )
           }
       *)
-      Definition new_env (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_env (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ env; bytecode; hash ] =>
           ltac:(M.monadic
@@ -538,7 +573,7 @@ Module interpreter.
               )
           }
       *)
-      Definition new_with_context (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_with_context (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ input; bytecode; hash; call_context ] =>
           ltac:(M.monadic
@@ -594,7 +629,7 @@ Module interpreter.
                   .unwrap_or(false)
           }
       *)
-      Definition is_valid_jump (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_valid_jump (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; pos ] =>
           ltac:(M.monadic
@@ -646,8 +681,8 @@ Module interpreter.
                         |)
                       ]
                     |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
@@ -669,10 +704,11 @@ Module interpreter.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |);
-                Value.Bool false
+                M.of_value (| Value.Bool false |)
               ]
             |)))
         | _, _ => M.impossible

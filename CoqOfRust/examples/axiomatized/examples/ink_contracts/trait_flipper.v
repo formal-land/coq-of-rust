@@ -14,7 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_trait_flipper_Flipper.
   Definition Self : Ty.t := Ty.path "trait_flipper::Flipper".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
 End Impl_trait_flipper_Flipper.
@@ -22,9 +22,9 @@ End Impl_trait_flipper_Flipper.
 Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   Definition Self : Ty.t := Ty.path "trait_flipper::Flipper".
   
-  Parameter flip : (list Ty.t) -> (list Value.t) -> M.
+  Parameter flip : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance

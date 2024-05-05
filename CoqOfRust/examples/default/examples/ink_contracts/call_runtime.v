@@ -12,18 +12,27 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "call_runtime::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "call_runtime::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -39,14 +48,14 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -96,7 +105,19 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ _value ] =>
+      ltac:(M.monadic
+        (let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -155,9 +176,10 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeCaller".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "call_runtime::RuntimeCaller" []))
+    | [], [] =>
+      ltac:(M.monadic (M.of_value (| Value.StructTuple "call_runtime::RuntimeCaller" [] |)))
     | _, _ => M.impossible
     end.
   
@@ -188,7 +210,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -196,7 +218,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| Value.String "CallRuntimeFailed" |) ]
+          [ M.read (| f |); M.read (| M.of_value (| Value.String "CallRuntimeFailed" |) |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -224,13 +246,13 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        Value.Bool true))
+        M.of_value (| Value.Bool true |)))
     | _, _ => M.impossible
     end.
   
@@ -257,12 +279,12 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.Tuple []))
+        M.of_value (| Value.Tuple [] |)))
     | _, _ => M.impossible
     end.
   
@@ -306,7 +328,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
           }
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ e ] =>
       ltac:(M.monadic
@@ -318,7 +340,9 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
-                    Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" []
+                    M.of_value (|
+                      Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" []
+                    |)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -329,7 +353,13 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                           "std::panicking::begin_panic",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "Unexpected error from `pallet-contracts`." |) ]
+                        [
+                          M.read (|
+                            M.of_value (|
+                              Value.String "Unexpected error from `pallet-contracts`."
+                            |)
+                          |)
+                        ]
                       |)
                     |)
                   |)))
@@ -355,7 +385,20 @@ Module Impl_call_runtime_Env.
           unimplemented!()
       }
   *)
-  Parameter call_runtime : (list Ty.t) -> (list Value.t) -> M.
+  Definition call_runtime (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [ Call ], [ self; _call ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _call := M.alloc (| _call |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_call_runtime : M.IsAssociatedFunction Self "call_runtime" call_runtime.
 End Impl_call_runtime_Env.
@@ -368,7 +411,18 @@ Module Impl_call_runtime_RuntimeCaller.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -377,7 +431,7 @@ Module Impl_call_runtime_RuntimeCaller.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -396,7 +450,7 @@ Module Impl_call_runtime_RuntimeCaller.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -429,7 +483,7 @@ Module Impl_call_runtime_RuntimeCaller.
               .map_err(Into::into)
       }
   *)
-  Definition transfer_through_runtime (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition transfer_through_runtime (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; receiver; value ] =>
       ltac:(M.monadic
@@ -468,30 +522,36 @@ Module Impl_call_runtime_RuntimeCaller.
                   |)
                 |);
                 M.alloc (|
-                  Value.StructTuple
-                    "call_runtime::RuntimeCall::Balances"
-                    [
-                      Value.StructRecord
-                        "call_runtime::BalancesCall::Transfer"
-                        [
-                          ("dest",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::convert::Into",
-                                Ty.path "call_runtime::AccountId",
-                                [
-                                  Ty.apply
-                                    (Ty.path "call_runtime::MultiAddress")
-                                    [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
-                                ],
-                                "into",
-                                []
-                              |),
-                              [ M.read (| receiver |) ]
-                            |));
-                          ("value", M.read (| value |))
-                        ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "call_runtime::RuntimeCall::Balances"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "call_runtime::BalancesCall::Transfer"
+                              [
+                                ("dest",
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "call_runtime::AccountId",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "call_runtime::MultiAddress")
+                                            [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
+                                        ],
+                                        "into",
+                                        []
+                                      |),
+                                      [ M.read (| receiver |) ]
+                                    |)));
+                                ("value", A.to_value (M.read (| value |)))
+                              ]
+                          |))
+                      ]
+                  |)
                 |)
               ]
             |);
@@ -515,7 +575,7 @@ Module Impl_call_runtime_RuntimeCaller.
           self.env().call_runtime(&()).map_err(Into::into)
       }
   *)
-  Definition call_nonexistent_extrinsic (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition call_nonexistent_extrinsic (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -551,7 +611,7 @@ Module Impl_call_runtime_RuntimeCaller.
                     [ M.read (| self |) ]
                   |)
                 |);
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               ]
             |);
             M.get_trait_method (|

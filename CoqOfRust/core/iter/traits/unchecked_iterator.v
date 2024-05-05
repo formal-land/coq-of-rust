@@ -6,7 +6,7 @@ Module iter.
     Module unchecked_iterator.
       (* Trait *)
       Module UncheckedIterator.
-        Definition next_unchecked (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_unchecked (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic

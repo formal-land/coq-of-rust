@@ -5,7 +5,7 @@ Module alloc.
   Module global.
     (* Trait *)
     Module GlobalAlloc.
-      Definition alloc_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition alloc_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; layout ] =>
           ltac:(M.monadic
@@ -38,22 +38,23 @@ Module alloc.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
                                     "is_null",
                                     []
                                   |),
                                   [ M.read (| ptr |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -64,11 +65,15 @@ Module alloc.
                                 "core::intrinsics::write_bytes",
                                 [ Ty.path "u8" ]
                               |),
-                              [ M.read (| ptr |); Value.Integer 0; M.read (| size |) ]
+                              [
+                                M.read (| ptr |);
+                                M.of_value (| Value.Integer 0 |);
+                                M.read (| size |)
+                              ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               ptr
@@ -78,7 +83,7 @@ Module alloc.
       
       Axiom ProvidedMethod_alloc_zeroed :
         M.IsProvidedMethod "core::alloc::global::GlobalAlloc" "alloc_zeroed" alloc_zeroed.
-      Definition realloc (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition realloc (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; ptr; layout; new_size ] =>
           ltac:(M.monadic
@@ -123,22 +128,23 @@ Module alloc.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
                                     "is_null",
                                     []
                                   |),
                                   [ M.read (| new_ptr |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -150,7 +156,7 @@ Module alloc.
                                 [ Ty.path "u8" ]
                               |),
                               [
-                                (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |));
+                                (* MutToConstPointer *) M.pointer_coercion (| M.read (| ptr |) |);
                                 M.read (| new_ptr |);
                                 M.call_closure (|
                                   M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
@@ -182,8 +188,8 @@ Module alloc.
                               [ M.read (| self |); M.read (| ptr |); M.read (| layout |) ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               new_ptr

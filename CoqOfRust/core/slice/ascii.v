@@ -11,7 +11,7 @@ Module slice.
               is_ascii(self)
           }
       *)
-      Definition is_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -35,14 +35,14 @@ Module slice.
               }
           }
       *)
-      Definition as_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -60,22 +60,27 @@ Module slice.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                "as_ascii_unchecked",
-                                []
-                              |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    "as_ascii_unchecked",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -92,14 +97,14 @@ Module slice.
               unsafe { &*ascii_ptr }
           }
       *)
-      Definition as_ascii_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ascii_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               let byte_ptr := M.alloc (| M.read (| self |) |) in
-              let ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
+              let ascii_ptr := M.alloc (| M.rust_cast (| M.read (| byte_ptr |) |) |) in
               M.alloc (| M.read (| ascii_ptr |) |)
             |)))
         | _, _ => M.impossible
@@ -113,30 +118,31 @@ Module slice.
               self.len() == other.len() && iter::zip(self, other).all(|(a, b)| a.eq_ignore_ascii_case(b))
           }
       *)
-      Definition eq_ignore_ascii_case (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq_ignore_ascii_case (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.Pure.eq (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                     "len",
                     []
                   |),
                   [ M.read (| other |) ]
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -177,8 +183,8 @@ Module slice.
                         [ M.read (| self |); M.read (| other |) ]
                       |)
                     |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
@@ -202,7 +208,8 @@ Module slice.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |)))
             |)))
@@ -219,7 +226,7 @@ Module slice.
               }
           }
       *)
-      Definition make_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_ascii_uppercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -287,10 +294,10 @@ Module slice.
                                             [ M.read (| byte |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |))
@@ -308,7 +315,7 @@ Module slice.
               }
           }
       *)
-      Definition make_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_ascii_lowercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -376,10 +383,10 @@ Module slice.
                                             [ M.read (| byte |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |))
@@ -395,39 +402,42 @@ Module slice.
               EscapeAscii { inner: self.iter().flat_map(EscapeByte) }
           }
       *)
-      Definition escape_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition escape_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::slice::ascii::EscapeAscii"
-              [
-                ("inner",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
-                      [],
-                      "flat_map",
-                      [
-                        Ty.path "core::ascii::EscapeDefault";
-                        Ty.path "core::slice::ascii::EscapeByte"
-                      ]
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                          "iter",
-                          []
+            M.of_value (|
+              Value.StructRecord
+                "core::slice::ascii::EscapeAscii"
+                [
+                  ("inner",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                          [],
+                          "flat_map",
+                          [
+                            Ty.path "core::ascii::EscapeDefault";
+                            Ty.path "core::slice::ascii::EscapeByte"
+                          ]
                         |),
-                        [ M.read (| self |) ]
-                      |);
-                      Value.StructTuple "core::slice::ascii::EscapeByte" []
-                    ]
-                  |))
-              ]))
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              "iter",
+                              []
+                            |),
+                            [ M.read (| self |) ]
+                          |);
+                          M.of_value (| Value.StructTuple "core::slice::ascii::EscapeByte" [] |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -449,7 +459,7 @@ Module slice.
               bytes
           }
       *)
-      Definition trim_ascii_start (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trim_ascii_start (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -460,7 +470,7 @@ Module slice.
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -471,7 +481,7 @@ Module slice.
                             let first := M.alloc (| γ1_0 |) in
                             let rest := M.alloc (| γ1_rest |) in
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -493,7 +503,7 @@ Module slice.
                                         Value.Bool true
                                       |) in
                                     let _ := M.write (| bytes, M.read (| rest |) |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)))
@@ -506,7 +516,7 @@ Module slice.
                                 M.read (|
                                   let _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                 |)
                               |)
                             |)))
@@ -536,7 +546,7 @@ Module slice.
               bytes
           }
       *)
-      Definition trim_ascii_end (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trim_ascii_end (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -547,7 +557,7 @@ Module slice.
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -558,7 +568,7 @@ Module slice.
                             let rest := M.alloc (| γ1_rest |) in
                             let last := M.alloc (| γ1_rev0 |) in
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -580,7 +590,7 @@ Module slice.
                                         Value.Bool true
                                       |) in
                                     let _ := M.write (| bytes, M.read (| rest |) |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)))
@@ -593,7 +603,7 @@ Module slice.
                                 M.read (|
                                   let _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                 |)
                               |)
                             |)))
@@ -613,7 +623,7 @@ Module slice.
               self.trim_ascii_start().trim_ascii_end()
           }
       *)
-      Definition trim_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trim_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -645,12 +655,12 @@ Module slice.
       Definition Self : Ty.t := Ty.path "core::slice::ascii::EscapeByte".
       
       (*     Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::slice::ascii::EscapeByte" []))
+            M.of_value (| Value.StructTuple "core::slice::ascii::EscapeByte" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -683,38 +693,41 @@ Module slice.
       Definition Self : Ty.t := Ty.path "core::slice::ascii::EscapeAscii".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::slice::ascii::EscapeAscii"
-              [
-                ("inner",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply
-                        (Ty.path "core::iter::adapters::flatten::FlatMap")
+            M.of_value (|
+              Value.StructRecord
+                "core::slice::ascii::EscapeAscii"
+                [
+                  ("inner",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::flatten::FlatMap")
+                            [
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                              Ty.path "core::ascii::EscapeDefault";
+                              Ty.path "core::slice::ascii::EscapeByte"
+                            ],
+                          [],
+                          "clone",
+                          []
+                        |),
                         [
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
-                          Ty.path "core::ascii::EscapeDefault";
-                          Ty.path "core::slice::ascii::EscapeByte"
-                        ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::ascii::EscapeAscii",
-                        "inner"
-                      |)
-                    ]
-                  |))
-              ]))
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::ascii::EscapeAscii",
+                            "inner"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -737,7 +750,7 @@ Module slice.
               self.inner.next()
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -772,7 +785,7 @@ Module slice.
               self.inner.size_hint()
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -811,7 +824,7 @@ Module slice.
               self.inner.try_fold(init, fold)
           }
       *)
-      Definition try_fold (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_fold (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ Acc; Fold; R ], [ self; init; fold ] =>
           ltac:(M.monadic
@@ -853,7 +866,7 @@ Module slice.
               self.inner.fold(init, fold)
           }
       *)
-      Definition fold (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fold (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ Acc; Fold ], [ self; init; fold ] =>
           ltac:(M.monadic
@@ -894,7 +907,7 @@ Module slice.
               self.next_back()
           }
       *)
-      Definition last (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -936,7 +949,7 @@ Module slice.
               self.inner.next_back()
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -993,7 +1006,7 @@ Module slice.
               self.clone().try_for_each(|b| f.write_char(b as char))
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -1029,8 +1042,8 @@ Module slice.
                     [ M.read (| self |) ]
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -1048,12 +1061,13 @@ Module slice.
                                     "write_char",
                                     []
                                   |),
-                                  [ M.read (| f |); M.rust_cast (M.read (| b |)) ]
+                                  [ M.read (| f |); M.rust_cast (| M.read (| b |) |) ]
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1075,7 +1089,7 @@ Module slice.
               f.debug_struct("EscapeAscii").finish_non_exhaustive()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -1095,7 +1109,7 @@ Module slice.
                       "debug_struct",
                       []
                     |),
-                    [ M.read (| f |); M.read (| Value.String "EscapeAscii" |) ]
+                    [ M.read (| f |); M.read (| M.of_value (| Value.String "EscapeAscii" |) |) ]
                   |)
                 |)
               ]
@@ -1117,29 +1131,31 @@ Module slice.
         (NONASCII_MASK & v) != 0
     }
     *)
-    Definition contains_nonascii (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition contains_nonascii (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
-              (M.read (|
+          BinOp.Pure.ne (|
+            BinOp.Pure.bit_and (|
+              M.read (|
                 M.get_constant (| "core::slice::ascii::contains_nonascii::NONASCII_MASK" |)
-              |))
-              (M.read (| v |)))
-            (Value.Integer 0)))
+              |),
+              M.read (| v |)
+            |),
+            M.of_value (| Value.Integer 0 |)
+          |)))
       | _, _ => M.impossible
       end.
     
     Module contains_nonascii.
-      Definition value_NONASCII_MASK : Value.t :=
+      Definition value_NONASCII_MASK : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-                [ Value.Integer 128 ]
+                [ M.of_value (| Value.Integer 128 |) ]
               |)
             |))).
     End contains_nonascii.
@@ -1155,7 +1171,7 @@ Module slice.
         bytes.is_empty()
     }
     *)
-    Definition is_ascii_simple (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ascii_simple (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ bytes ] =>
         ltac:(M.monadic
@@ -1165,7 +1181,7 @@ Module slice.
               M.loop (|
                 ltac:(M.monadic
                   (M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -1177,22 +1193,23 @@ Module slice.
                           let last := M.alloc (| γ1_rev0 |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.Pure.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "u8",
                                                 "is_ascii",
                                                 []
                                               |),
                                               [ M.read (| last |) ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1200,11 +1217,12 @@ Module slice.
                                         Value.Bool true
                                       |) in
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
                           let _ := M.write (| bytes, M.read (| rest |) |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
@@ -1212,7 +1230,7 @@ Module slice.
                               M.read (|
                                 let _ :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)))
@@ -1319,7 +1337,7 @@ Module slice.
         !contains_nonascii(last_word)
     }
     *)
-    Definition is_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ascii (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ s ] =>
         ltac:(M.monadic
@@ -1361,7 +1379,7 @@ Module slice.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -1370,32 +1388,35 @@ Module slice.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   LogicalOp.or (|
-                                    BinOp.Pure.lt
-                                      (M.read (| len |))
-                                      (M.read (|
+                                    BinOp.Pure.lt (|
+                                      M.read (| len |),
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::ascii::is_ascii::USIZE_SIZE"
                                         |)
-                                      |)),
+                                      |)
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.lt
-                                        (M.read (| len |))
-                                        (M.read (| align_offset |))))
+                                      (BinOp.Pure.lt (|
+                                        M.read (| len |),
+                                        M.read (| align_offset |)
+                                      |)))
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.lt
-                                      (M.read (|
+                                    (BinOp.Pure.lt (|
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::ascii::is_ascii::USIZE_SIZE"
                                         |)
-                                      |))
-                                      (M.call_closure (|
+                                      |),
+                                      M.call_closure (|
                                         M.get_function (|
                                           "core::mem::align_of",
                                           [ Ty.path "usize" ]
                                         |),
                                         []
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1412,20 +1433,23 @@ Module slice.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let offset_to_aligned :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| align_offset |)) (Value.Integer 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| align_offset |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1453,12 +1477,12 @@ Module slice.
                         "read_unaligned",
                         []
                       |),
-                      [ M.rust_cast (M.read (| start |)) ]
+                      [ M.rust_cast (| M.read (| start |) |) ]
                     |)
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -1473,33 +1497,37 @@ Module slice.
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
-                            M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
+                            M.never_to_any (|
+                              M.read (| M.return_ (| M.of_value (| Value.Bool false |) |) |)
+                            |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.read (| offset_to_aligned |))
-                                              (M.read (| len |)))
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.le (|
+                                              M.read (| offset_to_aligned |),
+                                              M.read (| len |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1512,53 +1540,57 @@ Module slice.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "assertion failed: offset_to_aligned <= len"
+                                              M.of_value (|
+                                                Value.String
+                                                  "assertion failed: offset_to_aligned <= len"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let word_ptr :=
                   M.alloc (|
-                    M.rust_cast
-                      (M.call_closure (|
+                    M.rust_cast (|
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
                           "add",
                           []
                         |),
                         [ M.read (| start |); M.read (| offset_to_aligned |) ]
-                      |))
+                      |)
+                    |)
                   |) in
                 let byte_pos := M.copy (| offset_to_aligned |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.Pure.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [ Ty.path "usize" ],
                                                 "is_aligned_to",
@@ -1574,7 +1606,8 @@ Module slice.
                                                   []
                                                 |)
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1587,34 +1620,37 @@ Module slice.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "assertion failed: word_ptr.is_aligned_to(mem::align_of::<usize>())"
+                                              M.of_value (|
+                                                Value.String
+                                                  "assertion failed: word_ptr.is_aligned_to(mem::align_of::<usize>())"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (| byte_pos |))
-                                      (BinOp.Panic.sub (|
+                                    BinOp.Pure.lt (|
+                                      M.read (| byte_pos |),
+                                      BinOp.Panic.sub (|
                                         Integer.Usize,
                                         M.read (| len |),
                                         M.read (|
@@ -1622,7 +1658,8 @@ Module slice.
                                             "core::slice::ascii::is_ascii::USIZE_SIZE"
                                           |)
                                         |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1631,11 +1668,12 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        (let γ :=
+                                          M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
@@ -1643,16 +1681,16 @@ Module slice.
                                           |) in
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (BinOp.Pure.le
-                                                            (BinOp.Panic.add (|
+                                                        UnOp.Pure.not (|
+                                                          BinOp.Pure.le (|
+                                                            BinOp.Panic.add (|
                                                               Integer.Usize,
                                                               M.read (| byte_pos |),
                                                               M.read (|
@@ -1660,8 +1698,10 @@ Module slice.
                                                                   "core::slice::ascii::is_ascii::USIZE_SIZE"
                                                                 |)
                                                               |)
-                                                            |))
-                                                            (M.read (| len |)))
+                                                            |),
+                                                            M.read (| len |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -1677,28 +1717,34 @@ Module slice.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            Value.String
-                                                              "assertion failed: byte_pos + USIZE_SIZE <= len"
+                                                            M.of_value (|
+                                                              Value.String
+                                                                "assertion failed: byte_pos + USIZE_SIZE <= len"
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
                               let _ :=
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        (let γ :=
+                                          M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
@@ -1706,15 +1752,15 @@ Module slice.
                                           |) in
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.read (|
+                                                        UnOp.Pure.not (|
+                                                          M.read (|
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -1760,7 +1806,9 @@ Module slice.
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (Value.Tuple []));
+                                                                            (M.of_value (|
+                                                                              Value.Tuple []
+                                                                            |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ0_0 :=
@@ -1774,27 +1822,35 @@ Module slice.
                                                                                 M.read (| γ0_0 |),
                                                                                 Value.Bool true
                                                                               |) in
-                                                                            Value.Tuple []))
+                                                                            M.of_value (|
+                                                                              Value.Tuple []
+                                                                            |)))
                                                                       ],
-                                                                      M.closure
-                                                                        (fun γ =>
+                                                                      M.closure (|
+                                                                        fun γ =>
                                                                           ltac:(M.monadic
                                                                             match γ with
                                                                             | [] =>
                                                                               M.alloc (|
-                                                                                Value.Bool true
+                                                                                M.of_value (|
+                                                                                  Value.Bool true
+                                                                                |)
                                                                               |)
                                                                             | _ => M.impossible (||)
-                                                                            end))
+                                                                            end)
+                                                                      |)
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
-                                                                      Value.Bool false
+                                                                      M.of_value (|
+                                                                        Value.Bool false
+                                                                      |)
                                                                     |)))
                                                               ]
                                                             |)
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -1810,20 +1866,25 @@ Module slice.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            Value.String
-                                                              "assertion failed: matches!(word_ptr.cast::<u8>().guaranteed_eq(start.wrapping_add(byte_pos)),
+                                                            M.of_value (|
+                                                              Value.String
+                                                                "assertion failed: matches!(word_ptr.cast::<u8>().guaranteed_eq(start.wrapping_add(byte_pos)),
     None | Some(true),)"
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
                               let word :=
@@ -1839,7 +1900,7 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -1861,10 +1922,14 @@ Module slice.
                                           |) in
                                         M.alloc (|
                                           M.never_to_any (|
-                                            M.read (| M.return_ (| Value.Bool false |) |)
+                                            M.read (|
+                                              M.return_ (| M.of_value (| Value.Bool false |) |)
+                                            |)
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
                               let _ :=
@@ -1890,10 +1955,10 @@ Module slice.
                                       "add",
                                       []
                                     |),
-                                    [ M.read (| word_ptr |); Value.Integer 1 ]
+                                    [ M.read (| word_ptr |); M.of_value (| Value.Integer 1 |) ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -1903,7 +1968,7 @@ Module slice.
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                   |)
                                 |)
                               |)))
@@ -1912,40 +1977,43 @@ Module slice.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (LogicalOp.and (|
-                                              BinOp.Pure.le
-                                                (M.read (| byte_pos |))
-                                                (M.read (| len |)),
+                                          UnOp.Pure.not (|
+                                            LogicalOp.and (|
+                                              BinOp.Pure.le (|
+                                                M.read (| byte_pos |),
+                                                M.read (| len |)
+                                              |),
                                               ltac:(M.monadic
-                                                (BinOp.Pure.le
-                                                  (BinOp.Panic.sub (|
+                                                (BinOp.Pure.le (|
+                                                  BinOp.Panic.sub (|
                                                     Integer.Usize,
                                                     M.read (| len |),
                                                     M.read (| byte_pos |)
-                                                  |))
-                                                  (M.read (|
+                                                  |),
+                                                  M.read (|
                                                     M.get_constant (|
                                                       "core::slice::ascii::is_ascii::USIZE_SIZE"
                                                     |)
-                                                  |))))
-                                            |))
+                                                  |)
+                                                |)))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1958,18 +2026,21 @@ Module slice.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "assertion failed: byte_pos <= len && len - byte_pos <= USIZE_SIZE"
+                                              M.of_value (|
+                                                Value.String
+                                                  "assertion failed: byte_pos <= len && len - byte_pos <= USIZE_SIZE"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let last_word :=
@@ -1981,8 +2052,8 @@ Module slice.
                         []
                       |),
                       [
-                        M.rust_cast
-                          (M.call_closure (|
+                        M.rust_cast (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
                               "add",
@@ -1998,16 +2069,18 @@ Module slice.
                                 |)
                               |)
                             ]
-                          |))
+                          |)
+                        |)
                       ]
                     |)
                   |) in
                 M.alloc (|
-                  UnOp.Pure.not
-                    (M.call_closure (|
+                  UnOp.Pure.not (|
+                    M.call_closure (|
                       M.get_function (| "core::slice::ascii::contains_nonascii", [] |),
                       [ M.read (| last_word |) ]
-                    |))
+                    |)
+                  |)
                 |)
               |)))
           |)))
@@ -2015,7 +2088,7 @@ Module slice.
       end.
     
     Module is_ascii.
-      Definition value_USIZE_SIZE : Value.t :=
+      Definition value_USIZE_SIZE : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|

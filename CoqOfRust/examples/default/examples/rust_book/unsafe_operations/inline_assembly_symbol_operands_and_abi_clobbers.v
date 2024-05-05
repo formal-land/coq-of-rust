@@ -30,8 +30,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 Module main.
   (*
@@ -40,7 +43,7 @@ Module main.
           arg * 2
       }
   *)
-  Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition foo (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ arg ] =>
       ltac:(M.monadic
@@ -56,34 +59,46 @@ Module main.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "arg = " |); M.read (| Value.String "
-" |) ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value (M.read (| M.of_value (| Value.String "arg = " |) |));
+                                  A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "i32" ]
-                                  |),
-                                  [ arg ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ arg ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| BinOp.Panic.mul (| Integer.I32, M.read (| arg |), Value.Integer 2 |) |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (|
+            BinOp.Panic.mul (| Integer.I32, M.read (| arg |), M.of_value (| Value.Integer 2 |) |)
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -108,13 +123,13 @@ Module main.
           }
       }
   *)
-  Definition call_foo (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition call_foo (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ arg ] =>
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
-          let result := M.copy (| Value.DeclaredButUndefined |) in
+          let result := M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
           let _ := InlineAssembly in
           result
         |)))

@@ -6,14 +6,14 @@ fn gen_range() -> u32 {
     todo!()
 }
 *)
-Definition gen_range (τ : list Ty.t) (α : list Value.t) : M :=
+Definition gen_range (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.never_to_any (|
         M.call_closure (|
           M.get_function (| "core::panicking::panic", [] |),
-          [ M.read (| Value.String "not yet implemented" |) ]
+          [ M.read (| M.of_value (| Value.String "not yet implemented" |) |) ]
         |)
       |)))
   | _, _ => M.impossible
@@ -53,7 +53,7 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -68,17 +68,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Guess the number!
-" |) ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Guess the number!
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let secret_number :=
           M.alloc (|
             M.call_closure (| M.get_function (| "guessing_game::gen_range", [] |), [] |)
@@ -99,17 +106,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "Please input your guess.
-" |) ]
-                            |))
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (| Value.String "Please input your guess.
+" |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
             let guess :=
               M.alloc (|
                 M.call_closure (|
@@ -141,7 +157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         guess
                       ]
                     |);
-                    M.read (| Value.String "Failed to read line" |)
+                    M.read (| M.of_value (| Value.String "Failed to read line" |) |)
                   ]
                 |)
               |) in
@@ -207,36 +223,44 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "You guessed: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
-                            |));
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (| M.of_value (| Value.String "You guessed: " |) |));
+                                    A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                  ]
+                              |)
+                            |)
+                          |);
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "u32" ]
-                                    |),
-                                    [ guess ]
-                                  |)
-                                ]
-                            |))
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "u32" ]
+                                        |),
+                                        [ guess ]
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
@@ -260,17 +284,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "Too small!
-" |) ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (| Value.String "Too small!
+" |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -286,17 +319,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "Too big!
-" |) ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "Too big!
+" |) |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
@@ -316,17 +356,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array [ M.read (| Value.String "You win!
-" |) ]
-                                          |))
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (| Value.String "You win!
+" |)
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |) in
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                           M.break (||)
                         |)
                       |)

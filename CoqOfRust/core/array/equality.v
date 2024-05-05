@@ -11,7 +11,7 @@ Module array.
               SpecArrayEq::spec_eq(self, other)
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -36,7 +36,7 @@ Module array.
               SpecArrayEq::spec_ne(self, other)
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -78,7 +78,7 @@ Module array.
               }
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -131,7 +131,7 @@ Module array.
                           "core::result::Result::Err",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -147,7 +147,7 @@ Module array.
               }
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -200,7 +200,7 @@ Module array.
                           "core::result::Result::Err",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)))
+                      M.alloc (| M.of_value (| Value.Bool true |) |)))
                 ]
               |)
             |)))
@@ -229,7 +229,7 @@ Module array.
               }
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -282,7 +282,7 @@ Module array.
                           "core::result::Result::Err",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -298,7 +298,7 @@ Module array.
               }
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -351,7 +351,7 @@ Module array.
                           "core::result::Result::Err",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)))
+                      M.alloc (| M.of_value (| Value.Bool true |) |)))
                 ]
               |)
             |)))
@@ -376,7 +376,7 @@ Module array.
               *self == **other
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -401,7 +401,7 @@ Module array.
               *self != **other
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -441,7 +441,7 @@ Module array.
               **self == *other
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -466,7 +466,7 @@ Module array.
               **self != *other
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -504,7 +504,7 @@ Module array.
               *self == **other
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -529,7 +529,7 @@ Module array.
               *self != **other
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -569,7 +569,7 @@ Module array.
               **self == *other
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -594,7 +594,7 @@ Module array.
               **self != *other
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -647,7 +647,7 @@ Module array.
               a[..] == b[..]
           }
       *)
-      Definition spec_eq (T Other : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_eq (T Other : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T Other in
         match τ, α with
         | [], [ a; b ] =>
@@ -671,7 +671,10 @@ Module array.
                     "index",
                     []
                   |),
-                  [ M.read (| a |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| a |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -681,7 +684,10 @@ Module array.
                     "index",
                     []
                   |),
-                  [ M.read (| b |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| b |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -693,7 +699,7 @@ Module array.
               a[..] != b[..]
           }
       *)
-      Definition spec_ne (T Other : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_ne (T Other : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T Other in
         match τ, α with
         | [], [ a; b ] =>
@@ -717,7 +723,10 @@ Module array.
                     "index",
                     []
                   |),
-                  [ M.read (| a |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| a |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -727,7 +736,10 @@ Module array.
                     "index",
                     []
                   |),
-                  [ M.read (| b |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| b |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -758,7 +770,7 @@ Module array.
               unsafe { crate::intrinsics::raw_eq(a, crate::mem::transmute(b)) }
           }
       *)
-      Definition spec_eq (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_eq (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U in
         match τ, α with
         | [], [ a; b ] =>
@@ -789,15 +801,15 @@ Module array.
               !Self::spec_eq(a, b)
           }
       *)
-      Definition spec_ne (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_ne (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U in
         match τ, α with
         | [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.Pure.not (|
+              M.call_closure (|
                 M.get_trait_method (|
                   "core::array::equality::SpecArrayEq",
                   T,
@@ -806,7 +818,8 @@ Module array.
                   []
                 |),
                 [ M.read (| a |); M.read (| b |) ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       

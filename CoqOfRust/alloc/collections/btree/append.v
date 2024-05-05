@@ -33,7 +33,7 @@ Module collections.
                 self.bulk_push(iter, length, alloc)
             }
         *)
-        Definition append_from_sorted_iters (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition append_from_sorted_iters (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self K V in
           match τ, α with
           | [ _ as I; A ], [ self; _ as left; _ as right; length; alloc ] =>
@@ -46,20 +46,23 @@ Module collections.
               M.read (|
                 let iter :=
                   M.alloc (|
-                    Value.StructTuple
-                      "alloc::collections::btree::append::MergeIter"
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner")
-                              [ I ],
-                            "new",
-                            []
-                          |),
-                          [ M.read (| left |); M.read (| right |) ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "alloc::collections::btree::append::MergeIter"
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner")
+                                  [ I ],
+                                "new",
+                                []
+                              |),
+                              [ M.read (| left |); M.read (| right |) ]
+                            |))
+                        ]
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -150,7 +153,7 @@ Module collections.
                 self.fix_right_border_of_plentiful();
             }
         *)
-        Definition bulk_push (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition bulk_push (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self K V in
           match τ, α with
           | [ _ as I; A ], [ self; iter; length; alloc ] =>
@@ -271,15 +274,15 @@ Module collections.
                                           let value := M.copy (| γ1_1 |) in
                                           let _ :=
                                             M.match_operator (|
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.Pure.lt
-                                                            (M.call_closure (|
+                                                          BinOp.Pure.lt (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -296,12 +299,13 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ cur_node ]
-                                                            |))
-                                                            (M.read (|
+                                                            |),
+                                                            M.read (|
                                                               M.get_constant (|
                                                                 "alloc::collections::btree::node::CAPACITY"
                                                               |)
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -333,11 +337,13 @@ Module collections.
                                                           ]
                                                         |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)));
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let open_node :=
-                                                      M.copy (| Value.DeclaredButUndefined |) in
+                                                      M.copy (|
+                                                        M.of_value (| Value.DeclaredButUndefined |)
+                                                      |) in
                                                     let test_node :=
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -422,15 +428,19 @@ Module collections.
                                                                       |)
                                                                     |) in
                                                                   M.match_operator (|
-                                                                    M.alloc (| Value.Tuple [] |),
+                                                                    M.alloc (|
+                                                                      M.of_value (|
+                                                                        Value.Tuple []
+                                                                      |)
+                                                                    |),
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.lt
-                                                                                  (M.call_closure (|
+                                                                                BinOp.Pure.lt (|
+                                                                                  M.call_closure (|
                                                                                     M.get_associated_function (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -447,12 +457,13 @@ Module collections.
                                                                                       []
                                                                                     |),
                                                                                     [ parent ]
-                                                                                  |))
-                                                                                  (M.read (|
+                                                                                  |),
+                                                                                  M.read (|
                                                                                     M.get_constant (|
                                                                                       "alloc::collections::btree::node::CAPACITY"
                                                                                     |)
-                                                                                  |))
+                                                                                  |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -502,7 +513,9 @@ Module collections.
                                                                               |)
                                                                             |) in
                                                                           M.alloc (|
-                                                                            Value.Tuple []
+                                                                            M.of_value (|
+                                                                              Value.Tuple []
+                                                                            |)
                                                                           |)))
                                                                     ]
                                                                   |)));
@@ -580,7 +593,7 @@ Module collections.
                                                             |),
                                                             [ open_node ]
                                                           |),
-                                                          Value.Integer 1
+                                                          M.of_value (| Value.Integer 1 |)
                                                         |)
                                                       |) in
                                                     let right_tree :=
@@ -631,13 +644,22 @@ Module collections.
                                                                 []
                                                               |),
                                                               [
-                                                                Value.StructRecord
-                                                                  "core::ops::range::Range"
-                                                                  [
-                                                                    ("start", Value.Integer 0);
-                                                                    ("end_",
-                                                                      M.read (| tree_height |))
-                                                                  ]
+                                                                M.of_value (|
+                                                                  Value.StructRecord
+                                                                    "core::ops::range::Range"
+                                                                    [
+                                                                      ("start",
+                                                                        A.to_value
+                                                                          (M.of_value (|
+                                                                            Value.Integer 0
+                                                                          |)));
+                                                                      ("end_",
+                                                                        A.to_value
+                                                                          (M.read (|
+                                                                            tree_height
+                                                                          |)))
+                                                                    ]
+                                                                |)
                                                               ]
                                                             |)
                                                           |),
@@ -716,11 +738,17 @@ Module collections.
                                                                                   |)
                                                                                 |) in
                                                                               M.alloc (|
-                                                                                Value.Tuple []
+                                                                                M.of_value (|
+                                                                                  Value.Tuple []
+                                                                                |)
                                                                               |)))
                                                                         ]
                                                                       |) in
-                                                                    M.alloc (| Value.Tuple [] |)))
+                                                                    M.alloc (|
+                                                                      M.of_value (|
+                                                                        Value.Tuple []
+                                                                      |)
+                                                                    |)))
                                                                 |)))
                                                           ]
                                                         |)) in
@@ -817,7 +845,7 @@ Module collections.
                                                           ]
                                                         |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)))
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                               ]
                                             |) in
                                           let _ :=
@@ -827,13 +855,13 @@ Module collections.
                                               BinOp.Panic.add (|
                                                 Integer.Usize,
                                                 M.read (| β |),
-                                                Value.Integer 1
+                                                M.of_value (| Value.Integer 1 |)
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                     ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             |)))
                       ]
                     |)) in
@@ -855,7 +883,7 @@ Module collections.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.
@@ -886,7 +914,7 @@ Module collections.
                 b_next.or(a_next)
             }
         *)
-        Definition next (K V I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (K V I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self K V I in
           match τ, α with
           | [], [ self ] =>
@@ -919,8 +947,8 @@ Module collections.
                           "alloc::collections::btree::append::MergeIter",
                           0
                         |);
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
                               | [ α0; α1 ] =>
@@ -960,7 +988,8 @@ Module collections.
                                   ]
                                 |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       ]
                     |)
                   |),

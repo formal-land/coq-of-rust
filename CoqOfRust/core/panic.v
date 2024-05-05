@@ -9,7 +9,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -24,7 +24,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -39,7 +39,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -54,7 +54,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -69,7 +69,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -84,7 +84,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -99,7 +99,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -114,7 +114,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -129,7 +129,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -144,7 +144,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -159,7 +159,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -174,7 +174,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -189,7 +189,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -204,7 +204,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -219,7 +219,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -234,7 +234,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -249,7 +249,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -264,7 +264,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -279,7 +279,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -294,7 +294,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -309,7 +309,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -324,7 +324,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -339,7 +339,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -354,7 +354,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -369,7 +369,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -384,7 +384,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -399,7 +399,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -414,7 +414,7 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition panic_cold_explicit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic

@@ -21,25 +21,28 @@ Module Impl_trait_flipper_Flipper.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "trait_flipper::Flipper"
-          [
-            ("value",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "bool",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "trait_flipper::Flipper"
+            [
+              ("value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "bool",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -54,7 +57,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
           self.value = !self.value;
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition flip (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -67,16 +70,17 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
                 "trait_flipper::Flipper",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.Pure.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "trait_flipper::Flipper",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -86,7 +90,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic

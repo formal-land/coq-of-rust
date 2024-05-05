@@ -23,7 +23,7 @@ Axiom Result :
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -36,7 +36,7 @@ End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -53,8 +53,8 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     M.IsTraitInstance "core::error::Error" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
-Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
+Parameter double_first : (list Ty.t) -> (list A.t) -> M.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

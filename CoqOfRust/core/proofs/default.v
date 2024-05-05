@@ -15,6 +15,6 @@ Module Default.
       IsTraitMethod "core::default::Default" Self_ty [] "default" default /\
       Run.pure
         (default [] [])
-        (inl (φ core.simulations.default.Default.default));
+        (inl (A.make core.simulations.default.Default.default));
   }.
 End Default.

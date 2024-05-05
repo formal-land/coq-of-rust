@@ -14,11 +14,11 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
   Definition Self : Ty.t := Ty.path "generics_associated_types_problem::Container".
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter first : (list Ty.t) -> (list Value.t) -> M.
+  Parameter first : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter last : (list Ty.t) -> (list Value.t) -> M.
+  Parameter last : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -33,6 +33,6 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
       ].
 End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
-Parameter difference : (list Ty.t) -> (list Value.t) -> M.
+Parameter difference : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

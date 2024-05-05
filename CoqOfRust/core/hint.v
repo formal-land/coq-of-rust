@@ -12,18 +12,18 @@ Module hint.
       }
   }
   *)
-  Definition unreachable_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition unreachable_unchecked (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       M.alloc (|
@@ -38,14 +38,14 @@ Module hint.
                             ]
                           |),
                           [
-                            Value.Tuple [];
+                            M.of_value (| Value.Tuple [] |);
                             M.get_function (| "core::hint::unreachable_unchecked.comptime", [] |);
                             M.get_function (| "core::hint::unreachable_unchecked.runtime", [] |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           M.alloc (|
@@ -93,7 +93,7 @@ Module hint.
       }
   }
   *)
-  Definition spin_loop (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition spin_loop (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -105,7 +105,7 @@ Module hint.
                 []
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -115,7 +115,7 @@ Module hint.
       crate::intrinsics::black_box(dummy)
   }
   *)
-  Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition black_box (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ dummy ] =>
       ltac:(M.monadic
@@ -132,7 +132,7 @@ Module hint.
       value
   }
   *)
-  Definition must_use (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition must_use (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ value ] =>
       ltac:(M.monadic

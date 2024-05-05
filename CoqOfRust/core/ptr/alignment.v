@@ -25,14 +25,14 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
@@ -62,7 +62,7 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -115,15 +115,15 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -143,7 +143,7 @@ Module ptr.
         matches!(a, Alignment::MIN)
     }
     *)
-    Definition _alignment_can_be_structurally_matched (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition _alignment_can_be_structurally_matched (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ a ] =>
         ltac:(M.monadic
@@ -160,8 +160,8 @@ Module ptr.
                         "core::ptr::alignment::Alignment",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -173,13 +173,20 @@ Module ptr.
       
       (*     pub const MIN: Self = Self(AlignmentEnum::_Align1Shl0); *)
       (* Ty.path "core::ptr::alignment::Alignment" *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::ptr::alignment::Alignment"
-                [ Value.StructTuple "core::ptr::alignment::AlignmentEnum64::_Align1Shl0" [] ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::ptr::alignment::Alignment"
+                  [
+                    A.to_value
+                      (M.of_value (|
+                        Value.StructTuple "core::ptr::alignment::AlignmentEnum64::_Align1Shl0" []
+                      |))
+                  ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -190,7 +197,7 @@ Module ptr.
               unsafe { Alignment::new_unchecked(mem::align_of::<T>()) }
           }
       *)
-      Definition of (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition of (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [] =>
           ltac:(M.monadic
@@ -217,14 +224,14 @@ Module ptr.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -242,22 +249,27 @@ Module ptr.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::ptr::alignment::Alignment",
-                                "new_unchecked",
-                                []
-                              |),
-                              [ M.read (| align |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ptr::alignment::Alignment",
+                                    "new_unchecked",
+                                    []
+                                  |),
+                                  [ M.read (| align |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -278,7 +290,7 @@ Module ptr.
               unsafe { mem::transmute::<usize, Alignment>(align) }
           }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ align ] =>
           ltac:(M.monadic
@@ -286,30 +298,31 @@ Module ptr.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "is_power_of_two",
                                             []
                                           |),
                                           [ M.read (| align |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -332,27 +345,34 @@ Module ptr.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "Alignment::new_unchecked requires a power of two"
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (|
+                                                            Value.String
+                                                              "Alignment::new_unchecked requires a power of two"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |);
-                                        Value.Bool false
+                                        M.of_value (| Value.Bool false |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -376,15 +396,16 @@ Module ptr.
               self.0 as usize
           }
       *)
-      Definition as_usize (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_usize (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
-              (M.read (|
+            M.rust_cast (|
+              M.read (|
                 M.SubPointer.get_struct_tuple_field (| self, "core::ptr::alignment::Alignment", 0 |)
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -396,7 +417,7 @@ Module ptr.
               unsafe { NonZeroUsize::new_unchecked(self.as_usize()) }
           }
       *)
-      Definition as_nonzero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_nonzero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -428,7 +449,7 @@ Module ptr.
               self.as_nonzero().trailing_zeros()
           }
       *)
-      Definition log2 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition log2 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -461,13 +482,13 @@ Module ptr.
               !(unsafe { self.as_usize().unchecked_sub(1) })
           }
       *)
-      Definition mask (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mask (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.Pure.not (|
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
                 [
                   M.call_closure (|
@@ -478,9 +499,10 @@ Module ptr.
                     |),
                     [ M.read (| self |) ]
                   |);
-                  Value.Integer 1
+                  M.of_value (| Value.Integer 1 |)
                 ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -495,7 +517,7 @@ Module ptr.
               write!(f, "{:?} (1 << {:?})", self.as_nonzero(), self.log2())
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -509,60 +531,68 @@ Module ptr.
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "" |);
-                            M.read (| Value.String " (1 << " |);
-                            M.read (| Value.String ")" |)
-                          ]
-                      |));
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                              A.to_value (M.read (| M.of_value (| Value.String " (1 << " |) |));
+                              A.to_value (M.read (| M.of_value (| Value.String ")" |) |))
+                            ]
+                        |)
+                      |)
+                    |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "core::num::nonzero::NonZeroUsize" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::ptr::alignment::Alignment",
-                                      "as_nonzero",
-                                      []
-                                    |),
-                                    [ M.read (| M.read (| self |) |) ]
-                                  |)
-                                |)
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "u32" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::ptr::alignment::Alignment",
-                                      "log2",
-                                      []
-                                    |),
-                                    [ M.read (| M.read (| self |) |) ]
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                      |))
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
+                                    [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                                  |),
+                                  [
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::ptr::alignment::Alignment",
+                                          "as_nonzero",
+                                          []
+                                        |),
+                                        [ M.read (| M.read (| self |) |) ]
+                                      |)
+                                    |)
+                                  ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::ptr::alignment::Alignment",
+                                          "log2",
+                                          []
+                                        |),
+                                        [ M.read (| M.read (| self |) |) ]
+                                      |)
+                                    |)
+                                  ]
+                                |))
+                            ]
+                        |)
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -589,7 +619,7 @@ Module ptr.
               align.get().try_into()
           }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ align ] =>
           ltac:(M.monadic
@@ -636,7 +666,7 @@ Module ptr.
               Self::new(align).ok_or(num::TryFromIntError(()))
           }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ align ] =>
           ltac:(M.monadic
@@ -658,7 +688,11 @@ Module ptr.
                   |),
                   [ M.read (| align |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -681,7 +715,7 @@ Module ptr.
               align.as_nonzero()
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ align ] =>
           ltac:(M.monadic
@@ -713,7 +747,7 @@ Module ptr.
               align.as_usize()
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ align ] =>
           ltac:(M.monadic
@@ -745,7 +779,7 @@ Module ptr.
               self.as_nonzero().get().cmp(&other.as_nonzero().get())
           }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -813,26 +847,29 @@ Module ptr.
               Some(self.cmp(other))
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::cmp::Ord",
-                    Ty.path "core::ptr::alignment::Alignment",
-                    [],
-                    "cmp",
-                    []
-                  |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "core::ptr::alignment::Alignment",
+                        [],
+                        "cmp",
+                        []
+                      |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -852,7 +889,7 @@ Module ptr.
               self.as_nonzero().hash(state)
           }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -899,7 +936,7 @@ Module ptr.
               Alignment::MIN
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::ptr::alignment::MIN" |) |)))
         | _, _ => M.impossible
@@ -1022,7 +1059,7 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1054,7 +1091,7 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1081,7 +1118,7 @@ Module ptr.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1109,12 +1146,12 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -1312,7 +1349,7 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1344,7 +1381,7 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1371,7 +1408,7 @@ Module ptr.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1399,12 +1436,12 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -1762,7 +1799,7 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1794,7 +1831,7 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1821,7 +1858,7 @@ Module ptr.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1849,12 +1886,12 @@ Module ptr.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       

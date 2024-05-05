@@ -271,7 +271,7 @@ Module panic.
               &self.0
           }
       *)
-      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -304,7 +304,7 @@ Module panic.
               &mut self.0
           }
       *)
-      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -339,7 +339,7 @@ Module panic.
               (self.0)()
           }
       *)
-      Definition call_once (R F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_once (R F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self R F in
         match τ, α with
         | [], [ self; _args ] =>
@@ -362,7 +362,7 @@ Module panic.
                     0
                   |)
                 |);
-                Value.Tuple []
+                M.of_value (| Value.Tuple [] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -390,7 +390,7 @@ Module panic.
               f.debug_tuple("AssertUnwindSafe").field(&self.0).finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -418,16 +418,20 @@ Module panic.
                           "debug_tuple",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "AssertUnwindSafe" |) ]
+                        [
+                          M.read (| f |);
+                          M.read (| M.of_value (| Value.String "AssertUnwindSafe" |) |)
+                        ]
                       |)
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
+                    M.pointer_coercion (|
+                      M.SubPointer.get_struct_tuple_field (|
                         M.read (| self |),
                         "core::panic::unwind_safe::AssertUnwindSafe",
                         0
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -453,19 +457,22 @@ Module panic.
               Self(Default::default())
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructTuple
-              "core::panic::unwind_safe::AssertUnwindSafe"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
-                  []
-                |)
-              ]))
+            (M.of_value (|
+              Value.StructTuple
+                "core::panic::unwind_safe::AssertUnwindSafe"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      []
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -492,7 +499,7 @@ Module panic.
               F::poll(pinned_field, cx)
           }
       *)
-      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F in
         match τ, α with
         | [], [ self; cx ] =>
@@ -533,8 +540,8 @@ Module panic.
                     |),
                     [
                       M.read (| self |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -552,7 +559,8 @@ Module panic.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -589,7 +597,7 @@ Module panic.
               unsafe { self.map_unchecked_mut(|x| &mut x.0) }.poll_next(cx)
           }
       *)
-      Definition poll_next (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll_next (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self; cx ] =>
@@ -635,8 +643,8 @@ Module panic.
                   |),
                   [
                     M.read (| self |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
@@ -654,7 +662,8 @@ Module panic.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |);
                 M.read (| cx |)
@@ -668,7 +677,7 @@ Module panic.
               self.0.size_hint()
           }
       *)
-      Definition size_hint (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self ] =>

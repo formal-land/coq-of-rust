@@ -15,7 +15,7 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; f ] =>
             ltac:(M.monadic
@@ -23,7 +23,7 @@ Module collections.
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                [ M.read (| f |); M.read (| Value.String "SetValZST" |) ]
+                [ M.read (| f |); M.read (| M.of_value (| Value.String "SetValZST" |) |) ]
               |)))
           | _, _ => M.impossible
           end.
@@ -51,12 +51,12 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.Tuple []))
+              M.of_value (| Value.Tuple [] |)))
           | _, _ => M.impossible
           end.
         
@@ -84,13 +84,13 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              Value.Bool true))
+              M.of_value (| Value.Bool true |)))
           | _, _ => M.impossible
           end.
         
@@ -106,13 +106,13 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Ord *)
-        Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              Value.StructTuple "core::cmp::Ordering::Equal" []))
+              M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
           | _, _ => M.impossible
           end.
         
@@ -128,15 +128,18 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* PartialOrd *)
-        Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              Value.StructTuple
-                "core::option::Option::Some"
-                [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  [ A.to_value (M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -152,13 +155,13 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Hash *)
-        Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition hash (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ __H ], [ self; state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
-              Value.Tuple []))
+              M.of_value (| Value.Tuple [] |)))
           | _, _ => M.impossible
           end.
         
@@ -174,12 +177,14 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []))
+              M.of_value (|
+                Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -195,10 +200,13 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [] =>
-            ltac:(M.monadic (Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []))
+            ltac:(M.monadic
+              (M.of_value (|
+                Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -221,10 +229,10 @@ Module collections.
                 false
             }
         *)
-        Definition is_set_val (V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_set_val (V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self V in
           match τ, α with
-          | [], [] => ltac:(M.monadic (Value.Bool false))
+          | [], [] => ltac:(M.monadic (M.of_value (| Value.Bool false |)))
           | _, _ => M.impossible
           end.
         
@@ -245,8 +253,11 @@ Module collections.
                 true
             }
         *)
-        Definition is_set_val (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with | [], [] => ltac:(M.monadic (Value.Bool true)) | _, _ => M.impossible end.
+        Definition is_set_val (τ : list Ty.t) (α : list A.t) : M :=
+          match τ, α with
+          | [], [] => ltac:(M.monadic (M.of_value (| Value.Bool true |)))
+          | _, _ => M.impossible
+          end.
         
         Axiom Implements :
           M.IsTraitInstance

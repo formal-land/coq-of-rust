@@ -25,7 +25,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -45,7 +45,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                         "write_str",
                         []
                       |),
-                      [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
+                      [ M.read (| f |); M.read (| M.of_value (| Value.String "EmptyVec" |) |) ]
                     |)
                   |)));
               fun γ =>
@@ -67,8 +67,8 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       |),
                       [
                         M.read (| f |);
-                        M.read (| Value.String "Parse" |);
-                        (* Unsize *) M.pointer_coercion __self_0
+                        M.read (| M.of_value (| Value.String "Parse" |) |);
+                        (* Unsize *) M.pointer_coercion (| __self_0 |)
                       ]
                     |)
                   |)))
@@ -104,7 +104,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
           }
       }
   *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -133,15 +133,22 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "please use a vector with at least one element"
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (|
+                                            Value.String
+                                              "please use a vector with at least one element"
+                                          |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
@@ -166,15 +173,22 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "the provided string could not be parsed as int"
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (|
+                                            Value.String
+                                              "the provided string could not be parsed as int"
+                                          |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
@@ -208,7 +222,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
           }
       }
   *)
-  Definition source (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition source (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -218,7 +232,10 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
             M.read (| self |),
             [
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
@@ -229,9 +246,11 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                     |) in
                   let e := M.alloc (| γ0_0 |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ (* Unsize *) M.pointer_coercion (M.read (| e |)) ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ A.to_value (* Unsize *) (M.pointer_coercion (| M.read (| e |) |)) ]
+                    |)
                   |)))
             ]
           |)
@@ -255,12 +274,14 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
           DoubleError::Parse(err)
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ err ] =>
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
-        Value.StructTuple "wrapping_errors::DoubleError::Parse" [ M.read (| err |) ]))
+        M.of_value (|
+          Value.StructTuple "wrapping_errors::DoubleError::Parse" [ A.to_value (M.read (| err |)) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -282,7 +303,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
     Ok(2 * parsed)
 }
 *)
-Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+Definition double_first (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ vec ] =>
     ltac:(M.monadic
@@ -344,7 +365,9 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)
                               ]
                             |);
-                            Value.StructTuple "wrapping_errors::DoubleError::EmptyVec" []
+                            M.of_value (|
+                              Value.StructTuple "wrapping_errors::DoubleError::EmptyVec" []
+                            |)
                           ]
                         |)
                       ]
@@ -473,9 +496,18 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (|
-              Value.StructTuple
-                "core::result::Result::Ok"
-                [ BinOp.Panic.mul (| Integer.I32, Value.Integer 2, M.read (| parsed |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [
+                    A.to_value
+                      (BinOp.Panic.mul (|
+                        Integer.I32,
+                        M.of_value (| Value.Integer 2 |),
+                        M.read (| parsed |)
+                      |))
+                  ]
+              |)
             |)
           |)))
       |)))
@@ -495,7 +527,7 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+Definition print (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ result ] =>
     ltac:(M.monadic
@@ -522,36 +554,46 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "The first doubled is " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "The first doubled is " |)
+                                        |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ n ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ n ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -571,38 +613,46 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Error: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String "Error: " |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "wrapping_errors::DoubleError" ]
-                                        |),
-                                        [ e ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.path "wrapping_errors::DoubleError" ]
+                                            |),
+                                            [ e ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -640,43 +690,56 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "  Caused by: " |);
-                                              M.read (| Value.String "
-" |)
-                                            ]
-                                        |));
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (|
+                                                    M.of_value (| Value.String "  Caused by: " |)
+                                                  |));
+                                                A.to_value
+                                                  (M.read (| M.of_value (| Value.String "
+" |) |))
+                                              ]
+                                          |)
+                                        |)
+                                      |);
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      [ Ty.dyn [ ("core::error::Error::Trait", []) ]
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          [
+                                                            Ty.dyn
+                                                              [ ("core::error::Error::Trait", []) ]
+                                                          ]
                                                       ]
-                                                  ]
-                                                |),
-                                                [ source ]
-                                              |)
-                                            ]
-                                        |))
+                                                    |),
+                                                    [ source ]
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)))
           ]
@@ -696,7 +759,7 @@ fn main() {
     print(double_first(strings));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -711,8 +774,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -726,16 +789,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "42" |);
-                              M.read (| Value.String "93" |);
-                              M.read (| Value.String "18" |)
-                            ]
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "42" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "93" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "18" |) |))
+                              ]
+                          |)
                         |)
                       ]
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)
           |) in
@@ -762,8 +828,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -777,16 +843,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "tofu" |);
-                              M.read (| Value.String "93" |);
-                              M.read (| Value.String "18" |)
-                            ]
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "tofu" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "93" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "18" |) |))
+                              ]
+                          |)
                         |)
                       ]
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)
           |) in
@@ -826,7 +895,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

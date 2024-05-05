@@ -27,14 +27,14 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let a := M.alloc (| Value.StructTuple "if_let_challenge::Foo::Bar" [] |) in
+        let a := M.alloc (| M.of_value (| Value.StructTuple "if_let_challenge::Foo::Bar" [] |) |) in
         M.match_operator (|
-          M.alloc (| Value.Tuple [] |),
+          M.alloc (| M.of_value (| Value.Tuple [] |) |),
           [
             fun γ =>
               ltac:(M.monadic
@@ -53,19 +53,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "a is foobar
-" |) ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (| Value.String "a is foobar
+" |)
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.Tuple [] |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+            fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

@@ -16,27 +16,30 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::cloned::Cloned"
-                [
-                  ("it",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::cloned::Cloned",
-                          "it"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::cloned::Cloned"
+                  [
+                    ("it",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::cloned::Cloned",
+                              "it"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -54,7 +57,7 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; f ] =>
@@ -69,17 +72,18 @@ Module iter.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "Cloned" |);
-                  M.read (| Value.String "it" |);
+                  M.read (| M.of_value (| Value.String "Cloned" |) |);
+                  M.read (| M.of_value (| Value.String "it" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::iter::adapters::cloned::Cloned",
                         "it"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -103,15 +107,17 @@ Module iter.
                 Cloned { it }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ it ] =>
             ltac:(M.monadic
               (let it := M.alloc (| it |) in
-              Value.StructRecord
-                "core::iter::adapters::cloned::Cloned"
-                [ ("it", M.read (| it |)) ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::cloned::Cloned"
+                  [ ("it", A.to_value (M.read (| it |))) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -125,13 +131,13 @@ Module iter.
           move |acc, elt| f(acc, elt.clone())
       }
       *)
-      Definition clone_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone_try_fold (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; Acc; R; impl_FnMut_Acc__T__arrow_R ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
@@ -157,20 +163,23 @@ Module iter.
                                       |),
                                       [
                                         f;
-                                        Value.Tuple
-                                          [
-                                            M.read (| acc |);
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::clone::Clone",
-                                                T,
-                                                [],
-                                                "clone",
-                                                []
-                                              |),
-                                              [ M.read (| elt |) ]
-                                            |)
-                                          ]
+                                        M.of_value (|
+                                          Value.Tuple
+                                            [
+                                              A.to_value (M.read (| acc |));
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::clone::Clone",
+                                                    T,
+                                                    [],
+                                                    "clone",
+                                                    []
+                                                  |),
+                                                  [ M.read (| elt |) ]
+                                                |))
+                                            ]
+                                        |)
                                       ]
                                     |)))
                               ]
@@ -178,7 +187,8 @@ Module iter.
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))))
+                  end)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -198,7 +208,7 @@ Module iter.
                 self.it.next().cloned()
             }
         *)
-        Definition next (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [], [ self ] =>
@@ -237,7 +247,7 @@ Module iter.
                 self.it.size_hint()
             }
         *)
-        Definition size_hint (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [], [ self ] =>
@@ -272,7 +282,7 @@ Module iter.
                 self.it.try_fold(init, clone_try_fold(f))
             }
         *)
-        Definition try_fold (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
@@ -315,7 +325,7 @@ Module iter.
                 self.it.map(T::clone).fold(init, f)
             }
         *)
-        Definition fold (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [ Acc; F ], [ self; init; f ] =>
@@ -370,7 +380,7 @@ Module iter.
                 unsafe { try_get_unchecked(&mut self.it, idx).clone() }
             }
         *)
-        Definition __iterator_get_unchecked (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition __iterator_get_unchecked (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [], [ self; idx ] =>
@@ -422,7 +432,7 @@ Module iter.
                 self.it.next_back().cloned()
             }
         *)
-        Definition next_back (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [], [ self ] =>
@@ -466,7 +476,7 @@ Module iter.
                 self.it.try_rfold(init, clone_try_fold(f))
             }
         *)
-        Definition try_rfold (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
@@ -509,7 +519,7 @@ Module iter.
                 self.it.map(T::clone).rfold(init, f)
             }
         *)
-        Definition rfold (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [ Acc; F ], [ self; init; f ] =>
@@ -577,7 +587,7 @@ Module iter.
                 self.it.len()
             }
         *)
-        Definition len (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [], [ self ] =>
@@ -607,7 +617,7 @@ Module iter.
                 self.it.is_empty()
             }
         *)
-        Definition is_empty (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [], [ self ] =>
@@ -677,9 +687,9 @@ Module iter.
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = true; *)
         (* Ty.path "bool" *)
-        Definition value_MAY_HAVE_SIDE_EFFECT (I : Ty.t) : Value.t :=
+        Definition value_MAY_HAVE_SIDE_EFFECT (I : Ty.t) : A.t :=
           let Self : Ty.t := Self I in
-          M.run ltac:(M.monadic (M.alloc (| Value.Bool true |))).
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -717,7 +727,7 @@ Module iter.
                 item.clone()
             }
         *)
-        Definition next_unchecked (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_unchecked (I T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I T in
           match τ, α with
           | [], [ self ] =>
@@ -771,7 +781,7 @@ Module iter.
                 Self::new(Default::default())
             }
         *)
-        Definition default (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [] =>

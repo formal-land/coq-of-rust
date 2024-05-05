@@ -8,7 +8,7 @@ Module instructions.
         i16::from_be_bytes(core::slice::from_raw_parts(ptr, 2).try_into().unwrap())
     }
     *)
-    Definition read_i16 (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition read_i16 (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ ptr ] =>
         ltac:(M.monadic
@@ -39,7 +39,7 @@ Module instructions.
                     [
                       M.call_closure (|
                         M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
-                        [ M.read (| ptr |); Value.Integer 2 ]
+                        [ M.read (| ptr |); M.of_value (| Value.Integer 2 |) ]
                       |)
                     ]
                   |)
@@ -55,7 +55,7 @@ Module instructions.
         u16::from_be_bytes(core::slice::from_raw_parts(ptr, 2).try_into().unwrap())
     }
     *)
-    Definition read_u16 (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition read_u16 (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ ptr ] =>
         ltac:(M.monadic
@@ -86,7 +86,7 @@ Module instructions.
                     [
                       M.call_closure (|
                         M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
-                        [ M.read (| ptr |); Value.Integer 2 ]
+                        [ M.read (| ptr |); M.of_value (| Value.Integer 2 |) ]
                       |)
                     ]
                   |)

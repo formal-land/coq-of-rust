@@ -11,7 +11,7 @@ fn give_adult(drink: Option<&str>) {
     }
 }
 *)
-Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
+Definition give_adult (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ drink ] =>
     ltac:(M.monadic
@@ -39,17 +39,26 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Yuck! Too sugary.
-" |) ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "Yuck! Too sugary.
+" |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -68,36 +77,44 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String "? How nice.
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "? How nice.
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |),
-                                      [ inner ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          |),
+                                          [ inner ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ :=
@@ -113,17 +130,26 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "No drink? Oh well.
-" |) ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "No drink? Oh well.
+" |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))
@@ -141,7 +167,7 @@ fn drink(drink: Option<&str>) {
     println!("I love {}s!!!!!", inside);
 }
 *)
-Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
+Definition drink (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ drink ] =>
     ltac:(M.monadic
@@ -162,7 +188,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -177,7 +203,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                             "eq",
                             []
                           |),
-                          [ inside; Value.String "lemonade" ]
+                          [ inside; M.of_value (| Value.String "lemonade" |) ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -188,11 +214,11 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                           "std::panicking::begin_panic",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
+                        [ M.read (| M.of_value (| Value.String "AAAaaaaa!!!!" |) |) ]
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |) in
         let _ :=
@@ -205,37 +231,44 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "I love " |);
-                              M.read (| Value.String "s!!!!!
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "I love " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "s!!!!!
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [ inside ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [ inside ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -257,20 +290,29 @@ fn main() {
     drink(nothing);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let water :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "water" |) ]
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [ A.to_value (M.read (| M.of_value (| Value.String "water" |) |)) ]
+            |)
           |) in
         let lemonade :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "lemonade" |) ]
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [ A.to_value (M.read (| M.of_value (| Value.String "lemonade" |) |)) ]
+            |)
           |) in
-        let void := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let void :=
+          M.alloc (| M.of_value (| Value.StructTuple "core::option::Option::None" [] |) |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -294,9 +336,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let coffee :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "coffee" |) ]
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [ A.to_value (M.read (| M.of_value (| Value.String "coffee" |) |)) ]
+            |)
           |) in
-        let nothing := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let nothing :=
+          M.alloc (| M.of_value (| Value.StructTuple "core::option::Option::None" [] |) |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -311,7 +358,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| nothing |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

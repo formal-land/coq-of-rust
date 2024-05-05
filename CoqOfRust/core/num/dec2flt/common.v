@@ -17,13 +17,13 @@ Module num.
                 u64::from_le_bytes(tmp)
             }
         *)
-        Definition read_u64 (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition read_u64 (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let tmp := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                let tmp := M.alloc (| repeat (| M.of_value (| Value.Integer 0 |), 8 |) |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -33,7 +33,7 @@ Module num.
                         []
                       |),
                       [
-                        (* Unsize *) M.pointer_coercion tmp;
+                        (* Unsize *) M.pointer_coercion (| tmp |);
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::index::Index",
@@ -44,9 +44,11 @@ Module num.
                           |),
                           [
                             M.read (| self |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", Value.Integer 8) ]
+                            M.of_value (|
+                              Value.StructRecord
+                                "core::ops::range::RangeTo"
+                                [ ("end_", A.to_value (M.of_value (| Value.Integer 8 |))) ]
+                            |)
                           ]
                         |)
                       ]
@@ -67,7 +69,7 @@ Module num.
                 self[..8].copy_from_slice(&value.to_le_bytes())
             }
         *)
-        Definition write_u64 (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition write_u64 (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; value ] =>
             ltac:(M.monadic
@@ -90,17 +92,22 @@ Module num.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructRecord "core::ops::range::RangeTo" [ ("end_", Value.Integer 8) ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "core::ops::range::RangeTo"
+                          [ ("end_", A.to_value (M.of_value (| Value.Integer 8 |))) ]
+                      |)
                     ]
                   |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
                         [ M.read (| value |) ]
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -111,7 +118,7 @@ Module num.
                 other.len() as isize - self.len() as isize
             }
         *)
-        Definition offset_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition offset_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; other ] =>
             ltac:(M.monadic
@@ -119,24 +126,26 @@ Module num.
               let other := M.alloc (| other |) in
               BinOp.Panic.sub (|
                 Integer.Isize,
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                       "len",
                       []
                     |),
                     [ M.read (| other |) ]
-                  |)),
-                M.rust_cast
-                  (M.call_closure (|
+                  |)
+                |),
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                       "len",
                       []
                     |),
                     [ M.read (| self |) ]
-                  |))
+                  |)
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -160,7 +169,7 @@ Module num.
                 s
             }
         *)
-        Definition parse_digits (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition parse_digits (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ impl_FnMut_u8_ ], [ self; func ] =>
             ltac:(M.monadic
@@ -172,7 +181,7 @@ Module num.
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -190,18 +199,24 @@ Module num.
                                       "wrapping_sub",
                                       []
                                     |),
-                                    [ M.read (| M.read (| c |) |); M.read (| UnsupportedLiteral |) ]
+                                    [
+                                      M.read (| M.read (| c |) |);
+                                      M.read (| M.of_value (| UnsupportedLiteral |) |)
+                                    ]
                                   |)
                                 |) in
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt (M.read (| c |)) (Value.Integer 10)
+                                            BinOp.Pure.lt (|
+                                              M.read (| c |),
+                                              M.of_value (| Value.Integer 10 |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -218,11 +233,16 @@ Module num.
                                               "call_mut",
                                               []
                                             |),
-                                            [ func; Value.Tuple [ M.read (| c |) ] ]
+                                            [
+                                              func;
+                                              M.of_value (|
+                                                Value.Tuple [ A.to_value (M.read (| c |)) ]
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       let _ := M.write (| s, M.read (| s_next |) |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
@@ -239,7 +259,7 @@ Module num.
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                   |)
                                 |)
                               |)))
@@ -272,7 +292,7 @@ Module num.
           (a | b) & 0x8080_8080_8080_8080 == 0
       }
       *)
-      Definition is_8digits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_8digits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -282,22 +302,24 @@ Module num.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
-                    [ M.read (| v |); Value.Integer 5063812098665367110 ]
+                    [ M.read (| v |); M.of_value (| Value.Integer 5063812098665367110 |) ]
                   |)
                 |) in
               let b :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
-                    [ M.read (| v |); Value.Integer 3472328296227680304 ]
+                    [ M.read (| v |); M.of_value (| Value.Integer 3472328296227680304 |) ]
                   |)
                 |) in
               M.alloc (|
-                BinOp.Pure.eq
-                  (BinOp.Pure.bit_and
-                    (BinOp.Pure.bit_or (M.read (| a |)) (M.read (| b |)))
-                    (Value.Integer 9259542123273814144))
-                  (Value.Integer 0)
+                BinOp.Pure.eq (|
+                  BinOp.Pure.bit_and (|
+                    BinOp.Pure.bit_or (| M.read (| a |), M.read (| b |) |),
+                    M.of_value (| Value.Integer 9259542123273814144 |)
+                  |),
+                  M.of_value (| Value.Integer 0 |)
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -314,7 +336,7 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; f ] =>
             ltac:(M.monadic
@@ -328,25 +350,27 @@ Module num.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "BiasedFp" |);
-                  M.read (| Value.String "f" |);
+                  M.read (| M.of_value (| Value.String "BiasedFp" |) |);
+                  M.read (| M.of_value (| Value.String "f" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::common::BiasedFp",
                       "f"
-                    |));
-                  M.read (| Value.String "e" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "e" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::dec2flt::common::BiasedFp",
                         "e"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -375,19 +399,19 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Value.DeclaredButUndefined,
+                  M.of_value (| Value.DeclaredButUndefined |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Value.DeclaredButUndefined,
+                          M.of_value (| Value.DeclaredButUndefined |),
                           [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                         |)))
                   ]
@@ -419,44 +443,46 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               LogicalOp.and (|
-                BinOp.Pure.eq
-                  (M.read (|
+                BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::common::BiasedFp",
                       "f"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::num::dec2flt::common::BiasedFp",
                       "f"
                     |)
-                  |)),
+                  |)
+                |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::dec2flt::common::BiasedFp",
                         "e"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::num::dec2flt::common::BiasedFp",
                         "e"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
           | _, _ => M.impossible
           end.
@@ -484,20 +510,23 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Value.DeclaredButUndefined,
+                  M.of_value (| Value.DeclaredButUndefined |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Value.DeclaredButUndefined,
-                          [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                          M.of_value (| Value.DeclaredButUndefined |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                          ]
                         |)))
                   ]
                 |)
@@ -518,36 +547,40 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
-                "core::num::dec2flt::common::BiasedFp"
-                [
-                  ("f",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "u64",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |));
-                  ("e",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "i32",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |))
-                ]))
+              (M.of_value (|
+                Value.StructRecord
+                  "core::num::dec2flt::common::BiasedFp"
+                  [
+                    ("f",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::default::Default",
+                            Ty.path "u64",
+                            [],
+                            "default",
+                            []
+                          |),
+                          []
+                        |)));
+                    ("e",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::default::Default",
+                            Ty.path "i32",
+                            [],
+                            "default",
+                            []
+                          |),
+                          []
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -567,14 +600,19 @@ Module num.
                 Self { f: 0, e }
             }
         *)
-        Definition zero_pow2 (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition zero_pow2 (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ e ] =>
             ltac:(M.monadic
               (let e := M.alloc (| e |) in
-              Value.StructRecord
-                "core::num::dec2flt::common::BiasedFp"
-                [ ("f", Value.Integer 0); ("e", M.read (| e |)) ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::num::dec2flt::common::BiasedFp"
+                  [
+                    ("f", A.to_value (M.of_value (| Value.Integer 0 |)));
+                    ("e", A.to_value (M.read (| e |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         

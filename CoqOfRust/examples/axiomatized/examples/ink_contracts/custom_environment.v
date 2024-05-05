@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_custom_environment_AccountId.
   Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,7 +24,7 @@ End Impl_core_default_Default_for_custom_environment_AccountId.
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
   Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -60,7 +60,7 @@ Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
 Module Impl_core_default_Default_for_custom_environment_Topics.
   Definition Self : Ty.t := Ty.path "custom_environment::Topics".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -87,7 +87,7 @@ End Impl_core_default_Default_for_custom_environment_Topics.
 Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Definition Self : Ty.t := Ty.path "custom_environment::EventWithTopics".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -115,11 +115,11 @@ Enum Event
 Module Impl_custom_environment_Env.
   Definition Self : Ty.t := Ty.path "custom_environment::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_custom_environment_Env.
@@ -127,19 +127,19 @@ End Impl_custom_environment_Env.
 Module Impl_custom_environment_Topics.
   Definition Self : Ty.t := Ty.path "custom_environment::Topics".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter trigger : (list Ty.t) -> (list Value.t) -> M.
+  Parameter trigger : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_trigger : M.IsAssociatedFunction Self "trigger" trigger.
 End Impl_custom_environment_Topics.

@@ -11,19 +11,19 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_incrementer_Incrementer.
   Definition Self : Ty.t := Ty.path "incrementer::Incrementer".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new_default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
-  Parameter inc : (list Ty.t) -> (list Value.t) -> M.
+  Parameter inc : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
 End Impl_incrementer_Incrementer.

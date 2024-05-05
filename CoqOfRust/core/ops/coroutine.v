@@ -28,7 +28,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
       
       (* Clone *)
-      Definition clone (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Y R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Y R in
         match τ, α with
         | [], [ self ] =>
@@ -49,14 +49,17 @@ Module ops.
                         |) in
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::coroutine::CoroutineState::Yielded"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", Y, [], "clone", [] |),
-                              [ M.read (| __self_0 |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::coroutine::CoroutineState::Yielded"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (| "core::clone::Clone", Y, [], "clone", [] |),
+                                  [ M.read (| __self_0 |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -69,14 +72,17 @@ Module ops.
                         |) in
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::coroutine::CoroutineState::Complete"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", R, [], "clone", [] |),
-                              [ M.read (| __self_0 |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::coroutine::CoroutineState::Complete"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (| "core::clone::Clone", R, [], "clone", [] |),
+                                  [ M.read (| __self_0 |) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -124,7 +130,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
       
       (* PartialEq *)
-      Definition eq (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Y R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Y R in
         match τ, α with
         | [], [ self; other ] =>
@@ -154,11 +160,16 @@ Module ops.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -257,7 +268,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
       
       (* PartialOrd *)
-      Definition partial_cmp (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (Y R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Y R in
         match τ, α with
         | [], [ self; other ] =>
@@ -286,7 +297,11 @@ Module ops.
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                  |)
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -399,7 +414,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (Y R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Y R in
         match τ, α with
         | [], [ self ] =>
@@ -407,13 +422,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -437,7 +453,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
       
       (* Ord *)
-      Definition cmp (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (Y R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Y R in
         match τ, α with
         | [], [ self; other ] =>
@@ -476,7 +492,12 @@ Module ops.
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -566,7 +587,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
       
       (* Debug *)
-      Definition fmt (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Y R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Y R in
         match τ, α with
         | [], [ self; f ] =>
@@ -596,8 +617,8 @@ Module ops.
                           |),
                           [
                             M.read (| f |);
-                            M.read (| Value.String "Yielded" |);
-                            (* Unsize *) M.pointer_coercion __self_0
+                            M.read (| M.of_value (| Value.String "Yielded" |) |);
+                            (* Unsize *) M.pointer_coercion (| __self_0 |)
                           ]
                         |)
                       |)));
@@ -620,8 +641,8 @@ Module ops.
                           |),
                           [
                             M.read (| f |);
-                            M.read (| Value.String "Complete" |);
-                            (* Unsize *) M.pointer_coercion __self_0
+                            M.read (| M.of_value (| Value.String "Complete" |) |);
+                            (* Unsize *) M.pointer_coercion (| __self_0 |)
                           ]
                         |)
                       |)))
@@ -645,7 +666,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
       
       (* Hash *)
-      Definition hash (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Y R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Y R in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -744,7 +765,7 @@ Module ops.
               G::resume(( *self).as_mut(), arg)
           }
       *)
-      Definition resume (G R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition resume (G R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self G R in
         match τ, α with
         | [], [ self; arg ] =>
@@ -817,7 +838,7 @@ Module ops.
               G::resume(Pin::new(&mut *self), arg)
           }
       *)
-      Definition resume (G R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition resume (G R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self G R in
         match τ, α with
         | [], [ self; arg ] =>

@@ -40,20 +40,21 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -85,28 +86,29 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::error::Utf8Error",
                     "valid_up_to"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::str::error::Utf8Error",
                     "valid_up_to"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -145,19 +147,19 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                       |)))
                 ]
@@ -178,7 +180,7 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -192,25 +194,27 @@ Module str.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "Utf8Error" |);
-                M.read (| Value.String "valid_up_to" |);
+                M.read (| M.of_value (| Value.String "Utf8Error" |) |);
+                M.read (| M.of_value (| Value.String "valid_up_to" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::error::Utf8Error",
                     "valid_up_to"
-                  |));
-                M.read (| Value.String "error_len" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "error_len" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::str::error::Utf8Error",
                       "error_len"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -232,7 +236,7 @@ Module str.
               self.valid_up_to
           }
       *)
-      Definition valid_up_to (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition valid_up_to (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -258,7 +262,7 @@ Module str.
               }
           }
       *)
-      Definition error_len (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition error_len (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -281,13 +285,17 @@ Module str.
                         |) in
                       let len := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ M.rust_cast (M.read (| len |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ A.to_value (M.rust_cast (| M.read (| len |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -313,7 +321,7 @@ Module str.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -321,7 +329,7 @@ Module str.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -355,43 +363,59 @@ Module str.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "invalid utf-8 sequence of " |);
-                                        M.read (| Value.String " bytes from index " |)
-                                      ]
-                                  |));
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String "invalid utf-8 sequence of "
+                                              |)
+                                            |));
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (| Value.String " bytes from index " |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [ error_len ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::error::Utf8Error",
-                                              "valid_up_to"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [ error_len ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::error::Utf8Error",
+                                                  "valid_up_to"
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -416,36 +440,47 @@ Module str.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "incomplete utf-8 byte sequence from index "
-                                        |)
-                                      ]
-                                  |));
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String
+                                                  "incomplete utf-8 byte sequence from index "
+                                              |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::error::Utf8Error",
-                                              "valid_up_to"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::error::Utf8Error",
+                                                  "valid_up_to"
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -473,12 +508,12 @@ Module str.
               "invalid utf-8: corrupt contents"
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition description (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| Value.String "invalid utf-8: corrupt contents" |)))
+            M.read (| M.of_value (| Value.String "invalid utf-8: corrupt contents" |) |)))
         | _, _ => M.impossible
         end.
       
@@ -501,7 +536,7 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -509,7 +544,7 @@ Module str.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| Value.String "ParseBoolError" |) ]
+              [ M.read (| f |); M.read (| M.of_value (| Value.String "ParseBoolError" |) |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -526,12 +561,12 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::str::error::ParseBoolError" []))
+            M.of_value (| Value.StructTuple "core::str::error::ParseBoolError" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -558,13 +593,13 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.Bool true))
+            M.of_value (| Value.Bool true |)))
         | _, _ => M.impossible
         end.
       
@@ -591,12 +626,12 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -617,7 +652,7 @@ Module str.
               "provided string was not `true` or `false`".fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -626,7 +661,9 @@ Module str.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
               [
-                M.read (| Value.String "provided string was not `true` or `false`" |);
+                M.read (|
+                  M.of_value (| Value.String "provided string was not `true` or `false`" |)
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -649,12 +686,12 @@ Module str.
               "failed to parse bool"
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition description (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| Value.String "failed to parse bool" |)))
+            M.read (| M.of_value (| Value.String "failed to parse bool" |) |)))
         | _, _ => M.impossible
         end.
       

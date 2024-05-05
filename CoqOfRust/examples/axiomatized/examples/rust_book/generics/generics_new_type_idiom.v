@@ -18,7 +18,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_generics_new_type_idiom_Years.
   Definition Self : Ty.t := Ty.path "generics_new_type_idiom::Years".
   
-  Parameter to_days : (list Ty.t) -> (list Value.t) -> M.
+  Parameter to_days : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_to_days : M.IsAssociatedFunction Self "to_days" to_days.
 End Impl_generics_new_type_idiom_Years.
@@ -26,11 +26,11 @@ End Impl_generics_new_type_idiom_Years.
 Module Impl_generics_new_type_idiom_Days.
   Definition Self : Ty.t := Ty.path "generics_new_type_idiom::Days".
   
-  Parameter to_years : (list Ty.t) -> (list Value.t) -> M.
+  Parameter to_years : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_to_years : M.IsAssociatedFunction Self "to_years" to_years.
 End Impl_generics_new_type_idiom_Days.
 
-Parameter old_enough : (list Ty.t) -> (list Value.t) -> M.
+Parameter old_enough : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

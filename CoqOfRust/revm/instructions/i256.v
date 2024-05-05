@@ -32,7 +32,7 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -64,7 +64,7 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -81,15 +81,15 @@ Module instructions.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Minus" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Minus" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Zero" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Zero" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Plus" |) |)))
+                          M.alloc (| M.read (| M.of_value (| Value.String "Plus" |) |) |)))
                     ]
                   |)
                 |)
@@ -121,7 +121,7 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -148,7 +148,7 @@ Module instructions.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -176,12 +176,12 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -198,7 +198,7 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -253,7 +253,7 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -302,7 +302,7 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -337,44 +337,48 @@ Module instructions.
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_instructions_i256_Sign.
     
-    Definition value_MAX_POSITIVE_VALUE : Value.t :=
+    Definition value_MAX_POSITIVE_VALUE : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "ruint::Uint", "from_limbs", [] |),
               [
-                Value.Array
-                  [
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 9223372036854775807
-                  ]
+                M.of_value (|
+                  Value.Array
+                    [
+                      A.to_value (M.of_value (| Value.Integer 18446744073709551615 |));
+                      A.to_value (M.of_value (| Value.Integer 18446744073709551615 |));
+                      A.to_value (M.of_value (| Value.Integer 18446744073709551615 |));
+                      A.to_value (M.of_value (| Value.Integer 9223372036854775807 |))
+                    ]
+                |)
               ]
             |)
           |))).
     
-    Definition value_MIN_NEGATIVE_VALUE : Value.t :=
+    Definition value_MIN_NEGATIVE_VALUE : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "ruint::Uint", "from_limbs", [] |),
               [
-                Value.Array
-                  [
-                    Value.Integer 0;
-                    Value.Integer 0;
-                    Value.Integer 0;
-                    Value.Integer 9223372036854775808
-                  ]
+                M.of_value (|
+                  Value.Array
+                    [
+                      A.to_value (M.of_value (| Value.Integer 0 |));
+                      A.to_value (M.of_value (| Value.Integer 0 |));
+                      A.to_value (M.of_value (| Value.Integer 0 |));
+                      A.to_value (M.of_value (| Value.Integer 9223372036854775808 |))
+                    ]
+                |)
               ]
             |)
           |))).
     
-    Definition value_FLIPH_BITMASK_U64 : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 9223372036854775807 |))).
+    Definition value_FLIPH_BITMASK_U64 : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 9223372036854775807 |) |))).
     
     (*
     pub fn i256_sign(val: &U256) -> Sign {
@@ -386,14 +390,14 @@ Module instructions.
         }
     }
     *)
-    Definition i256_sign (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition i256_sign (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -407,14 +411,16 @@ Module instructions.
                               BinOp.Panic.sub (|
                                 Integer.Usize,
                                 M.read (| M.get_constant (| "ruint::BITS'1" |) |),
-                                Value.Integer 1
+                                M.of_value (| Value.Integer 1 |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" []
+                      M.of_value (|
+                        Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" []
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -453,7 +459,7 @@ Module instructions.
         sign
     }
     *)
-    Definition i256_sign_compl (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition i256_sign_compl (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ val ] =>
         ltac:(M.monadic
@@ -468,7 +474,7 @@ Module instructions.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -486,9 +492,11 @@ Module instructions.
                               [
                                 sign;
                                 M.alloc (|
-                                  Value.StructTuple
-                                    "revm_interpreter::instructions::i256::Sign::Minus"
-                                    []
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "revm_interpreter::instructions::i256::Sign::Minus"
+                                      []
+                                  |)
                                 |)
                               ]
                             |)
@@ -504,8 +512,8 @@ Module instructions.
                             [ M.read (| val |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             sign
@@ -521,7 +529,7 @@ Module instructions.
         }
     }
     *)
-    Definition u256_remove_sign (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition u256_remove_sign (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ val ] =>
         ltac:(M.monadic
@@ -534,17 +542,18 @@ Module instructions.
                     M.get_associated_function (| Ty.path "ruint::Uint", "as_limbs_mut", [] |),
                     [ M.read (| val |) ]
                   |),
-                  M.alloc (| Value.Integer 3 |)
+                  M.alloc (| M.of_value (| Value.Integer 3 |) |)
                 |) in
               M.write (|
                 β,
-                BinOp.Pure.bit_and
-                  (M.read (| β |))
-                  (M.read (|
+                BinOp.Pure.bit_and (|
+                  M.read (| β |),
+                  M.read (|
                     M.get_constant (| "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64" |)
-                  |))
+                  |)
+                |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -554,7 +563,7 @@ Module instructions.
         *op = two_compl( *op);
     }
     *)
-    Definition two_compl_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition two_compl_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ op ] =>
         ltac:(M.monadic
@@ -568,7 +577,7 @@ Module instructions.
                   [ M.read (| M.read (| op |) |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -578,7 +587,7 @@ Module instructions.
         op.wrapping_neg()
     }
     *)
-    Definition two_compl (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition two_compl (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ op ] =>
         ltac:(M.monadic
@@ -602,7 +611,7 @@ Module instructions.
         }
     }
     *)
-    Definition i256_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition i256_cmp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ first; second ] =>
         ltac:(M.monadic
@@ -690,7 +699,7 @@ Module instructions.
         }
     }
     *)
-    Definition i256_div (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition i256_div (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ first; second ] =>
         ltac:(M.monadic
@@ -711,7 +720,7 @@ Module instructions.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -729,9 +738,11 @@ Module instructions.
                                   [
                                     second_sign;
                                     M.alloc (|
-                                      Value.StructTuple
-                                        "revm_interpreter::instructions::i256::Sign::Zero"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_interpreter::instructions::i256::Sign::Zero"
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -745,7 +756,7 @@ Module instructions.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let first_sign :=
@@ -760,7 +771,7 @@ Module instructions.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -801,7 +812,7 @@ Module instructions.
                                               "from",
                                               [ Ty.path "i32" ]
                                             |),
-                                            [ Value.Integer 1 ]
+                                            [ M.of_value (| Value.Integer 1 |) ]
                                           |)
                                         |)
                                       ]
@@ -831,7 +842,7 @@ Module instructions.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let d :=
@@ -858,7 +869,7 @@ Module instructions.
                     |)
                   |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -878,9 +889,11 @@ Module instructions.
                                     [
                                       first_sign;
                                       M.alloc (|
-                                        Value.StructTuple
-                                          "revm_interpreter::instructions::i256::Sign::Minus"
-                                          []
+                                        M.of_value (|
+                                          Value.StructTuple
+                                            "revm_interpreter::instructions::i256::Sign::Minus"
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -896,9 +909,11 @@ Module instructions.
                                       [
                                         second_sign;
                                         M.alloc (|
-                                          Value.StructTuple
-                                            "revm_interpreter::instructions::i256::Sign::Minus"
-                                            []
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "revm_interpreter::instructions::i256::Sign::Minus"
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -916,9 +931,11 @@ Module instructions.
                                       [
                                         second_sign;
                                         M.alloc (|
-                                          Value.StructTuple
-                                            "revm_interpreter::instructions::i256::Sign::Minus"
-                                            []
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "revm_interpreter::instructions::i256::Sign::Minus"
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |),
@@ -934,9 +951,11 @@ Module instructions.
                                         [
                                           first_sign;
                                           M.alloc (|
-                                            Value.StructTuple
-                                              "revm_interpreter::instructions::i256::Sign::Minus"
-                                              []
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "revm_interpreter::instructions::i256::Sign::Minus"
+                                                []
+                                            |)
                                           |)
                                         ]
                                       |)))
@@ -986,7 +1005,7 @@ Module instructions.
         }
     }
     *)
-    Definition i256_mod (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition i256_mod (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ first; second ] =>
         ltac:(M.monadic
@@ -1007,7 +1026,7 @@ Module instructions.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -1025,9 +1044,11 @@ Module instructions.
                                   [
                                     first_sign;
                                     M.alloc (|
-                                      Value.StructTuple
-                                        "revm_interpreter::instructions::i256::Sign::Zero"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_interpreter::instructions::i256::Sign::Zero"
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1041,7 +1062,7 @@ Module instructions.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let second_sign :=
@@ -1056,7 +1077,7 @@ Module instructions.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -1074,9 +1095,11 @@ Module instructions.
                                   [
                                     second_sign;
                                     M.alloc (|
-                                      Value.StructTuple
-                                        "revm_interpreter::instructions::i256::Sign::Zero"
-                                        []
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "revm_interpreter::instructions::i256::Sign::Zero"
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1090,7 +1113,7 @@ Module instructions.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let r :=
@@ -1117,7 +1140,7 @@ Module instructions.
                     |)
                   |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1135,9 +1158,11 @@ Module instructions.
                                 [
                                   first_sign;
                                   M.alloc (|
-                                    Value.StructTuple
-                                      "revm_interpreter::instructions::i256::Sign::Minus"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "revm_interpreter::instructions::i256::Sign::Minus"
+                                        []
+                                    |)
                                   |)
                                 ]
                               |)

@@ -42,102 +42,108 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "revm_interpreter::host::dummy::DummyHost"
-              [
-                ("env",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "revm_primitives::env::Env",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::host::dummy::DummyHost",
-                        "env"
-                      |)
-                    ]
-                  |));
-                ("storage",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply
-                        (Ty.path "std::collections::hash::map::HashMap")
+            M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::host::dummy::DummyHost"
+                [
+                  ("env",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "revm_primitives::env::Env",
+                          [],
+                          "clone",
+                          []
+                        |),
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
-                          Ty.path "std::hash::random::RandomState"
-                        ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::host::dummy::DummyHost",
-                        "storage"
-                      |)
-                    ]
-                  |));
-                ("transient_storage",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply
-                        (Ty.path "std::collections::hash::map::HashMap")
-                        [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
-                          Ty.path "std::hash::random::RandomState"
-                        ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::host::dummy::DummyHost",
-                        "transient_storage"
-                      |)
-                    ]
-                  |));
-                ("log",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::host::dummy::DummyHost",
+                            "env"
+                          |)
+                        ]
+                      |)));
+                  ("storage",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
                           Ty.apply
-                            (Ty.path "alloy_primitives::log::Log")
-                            [ Ty.path "alloy_primitives::log::LogData" ];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::host::dummy::DummyHost",
-                        "log"
-                      |)
-                    ]
-                  |))
-              ]))
+                            (Ty.path "std::collections::hash::map::HashMap")
+                            [
+                              Ty.path "ruint::Uint";
+                              Ty.path "ruint::Uint";
+                              Ty.path "std::hash::random::RandomState"
+                            ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::host::dummy::DummyHost",
+                            "storage"
+                          |)
+                        ]
+                      |)));
+                  ("transient_storage",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply
+                            (Ty.path "std::collections::hash::map::HashMap")
+                            [
+                              Ty.path "ruint::Uint";
+                              Ty.path "ruint::Uint";
+                              Ty.path "std::hash::random::RandomState"
+                            ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::host::dummy::DummyHost",
+                            "transient_storage"
+                          |)
+                        ]
+                      |)));
+                  ("log",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::log::Log")
+                                [ Ty.path "alloy_primitives::log::LogData" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::host::dummy::DummyHost",
+                            "log"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -153,7 +159,7 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -167,41 +173,45 @@ Module host.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "DummyHost" |);
-                M.read (| Value.String "env" |);
+                M.read (| M.of_value (| Value.String "DummyHost" |) |);
+                M.read (| M.of_value (| Value.String "env" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::dummy::DummyHost",
                     "env"
-                  |));
-                M.read (| Value.String "storage" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "storage" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::dummy::DummyHost",
                     "storage"
-                  |));
-                M.read (| Value.String "transient_storage" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "transient_storage" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::dummy::DummyHost",
                     "transient_storage"
-                  |));
-                M.read (| Value.String "log" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "log" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::host::dummy::DummyHost",
                       "log"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -219,77 +229,83 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "revm_interpreter::host::dummy::DummyHost"
-              [
-                ("env",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "revm_primitives::env::Env",
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("storage",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path "std::collections::hash::map::HashMap")
-                        [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
-                          Ty.path "std::hash::random::RandomState"
-                        ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("transient_storage",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path "std::collections::hash::map::HashMap")
-                        [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
-                          Ty.path "std::hash::random::RandomState"
-                        ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("log",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [
+            (M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::host::dummy::DummyHost"
+                [
+                  ("env",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.path "revm_primitives::env::Env",
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("storage",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
                           Ty.apply
-                            (Ty.path "alloy_primitives::log::Log")
-                            [ Ty.path "alloy_primitives::log::LogData" ];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |))
-              ]))
+                            (Ty.path "std::collections::hash::map::HashMap")
+                            [
+                              Ty.path "ruint::Uint";
+                              Ty.path "ruint::Uint";
+                              Ty.path "std::hash::random::RandomState"
+                            ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("transient_storage",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.apply
+                            (Ty.path "std::collections::hash::map::HashMap")
+                            [
+                              Ty.path "ruint::Uint";
+                              Ty.path "ruint::Uint";
+                              Ty.path "std::hash::random::RandomState"
+                            ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("log",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::log::Log")
+                                [ Ty.path "alloy_primitives::log::LogData" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -316,7 +332,7 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -485,30 +501,34 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Value.DeclaredButUndefined,
+                                M.of_value (| Value.DeclaredButUndefined |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Value.DeclaredButUndefined,
-                                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                        M.of_value (| Value.DeclaredButUndefined |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -540,23 +560,25 @@ Module host.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ env ] =>
           ltac:(M.monadic
             (let env := M.alloc (| env |) in
-            M.struct_record_update
-              (M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "revm_interpreter::host::dummy::DummyHost",
-                  [],
-                  "default",
+            M.of_value (|
+              M.struct_record_update
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "revm_interpreter::host::dummy::DummyHost",
+                    [],
+                    "default",
+                    []
+                  |),
                   []
-                |),
-                []
-              |))
-              [ ("env", M.read (| env |)) ]))
+                |))
+                [ ("env", A.to_value (M.read (| env |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -568,7 +590,7 @@ Module host.
               self.log.clear();
           }
       *)
-      Definition clear (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clear (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -621,7 +643,7 @@ Module host.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -637,7 +659,7 @@ Module host.
               &self.env
           }
       *)
-      Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition env (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -655,7 +677,7 @@ Module host.
               &mut self.env
           }
       *)
-      Definition env_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition env_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -673,26 +695,29 @@ Module host.
               Some(LoadAccountResult::default())
           }
       *)
-      Definition load_account (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load_account (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "revm_interpreter::host::LoadAccountResult",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "revm_interpreter::host::LoadAccountResult",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -701,15 +726,20 @@ Module host.
               Some(B256::ZERO)
           }
       *)
-      Definition block_hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _number := M.alloc (| _number |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [ M.read (| M.get_constant (| "alloy_primitives::bits::fixed::ZERO" |) |) ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.read (| M.get_constant (| "alloy_primitives::bits::fixed::ZERO" |) |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -718,16 +748,26 @@ Module host.
               Some((U256::ZERO, false))
           }
       *)
-      Definition balance (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition balance (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [ Value.Tuple [ M.read (| M.get_constant (| "ruint::ZERO" |) |); Value.Bool false ]
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value (M.read (| M.get_constant (| "ruint::ZERO" |) |));
+                          A.to_value (M.of_value (| Value.Bool false |))
+                        ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -736,30 +776,36 @@ Module host.
               Some((Bytecode::default(), false))
           }
       *)
-      Definition code (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                Value.Tuple
-                  [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "revm_primitives::bytecode::Bytecode",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |);
-                    Value.Bool false
-                  ]
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::default::Default",
+                                Ty.path "revm_primitives::bytecode::Bytecode",
+                                [],
+                                "default",
+                                []
+                              |),
+                              []
+                            |));
+                          A.to_value (M.of_value (| Value.Bool false |))
+                        ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -768,21 +814,29 @@ Module host.
               Some((KECCAK_EMPTY, false))
           }
       *)
-      Definition code_hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; __address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __address := M.alloc (| __address |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                Value.Tuple
-                  [
-                    M.read (| M.get_constant (| "revm_primitives::utilities::KECCAK_EMPTY" |) |);
-                    Value.Bool false
-                  ]
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.read (|
+                              M.get_constant (| "revm_primitives::utilities::KECCAK_EMPTY" |)
+                            |));
+                          A.to_value (M.of_value (| Value.Bool false |))
+                        ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -797,7 +851,7 @@ Module host.
               }
           }
       *)
-      Definition sload (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sload (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; __address; index ] =>
           ltac:(M.monadic
@@ -840,26 +894,33 @@ Module host.
                         |) in
                       let entry := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            Value.Tuple
-                              [
-                                M.read (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "std::collections::hash::map::OccupiedEntry")
-                                        [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
-                                      "get",
-                                      []
-                                    |),
-                                    [ entry ]
-                                  |)
-                                |);
-                                Value.Bool false
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.Tuple
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "std::collections::hash::map::OccupiedEntry")
+                                                [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
+                                              "get",
+                                              []
+                                            |),
+                                            [ entry ]
+                                          |)
+                                        |));
+                                      A.to_value (M.of_value (| Value.Bool false |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -884,12 +945,20 @@ Module host.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            Value.Tuple
-                              [ M.read (| M.get_constant (| "ruint::ZERO" |) |); Value.Bool true ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.Tuple
+                                    [
+                                      A.to_value (M.read (| M.get_constant (| "ruint::ZERO" |) |));
+                                      A.to_value (M.of_value (| Value.Bool true |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -915,7 +984,7 @@ Module host.
               })
           }
       *)
-      Definition sstore (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sstore (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _address; index; value ] =>
           ltac:(M.monadic
@@ -960,20 +1029,23 @@ Module host.
                           |) in
                         let entry := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.Tuple
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "std::collections::hash::map::OccupiedEntry")
-                                    [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
-                                  "insert",
-                                  []
-                                |),
-                                [ entry; M.read (| value |) ]
-                              |);
-                              Value.Bool false
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                        [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
+                                      "insert",
+                                      []
+                                    |),
+                                    [ entry; M.read (| value |) ]
+                                  |));
+                                A.to_value (M.of_value (| Value.Bool false |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -998,8 +1070,13 @@ Module host.
                             |)
                           |) in
                         M.alloc (|
-                          Value.Tuple
-                            [ M.read (| M.get_constant (| "ruint::ZERO" |) |); Value.Bool true ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value (M.read (| M.get_constant (| "ruint::ZERO" |) |));
+                                A.to_value (M.of_value (| Value.Bool true |))
+                              ]
+                          |)
                         |)))
                   ]
                 |),
@@ -1011,18 +1088,25 @@ Module host.
                       let present := M.copy (| γ0_0 |) in
                       let is_cold := M.copy (| γ0_1 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            Value.StructRecord
-                              "revm_interpreter::host::SStoreResult"
-                              [
-                                ("original_value", M.read (| M.get_constant (| "ruint::ZERO" |) |));
-                                ("present_value", M.read (| present |));
-                                ("new_value", M.read (| value |));
-                                ("is_cold", M.read (| is_cold |))
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructRecord
+                                    "revm_interpreter::host::SStoreResult"
+                                    [
+                                      ("original_value",
+                                        A.to_value
+                                          (M.read (| M.get_constant (| "ruint::ZERO" |) |)));
+                                      ("present_value", A.to_value (M.read (| present |)));
+                                      ("new_value", A.to_value (M.read (| value |)));
+                                      ("is_cold", A.to_value (M.read (| is_cold |)))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1038,7 +1122,7 @@ Module host.
                   .unwrap_or_default()
           }
       *)
-      Definition tload (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition tload (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _address; index ] =>
           ltac:(M.monadic
@@ -1094,7 +1178,7 @@ Module host.
               self.transient_storage.insert(index, value);
           }
       *)
-      Definition tstore (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition tstore (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _address; index; value ] =>
           ltac:(M.monadic
@@ -1128,7 +1212,7 @@ Module host.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1138,7 +1222,7 @@ Module host.
               self.log.push(log)
           }
       *)
-      Definition log (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition log (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; log ] =>
           ltac:(M.monadic
@@ -1174,7 +1258,7 @@ Module host.
               panic!("Selfdestruct is not supported for this host")
           }
       *)
-      Definition selfdestruct (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition selfdestruct (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _address; _target ] =>
           ltac:(M.monadic
@@ -1189,15 +1273,21 @@ Module host.
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String "Selfdestruct is not supported for this host"
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (|
+                                      Value.String "Selfdestruct is not supported for this host"
+                                    |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]

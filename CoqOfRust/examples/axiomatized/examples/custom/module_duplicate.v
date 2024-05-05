@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module foo.
   Module gre.
-    Parameter f_foo_gre : (list Ty.t) -> (list Value.t) -> M.
+    Parameter f_foo_gre : (list Ty.t) -> (list A.t) -> M.
   End gre.
   
-  Parameter f_foo : (list Ty.t) -> (list Value.t) -> M.
+  Parameter f_foo : (list Ty.t) -> (list A.t) -> M.
 End foo.
 
-Parameter f : (list Ty.t) -> (list Value.t) -> M.
+Parameter f : (list Ty.t) -> (list A.t) -> M.

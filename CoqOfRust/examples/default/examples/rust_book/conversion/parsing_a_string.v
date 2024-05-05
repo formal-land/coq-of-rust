@@ -8,7 +8,7 @@ fn main() {
     "unparsable".parse::<u32>();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -17,24 +17,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
-              [ M.read (| Value.String "12" |) ]
+              [ M.read (| M.of_value (| Value.String "12" |) |) ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "bool" ] |),
-              [ M.read (| Value.String "true" |) ]
+              [ M.read (| M.of_value (| Value.String "true" |) |) ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "u32" ] |),
-              [ M.read (| Value.String "unparsable" |) ]
+              [ M.read (| M.of_value (| Value.String "unparsable" |) |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

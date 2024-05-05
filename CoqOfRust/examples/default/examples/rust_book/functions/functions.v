@@ -12,7 +12,7 @@ fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
     lhs % rhs == 0
 }
 *)
-Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
+Definition is_divisible_by (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ lhs; rhs ] =>
     ltac:(M.monadic
@@ -23,23 +23,29 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
           (M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.eq (M.read (| rhs |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.eq (| M.read (| rhs |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
+                        M.never_to_any (|
+                          M.read (| M.return_ (| M.of_value (| Value.Bool false |) |) |)
+                        |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
-              BinOp.Pure.eq
-                (BinOp.Panic.rem (| Integer.U32, M.read (| lhs |), M.read (| rhs |) |))
-                (Value.Integer 0)
+              BinOp.Pure.eq (|
+                BinOp.Panic.rem (| Integer.U32, M.read (| lhs |), M.read (| rhs |) |),
+                M.of_value (| Value.Integer 0 |)
+              |)
             |)
           |)))
       |)))
@@ -59,14 +65,14 @@ fn fizzbuzz(n: u32) -> () {
     }
 }
 *)
-Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
+Definition fizzbuzz (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
       M.read (|
         M.match_operator (|
-          M.alloc (| Value.Tuple [] |),
+          M.alloc (| M.of_value (| Value.Tuple [] |) |),
           [
             fun γ =>
               ltac:(M.monadic
@@ -75,7 +81,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                     (M.alloc (|
                       M.call_closure (|
                         M.get_function (| "functions::is_divisible_by", [] |),
-                        [ M.read (| n |); Value.Integer 15 ]
+                        [ M.read (| n |); M.of_value (| Value.Integer 15 |) ]
                       |)
                     |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -93,22 +99,29 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "fizzbuzz
-" |) ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String "fizzbuzz
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.Tuple [] |)));
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -117,7 +130,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "functions::is_divisible_by", [] |),
-                                [ M.read (| n |); Value.Integer 3 ]
+                                [ M.read (| n |); M.of_value (| Value.Integer 3 |) ]
                               |)
                             |)) in
                         let _ :=
@@ -136,22 +149,31 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array [ M.read (| Value.String "fizz
-" |) ]
-                                        |))
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (|
+                                                    M.of_value (| Value.String "fizz
+" |)
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |) in
-                        M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -160,7 +182,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                     (M.alloc (|
                                       M.call_closure (|
                                         M.get_function (| "functions::is_divisible_by", [] |),
-                                        [ M.read (| n |); Value.Integer 5 ]
+                                        [ M.read (| n |); M.of_value (| Value.Integer 5 |) ]
                                       |)
                                     |)) in
                                 let _ :=
@@ -182,18 +204,27 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                             |),
                                             [
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array [ M.read (| Value.String "buzz
-" |) ]
-                                                |))
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (| Value.String "buzz
+" |)
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let _ :=
@@ -210,37 +241,50 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                             |),
                                             [
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "" |);
-                                                      M.read (| Value.String "
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (| Value.String "" |)
+                                                          |));
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (| Value.String "
 " |)
-                                                    ]
-                                                |));
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |);
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "u32" ]
-                                                        |),
-                                                        [ n ]
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [ Ty.path "u32" ]
+                                                            |),
+                                                            [ n ]
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)))
                   ]
@@ -258,7 +302,7 @@ fn fizzbuzz_to(n: u32) {
     }
 }
 *)
-Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
+Definition fizzbuzz_to (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ n ] =>
     ltac:(M.monadic
@@ -282,7 +326,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       []
                     |),
-                    [ Value.Integer 1; M.read (| n |) ]
+                    [ M.of_value (| Value.Integer 1 |); M.read (| n |) ]
                   |)
                 ]
               |)
@@ -329,10 +373,10 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                                       [ M.read (| n |) ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   |)))
             ]
           |))
@@ -346,7 +390,7 @@ fn main() {
     fizzbuzz_to(100);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -355,10 +399,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "functions::fizzbuzz_to", [] |),
-              [ Value.Integer 100 ]
+              [ M.of_value (| Value.Integer 100 |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

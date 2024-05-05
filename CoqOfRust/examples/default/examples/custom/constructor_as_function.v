@@ -9,7 +9,7 @@ fn matching(tuple: (i32, i32)) -> i32 {
     }
 }
 *)
-Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
+Definition matching (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ tuple ] =>
     ltac:(M.monadic
@@ -24,12 +24,12 @@ Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                M.alloc (| Value.Integer 0 |)));
+                M.alloc (| M.of_value (| Value.Integer 0 |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                M.alloc (| Value.Integer 1 |)))
+                M.alloc (| M.of_value (| Value.Integer 1 |) |)))
           ]
         |)
       |)))
@@ -47,7 +47,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
   Definition Self : Ty.t := Ty.path "constructor_as_function::Constructor".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -61,16 +61,17 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
           |),
           [
             M.read (| f |);
-            M.read (| Value.String "Constructor" |);
+            M.read (| M.of_value (| Value.String "Constructor" |) |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
+            M.pointer_coercion (|
+              M.alloc (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "constructor_as_function::Constructor",
                   0
                 |)
-              |))
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -91,7 +92,7 @@ fn main() {
     println!("{v:?}");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -152,8 +153,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
+                            M.pointer_coercion (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -167,17 +168,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   |),
                                   [
                                     M.alloc (|
-                                      Value.Array
-                                        [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value (M.of_value (| Value.Integer 1 |));
+                                            A.to_value (M.of_value (| Value.Integer 2 |));
+                                            A.to_value (M.of_value (| Value.Integer 3 |))
+                                          ]
+                                      |)
                                     |)
                                   ]
                                 |)
-                              |))
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |);
-                    M.constructor_as_closure "constructor_as_function::Constructor"
+                    M.constructor_as_closure (| "constructor_as_function::Constructor" |)
                   ]
                 |)
               ]
@@ -193,41 +201,51 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
                                       [
-                                        Ty.path "constructor_as_function::Constructor";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          [
+                                            Ty.path "constructor_as_function::Constructor";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
-                                  ]
-                                |),
-                                [ v ]
-                              |)
-                            ]
-                        |))
+                                    |),
+                                    [ v ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

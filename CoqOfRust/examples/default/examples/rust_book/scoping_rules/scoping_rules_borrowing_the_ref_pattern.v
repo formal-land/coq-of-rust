@@ -12,14 +12,14 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -98,12 +98,12 @@ fn main() {
     println!("tuple is {:?}", mutable_tuple);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let c := M.alloc (| Value.UnicodeChar 81 |) in
+        let c := M.alloc (| M.of_value (| Value.UnicodeChar 81 |) |) in
         M.match_operator (|
           c,
           [
@@ -125,47 +125,63 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "ref_c1 equals ref_c2: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (| Value.String "ref_c1 equals ref_c2: " |)
+                                          |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "bool" ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            BinOp.Pure.eq
-                                              (M.read (| M.read (| ref_c1 |) |))
-                                              (M.read (| M.read (| ref_c2 |) |))
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.path "bool" ]
+                                            |),
+                                            [
+                                              M.alloc (|
+                                                BinOp.Pure.eq (|
+                                                  M.read (| M.read (| ref_c1 |) |),
+                                                  M.read (| M.read (| ref_c2 |) |)
+                                                |)
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                 let point :=
                   M.alloc (|
-                    Value.StructRecord
-                      "scoping_rules_borrowing_the_ref_pattern::Point"
-                      [ ("x", Value.Integer 0); ("y", Value.Integer 0) ]
+                    M.of_value (|
+                      Value.StructRecord
+                        "scoping_rules_borrowing_the_ref_pattern::Point"
+                        [
+                          ("x", A.to_value (M.of_value (| Value.Integer 0 |)));
+                          ("y", A.to_value (M.of_value (| Value.Integer 0 |)))
+                        ]
+                    |)
                   |) in
                 let _copy_of_x :=
                   M.copy (|
@@ -211,8 +227,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "y"
                             |) in
                           let mut_ref_to_y := M.alloc (| γ0_1 |) in
-                          let _ := M.write (| M.read (| mut_ref_to_y |), Value.Integer 1 |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          let _ :=
+                            M.write (|
+                              M.read (| mut_ref_to_y |),
+                              M.of_value (| Value.Integer 1 |)
+                            |) in
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
@@ -229,57 +249,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "point is (" |);
-                                      M.read (| Value.String ", " |);
-                                      M.read (| Value.String ")
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String "point is (" |) |));
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String ", " |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String ")
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            point,
-                                            "scoping_rules_borrowing_the_ref_pattern::Point",
-                                            "x"
-                                          |)
-                                        ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            point,
-                                            "scoping_rules_borrowing_the_ref_pattern::Point",
-                                            "y"
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                point,
+                                                "scoping_rules_borrowing_the_ref_pattern::Point",
+                                                "x"
+                                              |)
+                                            ]
+                                          |));
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                point,
+                                                "scoping_rules_borrowing_the_ref_pattern::Point",
+                                                "y"
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                 let _ :=
                   let _ :=
                     M.alloc (|
@@ -294,73 +324,88 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "mutable_point is (" |);
-                                      M.read (| Value.String ", " |);
-                                      M.read (| Value.String ")
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (| Value.String "mutable_point is (" |)
+                                          |));
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String ", " |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String ")
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            mutable_point,
-                                            "scoping_rules_borrowing_the_ref_pattern::Point",
-                                            "x"
-                                          |)
-                                        ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            mutable_point,
-                                            "scoping_rules_borrowing_the_ref_pattern::Point",
-                                            "y"
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                mutable_point,
+                                                "scoping_rules_borrowing_the_ref_pattern::Point",
+                                                "x"
+                                              |)
+                                            ]
+                                          |));
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                mutable_point,
+                                                "scoping_rules_borrowing_the_ref_pattern::Point",
+                                                "y"
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                 let mutable_tuple :=
                   M.alloc (|
-                    Value.Tuple
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                            "new",
-                            []
-                          |),
-                          [ Value.Integer 5 ]
-                        |);
-                        Value.Integer 3
-                      ]
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                                "new",
+                                []
+                              |),
+                              [ M.of_value (| Value.Integer 5 |) ]
+                            |));
+                          A.to_value (M.of_value (| Value.Integer 3 |))
+                        ]
+                    |)
                   |) in
                 let _ :=
                   M.match_operator (|
@@ -371,8 +416,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let last := M.alloc (| γ0_1 |) in
-                          let _ := M.write (| M.read (| last |), Value.Integer 2 |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          let _ :=
+                            M.write (| M.read (| last |), M.of_value (| Value.Integer 2 |) |) in
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
@@ -389,45 +435,56 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "tuple is " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String "tuple is " |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [
-                                            Ty.tuple
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
                                               [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
-                                                Ty.path "u32"
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      [
+                                                        Ty.path "u32";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ];
+                                                    Ty.path "u32"
+                                                  ]
                                               ]
-                                          ]
-                                        |),
-                                        [ mutable_tuple ]
-                                      |)
-                                    ]
-                                |))
+                                            |),
+                                            [ mutable_tuple ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

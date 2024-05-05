@@ -15,10 +15,7 @@ Module fmt.
                       (abs != 0.0 && abs < 1e-4) || abs >= 1e+16
                   }
       *)
-      Definition already_rounded_value_should_use_exponential
-          (τ : list Ty.t)
-          (α : list Value.t)
-          : M :=
+      Definition already_rounded_value_should_use_exponential (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -34,12 +31,21 @@ Module fmt.
               M.alloc (|
                 LogicalOp.or (|
                   LogicalOp.and (|
-                    BinOp.Pure.ne (M.read (| abs |)) (M.read (| UnsupportedLiteral |)),
+                    BinOp.Pure.ne (|
+                      M.read (| abs |),
+                      M.read (| M.of_value (| UnsupportedLiteral |) |)
+                    |),
                     ltac:(M.monadic
-                      (BinOp.Pure.lt (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                      (BinOp.Pure.lt (|
+                        M.read (| abs |),
+                        M.read (| M.of_value (| UnsupportedLiteral |) |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.ge (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                    (BinOp.Pure.ge (|
+                      M.read (| abs |),
+                      M.read (| M.of_value (| UnsupportedLiteral |) |)
+                    |)))
                 |)
               |)
             |)))
@@ -67,10 +73,7 @@ Module fmt.
                       (abs != 0.0 && abs < 1e-4) || abs >= 1e+16
                   }
       *)
-      Definition already_rounded_value_should_use_exponential
-          (τ : list Ty.t)
-          (α : list Value.t)
-          : M :=
+      Definition already_rounded_value_should_use_exponential (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -86,12 +89,21 @@ Module fmt.
               M.alloc (|
                 LogicalOp.or (|
                   LogicalOp.and (|
-                    BinOp.Pure.ne (M.read (| abs |)) (M.read (| UnsupportedLiteral |)),
+                    BinOp.Pure.ne (|
+                      M.read (| abs |),
+                      M.read (| M.of_value (| UnsupportedLiteral |) |)
+                    |),
                     ltac:(M.monadic
-                      (BinOp.Pure.lt (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                      (BinOp.Pure.lt (|
+                        M.read (| abs |),
+                        M.read (| M.of_value (| UnsupportedLiteral |) |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.ge (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                    (BinOp.Pure.ge (|
+                      M.read (| abs |),
+                      M.read (| M.of_value (| UnsupportedLiteral |) |)
+                    |)))
                 |)
               |)
             |)))
@@ -134,7 +146,7 @@ Module fmt.
         unsafe { fmt.pad_formatted_parts(&formatted) }
     }
     *)
-    Definition float_to_decimal_common_exact (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition float_to_decimal_common_exact (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ fmt; num; sign; precision ] =>
         ltac:(M.monadic
@@ -202,8 +214,8 @@ Module fmt.
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    (* Unsize *) M.pointer_coercion (| buf |);
+                    (* Unsize *) M.pointer_coercion (| parts |)
                   ]
                 |)
               |) in
@@ -246,7 +258,7 @@ Module fmt.
         unsafe { fmt.pad_formatted_parts(&formatted) }
     }
     *)
-    Definition float_to_decimal_common_shortest (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition float_to_decimal_common_shortest (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ fmt; num; sign; precision ] =>
         ltac:(M.monadic
@@ -313,8 +325,8 @@ Module fmt.
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    (* Unsize *) M.pointer_coercion (| buf |);
+                    (* Unsize *) M.pointer_coercion (| parts |)
                   ]
                 |)
               |) in
@@ -351,7 +363,7 @@ Module fmt.
         }
     }
     *)
-    Definition float_to_decimal_display (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition float_to_decimal_display (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ fmt; num ] =>
         ltac:(M.monadic
@@ -374,17 +386,23 @@ Module fmt.
                       ltac:(M.monadic
                         (let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
+                        M.alloc (|
+                          M.of_value (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
+                        M.alloc (|
+                          M.of_value (|
+                            Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" []
+                          |)
+                        |)))
                   ]
                 |)
               |) in
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -417,7 +435,7 @@ Module fmt.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let min_precision := M.alloc (| Value.Integer 0 |) in
+                    (let min_precision := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (|
@@ -464,7 +482,7 @@ Module fmt.
         unsafe { fmt.pad_formatted_parts(&formatted) }
     }
     *)
-    Definition float_to_exponential_common_exact (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition float_to_exponential_common_exact (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ fmt; num; sign; precision; upper ] =>
         ltac:(M.monadic
@@ -534,8 +552,8 @@ Module fmt.
                     M.read (| sign |);
                     M.read (| precision |);
                     M.read (| upper |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    (* Unsize *) M.pointer_coercion (| buf |);
+                    (* Unsize *) M.pointer_coercion (| parts |)
                   ]
                 |)
               |) in
@@ -579,7 +597,7 @@ Module fmt.
         unsafe { fmt.pad_formatted_parts(&formatted) }
     }
     *)
-    Definition float_to_exponential_common_shortest (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition float_to_exponential_common_shortest (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ fmt; num; sign; upper ] =>
         ltac:(M.monadic
@@ -645,10 +663,16 @@ Module fmt.
                     M.get_function (| "core::num::flt2dec::strategy::grisu::format_shortest", [] |);
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
-                    Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value (M.of_value (| Value.Integer 0 |));
+                          A.to_value (M.of_value (| Value.Integer 0 |))
+                        ]
+                    |);
                     M.read (| upper |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    (* Unsize *) M.pointer_coercion (| buf |);
+                    (* Unsize *) M.pointer_coercion (| parts |)
                   ]
                 |)
               |) in
@@ -685,7 +709,7 @@ Module fmt.
         }
     }
     *)
-    Definition float_to_exponential_common (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition float_to_exponential_common (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ fmt; num; upper ] =>
         ltac:(M.monadic
@@ -709,17 +733,23 @@ Module fmt.
                       ltac:(M.monadic
                         (let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
+                        M.alloc (|
+                          M.of_value (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
+                        M.alloc (|
+                          M.of_value (|
+                            Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" []
+                          |)
+                        |)))
                   ]
                 |)
               |) in
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -749,7 +779,7 @@ Module fmt.
                           BinOp.Panic.add (|
                             Integer.Usize,
                             M.read (| precision |),
-                            Value.Integer 1
+                            M.of_value (| Value.Integer 1 |)
                           |);
                           M.read (| upper |)
                         ]
@@ -799,7 +829,7 @@ Module fmt.
         }
     }
     *)
-    Definition float_to_general_debug (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition float_to_general_debug (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ fmt; num ] =>
         ltac:(M.monadic
@@ -822,17 +852,23 @@ Module fmt.
                       ltac:(M.monadic
                         (let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
+                        M.alloc (|
+                          M.of_value (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
+                        M.alloc (|
+                          M.of_value (|
+                            Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" []
+                          |)
+                        |)))
                   ]
                 |)
               |) in
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -866,7 +902,7 @@ Module fmt.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -886,7 +922,7 @@ Module fmt.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let upper := M.alloc (| Value.Bool false |) in
+                            let upper := M.alloc (| M.of_value (| Value.Bool false |) |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (|
@@ -903,7 +939,7 @@ Module fmt.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let min_precision := M.alloc (| Value.Integer 1 |) in
+                            (let min_precision := M.alloc (| M.of_value (| Value.Integer 1 |) |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (|
@@ -934,7 +970,7 @@ Module fmt.
                       float_to_general_debug(fmt, self)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -963,7 +999,7 @@ Module fmt.
                       float_to_decimal_display(fmt, self)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -992,7 +1028,7 @@ Module fmt.
                       float_to_exponential_common(fmt, self, false)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -1003,7 +1039,7 @@ Module fmt.
                 "core::fmt::float::float_to_exponential_common",
                 [ Ty.path "f32" ]
               |),
-              [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
+              [ M.read (| fmt |); M.read (| self |); M.of_value (| Value.Bool false |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1024,7 +1060,7 @@ Module fmt.
                       float_to_exponential_common(fmt, self, true)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -1035,7 +1071,7 @@ Module fmt.
                 "core::fmt::float::float_to_exponential_common",
                 [ Ty.path "f32" ]
               |),
-              [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
+              [ M.read (| fmt |); M.read (| self |); M.of_value (| Value.Bool true |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1056,7 +1092,7 @@ Module fmt.
                       float_to_general_debug(fmt, self)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -1085,7 +1121,7 @@ Module fmt.
                       float_to_decimal_display(fmt, self)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -1114,7 +1150,7 @@ Module fmt.
                       float_to_exponential_common(fmt, self, false)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -1125,7 +1161,7 @@ Module fmt.
                 "core::fmt::float::float_to_exponential_common",
                 [ Ty.path "f64" ]
               |),
-              [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
+              [ M.read (| fmt |); M.read (| self |); M.of_value (| Value.Bool false |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1146,7 +1182,7 @@ Module fmt.
                       float_to_exponential_common(fmt, self, true)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -1157,7 +1193,7 @@ Module fmt.
                 "core::fmt::float::float_to_exponential_common",
                 [ Ty.path "f64" ]
               |),
-              [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
+              [ M.read (| fmt |); M.read (| self |); M.of_value (| Value.Bool true |) ]
             |)))
         | _, _ => M.impossible
         end.

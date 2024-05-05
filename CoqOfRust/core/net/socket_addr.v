@@ -38,19 +38,19 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                       |)))
                 ]
@@ -82,7 +82,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -111,11 +111,16 @@ Module net.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -223,20 +228,21 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -257,7 +263,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -352,7 +358,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -380,7 +386,11 @@ Module net.
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                  |)
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -478,7 +488,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -516,7 +526,12 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -634,19 +649,19 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                       |)))
                 ]
@@ -678,20 +693,21 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -723,7 +739,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -752,21 +768,22 @@ Module net.
                 ]
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::net::socket_addr::SocketAddrV4",
                       "port"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::net::socket_addr::SocketAddrV4",
                       "port"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -783,7 +800,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -856,7 +873,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -941,7 +958,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1021,24 +1038,24 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Value.DeclaredButUndefined,
+                                M.of_value (| Value.DeclaredButUndefined |),
                                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                               |)))
                         ]
@@ -1072,25 +1089,28 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Value.DeclaredButUndefined,
-                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                M.of_value (| Value.DeclaredButUndefined |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                                ]
                               |)))
                         ]
                       |)))
@@ -1124,7 +1144,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1155,55 +1175,58 @@ Module net.
                     ]
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.Pure.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::net::socket_addr::SocketAddrV6",
                           "port"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::net::socket_addr::SocketAddrV6",
                           "port"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::net::socket_addr::SocketAddrV6",
                         "flowinfo"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::net::socket_addr::SocketAddrV6",
                         "flowinfo"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::net::socket_addr::SocketAddrV6",
                       "scope_id"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::net::socket_addr::SocketAddrV6",
                       "scope_id"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -1220,7 +1243,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1359,7 +1382,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1522,7 +1545,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1613,7 +1636,7 @@ Module net.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ip; port ] =>
           ltac:(M.monadic
@@ -1633,18 +1656,21 @@ Module net.
                         |) in
                       let a := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::net::socket_addr::SocketAddr::V4"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::net::socket_addr::SocketAddrV4",
-                                "new",
-                                []
-                              |),
-                              [ M.read (| a |); M.read (| port |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::net::socket_addr::SocketAddr::V4"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::net::socket_addr::SocketAddrV4",
+                                    "new",
+                                    []
+                                  |),
+                                  [ M.read (| a |); M.read (| port |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1656,19 +1682,26 @@ Module net.
                         |) in
                       let a := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::net::socket_addr::SocketAddr::V6"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::net::socket_addr::SocketAddrV6",
-                                "new",
-                                []
-                              |),
-                              [ M.read (| a |); M.read (| port |); Value.Integer 0; Value.Integer 0
-                              ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::net::socket_addr::SocketAddr::V6"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::net::socket_addr::SocketAddrV6",
+                                    "new",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| a |);
+                                    M.read (| port |);
+                                    M.of_value (| Value.Integer 0 |);
+                                    M.of_value (| Value.Integer 0 |)
+                                  ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1686,7 +1719,7 @@ Module net.
               }
           }
       *)
-      Definition ip (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ip (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1705,20 +1738,23 @@ Module net.
                         |) in
                       let a := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::net::ip_addr::IpAddr::V4"
-                          [
-                            M.read (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::net::socket_addr::SocketAddrV4",
-                                  "ip",
-                                  []
-                                |),
-                                [ M.read (| a |) ]
-                              |)
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::net::ip_addr::IpAddr::V4"
+                            [
+                              A.to_value
+                                (M.read (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::net::socket_addr::SocketAddrV4",
+                                      "ip",
+                                      []
+                                    |),
+                                    [ M.read (| a |) ]
+                                  |)
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1730,20 +1766,23 @@ Module net.
                         |) in
                       let a := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::net::ip_addr::IpAddr::V6"
-                          [
-                            M.read (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::net::socket_addr::SocketAddrV6",
-                                  "ip",
-                                  []
-                                |),
-                                [ M.read (| a |) ]
-                              |)
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::net::ip_addr::IpAddr::V6"
+                            [
+                              A.to_value
+                                (M.read (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::net::socket_addr::SocketAddrV6",
+                                      "ip",
+                                      []
+                                    |),
+                                    [ M.read (| a |) ]
+                                  |)
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1763,7 +1802,7 @@ Module net.
               }
           }
       *)
-      Definition set_ip (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_ip (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; new_ip ] =>
           ltac:(M.monadic
@@ -1771,7 +1810,11 @@ Module net.
             let new_ip := M.alloc (| new_ip |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| new_ip |) ] |),
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| new_ip |)) ]
+                  |)
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1874,7 +1917,7 @@ Module net.
               }
           }
       *)
-      Definition port (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition port (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1937,7 +1980,7 @@ Module net.
               }
           }
       *)
-      Definition set_port (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_port (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; new_port ] =>
           ltac:(M.monadic
@@ -1998,7 +2041,7 @@ Module net.
               matches!( *self, SocketAddr::V4(_))
           }
       *)
-      Definition is_ipv4 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ipv4 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2015,8 +2058,8 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -2030,7 +2073,7 @@ Module net.
               matches!( *self, SocketAddr::V6(_))
           }
       *)
-      Definition is_ipv6 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ipv6 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2047,8 +2090,8 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -2066,15 +2109,17 @@ Module net.
               SocketAddrV4 { ip, port }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ip; port ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             let port := M.alloc (| port |) in
-            Value.StructRecord
-              "core::net::socket_addr::SocketAddrV4"
-              [ ("ip", M.read (| ip |)); ("port", M.read (| port |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::net::socket_addr::SocketAddrV4"
+                [ ("ip", A.to_value (M.read (| ip |))); ("port", A.to_value (M.read (| port |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2085,7 +2130,7 @@ Module net.
               &self.ip
           }
       *)
-      Definition ip (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ip (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2105,7 +2150,7 @@ Module net.
               self.ip = new_ip;
           }
       *)
-      Definition set_ip (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_ip (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; new_ip ] =>
           ltac:(M.monadic
@@ -2121,7 +2166,7 @@ Module net.
                   |),
                   M.read (| new_ip |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2133,7 +2178,7 @@ Module net.
               self.port
           }
       *)
-      Definition port (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition port (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2155,7 +2200,7 @@ Module net.
               self.port = new_port;
           }
       *)
-      Definition set_port (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_port (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; new_port ] =>
           ltac:(M.monadic
@@ -2171,7 +2216,7 @@ Module net.
                   |),
                   M.read (| new_port |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2187,7 +2232,7 @@ Module net.
               SocketAddrV6 { ip, port, flowinfo, scope_id }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ip; port; flowinfo; scope_id ] =>
           ltac:(M.monadic
@@ -2195,14 +2240,16 @@ Module net.
             let port := M.alloc (| port |) in
             let flowinfo := M.alloc (| flowinfo |) in
             let scope_id := M.alloc (| scope_id |) in
-            Value.StructRecord
-              "core::net::socket_addr::SocketAddrV6"
-              [
-                ("ip", M.read (| ip |));
-                ("port", M.read (| port |));
-                ("flowinfo", M.read (| flowinfo |));
-                ("scope_id", M.read (| scope_id |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::net::socket_addr::SocketAddrV6"
+                [
+                  ("ip", A.to_value (M.read (| ip |)));
+                  ("port", A.to_value (M.read (| port |)));
+                  ("flowinfo", A.to_value (M.read (| flowinfo |)));
+                  ("scope_id", A.to_value (M.read (| scope_id |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2213,7 +2260,7 @@ Module net.
               &self.ip
           }
       *)
-      Definition ip (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ip (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2233,7 +2280,7 @@ Module net.
               self.ip = new_ip;
           }
       *)
-      Definition set_ip (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_ip (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; new_ip ] =>
           ltac:(M.monadic
@@ -2249,7 +2296,7 @@ Module net.
                   |),
                   M.read (| new_ip |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2261,7 +2308,7 @@ Module net.
               self.port
           }
       *)
-      Definition port (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition port (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2283,7 +2330,7 @@ Module net.
               self.port = new_port;
           }
       *)
-      Definition set_port (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_port (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; new_port ] =>
           ltac:(M.monadic
@@ -2299,7 +2346,7 @@ Module net.
                   |),
                   M.read (| new_port |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2311,7 +2358,7 @@ Module net.
               self.flowinfo
           }
       *)
-      Definition flowinfo (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition flowinfo (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2333,7 +2380,7 @@ Module net.
               self.flowinfo = new_flowinfo;
           }
       *)
-      Definition set_flowinfo (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_flowinfo (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; new_flowinfo ] =>
           ltac:(M.monadic
@@ -2349,7 +2396,7 @@ Module net.
                   |),
                   M.read (| new_flowinfo |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2362,7 +2409,7 @@ Module net.
               self.scope_id
           }
       *)
-      Definition scope_id (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition scope_id (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2384,7 +2431,7 @@ Module net.
               self.scope_id = new_scope_id;
           }
       *)
-      Definition set_scope_id (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_scope_id (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; new_scope_id ] =>
           ltac:(M.monadic
@@ -2400,7 +2447,7 @@ Module net.
                   |),
                   M.read (| new_scope_id |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2417,12 +2464,16 @@ Module net.
               SocketAddr::V4(sock4)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ sock4 ] =>
           ltac:(M.monadic
             (let sock4 := M.alloc (| sock4 |) in
-            Value.StructTuple "core::net::socket_addr::SocketAddr::V4" [ M.read (| sock4 |) ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::net::socket_addr::SocketAddr::V4"
+                [ A.to_value (M.read (| sock4 |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2442,12 +2493,16 @@ Module net.
               SocketAddr::V6(sock6)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ sock6 ] =>
           ltac:(M.monadic
             (let sock6 := M.alloc (| sock6 |) in
-            Value.StructTuple "core::net::socket_addr::SocketAddr::V6" [ M.read (| sock6 |) ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::net::socket_addr::SocketAddr::V6"
+                [ A.to_value (M.read (| sock6 |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2467,7 +2522,7 @@ Module net.
               SocketAddr::new(pieces.0.into(), pieces.1)
           }
       *)
-      Definition from (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I in
         match τ, α with
         | [], [ pieces ] =>
@@ -2516,7 +2571,7 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -2590,7 +2645,7 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -2637,7 +2692,7 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -2645,7 +2700,7 @@ Module net.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2712,61 +2767,75 @@ Module net.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "" |); M.read (| Value.String ":" |)
-                                      ]
-                                  |));
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "" |) |));
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String ":" |) |))
+                                        ]
+                                    |)
+                                  |)
+                                |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
-                                            ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::net::socket_addr::SocketAddrV4",
-                                                  "ip",
-                                                  []
-                                                |),
-                                                [ M.read (| self |) ]
-                                              |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u16" ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::net::socket_addr::SocketAddrV4",
-                                                  "port",
-                                                  []
-                                                |),
-                                                [ M.read (| self |) ]
-                                              |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                                ]
+                                              |),
+                                              [
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "core::net::socket_addr::SocketAddrV4",
+                                                      "ip",
+                                                      []
+                                                    |),
+                                                    [ M.read (| self |) ]
+                                                  |)
+                                                |)
+                                              ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "u16" ]
+                                              |),
+                                              [
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "core::net::socket_addr::SocketAddrV4",
+                                                      "port",
+                                                      []
+                                                    |),
+                                                    [ M.read (| self |) ]
+                                                  |)
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -2814,65 +2883,75 @@ Module net.
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String ":" |)
-                                            ]
-                                        |));
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (| M.of_value (| Value.String "" |) |));
+                                                A.to_value
+                                                  (M.read (| M.of_value (| Value.String ":" |) |))
+                                              ]
+                                          |)
+                                        |)
+                                      |);
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
-                                                  ]
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::net::socket_addr::SocketAddrV4",
-                                                        "ip",
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "u16" ]
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::net::socket_addr::SocketAddrV4",
-                                                        "port",
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                        |))
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "core::net::socket_addr::SocketAddrV4",
+                                                            "ip",
+                                                            []
+                                                          |),
+                                                          [ M.read (| self |) ]
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |));
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.path "u16" ]
+                                                    |),
+                                                    [
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "core::net::socket_addr::SocketAddrV4",
+                                                            "port",
+                                                            []
+                                                          |),
+                                                          [ M.read (| self |) ]
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -2918,7 +2997,7 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -2973,7 +3052,7 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -2981,7 +3060,7 @@ Module net.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3067,65 +3146,80 @@ Module net.
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "[" |);
-                                                M.read (| Value.String "]:" |)
-                                              ]
-                                          |));
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (| Value.String "[" |)
+                                                    |));
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (| Value.String "]:" |)
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |);
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::net::socket_addr::SocketAddrV6",
-                                                          "ip",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "u16" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::net::socket_addr::SocketAddrV6",
-                                                          "port",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                          |))
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            [ Ty.path "core::net::ip_addr::Ipv6Addr"
+                                                            ]
+                                                        ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "core::net::socket_addr::SocketAddrV6",
+                                                              "ip",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |));
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "u16" ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "core::net::socket_addr::SocketAddrV6",
+                                                              "port",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -3151,74 +3245,93 @@ Module net.
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "[" |);
-                                                M.read (| Value.String "%" |);
-                                                M.read (| Value.String "]:" |)
-                                              ]
-                                          |));
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (| Value.String "[" |)
+                                                    |));
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (| Value.String "%" |)
+                                                    |));
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (| Value.String "]:" |)
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |);
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::net::socket_addr::SocketAddrV6",
-                                                          "ip",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "u32" ]
-                                                  |),
-                                                  [ scope_id ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "u16" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::net::socket_addr::SocketAddrV6",
-                                                          "port",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                          |))
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            [ Ty.path "core::net::ip_addr::Ipv6Addr"
+                                                            ]
+                                                        ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "core::net::socket_addr::SocketAddrV6",
+                                                              "ip",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |));
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "u32" ]
+                                                      |),
+                                                      [ scope_id ]
+                                                    |));
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "u16" ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "core::net::socket_addr::SocketAddrV6",
+                                                              "port",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -3289,68 +3402,82 @@ Module net.
                                                 |),
                                                 [
                                                   (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (| Value.String "[" |);
-                                                          M.read (| Value.String "]:" |)
-                                                        ]
-                                                    |));
+                                                  M.pointer_coercion (|
+                                                    M.alloc (|
+                                                      M.of_value (|
+                                                        Value.Array
+                                                          [
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.of_value (| Value.String "[" |)
+                                                              |));
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.of_value (| Value.String "]:" |)
+                                                              |))
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |);
                                                   (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
+                                                  M.pointer_coercion (|
+                                                    M.alloc (|
+                                                      M.of_value (|
+                                                        Value.Array
+                                                          [
+                                                            A.to_value
+                                                              (M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
                                                                   [
-                                                                    Ty.path
-                                                                      "core::net::ip_addr::Ipv6Addr"
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::net::ip_addr::Ipv6Addr"
+                                                                      ]
                                                                   ]
-                                                              ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::net::socket_addr::SocketAddrV6",
-                                                                    "ip",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "u16" ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::net::socket_addr::SocketAddrV6",
-                                                                    "port",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                    |))
+                                                                |),
+                                                                [
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::net::socket_addr::SocketAddrV6",
+                                                                        "ip",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| self |) ]
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |));
+                                                            A.to_value
+                                                              (M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [ Ty.path "u16" ]
+                                                                |),
+                                                                [
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::net::socket_addr::SocketAddrV6",
+                                                                        "port",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| self |) ]
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |))
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -3378,77 +3505,95 @@ Module net.
                                                 |),
                                                 [
                                                   (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (| Value.String "[" |);
-                                                          M.read (| Value.String "%" |);
-                                                          M.read (| Value.String "]:" |)
-                                                        ]
-                                                    |));
+                                                  M.pointer_coercion (|
+                                                    M.alloc (|
+                                                      M.of_value (|
+                                                        Value.Array
+                                                          [
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.of_value (| Value.String "[" |)
+                                                              |));
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.of_value (| Value.String "%" |)
+                                                              |));
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.of_value (| Value.String "]:" |)
+                                                              |))
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |);
                                                   (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
+                                                  M.pointer_coercion (|
+                                                    M.alloc (|
+                                                      M.of_value (|
+                                                        Value.Array
+                                                          [
+                                                            A.to_value
+                                                              (M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
                                                                   [
-                                                                    Ty.path
-                                                                      "core::net::ip_addr::Ipv6Addr"
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::net::ip_addr::Ipv6Addr"
+                                                                      ]
                                                                   ]
-                                                              ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::net::socket_addr::SocketAddrV6",
-                                                                    "ip",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "u32" ]
-                                                            |),
-                                                            [ scope_id ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "u16" ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::net::socket_addr::SocketAddrV6",
-                                                                    "port",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                    |))
+                                                                |),
+                                                                [
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::net::socket_addr::SocketAddrV6",
+                                                                        "ip",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| self |) ]
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |));
+                                                            A.to_value
+                                                              (M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [ Ty.path "u32" ]
+                                                                |),
+                                                                [ scope_id ]
+                                                              |));
+                                                            A.to_value
+                                                              (M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [ Ty.path "u16" ]
+                                                                |),
+                                                                [
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::net::socket_addr::SocketAddrV6",
+                                                                        "port",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| self |) ]
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |))
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -3498,7 +3643,7 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic

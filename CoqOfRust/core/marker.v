@@ -741,14 +741,17 @@ Module marker.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
     
     (*     fn hash<H: Hasher>(&self, _: &mut H) {} *)
-    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ H ], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
-          M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            β1,
+            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -769,14 +772,14 @@ Module marker.
             true
         }
     *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
-          Value.Bool true))
+          M.of_value (| Value.Bool true |)))
       | _, _ => M.impossible
       end.
     
@@ -805,16 +808,18 @@ Module marker.
             Option::Some(cmp::Ordering::Equal)
         }
     *)
-    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
-          Value.StructTuple
-            "core::option::Option::Some"
-            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::option::Option::Some"
+              [ A.to_value (M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -835,14 +840,14 @@ Module marker.
             cmp::Ordering::Equal
         }
     *)
-    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
-          Value.StructTuple "core::cmp::Ordering::Equal" []))
+          M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -875,13 +880,15 @@ Module marker.
             Self
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| (* Expected a function name *) M.alloc (| Value.Tuple [] |) |)))
+          M.read (|
+            (* Expected a function name *) M.alloc (| M.of_value (| Value.Tuple [] |) |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -902,11 +909,14 @@ Module marker.
             Self
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] =>
-        ltac:(M.monadic (M.read (| (* Expected a function name *) M.alloc (| Value.Tuple [] |) |)))
+        ltac:(M.monadic
+          (M.read (|
+            (* Expected a function name *) M.alloc (| M.of_value (| Value.Tuple [] |) |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1035,7 +1045,7 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -1043,7 +1053,7 @@ Module marker.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| Value.String "PhantomPinned" |) ]
+            [ M.read (| f |); M.read (| M.of_value (| Value.String "PhantomPinned" |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1060,9 +1070,10 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
-      | [], [] => ltac:(M.monadic (Value.StructTuple "core::marker::PhantomPinned" []))
+      | [], [] =>
+        ltac:(M.monadic (M.of_value (| Value.StructTuple "core::marker::PhantomPinned" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -1089,7 +1100,7 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1121,12 +1132,12 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.Tuple []))
+          M.of_value (| Value.Tuple [] |)))
       | _, _ => M.impossible
       end.
     
@@ -1154,13 +1165,13 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          Value.Bool true))
+          M.of_value (| Value.Bool true |)))
       | _, _ => M.impossible
       end.
     
@@ -1176,13 +1187,13 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          Value.StructTuple "core::cmp::Ordering::Equal" []))
+          M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -1198,15 +1209,17 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          Value.StructTuple
-            "core::option::Option::Some"
-            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::option::Option::Some"
+              [ A.to_value (M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1222,13 +1235,13 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
-          Value.Tuple []))
+          M.of_value (| Value.Tuple [] |)))
       | _, _ => M.impossible
       end.
     

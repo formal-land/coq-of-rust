@@ -15,7 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::PhoneNumber".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -48,7 +48,7 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -81,10 +81,10 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 Module Impl_unpacking_options_via_question_mark_Person.
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Person".
   
-  Parameter work_phone_area_code : (list Ty.t) -> (list Value.t) -> M.
+  Parameter work_phone_area_code : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_work_phone_area_code :
     M.IsAssociatedFunction Self "work_phone_area_code" work_phone_area_code.
 End Impl_unpacking_options_via_question_mark_Person.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

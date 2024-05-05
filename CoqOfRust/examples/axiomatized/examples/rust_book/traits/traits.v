@@ -10,7 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
 Module Animal.
-  Parameter talk : (list Ty.t) -> (list Value.t) -> M.
+  Parameter talk : (list Ty.t) -> (list A.t) -> M.
   
   Axiom ProvidedMethod_talk : M.IsProvidedMethod "traits::Animal" "talk" talk.
 End Animal.
@@ -18,10 +18,10 @@ End Animal.
 Module Impl_traits_Sheep.
   Definition Self : Ty.t := Ty.path "traits::Sheep".
   
-  Parameter is_naked : (list Ty.t) -> (list Value.t) -> M.
+  Parameter is_naked : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_is_naked : M.IsAssociatedFunction Self "is_naked" is_naked.
-  Parameter shear : (list Ty.t) -> (list Value.t) -> M.
+  Parameter shear : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear.
 End Impl_traits_Sheep.
@@ -29,13 +29,13 @@ End Impl_traits_Sheep.
 Module Impl_traits_Animal_for_traits_Sheep.
   Definition Self : Ty.t := Ty.path "traits::Sheep".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter name : (list Ty.t) -> (list Value.t) -> M.
+  Parameter name : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter noise : (list Ty.t) -> (list Value.t) -> M.
+  Parameter noise : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter talk : (list Ty.t) -> (list Value.t) -> M.
+  Parameter talk : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -52,4 +52,4 @@ Module Impl_traits_Animal_for_traits_Sheep.
 End Impl_traits_Animal_for_traits_Sheep.
 
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

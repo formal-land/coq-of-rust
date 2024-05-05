@@ -17,7 +17,7 @@ Module future.
               F::poll(Pin::new(&mut **self), cx)
           }
       *)
-      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F in
         match τ, α with
         | [], [ self; cx ] =>
@@ -77,7 +77,7 @@ Module future.
               <P::Target as Future>::poll(self.as_deref_mut(), cx)
           }
       *)
-      Definition poll (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self P in
         match τ, α with
         | [], [ self; cx ] =>

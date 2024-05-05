@@ -32,7 +32,7 @@ Module collections.
                 }
             }
         *)
-        Definition remove_kv_tracking (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition remove_kv_tracking (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self K V in
           match τ, α with
           | [ F; A ], [ self; handle_emptied_internal_root; alloc ] =>
@@ -214,7 +214,7 @@ Module collections.
                 (old_kv, pos)
             }
         *)
-        Definition remove_leaf_kv (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition remove_leaf_kv (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self K V in
           match τ, α with
           | [ F; A ], [ self; handle_emptied_internal_root; alloc ] =>
@@ -322,20 +322,21 @@ Module collections.
                           |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.lt
-                                          (M.read (| len |))
-                                          (M.read (|
+                                        BinOp.Pure.lt (|
+                                          M.read (| len |),
+                                          M.read (|
                                             M.get_constant (|
                                               "alloc::collections::btree::map::MIN_LEN"
                                             |)
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -453,12 +454,15 @@ Module collections.
                                               let left_parent_kv := M.copy (| γ1_0 |) in
                                               let _ :=
                                                 M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ :=
-                                                          M.use (M.alloc (| Value.Bool true |)) in
+                                                          M.use
+                                                            (M.alloc (|
+                                                              M.of_value (| Value.Bool true |)
+                                                            |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
                                                             M.read (| γ |),
@@ -466,16 +470,18 @@ Module collections.
                                                           |) in
                                                         let _ :=
                                                           M.match_operator (|
-                                                            M.alloc (| Value.Tuple [] |),
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        UnOp.Pure.not
-                                                                          (BinOp.Pure.eq
-                                                                            (M.call_closure (|
+                                                                        UnOp.Pure.not (|
+                                                                          BinOp.Pure.eq (|
+                                                                            M.call_closure (|
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -485,16 +491,20 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [ left_parent_kv ]
-                                                                            |))
-                                                                            (BinOp.Panic.sub (|
+                                                                            |),
+                                                                            BinOp.Panic.sub (|
                                                                               Integer.Usize,
                                                                               M.read (|
                                                                                 M.get_constant (|
                                                                                   "alloc::collections::btree::map::MIN_LEN"
                                                                                 |)
                                                                               |),
-                                                                              Value.Integer 1
-                                                                            |)))
+                                                                              M.of_value (|
+                                                                                Value.Integer 1
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -510,8 +520,10 @@ Module collections.
                                                                         |),
                                                                         [
                                                                           M.read (|
-                                                                            Value.String
-                                                                              "assertion failed: left_parent_kv.right_child_len() == MIN_LEN - 1"
+                                                                            M.of_value (|
+                                                                              Value.String
+                                                                                "assertion failed: left_parent_kv.right_child_len() == MIN_LEN - 1"
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -519,17 +531,23 @@ Module collections.
                                                                   |)));
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                                  (M.alloc (|
+                                                                    M.of_value (| Value.Tuple [] |)
+                                                                  |)))
                                                             ]
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)));
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.alloc (| Value.Tuple [] |)))
+                                                        (M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)))
                                                   ]
                                                 |) in
                                               M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -565,9 +583,11 @@ Module collections.
                                                           |),
                                                           [
                                                             M.read (| left_parent_kv |);
-                                                            Value.StructTuple
-                                                              "alloc::collections::btree::node::LeftOrRight::Right"
-                                                              [ M.read (| idx |) ];
+                                                            M.of_value (|
+                                                              Value.StructTuple
+                                                                "alloc::collections::btree::node::LeftOrRight::Right"
+                                                                [ A.to_value (M.read (| idx |)) ]
+                                                            |);
                                                             M.call_closure (|
                                                               M.get_trait_method (|
                                                                 "core::clone::Clone",
@@ -585,14 +605,18 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let _ :=
                                                         M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      Value.Bool true
+                                                                      M.of_value (|
+                                                                        Value.Bool true
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -601,16 +625,20 @@ Module collections.
                                                                   |) in
                                                                 let _ :=
                                                                   M.match_operator (|
-                                                                    M.alloc (| Value.Tuple [] |),
+                                                                    M.alloc (|
+                                                                      M.of_value (|
+                                                                        Value.Tuple []
+                                                                      |)
+                                                                    |),
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                UnOp.Pure.not
-                                                                                  (BinOp.Pure.gt
-                                                                                    (M.call_closure (|
+                                                                                UnOp.Pure.not (|
+                                                                                  BinOp.Pure.gt (|
+                                                                                    M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -622,12 +650,14 @@ Module collections.
                                                                                       [
                                                                                         left_parent_kv
                                                                                       ]
-                                                                                    |))
-                                                                                    (M.read (|
+                                                                                    |),
+                                                                                    M.read (|
                                                                                       M.get_constant (|
                                                                                         "alloc::collections::btree::map::MIN_LEN"
                                                                                       |)
-                                                                                    |)))
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -643,8 +673,10 @@ Module collections.
                                                                                 |),
                                                                                 [
                                                                                   M.read (|
-                                                                                    Value.String
-                                                                                      "assertion failed: left_parent_kv.left_child_len() > MIN_LEN"
+                                                                                    M.of_value (|
+                                                                                      Value.String
+                                                                                        "assertion failed: left_parent_kv.left_child_len() > MIN_LEN"
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -653,14 +685,20 @@ Module collections.
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (M.alloc (|
-                                                                            Value.Tuple []
+                                                                            M.of_value (|
+                                                                              Value.Tuple []
+                                                                            |)
                                                                           |)))
                                                                     ]
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)));
+                                                                M.alloc (|
+                                                                  M.of_value (| Value.Tuple [] |)
+                                                                |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  M.of_value (| Value.Tuple [] |)
+                                                                |)))
                                                           ]
                                                         |) in
                                                       M.alloc (|
@@ -698,12 +736,15 @@ Module collections.
                                               let right_parent_kv := M.copy (| γ1_0 |) in
                                               let _ :=
                                                 M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ :=
-                                                          M.use (M.alloc (| Value.Bool true |)) in
+                                                          M.use
+                                                            (M.alloc (|
+                                                              M.of_value (| Value.Bool true |)
+                                                            |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
                                                             M.read (| γ |),
@@ -711,16 +752,18 @@ Module collections.
                                                           |) in
                                                         let _ :=
                                                           M.match_operator (|
-                                                            M.alloc (| Value.Tuple [] |),
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        UnOp.Pure.not
-                                                                          (BinOp.Pure.eq
-                                                                            (M.call_closure (|
+                                                                        UnOp.Pure.not (|
+                                                                          BinOp.Pure.eq (|
+                                                                            M.call_closure (|
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -730,16 +773,20 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [ right_parent_kv ]
-                                                                            |))
-                                                                            (BinOp.Panic.sub (|
+                                                                            |),
+                                                                            BinOp.Panic.sub (|
                                                                               Integer.Usize,
                                                                               M.read (|
                                                                                 M.get_constant (|
                                                                                   "alloc::collections::btree::map::MIN_LEN"
                                                                                 |)
                                                                               |),
-                                                                              Value.Integer 1
-                                                                            |)))
+                                                                              M.of_value (|
+                                                                                Value.Integer 1
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -755,8 +802,10 @@ Module collections.
                                                                         |),
                                                                         [
                                                                           M.read (|
-                                                                            Value.String
-                                                                              "assertion failed: right_parent_kv.left_child_len() == MIN_LEN - 1"
+                                                                            M.of_value (|
+                                                                              Value.String
+                                                                                "assertion failed: right_parent_kv.left_child_len() == MIN_LEN - 1"
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -764,17 +813,23 @@ Module collections.
                                                                   |)));
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                                  (M.alloc (|
+                                                                    M.of_value (| Value.Tuple [] |)
+                                                                  |)))
                                                             ]
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)));
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.alloc (| Value.Tuple [] |)))
+                                                        (M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)))
                                                   ]
                                                 |) in
                                               M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -810,9 +865,11 @@ Module collections.
                                                           |),
                                                           [
                                                             M.read (| right_parent_kv |);
-                                                            Value.StructTuple
-                                                              "alloc::collections::btree::node::LeftOrRight::Left"
-                                                              [ M.read (| idx |) ];
+                                                            M.of_value (|
+                                                              Value.StructTuple
+                                                                "alloc::collections::btree::node::LeftOrRight::Left"
+                                                                [ A.to_value (M.read (| idx |)) ]
+                                                            |);
                                                             M.call_closure (|
                                                               M.get_trait_method (|
                                                                 "core::clone::Clone",
@@ -830,14 +887,18 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let _ :=
                                                         M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      Value.Bool true
+                                                                      M.of_value (|
+                                                                        Value.Bool true
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -846,16 +907,20 @@ Module collections.
                                                                   |) in
                                                                 let _ :=
                                                                   M.match_operator (|
-                                                                    M.alloc (| Value.Tuple [] |),
+                                                                    M.alloc (|
+                                                                      M.of_value (|
+                                                                        Value.Tuple []
+                                                                      |)
+                                                                    |),
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                UnOp.Pure.not
-                                                                                  (BinOp.Pure.gt
-                                                                                    (M.call_closure (|
+                                                                                UnOp.Pure.not (|
+                                                                                  BinOp.Pure.gt (|
+                                                                                    M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -867,12 +932,14 @@ Module collections.
                                                                                       [
                                                                                         right_parent_kv
                                                                                       ]
-                                                                                    |))
-                                                                                    (M.read (|
+                                                                                    |),
+                                                                                    M.read (|
                                                                                       M.get_constant (|
                                                                                         "alloc::collections::btree::map::MIN_LEN"
                                                                                       |)
-                                                                                    |)))
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -888,8 +955,10 @@ Module collections.
                                                                                 |),
                                                                                 [
                                                                                   M.read (|
-                                                                                    Value.String
-                                                                                      "assertion failed: right_parent_kv.right_child_len() > MIN_LEN"
+                                                                                    M.of_value (|
+                                                                                      Value.String
+                                                                                        "assertion failed: right_parent_kv.right_child_len() > MIN_LEN"
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -898,14 +967,20 @@ Module collections.
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (M.alloc (|
-                                                                            Value.Tuple []
+                                                                            M.of_value (|
+                                                                              Value.Tuple []
+                                                                            |)
                                                                           |)))
                                                                     ]
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)));
+                                                                M.alloc (|
+                                                                  M.of_value (| Value.Tuple [] |)
+                                                                |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  M.of_value (| Value.Tuple [] |)
+                                                                |)))
                                                           ]
                                                         |) in
                                                       M.alloc (|
@@ -993,7 +1068,7 @@ Module collections.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
@@ -1078,15 +1153,15 @@ Module collections.
                                             |) in
                                           let parent := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.call_closure (|
+                                                        UnOp.Pure.not (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -1149,7 +1224,8 @@ Module collections.
                                                               |);
                                                               M.read (| alloc |)
                                                             ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -1168,22 +1244,31 @@ Module collections.
                                                         |),
                                                         [
                                                           M.read (| handle_emptied_internal_root |);
-                                                          Value.Tuple []
+                                                          M.of_value (| Value.Tuple [] |)
                                                         ]
                                                       |)
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)));
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                     ]
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [ M.read (| old_kv |); M.read (| pos |) ] |)))
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| old_kv |)); A.to_value (M.read (| pos |)) ]
+                          |)
+                        |)))
                   ]
                 |)
               |)))
@@ -1232,7 +1317,7 @@ Module collections.
                 (old_kv, pos)
             }
         *)
-        Definition remove_internal_kv (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition remove_internal_kv (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self K V in
           match τ, α with
           | [ F; A ], [ self; handle_emptied_internal_root; alloc ] =>
@@ -1561,7 +1646,12 @@ Module collections.
                               [ M.read (| internal |) ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [ M.read (| old_kv |); M.read (| pos |) ] |)))
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| old_kv |)); A.to_value (M.read (| pos |)) ]
+                          |)
+                        |)))
                   ]
                 |)
               |)))

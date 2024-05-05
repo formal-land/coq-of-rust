@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_convert_From_i32_for_from_Number.
   Definition Self : Ty.t := Ty.path "from::Number".
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -21,4 +21,4 @@ Module Impl_core_convert_From_i32_for_from_Number.
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_i32_for_from_Number.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

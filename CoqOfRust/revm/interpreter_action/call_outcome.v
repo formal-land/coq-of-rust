@@ -19,49 +19,53 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
-              [
-                ("result",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "revm_interpreter::interpreter::InterpreterResult",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                        "result"
-                      |)
-                    ]
-                  |));
-                ("memory_offset",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                        "memory_offset"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
+                [
+                  ("result",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "revm_interpreter::interpreter::InterpreterResult",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                            "result"
+                          |)
+                        ]
+                      |)));
+                  ("memory_offset",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                            "memory_offset"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -78,7 +82,7 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -92,25 +96,27 @@ Module interpreter_action.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "CallOutcome" |);
-                M.read (| Value.String "result" |);
+                M.read (| M.of_value (| Value.String "CallOutcome" |) |);
+                M.read (| M.of_value (| Value.String "result" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
                     "result"
-                  |));
-                M.read (| Value.String "memory_offset" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "memory_offset" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
                       "memory_offset"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -141,7 +147,7 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -220,20 +226,21 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -262,15 +269,20 @@ Module interpreter_action.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ result; memory_offset ] =>
           ltac:(M.monadic
             (let result := M.alloc (| result |) in
             let memory_offset := M.alloc (| memory_offset |) in
-            Value.StructRecord
-              "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
-              [ ("result", M.read (| result |)); ("memory_offset", M.read (| memory_offset |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
+                [
+                  ("result", A.to_value (M.read (| result |)));
+                  ("memory_offset", A.to_value (M.read (| memory_offset |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -281,7 +293,7 @@ Module interpreter_action.
               &self.result.result
           }
       *)
-      Definition instruction_result (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition instruction_result (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -306,7 +318,7 @@ Module interpreter_action.
               self.result.gas
           }
       *)
-      Definition gas (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gas (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -332,7 +344,7 @@ Module interpreter_action.
               &self.result.output
           }
       *)
-      Definition output (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition output (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -356,7 +368,7 @@ Module interpreter_action.
               self.memory_offset.start
           }
       *)
-      Definition memory_start (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition memory_start (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -383,7 +395,7 @@ Module interpreter_action.
               self.memory_offset.len()
           }
       *)
-      Definition memory_length (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition memory_length (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic

@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_call_builder_AccountId.
   Definition Self : Ty.t := Ty.path "call_builder::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,7 +24,7 @@ End Impl_core_default_Default_for_call_builder_AccountId.
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
   Definition Self : Ty.t := Ty.path "call_builder::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -75,7 +75,7 @@ Enum LangError
 Module Impl_call_builder_Selector.
   Definition Self : Ty.t := Ty.path "call_builder::Selector".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
 End Impl_call_builder_Selector.
@@ -90,7 +90,7 @@ End Impl_call_builder_Selector.
 Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   Definition Self : Ty.t := Ty.path "call_builder::CallBuilderTest".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -103,24 +103,24 @@ End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 Module Impl_call_builder_CallBuilderTest.
   Definition Self : Ty.t := Ty.path "call_builder::CallBuilderTest".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter call : (list Ty.t) -> (list Value.t) -> M.
+  Parameter call : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
   
-  Parameter invoke : (list Ty.t) -> (list Value.t) -> M.
+  Parameter invoke : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
   
-  Parameter call_instantiate : (list Ty.t) -> (list Value.t) -> M.
+  Parameter call_instantiate : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_call_instantiate :
     M.IsAssociatedFunction Self "call_instantiate" call_instantiate.
   
-  Parameter call_instantiate_fallible : (list Ty.t) -> (list Value.t) -> M.
+  Parameter call_instantiate_fallible : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_call_instantiate_fallible :
     M.IsAssociatedFunction Self "call_instantiate_fallible" call_instantiate_fallible.

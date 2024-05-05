@@ -31,7 +31,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -63,7 +63,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -95,7 +95,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -127,7 +127,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -159,7 +159,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -191,7 +191,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -223,7 +223,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -255,7 +255,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -287,7 +287,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -319,7 +319,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -351,7 +351,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -383,7 +383,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -426,7 +426,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -458,7 +458,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -490,7 +490,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -522,7 +522,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -554,7 +554,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -586,7 +586,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -618,7 +618,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -650,7 +650,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -682,7 +682,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -714,7 +714,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -746,7 +746,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -778,7 +778,7 @@ Module convert.
                           unsafe { crate::intrinsics::float_to_int_unchecked(self) }
                       }
       *)
-      Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -809,12 +809,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -834,12 +834,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -859,12 +859,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -884,12 +884,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -909,12 +909,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -934,12 +934,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -959,12 +959,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -984,12 +984,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1009,12 +1009,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1034,12 +1034,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1059,12 +1059,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1084,12 +1084,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1109,12 +1109,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1134,12 +1134,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1159,12 +1159,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1184,12 +1184,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1209,12 +1209,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1234,12 +1234,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1259,12 +1259,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1284,12 +1284,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1309,12 +1309,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1334,12 +1334,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1359,12 +1359,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1384,12 +1384,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1409,12 +1409,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1434,12 +1434,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1459,12 +1459,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1484,12 +1484,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1509,12 +1509,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1534,12 +1534,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1559,12 +1559,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1584,12 +1584,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1609,12 +1609,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1634,12 +1634,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1659,12 +1659,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1684,12 +1684,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1709,12 +1709,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1734,12 +1734,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1759,12 +1759,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1784,12 +1784,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1809,12 +1809,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1834,12 +1834,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1859,12 +1859,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1884,12 +1884,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1909,12 +1909,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1934,12 +1934,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1959,12 +1959,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1984,12 +1984,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2009,12 +2009,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2034,12 +2034,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2059,12 +2059,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2084,12 +2084,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2109,12 +2109,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2134,12 +2134,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2159,12 +2159,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2184,12 +2184,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2209,12 +2209,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2234,12 +2234,12 @@ Module convert.
                       small as Self
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.rust_cast (| M.read (| small |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2259,12 +2259,12 @@ Module convert.
               small as u8 as Self
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.rust_cast (M.read (| small |)))))
+            M.rust_cast (| M.rust_cast (| M.read (| small |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2284,12 +2284,12 @@ Module convert.
               small as u8 as Self
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.rust_cast (M.read (| small |)))))
+            M.rust_cast (| M.rust_cast (| M.read (| small |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2316,37 +2316,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2378,37 +2389,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2440,37 +2462,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2502,37 +2535,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2564,37 +2608,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2626,37 +2681,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2688,37 +2754,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2750,37 +2827,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2812,37 +2900,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2874,37 +2973,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2938,18 +3048,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2957,23 +3071,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3007,18 +3132,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3026,23 +3155,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3076,18 +3216,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3095,23 +3239,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3145,18 +3300,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3164,23 +3323,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3214,18 +3384,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3233,23 +3407,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3283,18 +3468,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3302,23 +3491,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3352,18 +3552,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3371,23 +3575,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3421,18 +3636,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3440,23 +3659,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3490,18 +3720,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3509,23 +3743,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3559,18 +3804,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3578,23 +3827,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3626,37 +3886,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3688,37 +3959,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3750,37 +4032,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3812,37 +4105,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3874,37 +4178,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3936,37 +4251,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -3998,37 +4324,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4060,37 +4397,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4122,37 +4470,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4184,37 +4543,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4246,37 +4616,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4308,37 +4689,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4370,37 +4762,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4432,37 +4835,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4494,37 +4908,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -4556,32 +4981,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4613,32 +5051,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4670,32 +5121,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4727,32 +5191,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4784,32 +5261,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4841,32 +5331,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4898,32 +5401,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4955,32 +5471,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -5012,32 +5541,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -5069,32 +5611,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -5126,32 +5681,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -5183,32 +5751,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -5240,32 +5821,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -5297,32 +5891,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -5354,32 +5961,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -5413,18 +6033,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5432,23 +6056,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -5482,18 +6117,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5501,23 +6140,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -5551,18 +6201,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5570,23 +6224,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -5620,18 +6285,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5639,23 +6308,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -5689,18 +6369,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5708,23 +6392,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -5758,18 +6453,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5777,23 +6476,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -5827,18 +6537,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5846,23 +6560,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -5896,18 +6621,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5915,23 +6644,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -5965,18 +6705,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5984,23 +6728,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -6034,18 +6789,22 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               let min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                |) in
               let max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -6053,23 +6812,34 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic
+                                (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -6101,37 +6871,48 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.Pure.gt (|
+                              M.read (| u |),
+                              M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -6163,32 +6944,45 @@ Module convert.
                       }
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ u ] =>
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::num::error::TryFromIntError"
+                                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -6221,41 +7015,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6287,41 +7089,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6353,41 +7163,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6415,12 +7233,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -6444,12 +7266,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -6477,41 +7303,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6543,41 +7377,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6609,41 +7451,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6675,41 +7525,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6737,12 +7595,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -6772,18 +7634,22 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 let min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                  |) in
                 let max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                  |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -6791,27 +7657,35 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic
+                                  (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6845,18 +7719,22 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 let min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                  |) in
                 let max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                  |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -6864,27 +7742,35 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic
+                                  (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6918,18 +7804,22 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 let min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                  |) in
                 let max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                  |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -6937,27 +7827,35 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic
+                                  (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -6989,36 +7887,46 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7050,36 +7958,46 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7113,18 +8031,22 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 let min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                  |) in
                 let max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                  |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -7132,27 +8054,35 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic
+                                  (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7186,18 +8116,22 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 let min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                  |) in
                 let max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                  |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -7205,27 +8139,35 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic
+                                  (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7259,18 +8201,22 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 let min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                  |) in
                 let max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                  |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -7278,27 +8224,35 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic
+                                  (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7326,12 +8280,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -7355,12 +8313,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -7384,12 +8346,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -7413,12 +8379,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -7446,41 +8416,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7512,36 +8490,46 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7573,36 +8561,46 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7634,36 +8632,46 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7695,36 +8703,46 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.ge (| M.read (| u |), M.of_value (| Value.Integer 0 |) |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7758,18 +8776,22 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 let min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                  |) in
                 let max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                  |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -7777,27 +8799,35 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic
+                                  (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7825,12 +8855,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -7854,12 +8888,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -7887,41 +8925,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -7953,41 +8999,49 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.Pure.gt (|
+                                M.read (| u |),
+                                M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -8015,12 +9069,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -8044,12 +9102,16 @@ Module convert.
                         Ok(value as Self)
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.rust_cast (| M.read (| value |) |)) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -8079,18 +9141,22 @@ Module convert.
                         }
                     }
         *)
-        Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ u ] =>
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
                 let min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+                  |) in
                 let max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.rust_cast (| M.read (| M.get_constant (| "core::num::MAX" |) |) |)
+                  |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -8098,27 +9164,35 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.Pure.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic
+                                  (BinOp.Pure.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "core::num::error::TryFromIntError"
-                                [ Value.Tuple [] ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::num::error::TryFromIntError"
+                                      [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.rust_cast (| M.read (| u |) |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -8147,7 +9221,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8202,7 +9276,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8257,7 +9331,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8312,7 +9386,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8367,7 +9441,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8422,7 +9496,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8477,7 +9551,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8532,7 +9606,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8587,7 +9661,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8642,7 +9716,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8697,7 +9771,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8752,7 +9826,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8807,7 +9881,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8862,7 +9936,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8917,7 +9991,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -8972,7 +10046,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9027,7 +10101,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9082,7 +10156,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9137,7 +10211,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9192,7 +10266,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9247,7 +10321,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9302,7 +10376,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9357,7 +10431,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9412,7 +10486,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9467,7 +10541,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9522,7 +10596,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9577,7 +10651,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9632,7 +10706,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9687,7 +10761,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9742,7 +10816,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9797,7 +10871,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9852,7 +10926,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9907,7 +10981,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -9962,7 +11036,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -10017,7 +11091,7 @@ Module convert.
                       }
                   }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ small ] =>
           ltac:(M.monadic
@@ -10072,7 +11146,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10094,7 +11168,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10120,7 +11198,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10142,7 +11220,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10168,7 +11250,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10190,7 +11272,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10216,7 +11302,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10238,7 +11324,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10264,7 +11354,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10286,7 +11376,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10312,7 +11406,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10334,7 +11428,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10360,7 +11458,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10382,7 +11480,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10408,7 +11510,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10430,7 +11532,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10456,7 +11562,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10478,7 +11584,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10504,7 +11614,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10526,7 +11636,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10552,7 +11666,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10574,7 +11688,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10600,7 +11718,7 @@ Module convert.
                       Self::new(value).ok_or(TryFromIntError(()))
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10622,7 +11740,11 @@ Module convert.
                   |),
                   [ M.read (| value |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::num::error::TryFromIntError"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10651,7 +11773,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10689,8 +11811,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -10711,7 +11833,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10740,7 +11863,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10778,8 +11901,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -10800,7 +11923,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10829,7 +11953,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10867,8 +11991,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -10889,7 +12013,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10918,7 +12043,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -10956,8 +12081,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -10978,7 +12103,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11007,7 +12133,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11045,8 +12171,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11067,7 +12193,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11096,7 +12223,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11134,8 +12261,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11156,7 +12283,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11185,7 +12313,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11223,8 +12351,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11245,7 +12373,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11274,7 +12403,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11312,8 +12441,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11334,7 +12463,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11363,7 +12493,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11401,8 +12531,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11423,7 +12553,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11452,7 +12583,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11490,8 +12621,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11512,7 +12643,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11541,7 +12673,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11579,8 +12711,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11601,7 +12733,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11630,7 +12763,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11668,8 +12801,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11690,7 +12823,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11719,7 +12853,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11757,8 +12891,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11779,7 +12913,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11808,7 +12943,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11846,8 +12981,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11868,7 +13003,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11897,7 +13033,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -11935,8 +13071,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -11957,7 +13093,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11986,7 +13123,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12024,8 +13161,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12046,7 +13183,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12075,7 +13213,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12113,8 +13251,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12135,7 +13273,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12164,7 +13303,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12202,8 +13341,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12224,7 +13363,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12253,7 +13393,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12291,8 +13431,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12313,7 +13453,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12342,7 +13483,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12380,8 +13521,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12402,7 +13543,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12431,7 +13573,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12469,8 +13611,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12491,7 +13633,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12520,7 +13663,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12558,8 +13701,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12580,7 +13723,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12609,7 +13753,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12647,8 +13791,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12669,7 +13813,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12698,7 +13843,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12736,8 +13881,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12758,7 +13903,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12787,7 +13933,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12825,8 +13971,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12847,7 +13993,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12876,7 +14023,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -12914,8 +14061,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -12936,7 +14083,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12965,7 +14113,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13003,8 +14151,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13025,7 +14173,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13054,7 +14203,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13092,8 +14241,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13114,7 +14263,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13143,7 +14293,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13181,8 +14331,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13203,7 +14353,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13232,7 +14383,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13270,8 +14421,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13292,7 +14443,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13321,7 +14473,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13359,8 +14511,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13381,7 +14533,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13410,7 +14563,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13448,8 +14601,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13470,7 +14623,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13499,7 +14653,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13537,8 +14691,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13559,7 +14713,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13588,7 +14743,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13626,8 +14781,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13648,7 +14803,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13677,7 +14833,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13715,8 +14871,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13737,7 +14893,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13766,7 +14923,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13804,8 +14961,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13826,7 +14983,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13855,7 +15013,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13893,8 +15051,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -13915,7 +15073,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13944,7 +15103,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -13982,8 +15141,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14004,7 +15163,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14033,7 +15193,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14071,8 +15231,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14093,7 +15253,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14122,7 +15283,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14160,8 +15321,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14182,7 +15343,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14211,7 +15373,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14249,8 +15411,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14271,7 +15433,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14300,7 +15463,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14338,8 +15501,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14360,7 +15523,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14389,7 +15553,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14427,8 +15591,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14449,7 +15613,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14478,7 +15643,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14516,8 +15681,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14538,7 +15703,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14567,7 +15733,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14605,8 +15771,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14627,7 +15793,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14656,7 +15823,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14694,8 +15861,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14716,7 +15883,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14745,7 +15913,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14783,8 +15951,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14805,7 +15973,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14834,7 +16003,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14872,8 +16041,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14894,7 +16063,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14923,7 +16093,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -14961,8 +16131,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -14983,7 +16153,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15012,7 +16183,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15050,8 +16221,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15072,7 +16243,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15101,7 +16273,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15139,8 +16311,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15161,7 +16333,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15190,7 +16363,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15228,8 +16401,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15250,7 +16423,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15279,7 +16453,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15317,8 +16491,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15339,7 +16513,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15368,7 +16543,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15406,8 +16581,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15428,7 +16603,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15457,7 +16633,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15495,8 +16671,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15517,7 +16693,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15546,7 +16723,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15584,8 +16761,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15606,7 +16783,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15635,7 +16813,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15673,8 +16851,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15695,7 +16873,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15724,7 +16903,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15762,8 +16941,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15784,7 +16963,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15813,7 +16993,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15851,8 +17031,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15873,7 +17053,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15902,7 +17083,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -15940,8 +17121,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -15962,7 +17143,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15991,7 +17173,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16029,8 +17211,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16051,7 +17233,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16080,7 +17263,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16118,8 +17301,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16140,7 +17323,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16169,7 +17353,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16207,8 +17391,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16229,7 +17413,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16258,7 +17443,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16296,8 +17481,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16318,7 +17503,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16347,7 +17533,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16385,8 +17571,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16407,7 +17593,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16436,7 +17623,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16474,8 +17661,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16496,7 +17683,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16525,7 +17713,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16563,8 +17751,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16585,7 +17773,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16614,7 +17803,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16652,8 +17841,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16674,7 +17863,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16703,7 +17893,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16741,8 +17931,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16763,7 +17953,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16792,7 +17983,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16830,8 +18021,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16852,7 +18043,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16881,7 +18073,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -16919,8 +18111,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -16941,7 +18133,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -16970,7 +18163,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17008,8 +18201,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17030,7 +18223,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17059,7 +18253,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17097,8 +18291,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17119,7 +18313,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17148,7 +18343,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17186,8 +18381,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17208,7 +18403,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17237,7 +18433,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17275,8 +18471,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17297,7 +18493,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17326,7 +18523,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17364,8 +18561,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17386,7 +18583,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17415,7 +18613,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17453,8 +18651,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17475,7 +18673,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17504,7 +18703,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17542,8 +18741,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17564,7 +18763,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17593,7 +18793,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17631,8 +18831,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17653,7 +18853,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17682,7 +18883,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17720,8 +18921,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17742,7 +18943,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17771,7 +18973,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17809,8 +19011,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17831,7 +19033,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17860,7 +19063,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17898,8 +19101,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -17920,7 +19123,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17949,7 +19153,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -17987,8 +19191,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18009,7 +19213,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18038,7 +19243,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18076,8 +19281,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18098,7 +19303,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18127,7 +19333,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18165,8 +19371,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18187,7 +19393,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18216,7 +19423,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18254,8 +19461,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18276,7 +19483,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18305,7 +19513,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18343,8 +19551,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18365,7 +19573,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18394,7 +19603,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18432,8 +19641,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18454,7 +19663,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18483,7 +19693,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18521,8 +19731,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18543,7 +19753,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18572,7 +19783,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18610,8 +19821,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18632,7 +19843,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18661,7 +19873,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18699,8 +19911,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18721,7 +19933,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18750,7 +19963,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18788,8 +20001,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18810,7 +20023,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18839,7 +20053,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18877,8 +20091,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18899,7 +20113,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -18928,7 +20143,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -18966,8 +20181,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -18988,7 +20203,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -19017,7 +20233,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -19055,8 +20271,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -19077,7 +20293,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -19106,7 +20323,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -19144,8 +20361,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -19166,7 +20383,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -19195,7 +20413,7 @@ Module convert.
                       })
                   }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
@@ -19233,8 +20451,8 @@ Module convert.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -19255,7 +20473,8 @@ Module convert.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible

@@ -46,7 +46,7 @@ Module collections.
                 }
             }
         *)
-        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T I A in
           match τ, α with
           | [], [ self; iter ] =>
@@ -57,7 +57,7 @@ Module collections.
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -118,7 +118,8 @@ Module collections.
                                                 "saturating_add",
                                                 []
                                               |),
-                                              [ M.read (| lower |); Value.Integer 1 ]
+                                              [ M.read (| lower |); M.of_value (| Value.Integer 1 |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -137,22 +138,22 @@ Module collections.
                                     M.loop (|
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.lt
-                                                        (M.read (|
+                                                      BinOp.Pure.lt (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.read (| self |),
                                                             "alloc::collections::vec_deque::VecDeque",
                                                             "len"
                                                           |)
-                                                        |))
-                                                        (M.call_closure (|
+                                                        |),
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -162,7 +163,8 @@ Module collections.
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -206,7 +208,9 @@ Module collections.
                                                               ]
                                                             |)
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)))
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)))
                                                   ]
                                                 |)));
                                             fun γ =>
@@ -220,7 +224,7 @@ Module collections.
                                                             M.read (| M.break (||) |)
                                                           |)
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                                     |)
                                                   |)
                                                 |)))
@@ -236,7 +240,7 @@ Module collections.
                                 M.read (|
                                   let _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                 |)
                               |)
                             |)))
@@ -291,7 +295,7 @@ Module collections.
                 }
             }
         *)
-        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T I A in
           match τ, α with
           | [], [ self; iter ] =>
@@ -320,7 +324,7 @@ Module collections.
                         let low := M.copy (| γ0_0 |) in
                         let high := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -334,11 +338,13 @@ Module collections.
                                 let additional := M.copy (| γ0_0 |) in
                                 let _ :=
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ |),
@@ -346,7 +352,12 @@ Module collections.
                                             |) in
                                           let _ :=
                                             M.match_operator (|
-                                              M.alloc (| Value.Tuple [ low; additional ] |),
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Tuple
+                                                    [ A.to_value low; A.to_value additional ]
+                                                |)
+                                              |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -357,21 +368,23 @@ Module collections.
                                                     let left_val := M.copy (| γ0_0 |) in
                                                     let right_val := M.copy (| γ0_1 |) in
                                                     M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (BinOp.Pure.eq
-                                                                      (M.read (|
+                                                                  UnOp.Pure.not (|
+                                                                    BinOp.Pure.eq (|
+                                                                      M.read (|
                                                                         M.read (| left_val |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.read (| right_val |)
-                                                                      |)))
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -383,9 +396,11 @@ Module collections.
                                                                 M.read (|
                                                                   let kind :=
                                                                     M.alloc (|
-                                                                      Value.StructTuple
-                                                                        "core::panicking::AssertKind::Eq"
-                                                                        []
+                                                                      M.of_value (|
+                                                                        Value.StructTuple
+                                                                          "core::panicking::AssertKind::Eq"
+                                                                          []
+                                                                      |)
                                                                     |) in
                                                                   M.alloc (|
                                                                     M.call_closure (|
@@ -400,72 +415,89 @@ Module collections.
                                                                         M.read (| kind |);
                                                                         M.read (| left_val |);
                                                                         M.read (| right_val |);
-                                                                        Value.StructTuple
-                                                                          "core::option::Option::Some"
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::Arguments",
-                                                                                "new_v1",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "TrustedLen iterator's size hint is not exact: "
-                                                                                        |)
-                                                                                      ]
-                                                                                  |));
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Argument",
-                                                                                            "new_debug",
+                                                                        M.of_value (|
+                                                                          Value.StructTuple
+                                                                            "core::option::Option::Some"
+                                                                            [
+                                                                              A.to_value
+                                                                                (M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_v1",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    (* Unsize *)
+                                                                                    M.pointer_coercion (|
+                                                                                      M.alloc (|
+                                                                                        M.of_value (|
+                                                                                          Value.Array
                                                                                             [
-                                                                                              Ty.tuple
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "usize";
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "core::option::Option")
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "usize"
-                                                                                                    ]
-                                                                                                ]
-                                                                                            ]
-                                                                                          |),
-                                                                                          [
-                                                                                            M.alloc (|
-                                                                                              Value.Tuple
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    low
-                                                                                                  |);
-                                                                                                  M.read (|
-                                                                                                    high
+                                                                                              A.to_value
+                                                                                                (M.read (|
+                                                                                                  M.of_value (|
+                                                                                                    Value.String
+                                                                                                      "TrustedLen iterator's size hint is not exact: "
                                                                                                   |)
-                                                                                                ]
-                                                                                            |)
-                                                                                          ]
+                                                                                                |))
+                                                                                            ]
                                                                                         |)
-                                                                                      ]
-                                                                                  |))
-                                                                              ]
-                                                                            |)
-                                                                          ]
+                                                                                      |)
+                                                                                    |);
+                                                                                    (* Unsize *)
+                                                                                    M.pointer_coercion (|
+                                                                                      M.alloc (|
+                                                                                        M.of_value (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              A.to_value
+                                                                                                (M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
+                                                                                                    "new_debug",
+                                                                                                    [
+                                                                                                      Ty.tuple
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "usize";
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "core::option::Option")
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "usize"
+                                                                                                            ]
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    M.alloc (|
+                                                                                                      M.of_value (|
+                                                                                                        Value.Tuple
+                                                                                                          [
+                                                                                                            A.to_value
+                                                                                                              (M.read (|
+                                                                                                                low
+                                                                                                              |));
+                                                                                                            A.to_value
+                                                                                                              (M.read (|
+                                                                                                                high
+                                                                                                              |))
+                                                                                                          ]
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  ]
+                                                                                                |))
+                                                                                            ]
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |))
+                                                                            ]
+                                                                        |)
                                                                       ]
                                                                     |)
                                                                   |)
@@ -474,13 +506,17 @@ Module collections.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)))
                                                       ]
                                                     |)))
                                               ]
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                     ]
                                   |) in
                                 let _ :=
@@ -534,11 +570,13 @@ Module collections.
                                   |) in
                                 let _ :=
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ |),
@@ -546,7 +584,12 @@ Module collections.
                                             |) in
                                           let _ :=
                                             M.match_operator (|
-                                              M.alloc (| Value.Tuple [ additional; written ] |),
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Tuple
+                                                    [ A.to_value additional; A.to_value written ]
+                                                |)
+                                              |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -557,21 +600,23 @@ Module collections.
                                                     let left_val := M.copy (| γ0_0 |) in
                                                     let right_val := M.copy (| γ0_1 |) in
                                                     M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (BinOp.Pure.eq
-                                                                      (M.read (|
+                                                                  UnOp.Pure.not (|
+                                                                    BinOp.Pure.eq (|
+                                                                      M.read (|
                                                                         M.read (| left_val |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.read (| right_val |)
-                                                                      |)))
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -583,9 +628,11 @@ Module collections.
                                                                 M.read (|
                                                                   let kind :=
                                                                     M.alloc (|
-                                                                      Value.StructTuple
-                                                                        "core::panicking::AssertKind::Eq"
-                                                                        []
+                                                                      M.of_value (|
+                                                                        Value.StructTuple
+                                                                          "core::panicking::AssertKind::Eq"
+                                                                          []
+                                                                      |)
                                                                     |) in
                                                                   M.alloc (|
                                                                     M.call_closure (|
@@ -600,31 +647,40 @@ Module collections.
                                                                         M.read (| kind |);
                                                                         M.read (| left_val |);
                                                                         M.read (| right_val |);
-                                                                        Value.StructTuple
-                                                                          "core::option::Option::Some"
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::Arguments",
-                                                                                "new_const",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "The number of items written to VecDeque doesn't match the TrustedLen size hint"
+                                                                        M.of_value (|
+                                                                          Value.StructTuple
+                                                                            "core::option::Option::Some"
+                                                                            [
+                                                                              A.to_value
+                                                                                (M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_const",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    (* Unsize *)
+                                                                                    M.pointer_coercion (|
+                                                                                      M.alloc (|
+                                                                                        M.of_value (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              A.to_value
+                                                                                                (M.read (|
+                                                                                                  M.of_value (|
+                                                                                                    Value.String
+                                                                                                      "The number of items written to VecDeque doesn't match the TrustedLen size hint"
+                                                                                                  |)
+                                                                                                |))
+                                                                                            ]
                                                                                         |)
-                                                                                      ]
-                                                                                  |))
-                                                                              ]
-                                                                            |)
-                                                                          ]
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |))
+                                                                            ]
+                                                                        |)
                                                                       ]
                                                                     |)
                                                                   |)
@@ -633,16 +689,20 @@ Module collections.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)))
                                                       ]
                                                     |)))
                                               ]
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                     ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
@@ -658,11 +718,21 @@ Module collections.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "capacity overflow" |) ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (|
+                                                            Value.String "capacity overflow"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -702,7 +772,7 @@ Module collections.
                 iterator.forget_remaining_elements();
             }
         *)
-        Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T A in
           match τ, α with
           | [], [ self; iterator ] =>
@@ -798,7 +868,7 @@ Module collections.
                         |)
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -812,7 +882,7 @@ Module collections.
                       [ iterator ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.
@@ -842,7 +912,7 @@ Module collections.
                 self.spec_extend(iterator.copied())
             }
         *)
-        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T I A in
           match τ, α with
           | [], [ self; iterator ] =>
@@ -898,7 +968,7 @@ Module collections.
                 }
             }
         *)
-        Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T A in
           match τ, α with
           | [], [ self; iterator ] =>
@@ -987,7 +1057,7 @@ Module collections.
                       |)
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.

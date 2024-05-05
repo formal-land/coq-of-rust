@@ -22,42 +22,52 @@ Module Impl_custom_allocator_CustomAllocator.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord
-          "custom_allocator::CustomAllocator"
-          [
-            ("value",
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "bool" ],
-                  "into_vec",
-                  [ Ty.path "alloc::alloc::Global" ]
-                |),
-                [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+        M.of_value (|
+          Value.StructRecord
+            "custom_allocator::CustomAllocator"
+            [
+              ("value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [ Ty.path "bool" ],
+                      "into_vec",
+                      [ Ty.path "alloc::alloc::Global" ]
+                    |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.read (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                [
+                                  Ty.apply (Ty.path "array") [ Ty.path "bool" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              []
+                            |),
                             [
-                              Ty.apply (Ty.path "array") [ Ty.path "bool" ];
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
-                          []
-                        |),
-                        [ M.alloc (| Value.Array [ M.read (| init_value |) ] |) ]
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array [ A.to_value (M.read (| init_value |)) ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
                       |)
-                    |))
-                ]
-              |))
-          ]))
+                    ]
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -68,7 +78,7 @@ Module Impl_custom_allocator_CustomAllocator.
           Self::new(Default::default())
       }
   *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -91,7 +101,7 @@ Module Impl_custom_allocator_CustomAllocator.
           self.value[0] = !self.value[0];
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition flip (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -115,11 +125,11 @@ Module Impl_custom_allocator_CustomAllocator.
                     "custom_allocator::CustomAllocator",
                     "value"
                   |);
-                  Value.Integer 0
+                  M.of_value (| Value.Integer 0 |)
                 ]
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.Pure.not (|
+                M.read (|
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::Index",
@@ -136,12 +146,13 @@ Module Impl_custom_allocator_CustomAllocator.
                         "custom_allocator::CustomAllocator",
                         "value"
                       |);
-                      Value.Integer 0
+                      M.of_value (| Value.Integer 0 |)
                     ]
                   |)
-                |))
+                |)
+              |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -153,7 +164,7 @@ Module Impl_custom_allocator_CustomAllocator.
           self.value[0]
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -175,7 +186,7 @@ Module Impl_custom_allocator_CustomAllocator.
                 "custom_allocator::CustomAllocator",
                 "value"
               |);
-              Value.Integer 0
+              M.of_value (| Value.Integer 0 |)
             ]
           |)
         |)))

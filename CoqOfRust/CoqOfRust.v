@@ -34,10 +34,8 @@ Export List.ListNotations.
 Require Export CoqOfRust.M.
 Export M.Notations.
 
-Parameter pointer_coercion : string -> Value.t -> Value.t.
-
 (** We replace assembly blocks by this special axiom. *)
-Parameter InlineAssembly : Value.t.
+Parameter InlineAssembly : A.t.
 
 (* Require CoqOfRust.std.arch.
 Require CoqOfRust.std.ascii.

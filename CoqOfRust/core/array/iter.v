@@ -46,7 +46,7 @@ Module array.
               IntoIter { data, alive: IndexRange::zero_to(N) }
           }
       *)
-      Definition into_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -69,20 +69,23 @@ Module array.
                   |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "core::array::iter::IntoIter"
-                  [
-                    ("data", M.read (| data |));
-                    ("alive",
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::ops::index_range::IndexRange",
-                          "zero_to",
-                          []
-                        |),
-                        [ M.read (| M.get_constant (| "core::array::iter::N" |) |) ]
-                      |))
-                  ]
+                M.of_value (|
+                  Value.StructRecord
+                    "core::array::iter::IntoIter"
+                    [
+                      ("data", A.to_value (M.read (| data |)));
+                      ("alive",
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::ops::index_range::IndexRange",
+                              "zero_to",
+                              []
+                            |),
+                            [ M.read (| M.get_constant (| "core::array::iter::N" |) |) ]
+                          |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -110,7 +113,7 @@ Module array.
               IntoIterator::into_iter(array)
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ array ] =>
@@ -143,7 +146,7 @@ Module array.
               Self { data: buffer, alive }
           }
       *)
-      Definition new_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ buffer; initialized ] =>
@@ -178,9 +181,14 @@ Module array.
                   |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "core::array::iter::IntoIter"
-                  [ ("data", M.read (| buffer |)); ("alive", M.read (| alive |)) ]
+                M.of_value (|
+                  Value.StructRecord
+                    "core::array::iter::IntoIter"
+                    [
+                      ("data", A.to_value (M.read (| buffer |)));
+                      ("alive", A.to_value (M.read (| alive |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -200,7 +208,7 @@ Module array.
               unsafe { Self::new_unchecked(buffer, initialized) }
           }
       *)
-      Definition empty (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition empty (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
@@ -219,9 +227,14 @@ Module array.
                 |) in
               let initialized :=
                 M.alloc (|
-                  Value.StructRecord
-                    "core::ops::range::Range"
-                    [ ("start", Value.Integer 0); ("end_", Value.Integer 0) ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      [
+                        ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                        ("end_", A.to_value (M.of_value (| Value.Integer 0 |)))
+                      ]
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -250,7 +263,7 @@ Module array.
               }
           }
       *)
-      Definition as_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_slice (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -269,12 +282,13 @@ Module array.
                     |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::array::iter::IntoIter",
                           "data"
-                        |));
+                        |)
+                      |);
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -321,7 +335,7 @@ Module array.
               }
           }
       *)
-      Definition as_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -340,12 +354,13 @@ Module array.
                     |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::array::iter::IntoIter",
                           "data"
-                        |));
+                        |)
+                      |);
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -408,7 +423,7 @@ Module array.
               })
           }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -437,8 +452,8 @@ Module array.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -469,12 +484,13 @@ Module array.
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.SubPointer.get_struct_record_field (|
+                                        M.pointer_coercion (|
+                                          M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "core::array::iter::IntoIter",
                                             "data"
-                                          |));
+                                          |)
+                                        |);
                                         M.read (| idx |)
                                       ]
                                     |)
@@ -483,7 +499,8 @@ Module array.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -495,7 +512,7 @@ Module array.
               (len, Some(len))
           }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -516,11 +533,18 @@ Module array.
                   |)
                 |) in
               M.alloc (|
-                Value.Tuple
-                  [
-                    M.read (| len |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
-                  ]
+                M.of_value (|
+                  Value.Tuple
+                    [
+                      A.to_value (M.read (| len |));
+                      A.to_value
+                        (M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ A.to_value (M.read (| len |)) ]
+                        |))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -540,7 +564,7 @@ Module array.
               })
           }
       *)
-      Definition fold (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fold (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ Acc; Fold ], [ self; init; fold ] =>
@@ -569,18 +593,21 @@ Module array.
                     [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc ]
                   |),
                   [
-                    Value.StructTuple
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::array::iter::IntoIter",
-                          "alive"
-                        |)
-                      ];
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::iter::adapters::by_ref_sized::ByRefSized"
+                        [
+                          A.to_value
+                            (M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::array::iter::IntoIter",
+                              "alive"
+                            |))
+                        ]
+                    |);
                     M.read (| init |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
@@ -606,41 +633,46 @@ Module array.
                                               |),
                                               [
                                                 fold;
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| acc |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                          [ T ],
-                                                        "assume_init_read",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
+                                                M.of_value (|
+                                                  Value.Tuple
+                                                    [
+                                                      A.to_value (M.read (| acc |));
+                                                      A.to_value
+                                                        (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
-                                                              (Ty.path "slice")
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::maybe_uninit::MaybeUninit")
-                                                                  [ T ]
-                                                              ],
-                                                            "get_unchecked",
-                                                            [ Ty.path "usize" ]
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              [ T ],
+                                                            "assume_init_read",
+                                                            []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion (M.read (| data |));
-                                                            M.read (| idx |)
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                                      [ T ]
+                                                                  ],
+                                                                "get_unchecked",
+                                                                [ Ty.path "usize" ]
+                                                              |),
+                                                              [
+                                                                (* Unsize *)
+                                                                M.pointer_coercion (|
+                                                                  M.read (| data |)
+                                                                |);
+                                                                M.read (| idx |)
+                                                              ]
+                                                            |)
                                                           ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
+                                                        |))
+                                                    ]
+                                                |)
                                               ]
                                             |)))
                                       ]
@@ -648,7 +680,8 @@ Module array.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |)
               |)
@@ -661,7 +694,7 @@ Module array.
               self.len()
           }
       *)
-      Definition count (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -685,7 +718,7 @@ Module array.
               self.next_back()
           }
       *)
-      Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -720,7 +753,7 @@ Module array.
               NonZeroUsize::new(remaining).map_or(Ok(()), Err)
           }
       *)
-      Definition advance_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition advance_by (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; n ] =>
@@ -774,12 +807,13 @@ Module array.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
+                        M.pointer_coercion (|
+                          M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::array::iter::IntoIter",
                             "data"
-                          |));
+                          |)
+                        |);
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -803,7 +837,7 @@ Module array.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -831,8 +865,12 @@ Module array.
                       |),
                       [ M.read (| remaining |) ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |);
+                    M.constructor_as_closure (| "core::result::Result::Err" |)
                   ]
                 |)
               |)
@@ -846,7 +884,7 @@ Module array.
               unsafe { self.data.as_ptr().add(self.alive.start()).add(idx).cast::<T>().read() }
           }
       *)
-      Definition __iterator_get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition __iterator_get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; idx ] =>
@@ -894,12 +932,13 @@ Module array.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.SubPointer.get_struct_record_field (|
+                                M.pointer_coercion (|
+                                  M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::array::iter::IntoIter",
                                     "data"
-                                  |))
+                                  |)
+                                |)
                               ]
                             |);
                             M.call_closure (|
@@ -968,7 +1007,7 @@ Module array.
               })
           }
       *)
-      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -997,8 +1036,8 @@ Module array.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -1029,12 +1068,13 @@ Module array.
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.SubPointer.get_struct_record_field (|
+                                        M.pointer_coercion (|
+                                          M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "core::array::iter::IntoIter",
                                             "data"
-                                          |));
+                                          |)
+                                        |);
                                         M.read (| idx |)
                                       ]
                                     |)
@@ -1043,7 +1083,8 @@ Module array.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1063,7 +1104,7 @@ Module array.
               })
           }
       *)
-      Definition rfold (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rfold (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ Acc; Fold ], [ self; init; rfold ] =>
@@ -1092,18 +1133,21 @@ Module array.
                     [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc ]
                   |),
                   [
-                    Value.StructTuple
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::array::iter::IntoIter",
-                          "alive"
-                        |)
-                      ];
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::iter::adapters::by_ref_sized::ByRefSized"
+                        [
+                          A.to_value
+                            (M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::array::iter::IntoIter",
+                              "alive"
+                            |))
+                        ]
+                    |);
                     M.read (| init |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
@@ -1129,41 +1173,46 @@ Module array.
                                               |),
                                               [
                                                 rfold;
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| acc |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                          [ T ],
-                                                        "assume_init_read",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
+                                                M.of_value (|
+                                                  Value.Tuple
+                                                    [
+                                                      A.to_value (M.read (| acc |));
+                                                      A.to_value
+                                                        (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
-                                                              (Ty.path "slice")
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::maybe_uninit::MaybeUninit")
-                                                                  [ T ]
-                                                              ],
-                                                            "get_unchecked",
-                                                            [ Ty.path "usize" ]
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              [ T ],
+                                                            "assume_init_read",
+                                                            []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion (M.read (| data |));
-                                                            M.read (| idx |)
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                                      [ T ]
+                                                                  ],
+                                                                "get_unchecked",
+                                                                [ Ty.path "usize" ]
+                                                              |),
+                                                              [
+                                                                (* Unsize *)
+                                                                M.pointer_coercion (|
+                                                                  M.read (| data |)
+                                                                |);
+                                                                M.read (| idx |)
+                                                              ]
+                                                            |)
                                                           ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
+                                                        |))
+                                                    ]
+                                                |)
                                               ]
                                             |)))
                                       ]
@@ -1171,7 +1220,8 @@ Module array.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |)
               |)
@@ -1195,7 +1245,7 @@ Module array.
               NonZeroUsize::new(remaining).map_or(Ok(()), Err)
           }
       *)
-      Definition advance_back_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition advance_back_by (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; n ] =>
@@ -1249,12 +1299,13 @@ Module array.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
+                        M.pointer_coercion (|
+                          M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::array::iter::IntoIter",
                             "data"
-                          |));
+                          |)
+                        |);
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -1278,7 +1329,7 @@ Module array.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1306,8 +1357,12 @@ Module array.
                       |),
                       [ M.read (| remaining |) ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |);
+                    M.constructor_as_closure (| "core::result::Result::Err" |)
                   ]
                 |)
               |)
@@ -1340,7 +1395,7 @@ Module array.
               unsafe { ptr::drop_in_place(self.as_mut_slice()) }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1379,7 +1434,7 @@ Module array.
               self.alive.len()
           }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1407,7 +1462,7 @@ Module array.
               self.alive.is_empty()
           }
       *)
-      Definition is_empty (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1487,9 +1542,9 @@ Module array.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : A.t :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -1522,7 +1577,7 @@ Module array.
               new
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1531,28 +1586,32 @@ Module array.
             M.read (|
               let new :=
                 M.alloc (|
-                  Value.StructRecord
-                    "core::array::iter::IntoIter"
-                    [
-                      ("data",
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
-                            "uninit_array",
-                            []
-                          |),
-                          []
-                        |));
-                      ("alive",
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::ops::index_range::IndexRange",
-                            "zero_to",
-                            []
-                          |),
-                          [ Value.Integer 0 ]
-                        |))
-                    ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::array::iter::IntoIter"
+                      [
+                        ("data",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                                "uninit_array",
+                                []
+                              |),
+                              []
+                            |)));
+                        ("alive",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ops::index_range::IndexRange",
+                                "zero_to",
+                                []
+                              |),
+                              [ M.of_value (| Value.Integer 0 |) ]
+                            |)))
+                      ]
+                  |)
                 |) in
               let _ :=
                 M.use
@@ -1715,15 +1774,15 @@ Module array.
                                                       |)
                                                     ]
                                                   |),
-                                                  Value.Integer 1
+                                                  M.of_value (| Value.Integer 1 |)
                                                 |)
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -1751,7 +1810,7 @@ Module array.
               f.debug_tuple("IntoIter").field(&self.as_slice()).finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -1779,12 +1838,12 @@ Module array.
                           "debug_tuple",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
+                        [ M.read (| f |); M.read (| M.of_value (| Value.String "IntoIter" |) |) ]
                       |)
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
+                    M.pointer_coercion (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ T ],
@@ -1793,7 +1852,8 @@ Module array.
                           |),
                           [ M.read (| self |) ]
                         |)
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]

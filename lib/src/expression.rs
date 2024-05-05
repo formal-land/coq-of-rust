@@ -140,7 +140,7 @@ pub(crate) enum Expr {
 
 impl Expr {
     pub(crate) fn tt() -> Rc<Self> {
-        Rc::new(Expr::Tuple { elements: vec![] }).alloc()
+        Expr::Tuple { elements: vec![] }.of_value().alloc()
     }
 
     pub(crate) fn local_var(name: &str) -> Rc<Expr> {
@@ -169,6 +169,22 @@ impl Expr {
             func: Expr::local_var("M.alloc"),
             args: vec![self],
             kind: CallKind::Effectful,
+        })
+    }
+
+    pub(crate) fn of_value(self) -> Rc<Self> {
+        Rc::new(Expr::Call {
+            func: Expr::local_var("M.of_value"),
+            args: vec![Rc::new(self)],
+            kind: CallKind::Effectful,
+        })
+    }
+
+    pub(crate) fn to_value(self: &Rc<Self>) -> Rc<Self> {
+        Rc::new(Expr::Call {
+            func: Expr::local_var("A.to_value"),
+            args: vec![self.clone()],
+            kind: CallKind::Pure,
         })
     }
 
@@ -488,7 +504,7 @@ impl Expr {
                     };
                 }
 
-                coq::Expression::just_name("M.closure").apply(&coq::Expression::Function {
+                coq::Expression::just_name("M.closure").monadic_apply(&coq::Expression::Function {
                     parameters: vec![coq::Expression::just_name("γ")],
                     body: Rc::new(coq::Expression::monadic(&coq::Expression::Match {
                         scrutinees: vec![coq::Expression::just_name("γ")],

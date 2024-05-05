@@ -6,7 +6,7 @@ fn increase(number: i32) {
     println!("{}", number + 1);
 }
 *)
-Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
+Definition increase (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ number ] =>
     ltac:(M.monadic
@@ -22,42 +22,52 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.I32,
-                                      M.read (| number |),
-                                      Value.Integer 1
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        BinOp.Panic.add (|
+                                          Integer.I32,
+                                          M.read (| number |),
+                                          M.of_value (| Value.Integer 1 |)
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -67,7 +77,7 @@ fn decrease(number: i32) {
     println!("{}", number - 1);
 }
 *)
-Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
+Definition decrease (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ number ] =>
     ltac:(M.monadic
@@ -83,42 +93,52 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.I32,
-                                      M.read (| number |),
-                                      Value.Integer 1
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        BinOp.Panic.sub (|
+                                          Integer.I32,
+                                          M.read (| number |),
+                                          M.of_value (| Value.Integer 1 |)
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -134,7 +154,7 @@ match_args {{increase|decrease}} <integer>
     );
 }
 *)
-Definition help (τ : list Ty.t) (α : list Value.t) : M :=
+Definition help (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -149,28 +169,34 @@ Definition help (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String
-                                  "usage:
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (|
+                                      Value.String
+                                        "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-                              |)
-                            ]
-                        |))
+                                    |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -220,7 +246,7 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -275,24 +301,30 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "My name is 'match_args'. Try passing some arguments!
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "My name is 'match_args'. Try passing some arguments!
 "
-                                          |)
-                                        ]
-                                    |))
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |) in
-                    M.alloc (| Value.Tuple [] |)));
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
@@ -323,7 +355,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     "index",
                                     []
                                   |),
-                                  [ args; Value.Integer 1 ]
+                                  [ args; M.of_value (| Value.Integer 1 |) ]
                                 |)
                               ]
                             |)
@@ -357,18 +389,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "This is the answer!
-" |) ]
-                                          |))
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (|
+                                                        Value.String "This is the answer!
+"
+                                                      |)
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -384,19 +426,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "This is not the answer.
-" |)
-                                              ]
-                                          |))
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (|
+                                                        Value.String "This is not the answer.
+"
+                                                      |)
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |)));
                 fun γ =>
@@ -414,7 +465,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ args; Value.Integer 1 ]
+                          [ args; M.of_value (| Value.Integer 1 |) ]
                         |)
                       |) in
                     let num :=
@@ -429,7 +480,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ args; Value.Integer 2 ]
+                          [ args; M.of_value (| Value.Integer 2 |) ]
                         |)
                       |) in
                     let number :=
@@ -492,23 +543,29 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   |),
                                                   [
                                                     (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "error: second argument not an integer
+                                                    M.pointer_coercion (|
+                                                      M.alloc (|
+                                                        M.of_value (|
+                                                          Value.Array
+                                                            [
+                                                              A.to_value
+                                                                (M.read (|
+                                                                  M.of_value (|
+                                                                    Value.String
+                                                                      "error: second argument not an integer
 "
-                                                            |)
-                                                          ]
-                                                      |))
+                                                                  |)
+                                                                |))
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   ]
                                                 |)
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |) in
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                                       let _ :=
                                         M.alloc (|
                                           M.call_closure (|
@@ -519,7 +576,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             []
                                           |)
                                         |) in
-                                      M.return_ (| Value.Tuple [] |)
+                                      M.return_ (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
@@ -536,7 +593,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ M.read (| cmd |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                          [
+                            M.read (| cmd |);
+                            M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                          ]
                         |)
                       |),
                       [
@@ -582,22 +642,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         |),
                                         [
                                           (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "error: invalid command
+                                          M.pointer_coercion (|
+                                            M.alloc (|
+                                              M.of_value (|
+                                                Value.Array
+                                                  [
+                                                    A.to_value
+                                                      (M.read (|
+                                                        M.of_value (|
+                                                          Value.String "error: invalid command
 "
-                                                  |)
-                                                ]
-                                            |))
+                                                        |)
+                                                      |))
+                                                  ]
+                                              |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |) in
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                             let _ :=
                               M.alloc (|
                                 M.call_closure (|
@@ -605,7 +671,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |)));
                 fun γ =>
@@ -617,7 +683,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |)
           |)))

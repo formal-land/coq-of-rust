@@ -16,7 +16,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
           println!("> Dropping {}", self.name);
       }
   *)
-  Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition drop (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -32,43 +32,51 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "> Dropping " |);
-                                M.read (| Value.String "
-" |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (| M.of_value (| Value.String "> Dropping " |) |));
+                                  A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "drop::Droppable",
-                                      "name"
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "drop::Droppable",
+                                          "name"
+                                        |)
+                                      ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -112,28 +120,44 @@ fn main() {
     // (manually) `drop`ed
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let _a :=
           M.alloc (|
-            Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "a" |)) ]
+            M.of_value (|
+              Value.StructRecord
+                "drop::Droppable"
+                [ ("name", A.to_value (M.read (| M.of_value (| Value.String "a" |) |))) ]
+            |)
           |) in
         let _ :=
           let _b :=
             M.alloc (|
-              Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "b" |)) ]
+              M.of_value (|
+                Value.StructRecord
+                  "drop::Droppable"
+                  [ ("name", A.to_value (M.read (| M.of_value (| Value.String "b" |) |))) ]
+              |)
             |) in
           let _ :=
             let _c :=
               M.alloc (|
-                Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "c" |)) ]
+                M.of_value (|
+                  Value.StructRecord
+                    "drop::Droppable"
+                    [ ("name", A.to_value (M.read (| M.of_value (| Value.String "c" |) |))) ]
+                |)
               |) in
             let _d :=
               M.alloc (|
-                Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "d" |)) ]
+                M.of_value (|
+                  Value.StructRecord
+                    "drop::Droppable"
+                    [ ("name", A.to_value (M.read (| M.of_value (| Value.String "d" |) |))) ]
+                |)
               |) in
             let _ :=
               let _ :=
@@ -149,18 +173,27 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "Exiting block B
-" |) ]
-                            |))
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (| Value.String "Exiting block B
+" |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -175,17 +208,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array [ M.read (| Value.String "Just exited block B
-" |) ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "Just exited block B
+" |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -200,18 +242,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array [ M.read (| Value.String "Exiting block A
-" |) ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (| M.of_value (| Value.String "Exiting block A
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -222,17 +271,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Just exited block A
-" |) ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "Just exited block A
+" |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -250,18 +308,27 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "end of the main function
-" |) ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "end of the main function
+" |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

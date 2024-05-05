@@ -14,7 +14,7 @@ Module num.
                       dec2flt(src)
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ src ] =>
           ltac:(M.monadic
@@ -46,7 +46,7 @@ Module num.
                       dec2flt(src)
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ src ] =>
           ltac:(M.monadic
@@ -78,7 +78,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -92,17 +92,18 @@ Module num.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "ParseFloatError" |);
-                M.read (| Value.String "kind" |);
+                M.read (| M.of_value (| Value.String "ParseFloatError" |) |);
+                M.read (| M.of_value (| Value.String "kind" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::ParseFloatError",
                       "kind"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -120,32 +121,35 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::num::dec2flt::ParseFloatError"
-              [
-                ("kind",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "core::num::dec2flt::FloatErrorKind",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::dec2flt::ParseFloatError",
-                        "kind"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::num::dec2flt::ParseFloatError"
+                [
+                  ("kind",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "core::num::dec2flt::FloatErrorKind",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::dec2flt::ParseFloatError",
+                            "kind"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -172,7 +176,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -225,15 +229,15 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -272,7 +276,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -289,11 +293,11 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Empty" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Empty" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Invalid" |) |)))
+                          M.alloc (| M.read (| M.of_value (| Value.String "Invalid" |) |) |)))
                     ]
                   |)
                 |)
@@ -314,7 +318,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -327,13 +331,17 @@ Module num.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []
+                        M.of_value (|
+                          Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []
+                        M.of_value (|
+                          Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []
+                        |)
                       |)))
                 ]
               |)
@@ -364,7 +372,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -391,7 +399,7 @@ Module num.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -419,12 +427,12 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -448,7 +456,7 @@ Module num.
               }
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition description (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -464,11 +472,15 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.read (| Value.String "cannot parse float from empty string" |)
+                        M.read (|
+                          M.of_value (| Value.String "cannot parse float from empty string" |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid float literal" |) |)))
+                      (M.alloc (|
+                        M.read (| M.of_value (| Value.String "invalid float literal" |) |)
+                      |)))
                 ]
               |)
             |)))
@@ -492,7 +504,7 @@ Module num.
               self.description().fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -530,13 +542,21 @@ Module num.
         ParseFloatError { kind: FloatErrorKind::Empty }
     }
     *)
-    Definition pfe_empty (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pfe_empty (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "core::num::dec2flt::ParseFloatError"
-            [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []) ]))
+          (M.of_value (|
+            Value.StructRecord
+              "core::num::dec2flt::ParseFloatError"
+              [
+                ("kind",
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -545,13 +565,21 @@ Module num.
         ParseFloatError { kind: FloatErrorKind::Invalid }
     }
     *)
-    Definition pfe_invalid (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pfe_invalid (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "core::num::dec2flt::ParseFloatError"
-            [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []) ]))
+          (M.of_value (|
+            Value.StructRecord
+              "core::num::dec2flt::ParseFloatError"
+              [
+                ("kind",
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -562,7 +590,7 @@ Module num.
         T::from_u64_bits(word)
     }
     *)
-    Definition biased_fp_to_float (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition biased_fp_to_float (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ x ] =>
         ltac:(M.monadic
@@ -580,23 +608,25 @@ Module num.
               let β := word in
               M.write (|
                 β,
-                BinOp.Pure.bit_or
-                  (M.read (| β |))
-                  (BinOp.Panic.shl (|
-                    M.rust_cast
-                      (M.read (|
+                BinOp.Pure.bit_or (|
+                  M.read (| β |),
+                  BinOp.Panic.shl (|
+                    M.rust_cast (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           x,
                           "core::num::dec2flt::common::BiasedFp",
                           "e"
                         |)
-                      |)),
+                      |)
+                    |),
                     M.read (|
                       M.get_constant (|
                         "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                       |)
                     |)
-                  |))
+                  |)
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -661,7 +691,7 @@ Module num.
         Ok(float)
     }
     *)
-    Definition dec2flt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition dec2flt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ F ], [ s ] =>
         ltac:(M.monadic
@@ -679,7 +709,7 @@ Module num.
                 let c :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -709,14 +739,20 @@ Module num.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [
-                                        M.call_closure (|
-                                          M.get_function (| "core::num::dec2flt::pfe_empty", [] |),
-                                          []
-                                        |)
-                                      ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_function (|
+                                                "core::num::dec2flt::pfe_empty",
+                                                []
+                                              |),
+                                              []
+                                            |))
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -725,10 +761,15 @@ Module num.
                     |)
                   |) in
                 let negative :=
-                  M.alloc (| BinOp.Pure.eq (M.read (| c |)) (M.read (| UnsupportedLiteral |)) |) in
+                  M.alloc (|
+                    BinOp.Pure.eq (|
+                      M.read (| c |),
+                      M.read (| M.of_value (| UnsupportedLiteral |) |)
+                    |)
+                  |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -736,11 +777,15 @@ Module num.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.Pure.eq (M.read (| c |)) (M.read (| UnsupportedLiteral |)),
+                                  BinOp.Pure.eq (|
+                                    M.read (| c |),
+                                    M.read (| M.of_value (| UnsupportedLiteral |) |)
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| c |))
-                                      (M.read (| UnsupportedLiteral |))))
+                                    (BinOp.Pure.eq (|
+                                      M.read (| c |),
+                                      M.read (| M.of_value (| UnsupportedLiteral |) |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -762,19 +807,21 @@ Module num.
                                 |),
                                 [
                                   M.read (| s |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer 1) ]
+                                  M.of_value (|
+                                    Value.StructRecord
+                                      "core::ops::range::RangeFrom"
+                                      [ ("start", A.to_value (M.of_value (| Value.Integer 1 |))) ]
+                                  |)
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -796,19 +843,25 @@ Module num.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    [
-                                      M.call_closure (|
-                                        M.get_function (| "core::num::dec2flt::pfe_invalid", [] |),
-                                        []
-                                      |)
-                                    ]
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "core::result::Result::Err"
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_function (|
+                                              "core::num::dec2flt::pfe_invalid",
+                                              []
+                                            |),
+                                            []
+                                          |))
+                                      ]
+                                  |)
                                 |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let num :=
@@ -854,9 +907,11 @@ Module num.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Ok"
-                                      [ M.read (| value |) ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::result::Result::Ok"
+                                        [ A.to_value (M.read (| value |)) ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -867,17 +922,20 @@ Module num.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [
-                                        M.call_closure (|
-                                          M.get_function (|
-                                            "core::num::dec2flt::pfe_invalid",
-                                            []
-                                          |),
-                                          []
-                                        |)
-                                      ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_function (|
+                                                "core::num::dec2flt::pfe_invalid",
+                                                []
+                                              |),
+                                              []
+                                            |))
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -896,7 +954,7 @@ Module num.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -922,14 +980,16 @@ Module num.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Ok"
-                                    [ M.read (| value |) ]
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "core::result::Result::Ok"
+                                      [ A.to_value (M.read (| value |)) ]
+                                  |)
                                 |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let fp :=
@@ -956,7 +1016,7 @@ Module num.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -973,15 +1033,16 @@ Module num.
                                       |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.ge
-                                        (M.read (|
+                                      (BinOp.Pure.ge (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             fp,
                                             "core::num::dec2flt::common::BiasedFp",
                                             "e"
                                           |)
-                                        |))
-                                        (Value.Integer 0)))
+                                        |),
+                                        M.of_value (| Value.Integer 0 |)
+                                      |)))
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -1017,7 +1078,7 @@ Module num.
                                                     "mantissa"
                                                   |)
                                                 |),
-                                                Value.Integer 1
+                                                M.of_value (| Value.Integer 1 |)
                                               |)
                                             ]
                                           |)
@@ -1035,30 +1096,31 @@ Module num.
                                 "core::num::dec2flt::common::BiasedFp",
                                 "e"
                               |),
-                              Value.Integer (-1)
+                              M.of_value (| Value.Integer (-1) |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.read (|
+                                BinOp.Pure.lt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       fp,
                                       "core::num::dec2flt::common::BiasedFp",
                                       "e"
                                     |)
-                                  |))
-                                  (Value.Integer 0)
+                                  |),
+                                  M.of_value (| Value.Integer 0 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1073,8 +1135,8 @@ Module num.
                                 [ M.read (| s |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let float :=
@@ -1086,7 +1148,7 @@ Module num.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -1107,11 +1169,15 @@ Module num.
                                 [ M.read (| float |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| float |) ] |)
+                M.alloc (|
+                  M.of_value (|
+                    Value.StructTuple "core::result::Result::Ok" [ A.to_value (M.read (| float |)) ]
+                  |)
+                |)
               |)))
           |)))
       | _, _ => M.impossible

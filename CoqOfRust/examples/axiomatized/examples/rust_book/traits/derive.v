@@ -22,7 +22,7 @@ End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Definition Self : Ty.t := Ty.path "derive::Centimeters".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -35,7 +35,7 @@ End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Definition Self : Ty.t := Ty.path "derive::Centimeters".
   
-  Parameter partial_cmp : (list Ty.t) -> (list Value.t) -> M.
+  Parameter partial_cmp : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -55,7 +55,7 @@ End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self : Ty.t := Ty.path "derive::Inches".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -68,7 +68,7 @@ End Impl_core_fmt_Debug_for_derive_Inches.
 Module Impl_derive_Inches.
   Definition Self : Ty.t := Ty.path "derive::Inches".
   
-  Parameter to_centimeters : (list Ty.t) -> (list Value.t) -> M.
+  Parameter to_centimeters : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_to_centimeters :
     M.IsAssociatedFunction Self "to_centimeters" to_centimeters.
@@ -81,4 +81,4 @@ End Impl_derive_Inches.
     fields := [ Ty.path "i32" ];
   } *)
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

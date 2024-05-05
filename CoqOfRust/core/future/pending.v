@@ -16,13 +16,18 @@ Module future.
         Pending { _data: marker::PhantomData }
     }
     *)
-    Definition pending (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pending (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "core::future::pending::Pending"
-            [ ("_data", Value.StructTuple "core::marker::PhantomData" []) ]))
+          (M.of_value (|
+            Value.StructRecord
+              "core::future::pending::Pending"
+              [
+                ("_data",
+                  A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -38,7 +43,7 @@ Module future.
               Poll::Pending
           }
       *)
-      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; β1 ] =>
@@ -47,7 +52,11 @@ Module future.
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
               β1,
-              [ fun γ => ltac:(M.monadic (Value.StructTuple "core::task::poll::Poll::Pending" [])) ]
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.of_value (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -71,7 +80,7 @@ Module future.
               f.debug_struct("Pending").finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -92,7 +101,7 @@ Module future.
                       "debug_struct",
                       []
                     |),
-                    [ M.read (| f |); M.read (| Value.String "Pending" |) ]
+                    [ M.read (| f |); M.read (| M.of_value (| Value.String "Pending" |) |) ]
                   |)
                 |)
               ]
@@ -118,7 +127,7 @@ Module future.
               pending()
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>

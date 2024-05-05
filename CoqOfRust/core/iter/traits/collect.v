@@ -24,7 +24,7 @@ Module iter.
                 self
             }
         *)
-        Definition into_iter (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_iter (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -50,7 +50,7 @@ Module iter.
       
       (* Trait *)
       Module Extend.
-        Definition extend_one (A Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition extend_one (A Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; item ] =>
             ltac:(M.monadic
@@ -69,11 +69,15 @@ Module iter.
                       |),
                       [
                         M.read (| self |);
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| item |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ A.to_value (M.read (| item |)) ]
+                        |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.
@@ -81,7 +85,7 @@ Module iter.
         Axiom ProvidedMethod_extend_one :
           forall (A : Ty.t),
           M.IsProvidedMethod "core::iter::traits::collect::Extend" "extend_one" (extend_one A).
-        Definition extend_reserve (A Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition extend_reserve (A Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; additional ] =>
             ltac:(M.monadic
@@ -90,7 +94,7 @@ Module iter.
               M.read (|
                 M.match_operator (|
                   additional,
-                  [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                  [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
                 |)
               |)))
           | _, _ => M.impossible
@@ -112,7 +116,7 @@ Module iter.
                 iter.into_iter().for_each(drop)
             }
         *)
-        Definition extend (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition extend (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ T ], [ self; iter ] =>
             ltac:(M.monadic
@@ -144,13 +148,13 @@ Module iter.
           end.
         
         (*     fn extend_one(&mut self, _item: ()) {} *)
-        Definition extend_one (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition extend_one (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; _item ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let _item := M.alloc (| _item |) in
-              Value.Tuple []))
+              M.of_value (| Value.Tuple [] |)))
           | _, _ => M.impossible
           end.
         
@@ -193,7 +197,7 @@ Module iter.
                 iter.fold((), extend(a, b));
             }
         *)
-        Definition extend (A B ExtendA ExtendB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition extend (A B ExtendA ExtendB : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A B ExtendA ExtendB in
           match τ, α with
           | [ T ], [ self; into_iter ] =>
@@ -245,16 +249,17 @@ Module iter.
                                 let lower_bound := M.copy (| γ0_0 |) in
                                 let _ :=
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.gt
-                                                  (M.read (| lower_bound |))
-                                                  (Value.Integer 0)
+                                                BinOp.Pure.gt (|
+                                                  M.read (| lower_bound |),
+                                                  M.of_value (| Value.Integer 0 |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -287,8 +292,10 @@ Module iter.
                                                 [ M.read (| b |); M.read (| lower_bound |) ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                     ]
                                   |) in
                                 let _ :=
@@ -303,7 +310,7 @@ Module iter.
                                       |),
                                       [
                                         M.read (| iter |);
-                                        Value.Tuple [];
+                                        M.of_value (| Value.Tuple [] |);
                                         M.call_closure (|
                                           M.get_associated_function (| Self, "extend.extend", [] |),
                                           [ M.read (| a |); M.read (| b |) ]
@@ -311,7 +318,7 @@ Module iter.
                                       ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)))
                   ]
@@ -326,7 +333,7 @@ Module iter.
                 self.1.extend_one(item.1);
             }
         *)
-        Definition extend_one (A B ExtendA ExtendB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition extend_one (A B ExtendA ExtendB : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A B ExtendA ExtendB in
           match τ, α with
           | [], [ self; item ] =>
@@ -366,7 +373,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.
@@ -377,11 +384,7 @@ Module iter.
                 self.1.extend_reserve(additional);
             }
         *)
-        Definition extend_reserve
-            (A B ExtendA ExtendB : Ty.t)
-            (τ : list Ty.t)
-            (α : list Value.t)
-            : M :=
+        Definition extend_reserve (A B ExtendA ExtendB : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A B ExtendA ExtendB in
           match τ, α with
           | [], [ self; additional ] =>
@@ -421,7 +424,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.

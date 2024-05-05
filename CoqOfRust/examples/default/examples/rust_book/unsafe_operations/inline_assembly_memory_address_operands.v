@@ -12,8 +12,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 Module main.
   (*
@@ -23,14 +26,14 @@ Module main.
           }
       }
   *)
-  Definition load_fpu_control_word (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition load_fpu_control_word (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ control ] =>
       ltac:(M.monadic
         (let control := M.alloc (| control |) in
         M.read (|
           let _ := InlineAssembly in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

@@ -50,8 +50,8 @@ Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test
       (* Instance *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
-Parameter red : (list Ty.t) -> (list Value.t) -> M.
+Parameter red : (list Ty.t) -> (list A.t) -> M.
 
-Parameter blue : (list Ty.t) -> (list Value.t) -> M.
+Parameter blue : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

@@ -15,7 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_trait_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -29,13 +29,13 @@ End Impl_core_default_Default_where_core_default_Default_K_where_core_default_De
 Module Impl_trait_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -52,7 +52,7 @@ End Impl_trait_erc20_Mapping_K_V.
 Module Impl_core_default_Default_for_trait_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -65,7 +65,7 @@ End Impl_core_default_Default_for_trait_erc20_AccountId.
 Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -114,7 +114,7 @@ Enum Error
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -138,7 +138,7 @@ End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
 Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -162,7 +162,7 @@ End Impl_core_marker_StructuralEq_for_trait_erc20_Error.
 Module Impl_core_cmp_Eq_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -205,7 +205,7 @@ Axiom Result :
 Module Impl_core_default_Default_for_trait_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -262,11 +262,11 @@ Enum Event
 Module Impl_trait_erc20_Env.
   Definition Self : Ty.t := Ty.path "trait_erc20::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_trait_erc20_Env.
@@ -274,29 +274,29 @@ End Impl_trait_erc20_Env.
 Module Impl_trait_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter balance_of_impl : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance_of_impl : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_balance_of_impl :
     M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl.
   
-  Parameter allowance_impl : (list Ty.t) -> (list Value.t) -> M.
+  Parameter allowance_impl : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_allowance_impl :
     M.IsAssociatedFunction Self "allowance_impl" allowance_impl.
   
-  Parameter transfer_from_to : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_from_to : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_transfer_from_to :
     M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to.
@@ -305,17 +305,17 @@ End Impl_trait_erc20_Erc20.
 Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
   
-  Parameter total_supply : (list Ty.t) -> (list Value.t) -> M.
+  Parameter total_supply : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance_of : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter allowance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter allowance : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter approve : (list Ty.t) -> (list Value.t) -> M.
+  Parameter approve : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter transfer_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_from : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance

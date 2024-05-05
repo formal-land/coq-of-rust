@@ -28,22 +28,22 @@ fn main() {
     let mutable = true;
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let logical := M.alloc (| Value.Bool true |) in
-        let a_float := M.copy (| UnsupportedLiteral |) in
-        let an_integer := M.alloc (| Value.Integer 5 |) in
-        let default_float := M.copy (| UnsupportedLiteral |) in
-        let default_integer := M.alloc (| Value.Integer 7 |) in
-        let inferred_type := M.alloc (| Value.Integer 12 |) in
-        let _ := M.write (| inferred_type, Value.Integer 4294967296 |) in
-        let mutable := M.alloc (| Value.Integer 12 |) in
-        let _ := M.write (| mutable, Value.Integer 21 |) in
-        let mutable := M.alloc (| Value.Bool true |) in
-        M.alloc (| Value.Tuple [] |)
+        let logical := M.alloc (| M.of_value (| Value.Bool true |) |) in
+        let a_float := M.copy (| M.of_value (| UnsupportedLiteral |) |) in
+        let an_integer := M.alloc (| M.of_value (| Value.Integer 5 |) |) in
+        let default_float := M.copy (| M.of_value (| UnsupportedLiteral |) |) in
+        let default_integer := M.alloc (| M.of_value (| Value.Integer 7 |) |) in
+        let inferred_type := M.alloc (| M.of_value (| Value.Integer 12 |) |) in
+        let _ := M.write (| inferred_type, M.of_value (| Value.Integer 4294967296 |) |) in
+        let mutable := M.alloc (| M.of_value (| Value.Integer 12 |) |) in
+        let _ := M.write (| mutable, M.of_value (| Value.Integer 21 |) |) in
+        let mutable := M.alloc (| M.of_value (| Value.Bool true |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

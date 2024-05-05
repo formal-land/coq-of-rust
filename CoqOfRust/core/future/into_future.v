@@ -20,7 +20,7 @@ Module future.
               self
           }
       *)
-      Definition into_future (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_future (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F in
         match τ, α with
         | [], [ self ] =>

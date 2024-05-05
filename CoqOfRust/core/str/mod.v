@@ -14,7 +14,7 @@ Module str.
       }
   }
   *)
-  Definition slice_error_fail (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition slice_error_fail (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ s; begin; end_ ] =>
       ltac:(M.monadic
@@ -37,7 +37,14 @@ Module str.
             ]
           |),
           [
-            Value.Tuple [ M.read (| s |); M.read (| begin |); M.read (| end_ |) ];
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value (M.read (| s |));
+                  A.to_value (M.read (| begin |));
+                  A.to_value (M.read (| end_ |))
+                ]
+            |);
             M.get_function (| "core::str::slice_error_fail_ct", [] |);
             M.get_function (| "core::str::slice_error_fail_rt", [] |)
           ]
@@ -50,7 +57,7 @@ Module str.
       panic!("failed to slice string");
   }
   *)
-  Definition slice_error_fail_ct (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition slice_error_fail_ct (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ β0; β1; β2 ] =>
       ltac:(M.monadic
@@ -83,11 +90,21 @@ Module str.
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "failed to slice string" |) ]
-                                          |))
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (|
+                                                        Value.String "failed to slice string"
+                                                      |)
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -137,7 +154,7 @@ Module str.
       );
   }
   *)
-  Definition slice_error_fail_rt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition slice_error_fail_rt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ s; begin; end_ ] =>
       ltac:(M.monadic
@@ -169,38 +186,42 @@ Module str.
                 |),
                 [
                   M.read (| s |);
-                  Value.StructRecord
-                    "core::ops::range::RangeTo"
-                    [ ("end_", M.read (| trunc_len |)) ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::ops::range::RangeTo"
+                      [ ("end_", A.to_value (M.read (| trunc_len |))) ]
+                  |)
                 ]
               |)
             |) in
           let ellipsis :=
             M.copy (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| trunc_len |))
-                              (M.call_closure (|
+                            BinOp.Pure.lt (|
+                              M.read (| trunc_len |),
+                              M.call_closure (|
                                 M.get_associated_function (| Ty.path "str", "len", [] |),
                                 [ M.read (| s |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      Value.String "[...]"));
-                  fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "" |) |)))
+                      M.of_value (| Value.String "[...]" |)));
+                  fun γ =>
+                    ltac:(M.monadic (M.alloc (| M.read (| M.of_value (| Value.String "" |) |) |)))
                 ]
               |)
             |) in
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -208,19 +229,21 @@ Module str.
                       M.use
                         (M.alloc (|
                           LogicalOp.or (|
-                            BinOp.Pure.gt
-                              (M.read (| begin |))
-                              (M.call_closure (|
+                            BinOp.Pure.gt (|
+                              M.read (| begin |),
+                              M.call_closure (|
                                 M.get_associated_function (| Ty.path "str", "len", [] |),
                                 [ M.read (| s |) ]
-                              |)),
+                              |)
+                            |),
                             ltac:(M.monadic
-                              (BinOp.Pure.gt
-                                (M.read (| end_ |))
-                                (M.call_closure (|
+                              (BinOp.Pure.gt (|
+                                M.read (| end_ |),
+                                M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "len", [] |),
                                   [ M.read (| s |) ]
-                                |))))
+                                |)
+                              |)))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -230,23 +253,24 @@ Module str.
                           let oob_index :=
                             M.copy (|
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.gt
-                                              (M.read (| begin |))
-                                              (M.call_closure (|
+                                            BinOp.Pure.gt (|
+                                              M.read (| begin |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| s |) ]
-                                              |))
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -270,46 +294,64 @@ Module str.
                                   |),
                                   [
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "byte index " |);
-                                            M.read (| Value.String " is out of bounds of `" |);
-                                            M.read (| Value.String "`" |)
-                                          ]
-                                      |));
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.read (|
+                                                  M.of_value (| Value.String "byte index " |)
+                                                |));
+                                              A.to_value
+                                                (M.read (|
+                                                  M.of_value (|
+                                                    Value.String " is out of bounds of `"
+                                                  |)
+                                                |));
+                                              A.to_value
+                                                (M.read (| M.of_value (| Value.String "`" |) |))
+                                            ]
+                                        |)
+                                      |)
+                                    |);
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [ Ty.path "usize" ]
-                                              |),
-                                              [ oob_index ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                              |),
-                                              [ s_trunc ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                              |),
-                                              [ ellipsis ]
-                                            |)
-                                          ]
-                                      |))
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "usize" ]
+                                                  |),
+                                                  [ oob_index ]
+                                                |));
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                  |),
+                                                  [ s_trunc ]
+                                                |));
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                  |),
+                                                  [ ellipsis ]
+                                                |))
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
@@ -318,19 +360,21 @@ Module str.
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not (BinOp.Pure.le (M.read (| begin |)) (M.read (| end_ |)))
+                          UnOp.Pure.not (|
+                            BinOp.Pure.le (| M.read (| begin |), M.read (| end_ |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -346,83 +390,102 @@ Module str.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "begin <= end (" |);
-                                        M.read (| Value.String " <= " |);
-                                        M.read (| Value.String ") when slicing `" |);
-                                        M.read (| Value.String "`" |)
-                                      ]
-                                  |));
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (| Value.String "begin <= end (" |)
+                                            |));
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String " <= " |) |));
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (| Value.String ") when slicing `" |)
+                                            |));
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "`" |) |))
+                                        ]
+                                    |)
+                                  |)
+                                |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [ begin ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [ end_ ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                          |),
-                                          [ s_trunc ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                          |),
-                                          [ ellipsis ]
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [ begin ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [ end_ ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                              |),
+                                              [ s_trunc ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                              |),
+                                              [ ellipsis ]
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           let index :=
             M.copy (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.Pure.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
                                   []
                                 |),
                                 [ M.read (| s |); M.read (| begin |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       begin));
@@ -473,9 +536,11 @@ Module str.
                               |),
                               [
                                 M.read (| s |);
-                                Value.StructRecord
-                                  "core::ops::range::RangeFrom"
-                                  [ ("start", M.read (| char_start |)) ]
+                                M.of_value (|
+                                  Value.StructRecord
+                                    "core::ops::range::RangeFrom"
+                                    [ ("start", A.to_value (M.read (| char_start |))) ]
+                                |)
                               ]
                             |)
                           ]
@@ -488,20 +553,23 @@ Module str.
             |) in
           let char_range :=
             M.alloc (|
-              Value.StructRecord
-                "core::ops::range::Range"
-                [
-                  ("start", M.read (| char_start |));
-                  ("end_",
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (| char_start |),
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
-                        [ M.read (| ch |) ]
-                      |)
-                    |))
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::ops::range::Range"
+                  [
+                    ("start", A.to_value (M.read (| char_start |)));
+                    ("end_",
+                      A.to_value
+                        (BinOp.Panic.add (|
+                          Integer.Usize,
+                          M.read (| char_start |),
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
+                            [ M.read (| ch |) ]
+                          |)
+                        |)))
+                  ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -511,64 +579,84 @@ Module str.
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "byte index " |);
-                            M.read (| Value.String " is not a char boundary; it is inside " |);
-                            M.read (| Value.String " (bytes " |);
-                            M.read (| Value.String ") of `" |);
-                            M.read (| Value.String "`" |)
-                          ]
-                      |));
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value (M.read (| M.of_value (| Value.String "byte index " |) |));
+                              A.to_value
+                                (M.read (|
+                                  M.of_value (|
+                                    Value.String " is not a char boundary; it is inside "
+                                  |)
+                                |));
+                              A.to_value (M.read (| M.of_value (| Value.String " (bytes " |) |));
+                              A.to_value (M.read (| M.of_value (| Value.String ") of `" |) |));
+                              A.to_value (M.read (| M.of_value (| Value.String "`" |) |))
+                            ]
+                        |)
+                      |)
+                    |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ index ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "char" ]
-                              |),
-                              [ ch ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
-                              |),
-                              [ char_range ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                              |),
-                              [ s_trunc ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                              |),
-                              [ ellipsis ]
-                            |)
-                          ]
-                      |))
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [ index ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
+                                    [ Ty.path "char" ]
+                                  |),
+                                  [ ch ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        [ Ty.path "usize" ]
+                                    ]
+                                  |),
+                                  [ char_range ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  |),
+                                  [ s_trunc ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  |),
+                                  [ ellipsis ]
+                                |))
+                            ]
+                        |)
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -579,8 +667,8 @@ Module str.
     end.
   
   Module slice_error_fail_rt.
-    Definition value_MAX_DISPLAY_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 256 |))).
+    Definition value_MAX_DISPLAY_LENGTH : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 256 |) |))).
   End slice_error_fail_rt.
   
   Module Impl_str.
@@ -591,7 +679,7 @@ Module str.
             self.as_bytes().len()
         }
     *)
-    Definition len (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition len (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -615,17 +703,18 @@ Module str.
             self.len() == 0
         }
     *)
-    Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_empty (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.Pure.eq (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "str", "len", [] |),
               [ M.read (| self |) ]
-            |))
-            (Value.Integer 0)))
+            |),
+            M.of_value (| Value.Integer 0 |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -657,7 +746,7 @@ Module str.
             }
         }
     *)
-    Definition is_char_boundary (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_char_boundary (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; index ] =>
         ltac:(M.monadic
@@ -668,21 +757,26 @@ Module str.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq (M.read (| index |)) (Value.Integer 0)
+                                BinOp.Pure.eq (|
+                                  M.read (| index |),
+                                  M.of_value (| Value.Integer 0 |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
-                            M.never_to_any (| M.read (| M.return_ (| Value.Bool true |) |) |)
+                            M.never_to_any (|
+                              M.read (| M.return_ (| M.of_value (| Value.Bool true |) |) |)
+                            |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.match_operator (|
@@ -706,12 +800,13 @@ Module str.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          BinOp.Pure.eq
-                            (M.read (| index |))
-                            (M.call_closure (|
+                          BinOp.Pure.eq (|
+                            M.read (| index |),
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
-                            |))
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -758,7 +853,7 @@ Module str.
             }
         }
     *)
-    Definition floor_char_boundary (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition floor_char_boundary (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; index ] =>
         ltac:(M.monadic
@@ -766,19 +861,20 @@ Module str.
           let index := M.alloc (| index |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.ge
-                            (M.read (| index |))
-                            (M.call_closure (|
+                          BinOp.Pure.ge (|
+                            M.read (| index |),
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -793,7 +889,7 @@ Module str.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
-                          [ M.read (| index |); Value.Integer 3 ]
+                          [ M.read (| index |); M.of_value (| Value.Integer 3 |) ]
                         |)
                       |) in
                     let new_index :=
@@ -855,8 +951,8 @@ Module str.
                                 ]
                               |)
                             |);
-                            M.closure
-                              (fun γ =>
+                            M.closure (|
+                              fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
@@ -877,7 +973,8 @@ Module str.
                                       ]
                                     |)
                                   | _ => M.impossible (||)
-                                  end))
+                                  end)
+                            |)
                           ]
                         |)
                       |) in
@@ -917,7 +1014,7 @@ Module str.
             }
         }
     *)
-    Definition ceil_char_boundary (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ceil_char_boundary (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; index ] =>
         ltac:(M.monadic
@@ -925,19 +1022,20 @@ Module str.
           let index := M.alloc (| index |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.gt
-                            (M.read (| index |))
-                            (M.call_closure (|
+                          BinOp.Pure.gt (|
+                            M.read (| index |),
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -956,7 +1054,7 @@ Module str.
                             BinOp.Panic.add (|
                               Integer.Usize,
                               M.read (| index |),
-                              Value.Integer 4
+                              M.of_value (| Value.Integer 4 |)
                             |);
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -1018,19 +1116,21 @@ Module str.
                                           |),
                                           [ M.read (| self |) ]
                                         |);
-                                        Value.StructRecord
-                                          "core::ops::range::Range"
-                                          [
-                                            ("start", M.read (| index |));
-                                            ("end_", M.read (| upper_bound |))
-                                          ]
+                                        M.of_value (|
+                                          Value.StructRecord
+                                            "core::ops::range::Range"
+                                            [
+                                              ("start", A.to_value (M.read (| index |)));
+                                              ("end_", A.to_value (M.read (| upper_bound |)))
+                                            ]
+                                        |)
                                       ]
                                     |)
                                   ]
                                 |)
                               |);
-                              M.closure
-                                (fun γ =>
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
@@ -1051,12 +1151,13 @@ Module str.
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |);
                           M.read (| upper_bound |);
-                          M.closure
-                            (fun γ =>
+                          M.closure (|
+                            fun γ =>
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
@@ -1074,7 +1175,8 @@ Module str.
                                     ]
                                   |)
                                 | _ => M.impossible (||)
-                                end))
+                                end)
+                          |)
                         ]
                       |)
                     |)))
@@ -1093,7 +1195,7 @@ Module str.
             unsafe { mem::transmute(self) }
         }
     *)
-    Definition as_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1122,12 +1224,12 @@ Module str.
             unsafe { &mut *(self as *mut str as *mut [u8]) }
         }
     *)
-    Definition as_bytes_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_bytes_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+          M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| self |) |)) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -1138,12 +1240,12 @@ Module str.
             self as *const str as *const u8
         }
     *)
-    Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+          M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| self |) |)) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -1154,12 +1256,12 @@ Module str.
             self as *mut str as *mut u8
         }
     *)
-    Definition as_mut_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut_ptr (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+          M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| self |) |)) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -1170,7 +1272,7 @@ Module str.
             i.get(self)
         }
     *)
-    Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ _ as I ], [ self; i ] =>
         ltac:(M.monadic
@@ -1196,7 +1298,7 @@ Module str.
             i.get_mut(self)
         }
     *)
-    Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ _ as I ], [ self; i ] =>
         ltac:(M.monadic
@@ -1225,7 +1327,7 @@ Module str.
             unsafe { &*i.get_unchecked(self) }
         }
     *)
-    Definition get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ _ as I ], [ self; i ] =>
         ltac:(M.monadic
@@ -1255,7 +1357,7 @@ Module str.
             unsafe { &mut *i.get_unchecked_mut(self) }
         }
     *)
-    Definition get_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_unchecked_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ _ as I ], [ self; i ] =>
         ltac:(M.monadic
@@ -1285,7 +1387,7 @@ Module str.
             unsafe { &*(begin..end).get_unchecked(self) }
         }
     *)
-    Definition slice_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; begin; end_ ] =>
         ltac:(M.monadic
@@ -1301,9 +1403,14 @@ Module str.
               []
             |),
             [
-              Value.StructRecord
-                "core::ops::range::Range"
-                [ ("start", M.read (| begin |)); ("end_", M.read (| end_ |)) ];
+              M.of_value (|
+                Value.StructRecord
+                  "core::ops::range::Range"
+                  [
+                    ("start", A.to_value (M.read (| begin |)));
+                    ("end_", A.to_value (M.read (| end_ |)))
+                  ]
+              |);
               M.read (| self |)
             ]
           |)))
@@ -1321,7 +1428,7 @@ Module str.
             unsafe { &mut *(begin..end).get_unchecked_mut(self) }
         }
     *)
-    Definition slice_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_mut_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; begin; end_ ] =>
         ltac:(M.monadic
@@ -1337,9 +1444,14 @@ Module str.
               []
             |),
             [
-              Value.StructRecord
-                "core::ops::range::Range"
-                [ ("start", M.read (| begin |)); ("end_", M.read (| end_ |)) ];
+              M.of_value (|
+                Value.StructRecord
+                  "core::ops::range::Range"
+                  [
+                    ("start", A.to_value (M.read (| begin |)));
+                    ("end_", A.to_value (M.read (| end_ |)))
+                  ]
+              |);
               M.read (| self |)
             ]
           |)))
@@ -1360,7 +1472,7 @@ Module str.
             }
         }
     *)
-    Definition split_at (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_at (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; mid ] =>
         ltac:(M.monadic
@@ -1368,7 +1480,7 @@ Module str.
           let mid := M.alloc (| mid |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1382,42 +1494,60 @@ Module str.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.Tuple
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "str",
-                              "get_unchecked",
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
-                            |),
-                            [
-                              M.read (| self |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
-                                [ ("start", Value.Integer 0); ("end_", M.read (| mid |)) ]
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "str",
-                              "get_unchecked",
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
-                            |),
-                            [
-                              M.read (| self |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
+                      M.of_value (|
+                        Value.Tuple
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "str",
+                                  "get_unchecked",
+                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  ]
+                                |),
                                 [
-                                  ("start", M.read (| mid |));
-                                  ("end_",
-                                    M.call_closure (|
-                                      M.get_associated_function (| Ty.path "str", "len", [] |),
-                                      [ M.read (| self |) ]
-                                    |))
+                                  M.read (| self |);
+                                  M.of_value (|
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [
+                                        ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                                        ("end_", A.to_value (M.read (| mid |)))
+                                      ]
+                                  |)
                                 ]
-                            ]
-                          |)
-                        ]
+                              |));
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "str",
+                                  "get_unchecked",
+                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  ]
+                                |),
+                                [
+                                  M.read (| self |);
+                                  M.of_value (|
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [
+                                        ("start", A.to_value (M.read (| mid |)));
+                                        ("end_",
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "len",
+                                                []
+                                              |),
+                                              [ M.read (| self |) ]
+                                            |)))
+                                      ]
+                                  |)
+                                ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1425,7 +1555,7 @@ Module str.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::str::slice_error_fail", [] |),
-                          [ M.read (| self |); Value.Integer 0; M.read (| mid |) ]
+                          [ M.read (| self |); M.of_value (| Value.Integer 0 |); M.read (| mid |) ]
                         |)
                       |)
                     |)))
@@ -1455,7 +1585,7 @@ Module str.
             }
         }
     *)
-    Definition split_at_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_at_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; mid ] =>
         ltac:(M.monadic
@@ -1463,7 +1593,7 @@ Module str.
           let mid := M.alloc (| mid |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1491,47 +1621,57 @@ Module str.
                         |)
                       |) in
                     M.alloc (|
-                      Value.Tuple
-                        [
-                          M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
-                            [
-                              M.call_closure (|
+                      M.of_value (|
+                        Value.Tuple
+                          [
+                            A.to_value
+                              (M.call_closure (|
                                 M.get_function (|
-                                  "core::slice::raw::from_raw_parts_mut",
-                                  [ Ty.path "u8" ]
-                                |),
-                                [ M.read (| ptr |); M.read (| mid |) ]
-                              |)
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
-                            [
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::slice::raw::from_raw_parts_mut",
-                                  [ Ty.path "u8" ]
+                                  "core::str::converts::from_utf8_unchecked_mut",
+                                  []
                                 |),
                                 [
                                   M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
-                                      "add",
-                                      []
+                                    M.get_function (|
+                                      "core::slice::raw::from_raw_parts_mut",
+                                      [ Ty.path "u8" ]
                                     |),
                                     [ M.read (| ptr |); M.read (| mid |) ]
-                                  |);
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    M.read (| mid |)
                                   |)
                                 ]
-                              |)
-                            ]
-                          |)
-                        ]
+                              |));
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_function (|
+                                  "core::str::converts::from_utf8_unchecked_mut",
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::slice::raw::from_raw_parts_mut",
+                                      [ Ty.path "u8" ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                          "add",
+                                          []
+                                        |),
+                                        [ M.read (| ptr |); M.read (| mid |) ]
+                                      |);
+                                      BinOp.Panic.sub (|
+                                        Integer.Usize,
+                                        M.read (| len |),
+                                        M.read (| mid |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1539,7 +1679,7 @@ Module str.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::str::slice_error_fail", [] |),
-                          [ M.read (| self |); Value.Integer 0; M.read (| mid |) ]
+                          [ M.read (| self |); M.of_value (| Value.Integer 0 |); M.read (| mid |) ]
                         |)
                       |)
                     |)))
@@ -1556,29 +1696,32 @@ Module str.
             Chars { iter: self.as_bytes().iter() }
         }
     *)
-    Definition chars (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition chars (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::str::iter::Chars"
-            [
-              ("iter",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                    "iter",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                      [ M.read (| self |) ]
-                    |)
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::str::iter::Chars"
+              [
+                ("iter",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        "iter",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1589,21 +1732,24 @@ Module str.
             CharIndices { front_offset: 0, iter: self.chars() }
         }
     *)
-    Definition char_indices (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition char_indices (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::str::iter::CharIndices"
-            [
-              ("front_offset", Value.Integer 0);
-              ("iter",
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "chars", [] |),
-                  [ M.read (| self |) ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::str::iter::CharIndices"
+              [
+                ("front_offset", A.to_value (M.of_value (| Value.Integer 0 |)));
+                ("iter",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "chars", [] |),
+                      [ M.read (| self |) ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1614,39 +1760,42 @@ Module str.
             Bytes(self.as_bytes().iter().copied())
         }
     *)
-    Definition bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple
-            "core::str::iter::Bytes"
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
-                  [],
-                  "copied",
-                  [ Ty.path "u8" ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                      "iter",
-                      []
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::Bytes"
+              [
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                      [],
+                      "copied",
+                      [ Ty.path "u8" ]
                     |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                        [ M.read (| self |) ]
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          "iter",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                            [ M.read (| self |) ]
+                          |)
+                        ]
                       |)
                     ]
-                  |)
-                ]
-              |)
-            ]))
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1657,38 +1806,44 @@ Module str.
             SplitWhitespace { inner: self.split(IsWhitespace).filter(IsNotEmpty) }
         }
     *)
-    Definition split_whitespace (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_whitespace (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::str::iter::SplitWhitespace"
-            [
-              ("inner",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
-                    Ty.apply
-                      (Ty.path "core::str::iter::Split")
-                      [ Ty.path "core::str::IsWhitespace" ],
-                    [],
-                    "filter",
-                    [ Ty.path "core::str::IsNotEmpty" ]
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "str",
-                        "split",
-                        [ Ty.path "core::str::IsWhitespace" ]
+          M.of_value (|
+            Value.StructRecord
+              "core::str::iter::SplitWhitespace"
+              [
+                ("inner",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.apply
+                          (Ty.path "core::str::iter::Split")
+                          [ Ty.path "core::str::IsWhitespace" ],
+                        [],
+                        "filter",
+                        [ Ty.path "core::str::IsNotEmpty" ]
                       |),
-                      [ M.read (| self |); Value.StructTuple "core::str::IsWhitespace" [] ]
-                    |);
-                    Value.StructTuple "core::str::IsNotEmpty" []
-                  ]
-                |))
-            ]))
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "str",
+                            "split",
+                            [ Ty.path "core::str::IsWhitespace" ]
+                          |),
+                          [
+                            M.read (| self |);
+                            M.of_value (| Value.StructTuple "core::str::IsWhitespace" [] |)
+                          ]
+                        |);
+                        M.of_value (| Value.StructTuple "core::str::IsNotEmpty" [] |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1702,7 +1857,7 @@ Module str.
             SplitAsciiWhitespace { inner }
         }
     *)
-    Definition split_ascii_whitespace (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_ascii_whitespace (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1751,20 +1906,22 @@ Module str.
                               M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                               [ M.read (| self |) ]
                             |);
-                            Value.StructTuple "core::str::IsAsciiWhitespace" []
+                            M.of_value (| Value.StructTuple "core::str::IsAsciiWhitespace" [] |)
                           ]
                         |);
-                        Value.StructTuple "core::str::BytesIsNotEmpty" []
+                        M.of_value (| Value.StructTuple "core::str::BytesIsNotEmpty" [] |)
                       ]
                     |);
-                    Value.StructTuple "core::str::UnsafeBytesToStr" []
+                    M.of_value (| Value.StructTuple "core::str::UnsafeBytesToStr" [] |)
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::str::iter::SplitAsciiWhitespace"
-                [ ("inner", M.read (| inner |)) ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::str::iter::SplitAsciiWhitespace"
+                  [ ("inner", A.to_value (M.read (| inner |))) ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -1778,35 +1935,38 @@ Module str.
             Lines(self.split_inclusive('\n').map(LinesMap))
         }
     *)
-    Definition lines (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lines (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple
-            "core::str::iter::Lines"
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ Ty.path "char" ],
-                  [],
-                  "map",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "core::str::LinesMap" ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "str",
-                      "split_inclusive",
-                      [ Ty.path "char" ]
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::Lines"
+              [
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ Ty.path "char" ],
+                      [],
+                      "map",
+                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "core::str::LinesMap" ]
                     |),
-                    [ M.read (| self |); Value.UnicodeChar 10 ]
-                  |);
-                  Value.StructTuple "core::str::LinesMap" []
-                ]
-              |)
-            ]))
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "str",
+                          "split_inclusive",
+                          [ Ty.path "char" ]
+                        |),
+                        [ M.read (| self |); M.of_value (| Value.UnicodeChar 10 |) ]
+                      |);
+                      M.of_value (| Value.StructTuple "core::str::LinesMap" [] |)
+                    ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1817,19 +1977,22 @@ Module str.
             LinesAny(self.lines())
         }
     *)
-    Definition lines_any (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lines_any (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple
-            "core::str::iter::LinesAny"
-            [
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "lines", [] |),
-                [ M.read (| self |) ]
-              |)
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::LinesAny"
+              [
+                A.to_value
+                  (M.call_closure (|
+                    M.get_associated_function (| Ty.path "str", "lines", [] |),
+                    [ M.read (| self |) ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1840,21 +2003,24 @@ Module str.
             EncodeUtf16 { chars: self.chars(), extra: 0 }
         }
     *)
-    Definition encode_utf16 (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition encode_utf16 (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::str::iter::EncodeUtf16"
-            [
-              ("chars",
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "chars", [] |),
-                  [ M.read (| self |) ]
-                |));
-              ("extra", Value.Integer 0)
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::str::iter::EncodeUtf16"
+              [
+                ("chars",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "chars", [] |),
+                      [ M.read (| self |) ]
+                    |)));
+                ("extra", A.to_value (M.of_value (| Value.Integer 0 |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1865,7 +2031,7 @@ Module str.
             pat.is_contained_in(self)
         }
     *)
-    Definition contains (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition contains (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
@@ -1885,7 +2051,7 @@ Module str.
             pat.is_prefix_of(self)
         }
     *)
-    Definition starts_with (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition starts_with (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
@@ -1908,7 +2074,7 @@ Module str.
             pat.is_suffix_of(self)
         }
     *)
-    Definition ends_with (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ends_with (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
@@ -1928,7 +2094,7 @@ Module str.
             pat.into_searcher(self).next_match().map(|(i, _)| i)
         }
     *)
-    Definition find (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition find (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
@@ -1971,8 +2137,8 @@ Module str.
                   |)
                 ]
               |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -1988,7 +2154,8 @@ Module str.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2004,7 +2171,7 @@ Module str.
             pat.into_searcher(self).next_match_back().map(|(i, _)| i)
         }
     *)
-    Definition rfind (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition rfind (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
@@ -2047,8 +2214,8 @@ Module str.
                   |)
                 ]
               |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -2064,7 +2231,8 @@ Module str.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2083,39 +2251,46 @@ Module str.
             })
         }
     *)
-    Definition split (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::Split"
-            [
-              Value.StructRecord
-                "core::str::iter::SplitInternal"
-                [
-                  ("start", Value.Integer 0);
-                  ("end_",
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "len", [] |),
-                      [ M.read (| self |) ]
-                    |));
-                  ("matcher",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::str::pattern::Pattern",
-                        P,
-                        [],
-                        "into_searcher",
-                        []
-                      |),
-                      [ M.read (| pat |); M.read (| self |) ]
-                    |));
-                  ("allow_trailing_empty", Value.Bool true);
-                  ("finished", Value.Bool false)
-                ]
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::Split"
+              [
+                A.to_value
+                  (M.of_value (|
+                    Value.StructRecord
+                      "core::str::iter::SplitInternal"
+                      [
+                        ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                        ("end_",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "len", [] |),
+                              [ M.read (| self |) ]
+                            |)));
+                        ("matcher",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::str::pattern::Pattern",
+                                P,
+                                [],
+                                "into_searcher",
+                                []
+                              |),
+                              [ M.read (| pat |); M.read (| self |) ]
+                            |)));
+                        ("allow_trailing_empty", A.to_value (M.of_value (| Value.Bool true |)));
+                        ("finished", A.to_value (M.of_value (| Value.Bool false |)))
+                      ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2132,39 +2307,46 @@ Module str.
             })
         }
     *)
-    Definition split_inclusive (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_inclusive (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::SplitInclusive"
-            [
-              Value.StructRecord
-                "core::str::iter::SplitInternal"
-                [
-                  ("start", Value.Integer 0);
-                  ("end_",
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "len", [] |),
-                      [ M.read (| self |) ]
-                    |));
-                  ("matcher",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::str::pattern::Pattern",
-                        P,
-                        [],
-                        "into_searcher",
-                        []
-                      |),
-                      [ M.read (| pat |); M.read (| self |) ]
-                    |));
-                  ("allow_trailing_empty", Value.Bool false);
-                  ("finished", Value.Bool false)
-                ]
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::SplitInclusive"
+              [
+                A.to_value
+                  (M.of_value (|
+                    Value.StructRecord
+                      "core::str::iter::SplitInternal"
+                      [
+                        ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                        ("end_",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "len", [] |),
+                              [ M.read (| self |) ]
+                            |)));
+                        ("matcher",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::str::pattern::Pattern",
+                                P,
+                                [],
+                                "into_searcher",
+                                []
+                              |),
+                              [ M.read (| pat |); M.read (| self |) ]
+                            |)));
+                        ("allow_trailing_empty", A.to_value (M.of_value (| Value.Bool false |)));
+                        ("finished", A.to_value (M.of_value (| Value.Bool false |)))
+                      ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2179,28 +2361,31 @@ Module str.
             RSplit(self.split(pat).0)
         }
     *)
-    Definition rsplit (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition rsplit (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::RSplit"
-            [
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "split", [ P ] |),
-                      [ M.read (| self |); M.read (| pat |) ]
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::RSplit"
+              [
+                A.to_value
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "split", [ P ] |),
+                          [ M.read (| self |); M.read (| pat |) ]
+                        |)
+                      |),
+                      "core::str::iter::Split",
+                      0
                     |)
-                  |),
-                  "core::str::iter::Split",
-                  0
-                |)
-              |)
-            ]))
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2211,30 +2396,35 @@ Module str.
             SplitTerminator(SplitInternal { allow_trailing_empty: false, ..self.split(pat).0 })
         }
     *)
-    Definition split_terminator (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_terminator (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::SplitTerminator"
-            [
-              M.struct_record_update
-                (M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "split", [ P ] |),
-                        [ M.read (| self |); M.read (| pat |) ]
-                      |)
-                    |),
-                    "core::str::iter::Split",
-                    0
-                  |)
-                |))
-                [ ("allow_trailing_empty", Value.Bool false) ]
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::SplitTerminator"
+              [
+                A.to_value
+                  (M.of_value (|
+                    M.struct_record_update
+                      (M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "split", [ P ] |),
+                              [ M.read (| self |); M.read (| pat |) ]
+                            |)
+                          |),
+                          "core::str::iter::Split",
+                          0
+                        |)
+                      |))
+                      [ ("allow_trailing_empty", A.to_value (M.of_value (| Value.Bool false |))) ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2249,28 +2439,31 @@ Module str.
             RSplitTerminator(self.split_terminator(pat).0)
         }
     *)
-    Definition rsplit_terminator (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition rsplit_terminator (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::RSplitTerminator"
-            [
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "split_terminator", [ P ] |),
-                      [ M.read (| self |); M.read (| pat |) ]
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::RSplitTerminator"
+              [
+                A.to_value
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "split_terminator", [ P ] |),
+                          [ M.read (| self |); M.read (| pat |) ]
+                        |)
+                      |),
+                      "core::str::iter::SplitTerminator",
+                      0
                     |)
-                  |),
-                  "core::str::iter::SplitTerminator",
-                  0
-                |)
-              |)
-            ]))
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2282,35 +2475,41 @@ Module str.
             SplitN(SplitNInternal { iter: self.split(pat).0, count: n })
         }
     *)
-    Definition splitn (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition splitn (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; n; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::SplitN"
-            [
-              Value.StructRecord
-                "core::str::iter::SplitNInternal"
-                [
-                  ("iter",
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "split", [ P ] |),
-                            [ M.read (| self |); M.read (| pat |) ]
-                          |)
-                        |),
-                        "core::str::iter::Split",
-                        0
-                      |)
-                    |));
-                  ("count", M.read (| n |))
-                ]
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::SplitN"
+              [
+                A.to_value
+                  (M.of_value (|
+                    Value.StructRecord
+                      "core::str::iter::SplitNInternal"
+                      [
+                        ("iter",
+                          A.to_value
+                            (M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (| Ty.path "str", "split", [ P ] |),
+                                    [ M.read (| self |); M.read (| pat |) ]
+                                  |)
+                                |),
+                                "core::str::iter::Split",
+                                0
+                              |)
+                            |)));
+                        ("count", A.to_value (M.read (| n |)))
+                      ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2324,29 +2523,32 @@ Module str.
             RSplitN(self.splitn(n, pat).0)
         }
     *)
-    Definition rsplitn (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition rsplitn (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; n; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::RSplitN"
-            [
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "splitn", [ P ] |),
-                      [ M.read (| self |); M.read (| n |); M.read (| pat |) ]
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::RSplitN"
+              [
+                A.to_value
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "splitn", [ P ] |),
+                          [ M.read (| self |); M.read (| n |); M.read (| pat |) ]
+                        |)
+                      |),
+                      "core::str::iter::SplitN",
+                      0
                     |)
-                  |),
-                  "core::str::iter::SplitN",
-                  0
-                |)
-              |)
-            ]))
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2359,7 +2561,7 @@ Module str.
             unsafe { Some((self.get_unchecked(..start), self.get_unchecked(end..))) }
         }
     *)
-    Definition split_once (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_once (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; delimiter ] =>
         ltac:(M.monadic
@@ -2468,47 +2670,58 @@ Module str.
                         let start := M.copy (| γ0_0 |) in
                         let end_ := M.copy (| γ0_1 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              Value.Tuple
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "get_unchecked",
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.Tuple
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          [ Ty.path "usize" ]
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "get_unchecked",
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeTo")
+                                                  [ Ty.path "usize" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.read (| self |);
+                                              M.of_value (|
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeTo"
+                                                  [ ("end_", A.to_value (M.read (| start |))) ]
+                                              |)
+                                            ]
+                                          |));
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "get_unchecked",
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  [ Ty.path "usize" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.read (| self |);
+                                              M.of_value (|
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeFrom"
+                                                  [ ("start", A.to_value (M.read (| end_ |))) ]
+                                              |)
+                                            ]
+                                          |))
                                       ]
-                                    |),
-                                    [
-                                      M.read (| self |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [ ("end_", M.read (| start |)) ]
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "get_unchecked",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeFrom")
-                                          [ Ty.path "usize" ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| self |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeFrom"
-                                        [ ("start", M.read (| end_ |)) ]
-                                    ]
-                                  |)
-                                ]
-                            ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -2529,7 +2742,7 @@ Module str.
             unsafe { Some((self.get_unchecked(..start), self.get_unchecked(end..))) }
         }
     *)
-    Definition rsplit_once (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition rsplit_once (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; delimiter ] =>
         ltac:(M.monadic
@@ -2638,47 +2851,58 @@ Module str.
                         let start := M.copy (| γ0_0 |) in
                         let end_ := M.copy (| γ0_1 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              Value.Tuple
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "get_unchecked",
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.Tuple
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeTo")
-                                          [ Ty.path "usize" ]
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "get_unchecked",
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeTo")
+                                                  [ Ty.path "usize" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.read (| self |);
+                                              M.of_value (|
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeTo"
+                                                  [ ("end_", A.to_value (M.read (| start |))) ]
+                                              |)
+                                            ]
+                                          |));
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "get_unchecked",
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  [ Ty.path "usize" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.read (| self |);
+                                              M.of_value (|
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeFrom"
+                                                  [ ("start", A.to_value (M.read (| end_ |))) ]
+                                              |)
+                                            ]
+                                          |))
                                       ]
-                                    |),
-                                    [
-                                      M.read (| self |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeTo"
-                                        [ ("end_", M.read (| start |)) ]
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "get_unchecked",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeFrom")
-                                          [ Ty.path "usize" ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (| self |);
-                                      Value.StructRecord
-                                        "core::ops::range::RangeFrom"
-                                        [ ("start", M.read (| end_ |)) ]
-                                    ]
-                                  |)
-                                ]
-                            ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -2694,30 +2918,36 @@ Module str.
             Matches(MatchesInternal(pat.into_searcher(self)))
         }
     *)
-    Definition matches (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition matches (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::Matches"
-            [
-              Value.StructTuple
-                "core::str::iter::MatchesInternal"
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::str::pattern::Pattern",
-                      P,
-                      [],
-                      "into_searcher",
-                      []
-                    |),
-                    [ M.read (| pat |); M.read (| self |) ]
-                  |)
-                ]
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::Matches"
+              [
+                A.to_value
+                  (M.of_value (|
+                    Value.StructTuple
+                      "core::str::iter::MatchesInternal"
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_trait_method (|
+                              "core::str::pattern::Pattern",
+                              P,
+                              [],
+                              "into_searcher",
+                              []
+                            |),
+                            [ M.read (| pat |); M.read (| self |) ]
+                          |))
+                      ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2731,28 +2961,31 @@ Module str.
             RMatches(self.matches(pat).0)
         }
     *)
-    Definition rmatches (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition rmatches (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::RMatches"
-            [
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "matches", [ P ] |),
-                      [ M.read (| self |); M.read (| pat |) ]
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::RMatches"
+              [
+                A.to_value
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "matches", [ P ] |),
+                          [ M.read (| self |); M.read (| pat |) ]
+                        |)
+                      |),
+                      "core::str::iter::Matches",
+                      0
                     |)
-                  |),
-                  "core::str::iter::Matches",
-                  0
-                |)
-              |)
-            ]))
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2763,30 +2996,36 @@ Module str.
             MatchIndices(MatchIndicesInternal(pat.into_searcher(self)))
         }
     *)
-    Definition match_indices (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition match_indices (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::MatchIndices"
-            [
-              Value.StructTuple
-                "core::str::iter::MatchIndicesInternal"
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::str::pattern::Pattern",
-                      P,
-                      [],
-                      "into_searcher",
-                      []
-                    |),
-                    [ M.read (| pat |); M.read (| self |) ]
-                  |)
-                ]
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::MatchIndices"
+              [
+                A.to_value
+                  (M.of_value (|
+                    Value.StructTuple
+                      "core::str::iter::MatchIndicesInternal"
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_trait_method (|
+                              "core::str::pattern::Pattern",
+                              P,
+                              [],
+                              "into_searcher",
+                              []
+                            |),
+                            [ M.read (| pat |); M.read (| self |) ]
+                          |))
+                      ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2801,28 +3040,31 @@ Module str.
             RMatchIndices(self.match_indices(pat).0)
         }
     *)
-    Definition rmatch_indices (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition rmatch_indices (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
-          Value.StructTuple
-            "core::str::iter::RMatchIndices"
-            [
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "match_indices", [ P ] |),
-                      [ M.read (| self |); M.read (| pat |) ]
+          M.of_value (|
+            Value.StructTuple
+              "core::str::iter::RMatchIndices"
+              [
+                A.to_value
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "match_indices", [ P ] |),
+                          [ M.read (| self |); M.read (| pat |) ]
+                        |)
+                      |),
+                      "core::str::iter::MatchIndices",
+                      0
                     |)
-                  |),
-                  "core::str::iter::MatchIndices",
-                  0
-                |)
-              |)
-            ]))
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2834,7 +3076,7 @@ Module str.
             self.trim_matches(|c: char| c.is_whitespace())
         }
     *)
-    Definition trim (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -2847,8 +3089,8 @@ Module str.
             |),
             [
               M.read (| self |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -2865,7 +3107,8 @@ Module str.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2878,7 +3121,7 @@ Module str.
             self.trim_start_matches(|c: char| c.is_whitespace())
         }
     *)
-    Definition trim_start (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_start (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -2891,8 +3134,8 @@ Module str.
             |),
             [
               M.read (| self |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -2909,7 +3152,8 @@ Module str.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2922,7 +3166,7 @@ Module str.
             self.trim_end_matches(|c: char| c.is_whitespace())
         }
     *)
-    Definition trim_end (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_end (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -2935,8 +3179,8 @@ Module str.
             |),
             [
               M.read (| self |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -2953,7 +3197,8 @@ Module str.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2966,7 +3211,7 @@ Module str.
             self.trim_start()
         }
     *)
-    Definition trim_left (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_left (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -2985,7 +3230,7 @@ Module str.
             self.trim_end()
         }
     *)
-    Definition trim_right (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_right (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3019,15 +3264,15 @@ Module str.
             unsafe { self.get_unchecked(i..j) }
         }
     *)
-    Definition trim_matches (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_matches (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.read (|
-            let i := M.alloc (| Value.Integer 0 |) in
-            let j := M.alloc (| Value.Integer 0 |) in
+            let i := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
+            let j := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
             let matcher :=
               M.alloc (|
                 M.call_closure (|
@@ -3043,7 +3288,7 @@ Module str.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3072,13 +3317,13 @@ Module str.
                       let b := M.copy (| γ1_1 |) in
                       let _ := M.write (| i, M.read (| a |) |) in
                       let _ := M.write (| j, M.read (| b |) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3105,8 +3350,8 @@ Module str.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let b := M.copy (| γ1_1 |) in
                       let _ := M.write (| j, M.read (| b |) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
@@ -3118,9 +3363,14 @@ Module str.
                 |),
                 [
                   M.read (| self |);
-                  Value.StructRecord
-                    "core::ops::range::Range"
-                    [ ("start", M.read (| i |)); ("end_", M.read (| j |)) ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      [
+                        ("start", A.to_value (M.read (| i |)));
+                        ("end_", A.to_value (M.read (| j |)))
+                      ]
+                  |)
                 ]
               |)
             |)
@@ -3141,7 +3391,7 @@ Module str.
             unsafe { self.get_unchecked(i..self.len()) }
         }
     *)
-    Definition trim_start_matches (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_start_matches (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
@@ -3170,7 +3420,7 @@ Module str.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3197,8 +3447,8 @@ Module str.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let a := M.copy (| γ1_0 |) in
                       let _ := M.write (| i, M.read (| a |) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
@@ -3210,16 +3460,19 @@ Module str.
                 |),
                 [
                   M.read (| self |);
-                  Value.StructRecord
-                    "core::ops::range::Range"
-                    [
-                      ("start", M.read (| i |));
-                      ("end_",
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "len", [] |),
-                          [ M.read (| self |) ]
-                        |))
-                    ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      [
+                        ("start", A.to_value (M.read (| i |)));
+                        ("end_",
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "len", [] |),
+                              [ M.read (| self |) ]
+                            |)))
+                      ]
+                  |)
                 ]
               |)
             |)
@@ -3235,7 +3488,7 @@ Module str.
             prefix.strip_prefix_of(self)
         }
     *)
-    Definition strip_prefix (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition strip_prefix (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; prefix ] =>
         ltac:(M.monadic
@@ -3259,7 +3512,7 @@ Module str.
             suffix.strip_suffix_of(self)
         }
     *)
-    Definition strip_suffix (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition strip_suffix (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; suffix ] =>
         ltac:(M.monadic
@@ -3288,14 +3541,14 @@ Module str.
             unsafe { self.get_unchecked(0..j) }
         }
     *)
-    Definition trim_end_matches (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_end_matches (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.read (|
-            let j := M.alloc (| Value.Integer 0 |) in
+            let j := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
             let matcher :=
               M.alloc (|
                 M.call_closure (|
@@ -3311,7 +3564,7 @@ Module str.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3338,8 +3591,8 @@ Module str.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let b := M.copy (| γ1_1 |) in
                       let _ := M.write (| j, M.read (| b |) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
@@ -3351,9 +3604,14 @@ Module str.
                 |),
                 [
                   M.read (| self |);
-                  Value.StructRecord
-                    "core::ops::range::Range"
-                    [ ("start", Value.Integer 0); ("end_", M.read (| j |)) ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      [
+                        ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                        ("end_", A.to_value (M.read (| j |)))
+                      ]
+                  |)
                 ]
               |)
             |)
@@ -3369,7 +3627,7 @@ Module str.
             self.trim_start_matches(pat)
         }
     *)
-    Definition trim_left_matches (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_left_matches (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
@@ -3393,7 +3651,7 @@ Module str.
             self.trim_end_matches(pat)
         }
     *)
-    Definition trim_right_matches (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_right_matches (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat ] =>
         ltac:(M.monadic
@@ -3414,7 +3672,7 @@ Module str.
             FromStr::from_str(self)
         }
     *)
-    Definition parse (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition parse (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ F ], [ self ] =>
         ltac:(M.monadic
@@ -3436,7 +3694,7 @@ Module str.
             self.as_bytes().is_ascii()
         }
     *)
-    Definition is_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ascii (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3465,7 +3723,7 @@ Module str.
             self.as_bytes().as_ascii()
         }
     *)
-    Definition as_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ascii (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3493,7 +3751,7 @@ Module str.
             self.as_bytes().eq_ignore_ascii_case(other.as_bytes())
         }
     *)
-    Definition eq_ignore_ascii_case (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq_ignore_ascii_case (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -3529,7 +3787,7 @@ Module str.
             me.make_ascii_uppercase()
         }
     *)
-    Definition make_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition make_ascii_uppercase (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3566,7 +3824,7 @@ Module str.
             me.make_ascii_lowercase()
         }
     *)
-    Definition make_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition make_ascii_lowercase (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3603,7 +3861,7 @@ Module str.
             unsafe { core::str::from_utf8_unchecked(self.as_bytes().trim_ascii_start()) }
         }
     *)
-    Definition trim_ascii_start (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_ascii_start (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3639,7 +3897,7 @@ Module str.
             unsafe { core::str::from_utf8_unchecked(self.as_bytes().trim_ascii_end()) }
         }
     *)
-    Definition trim_ascii_end (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_ascii_end (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3675,7 +3933,7 @@ Module str.
             unsafe { core::str::from_utf8_unchecked(self.as_bytes().trim_ascii()) }
         }
     *)
-    Definition trim_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition trim_ascii (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3716,7 +3974,7 @@ Module str.
             }
         }
     *)
-    Definition escape_debug (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition escape_debug (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3730,132 +3988,140 @@ Module str.
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::str::iter::EscapeDebug"
-                [
-                  ("inner",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::flatten::Flatten")
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::IntoIter")
-                              [ Ty.path "core::char::EscapeDebug" ]
-                          ],
-                        [],
-                        "chain",
-                        [
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::flatten::FlatMap")
-                            [
-                              Ty.path "core::str::iter::Chars";
-                              Ty.path "core::char::EscapeDebug";
-                              Ty.path "core::str::CharEscapeDebugContinue"
-                            ]
-                        ]
-                      |),
-                      [
-                        M.call_closure (|
+              M.of_value (|
+                Value.StructRecord
+                  "core::str::iter::EscapeDebug"
+                  [
+                    ("inner",
+                      A.to_value
+                        (M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
-                              (Ty.path "core::option::IntoIter")
-                              [ Ty.path "core::char::EscapeDebug" ],
+                              (Ty.path "core::iter::adapters::flatten::Flatten")
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::IntoIter")
+                                  [ Ty.path "core::char::EscapeDebug" ]
+                              ],
                             [],
-                            "flatten",
-                            []
+                            "chain",
+                            [
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::flatten::FlatMap")
+                                [
+                                  Ty.path "core::str::iter::Chars";
+                                  Ty.path "core::char::EscapeDebug";
+                                  Ty.path "core::str::CharEscapeDebugContinue"
+                                ]
+                            ]
                           |),
                           [
                             M.call_closure (|
                               M.get_trait_method (|
-                                "core::iter::traits::collect::IntoIterator",
+                                "core::iter::traits::iterator::Iterator",
                                 Ty.apply
-                                  (Ty.path "core::option::Option")
+                                  (Ty.path "core::option::IntoIter")
                                   [ Ty.path "core::char::EscapeDebug" ],
                                 [],
-                                "into_iter",
+                                "flatten",
                                 []
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "char" ],
-                                    "map",
-                                    [
-                                      Ty.path "core::char::EscapeDebug";
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "char" ] ]
-                                        (Ty.path "core::char::EscapeDebug")
-                                    ]
+                                  M.get_trait_method (|
+                                    "core::iter::traits::collect::IntoIterator",
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      [ Ty.path "core::char::EscapeDebug" ],
+                                    [],
+                                    "into_iter",
+                                    []
                                   |),
                                   [
                                     M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.path "core::str::iter::Chars",
-                                        [],
-                                        "next",
-                                        []
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          [ Ty.path "char" ],
+                                        "map",
+                                        [
+                                          Ty.path "core::char::EscapeDebug";
+                                          Ty.function
+                                            [ Ty.tuple [ Ty.path "char" ] ]
+                                            (Ty.path "core::char::EscapeDebug")
+                                        ]
                                       |),
-                                      [ chars ]
-                                    |);
-                                    M.closure
-                                      (fun γ =>
-                                        ltac:(M.monadic
-                                          match γ with
-                                          | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let first := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "char",
-                                                        "escape_debug_ext",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| first |);
-                                                        M.read (|
-                                                          M.get_constant (|
-                                                            "core::char::methods::ESCAPE_ALL"
-                                                          |)
-                                                        |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
-                                          end))
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::iter::traits::iterator::Iterator",
+                                            Ty.path "core::str::iter::Chars",
+                                            [],
+                                            "next",
+                                            []
+                                          |),
+                                          [ chars ]
+                                        |);
+                                        M.closure (|
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let first := M.copy (| γ |) in
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "char",
+                                                            "escape_debug_ext",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| first |);
+                                                            M.read (|
+                                                              M.get_constant (|
+                                                                "core::char::methods::ESCAPE_ALL"
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)))
+                                                  ]
+                                                |)
+                                              | _ => M.impossible (||)
+                                              end)
+                                        |)
+                                      ]
+                                    |)
                                   ]
+                                |)
+                              ]
+                            |);
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::iter::traits::iterator::Iterator",
+                                Ty.path "core::str::iter::Chars",
+                                [],
+                                "flat_map",
+                                [
+                                  Ty.path "core::char::EscapeDebug";
+                                  Ty.path "core::str::CharEscapeDebugContinue"
+                                ]
+                              |),
+                              [
+                                M.read (| chars |);
+                                M.of_value (|
+                                  Value.StructTuple "core::str::CharEscapeDebugContinue" []
                                 |)
                               ]
                             |)
                           ]
-                        |);
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::iter::traits::iterator::Iterator",
-                            Ty.path "core::str::iter::Chars",
-                            [],
-                            "flat_map",
-                            [
-                              Ty.path "core::char::EscapeDebug";
-                              Ty.path "core::str::CharEscapeDebugContinue"
-                            ]
-                          |),
-                          [
-                            M.read (| chars |);
-                            Value.StructTuple "core::str::CharEscapeDebugContinue" []
-                          ]
-                        |)
-                      ]
-                    |))
-                ]
+                        |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -3868,32 +4134,38 @@ Module str.
             EscapeDefault { inner: self.chars().flat_map(CharEscapeDefault) }
         }
     *)
-    Definition escape_default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition escape_default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::str::iter::EscapeDefault"
-            [
-              ("inner",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
-                    Ty.path "core::str::iter::Chars",
-                    [],
-                    "flat_map",
-                    [ Ty.path "core::char::EscapeDefault"; Ty.path "core::str::CharEscapeDefault" ]
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "chars", [] |),
-                      [ M.read (| self |) ]
-                    |);
-                    Value.StructTuple "core::str::CharEscapeDefault" []
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::str::iter::EscapeDefault"
+              [
+                ("inner",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.path "core::str::iter::Chars",
+                        [],
+                        "flat_map",
+                        [
+                          Ty.path "core::char::EscapeDefault";
+                          Ty.path "core::str::CharEscapeDefault"
+                        ]
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "chars", [] |),
+                          [ M.read (| self |) ]
+                        |);
+                        M.of_value (| Value.StructTuple "core::str::CharEscapeDefault" [] |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -3905,32 +4177,38 @@ Module str.
             EscapeUnicode { inner: self.chars().flat_map(CharEscapeUnicode) }
         }
     *)
-    Definition escape_unicode (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition escape_unicode (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::str::iter::EscapeUnicode"
-            [
-              ("inner",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
-                    Ty.path "core::str::iter::Chars",
-                    [],
-                    "flat_map",
-                    [ Ty.path "core::char::EscapeUnicode"; Ty.path "core::str::CharEscapeUnicode" ]
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "chars", [] |),
-                      [ M.read (| self |) ]
-                    |);
-                    Value.StructTuple "core::str::CharEscapeUnicode" []
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::str::iter::EscapeUnicode"
+              [
+                ("inner",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.path "core::str::iter::Chars",
+                        [],
+                        "flat_map",
+                        [
+                          Ty.path "core::char::EscapeUnicode";
+                          Ty.path "core::str::CharEscapeUnicode"
+                        ]
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "chars", [] |),
+                          [ M.read (| self |) ]
+                        |);
+                        M.of_value (| Value.StructTuple "core::str::CharEscapeUnicode" [] |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -3946,7 +4224,7 @@ Module str.
             self.as_bytes()
         }
     *)
-    Definition as_ref (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3974,9 +4252,9 @@ Module str.
             ""
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
-      | [], [] => ltac:(M.monadic (M.read (| Value.String "" |)))
+      | [], [] => ltac:(M.monadic (M.read (| M.of_value (| Value.String "" |) |)))
       | _, _ => M.impossible
       end.
     
@@ -3997,13 +4275,13 @@ Module str.
             unsafe { from_utf8_unchecked_mut(&mut []) }
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
-            [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.alloc (| M.of_value (| Value.Array [] |) |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -4020,12 +4298,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::LinesMap".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::LinesMap" []))
+          M.of_value (| Value.StructTuple "core::str::LinesMap" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -4041,12 +4319,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::CharEscapeDebugContinue".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::CharEscapeDebugContinue" []))
+          M.of_value (| Value.StructTuple "core::str::CharEscapeDebugContinue" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -4062,12 +4340,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::CharEscapeUnicode".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::CharEscapeUnicode" []))
+          M.of_value (| Value.StructTuple "core::str::CharEscapeUnicode" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -4083,12 +4361,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::CharEscapeDefault".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::CharEscapeDefault" []))
+          M.of_value (| Value.StructTuple "core::str::CharEscapeDefault" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -4104,12 +4382,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::IsWhitespace".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::IsWhitespace" []))
+          M.of_value (| Value.StructTuple "core::str::IsWhitespace" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -4125,12 +4403,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::IsAsciiWhitespace".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::IsAsciiWhitespace" []))
+          M.of_value (| Value.StructTuple "core::str::IsAsciiWhitespace" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -4146,12 +4424,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::IsNotEmpty".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::IsNotEmpty" []))
+          M.of_value (| Value.StructTuple "core::str::IsNotEmpty" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -4167,12 +4445,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::BytesIsNotEmpty".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::BytesIsNotEmpty" []))
+          M.of_value (| Value.StructTuple "core::str::BytesIsNotEmpty" [] |)))
       | _, _ => M.impossible
       end.
     
@@ -4188,12 +4466,12 @@ Module str.
     Definition Self : Ty.t := Ty.path "core::str::UnsafeBytesToStr".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::str::UnsafeBytesToStr" []))
+          M.of_value (| Value.StructTuple "core::str::UnsafeBytesToStr" [] |)))
       | _, _ => M.impossible
       end.
     

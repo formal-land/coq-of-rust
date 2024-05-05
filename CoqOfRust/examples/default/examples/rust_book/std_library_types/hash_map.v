@@ -16,7 +16,7 @@ fn call(number: &str) -> &str {
     }
 }
 *)
-Definition call (τ : list Ty.t) (α : list Value.t) : M :=
+Definition call (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ number ] =>
     ltac:(M.monadic
@@ -31,9 +31,11 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
                   M.is_constant_or_break_match (| M.read (| γ |), Value.String "798-1364" |) in
                 M.alloc (|
                   M.read (|
-                    Value.String
-                      "We're sorry, the call cannot be completed as dialed. 
+                    M.of_value (|
+                      Value.String
+                        "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again."
+                    |)
                   |)
                 |)));
             fun γ =>
@@ -42,13 +44,16 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
                   M.is_constant_or_break_match (| M.read (| γ |), Value.String "645-7689" |) in
                 M.alloc (|
                   M.read (|
-                    Value.String
-                      "Hello, this is Mr. Awesome's Pizza. My name is Fred.
+                    M.of_value (|
+                      Value.String
+                        "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?"
+                    |)
                   |)
                 |)));
             fun γ =>
-              ltac:(M.monadic (M.alloc (| M.read (| Value.String "Hi! Who is this again?" |) |)))
+              ltac:(M.monadic
+                (M.alloc (| M.read (| M.of_value (| Value.String "Hi! Who is this again?" |) |) |)))
           ]
         |)
       |)))
@@ -88,7 +93,7 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -124,7 +129,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| Value.String "Daniel" |); M.read (| Value.String "798-1364" |) ]
+              [
+                contacts;
+                M.read (| M.of_value (| Value.String "Daniel" |) |);
+                M.read (| M.of_value (| Value.String "798-1364" |) |)
+              ]
             |)
           |) in
         let _ :=
@@ -141,7 +150,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| Value.String "Ashley" |); M.read (| Value.String "645-7689" |) ]
+              [
+                contacts;
+                M.read (| M.of_value (| Value.String "Ashley" |) |);
+                M.read (| M.of_value (| Value.String "645-7689" |) |)
+              ]
             |)
           |) in
         let _ :=
@@ -158,7 +171,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| Value.String "Katie" |); M.read (| Value.String "435-8291" |) ]
+              [
+                contacts;
+                M.read (| M.of_value (| Value.String "Katie" |) |);
+                M.read (| M.of_value (| Value.String "435-8291" |) |)
+              ]
             |)
           |) in
         let _ :=
@@ -175,7 +192,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| Value.String "Robert" |); M.read (| Value.String "956-1745" |) ]
+              [
+                contacts;
+                M.read (| M.of_value (| Value.String "Robert" |) |);
+                M.read (| M.of_value (| Value.String "956-1745" |) |)
+              ]
             |)
           |) in
         let _ :=
@@ -193,7 +214,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "get",
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                 |),
-                [ contacts; Value.String "Daniel" ]
+                [ contacts; M.of_value (| Value.String "Daniel" |) ]
               |)
             |),
             [
@@ -216,43 +237,53 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Calling Daniel: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (| Value.String "Calling Daniel: " |)
+                                          |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (| "hash_map::call", [] |),
-                                              [ M.read (| number |) ]
-                                            |)
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            |),
+                                            [
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_function (| "hash_map::call", [] |),
+                                                  [ M.read (| number |) ]
+                                                |)
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)));
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
@@ -268,18 +299,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "Don't have Daniel's number.
-" |) ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (|
+                                              Value.String "Don't have Daniel's number.
+"
+                                            |)
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |) in
         let _ :=
@@ -296,7 +337,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| Value.String "Daniel" |); M.read (| Value.String "164-6743" |) ]
+              [
+                contacts;
+                M.read (| M.of_value (| Value.String "Daniel" |) |);
+                M.read (| M.of_value (| Value.String "164-6743" |) |)
+              ]
             |)
           |) in
         let _ :=
@@ -314,7 +359,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "get",
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                 |),
-                [ contacts; Value.String "Ashley" ]
+                [ contacts; M.of_value (| Value.String "Ashley" |) ]
               |)
             |),
             [
@@ -337,43 +382,53 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Calling Ashley: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (| Value.String "Calling Ashley: " |)
+                                          |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (| "hash_map::call", [] |),
-                                              [ M.read (| number |) ]
-                                            |)
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            |),
+                                            [
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_function (| "hash_map::call", [] |),
+                                                  [ M.read (| number |) ]
+                                                |)
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)));
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
@@ -389,18 +444,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "Don't have Ashley's number.
-" |) ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (|
+                                              Value.String "Don't have Ashley's number.
+"
+                                            |)
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |) in
         let _ :=
@@ -417,7 +482,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "remove",
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
               |),
-              [ contacts; Value.String "Ashley" ]
+              [ contacts; M.of_value (| Value.String "Ashley" |) ]
             |)
           |) in
         M.use
@@ -510,68 +575,88 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             |),
                                             [
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "Calling " |);
-                                                      M.read (| Value.String ": " |);
-                                                      M.read (| Value.String "
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (| Value.String "Calling " |)
+                                                          |));
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (| Value.String ": " |)
+                                                          |));
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (| Value.String "
 " |)
-                                                    ]
-                                                |));
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |);
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      [ Ty.path "str" ]
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [ contact ]
+                                                          |));
+                                                        A.to_value
+                                                          (M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
                                                                   [ Ty.path "str" ]
                                                               ]
-                                                          ]
-                                                        |),
-                                                        [ contact ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                                                          ]
-                                                        |),
-                                                        [
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "hash_map::call",
-                                                                []
-                                                              |),
-                                                              [ M.read (| number |) ]
-                                                            |)
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                |))
+                                                            |),
+                                                            [
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_function (|
+                                                                    "hash_map::call",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| number |) ]
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   |)))
             ]
           |))

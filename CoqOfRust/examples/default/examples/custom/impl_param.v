@@ -14,7 +14,7 @@ fn with_impls<A>(func: impl Default, func2: impl Default, foo: A) {
     let b = Box::new((x, y, z));
 }
 *)
-Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
+Definition with_impls (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [ A; impl_Default; impl_Default'1 ], [ func; func2; foo ] =>
     ltac:(M.monadic
@@ -51,10 +51,19 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Tuple [ M.read (| x |); M.read (| y |); M.read (| z |) ] ]
+              [
+                M.of_value (|
+                  Value.Tuple
+                    [
+                      A.to_value (M.read (| x |));
+                      A.to_value (M.read (| y |));
+                      A.to_value (M.read (| z |))
+                    ]
+                |)
+              ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

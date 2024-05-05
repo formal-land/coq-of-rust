@@ -16,37 +16,41 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "erc721::Mapping"
-          [
-            ("_key",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("_value",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "erc721::Mapping"
+            [
+              ("_key",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("_value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -67,7 +71,21 @@ Module Impl_erc721_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -78,7 +96,21 @@ Module Impl_erc721_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -89,7 +121,22 @@ Module Impl_erc721_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -100,7 +147,21 @@ Module Impl_erc721_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -111,7 +172,21 @@ Module Impl_erc721_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -122,7 +197,21 @@ Module Impl_erc721_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -140,18 +229,27 @@ Module Impl_core_default_Default_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "erc721::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "erc721::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -167,14 +265,14 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -211,19 +309,20 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.Pure.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc721::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc721::AccountId", 0 |)
-          |))))
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -243,7 +342,19 @@ Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ _value ] =>
+      ltac:(M.monadic
+        (let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -287,69 +398,75 @@ Module Impl_core_default_Default_for_erc721_Erc721.
   Definition Self : Ty.t := Ty.path "erc721::Erc721".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "erc721::Erc721"
-          [
-            ("token_owner",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "erc721::Mapping")
-                    [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("token_approvals",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "erc721::Mapping")
-                    [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("owned_tokens_count",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "erc721::Mapping")
-                    [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("operator_approvals",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "erc721::Mapping")
-                    [
-                      Ty.tuple [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ];
-                      Ty.tuple []
-                    ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "erc721::Erc721"
+            [
+              ("token_owner",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "erc721::Mapping")
+                        [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("token_approvals",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "erc721::Mapping")
+                        [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("owned_tokens_count",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "erc721::Mapping")
+                        [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("operator_approvals",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "erc721::Mapping")
+                        [
+                          Ty.tuple [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ];
+                          Ty.tuple []
+                        ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -421,7 +538,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
@@ -448,7 +565,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -476,12 +593,12 @@ Module Impl_core_cmp_Eq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.Tuple []))
+        M.of_value (| Value.Tuple [] |)))
     | _, _ => M.impossible
     end.
   
@@ -498,7 +615,7 @@ Module Impl_core_clone_Clone_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -591,7 +708,7 @@ Module Impl_erc721_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -609,7 +726,20 @@ Module Impl_erc721_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc721_Env.
@@ -622,7 +752,18 @@ Module Impl_erc721_Erc721.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -631,7 +772,7 @@ Module Impl_erc721_Erc721.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -650,7 +791,7 @@ Module Impl_erc721_Erc721.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -674,7 +815,7 @@ Module Impl_erc721_Erc721.
           self.owned_tokens_count.get(of).unwrap_or(0 as u32)
       }
   *)
-  Definition balance_of_or_zero (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition balance_of_or_zero (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; of ] =>
       ltac:(M.monadic
@@ -702,7 +843,7 @@ Module Impl_erc721_Erc721.
                 M.read (| of |)
               ]
             |);
-            M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+            M.read (| M.use (M.alloc (| M.of_value (| Value.Integer 0 |) |)) |)
           ]
         |)))
     | _, _ => M.impossible
@@ -716,7 +857,7 @@ Module Impl_erc721_Erc721.
           self.token_approvals.remove(id);
       }
   *)
-  Definition clear_approval (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clear_approval (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; id ] =>
       ltac:(M.monadic
@@ -743,7 +884,7 @@ Module Impl_erc721_Erc721.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -756,7 +897,7 @@ Module Impl_erc721_Erc721.
           self.operator_approvals.contains(&(owner, operator))
       }
   *)
-  Definition approved_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition approved_for_all (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner; operator ] =>
       ltac:(M.monadic
@@ -778,7 +919,11 @@ Module Impl_erc721_Erc721.
               "erc721::Erc721",
               "operator_approvals"
             |);
-            M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
+            M.alloc (|
+              M.of_value (|
+                Value.Tuple [ A.to_value (M.read (| owner |)); A.to_value (M.read (| operator |)) ]
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -792,7 +937,7 @@ Module Impl_erc721_Erc721.
           self.token_owner.get(&id)
       }
   *)
-  Definition owner_of (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition owner_of (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; id ] =>
       ltac:(M.monadic
@@ -830,7 +975,7 @@ Module Impl_erc721_Erc721.
                   ))
       }
   *)
-  Definition approved_or_owner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition approved_or_owner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; from; id ] =>
       ltac:(M.monadic
@@ -858,20 +1003,23 @@ Module Impl_erc721_Erc721.
                 [
                   from;
                   M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.path "erc721::AccountId",
-                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                            "from",
-                            []
-                          |),
-                          [ repeat (Value.Integer 0) 32 ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::convert::From",
+                                Ty.path "erc721::AccountId",
+                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                "from",
+                                []
+                              |),
+                              [ repeat (| M.of_value (| Value.Integer 0 |), 32 |) ]
+                            |))
+                        ]
+                    |)
                   |)
                 ]
               |),
@@ -943,7 +1091,10 @@ Module Impl_erc721_Erc721.
                             "expect",
                             []
                           |),
-                          [ M.read (| owner |); M.read (| Value.String "Error with AccountId" |) ]
+                          [
+                            M.read (| owner |);
+                            M.read (| M.of_value (| Value.String "Error with AccountId" |) |)
+                          ]
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
@@ -953,7 +1104,10 @@ Module Impl_erc721_Erc721.
                             "expect",
                             []
                           |),
-                          [ M.read (| from |); M.read (| Value.String "Error with AccountId" |) ]
+                          [
+                            M.read (| from |);
+                            M.read (| M.of_value (| Value.String "Error with AccountId" |) |)
+                          ]
                         |)
                       ]
                     |)))
@@ -972,7 +1126,7 @@ Module Impl_erc721_Erc721.
           self.token_owner.contains(&id)
       }
   *)
-  Definition exists_ (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition exists_ (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; id ] =>
       ltac:(M.monadic
@@ -1003,7 +1157,7 @@ Module Impl_erc721_Erc721.
           self.balance_of_or_zero(&owner)
       }
   *)
-  Definition balance_of (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition balance_of (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner ] =>
       ltac:(M.monadic
@@ -1023,7 +1177,7 @@ Module Impl_erc721_Erc721.
           self.token_approvals.get(&id)
       }
   *)
-  Definition get_approved (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_approved (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; id ] =>
       ltac:(M.monadic
@@ -1054,7 +1208,7 @@ Module Impl_erc721_Erc721.
           self.approved_for_all(owner, operator)
       }
   *)
-  Definition is_approved_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_approved_for_all (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner; operator ] =>
       ltac:(M.monadic
@@ -1092,7 +1246,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition approve_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition approve_for_all (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; to; approved ] =>
       ltac:(M.monadic
@@ -1118,7 +1272,7 @@ Module Impl_erc721_Erc721.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1142,14 +1296,21 @@ Module Impl_erc721_Erc721.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "erc721::Error::NotAllowed" []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -1163,23 +1324,28 @@ Module Impl_erc721_Erc721.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "erc721::Event::ApprovalForAll"
-                        [
-                          Value.StructRecord
-                            "erc721::ApprovalForAll"
-                            [
-                              ("owner", M.read (| caller |));
-                              ("operator", M.read (| to |));
-                              ("approved", M.read (| approved |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "erc721::Event::ApprovalForAll"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "erc721::ApprovalForAll"
+                                  [
+                                    ("owner", A.to_value (M.read (| caller |)));
+                                    ("operator", A.to_value (M.read (| to |)));
+                                    ("approved", A.to_value (M.read (| approved |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1206,12 +1372,16 @@ Module Impl_erc721_Erc721.
                                   "erc721::Erc721",
                                   "operator_approvals"
                                 |);
-                                Value.Tuple [ M.read (| caller |); M.read (| to |) ];
-                                Value.Tuple []
+                                M.of_value (|
+                                  Value.Tuple
+                                    [ A.to_value (M.read (| caller |)); A.to_value (M.read (| to |))
+                                    ]
+                                |);
+                                M.of_value (| Value.Tuple [] |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -1234,14 +1404,24 @@ Module Impl_erc721_Erc721.
                                   "erc721::Erc721",
                                   "operator_approvals"
                                 |);
-                                Value.Tuple [ M.read (| caller |); M.read (| to |) ]
+                                M.of_value (|
+                                  Value.Tuple
+                                    [ A.to_value (M.read (| caller |)); A.to_value (M.read (| to |))
+                                    ]
+                                |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1256,7 +1436,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition set_approval_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition set_approval_for_all (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; to; approved ] =>
       ltac:(M.monadic
@@ -1340,7 +1520,13 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1378,7 +1564,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition approve_for (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition approve_for (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; to; id ] =>
       ltac:(M.monadic
@@ -1411,15 +1597,15 @@ Module Impl_erc721_Erc721.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (LogicalOp.or (|
+                              UnOp.Pure.not (|
+                                LogicalOp.or (|
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
@@ -1437,9 +1623,11 @@ Module Impl_erc721_Erc721.
                                     [
                                       owner;
                                       M.alloc (|
-                                        Value.StructTuple
-                                          "core::option::Option::Some"
-                                          [ M.read (| caller |) ]
+                                        M.of_value (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [ A.to_value (M.read (| caller |)) ]
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -1462,13 +1650,16 @@ Module Impl_erc721_Erc721.
                                           |),
                                           [
                                             M.read (| owner |);
-                                            M.read (| Value.String "Error with AccountId" |)
+                                            M.read (|
+                                              M.of_value (| Value.String "Error with AccountId" |)
+                                            |)
                                           ]
                                         |);
                                         M.read (| caller |)
                                       ]
                                     |)))
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1476,19 +1667,26 @@ Module Impl_erc721_Erc721.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "erc721::Error::NotAllowed" []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1514,7 +1712,7 @@ Module Impl_erc721_Erc721.
                                         "from",
                                         []
                                       |),
-                                      [ repeat (Value.Integer 0) 32 ]
+                                      [ repeat (| M.of_value (| Value.Integer 0 |), 32 |) ]
                                     |)
                                   |)
                                 ]
@@ -1526,19 +1724,26 @@ Module Impl_erc721_Erc721.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "erc721::Error::NotAllowed" []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1569,9 +1774,16 @@ Module Impl_erc721_Erc721.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "erc721::Error::CannotInsert" [] ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "erc721::Error::CannotInsert" []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
@@ -1599,7 +1811,7 @@ Module Impl_erc721_Erc721.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -1613,21 +1825,32 @@ Module Impl_erc721_Erc721.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "erc721::Event::Approval"
-                        [
-                          Value.StructRecord
-                            "erc721::Approval"
-                            [
-                              ("from", M.read (| caller |));
-                              ("to", M.read (| M.read (| to |) |));
-                              ("id", M.read (| id |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "erc721::Event::Approval"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "erc721::Approval"
+                                  [
+                                    ("from", A.to_value (M.read (| caller |)));
+                                    ("to", A.to_value (M.read (| M.read (| to |) |)));
+                                    ("id", A.to_value (M.read (| id |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1641,7 +1864,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition approve (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition approve (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; to; id ] =>
       ltac:(M.monadic
@@ -1725,7 +1948,13 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1755,7 +1984,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition remove_token_from (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition remove_token_from (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; from; id ] =>
       ltac:(M.monadic
@@ -1787,15 +2016,15 @@ Module Impl_erc721_Erc721.
                       let owned_tokens_count := M.alloc (| γ1_1 |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "erc721::Mapping")
@@ -1804,7 +2033,8 @@ Module Impl_erc721_Erc721.
                                             []
                                           |),
                                           [ M.read (| token_owner |); id ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1815,14 +2045,24 @@ Module Impl_erc721_Erc721.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ Value.StructTuple "erc721::Error::TokenNotFound" [] ]
+                                        M.of_value (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            [
+                                              A.to_value
+                                                (M.of_value (|
+                                                  Value.StructTuple
+                                                    "erc721::Error::TokenNotFound"
+                                                    []
+                                                |))
+                                            ]
+                                        |)
                                       |)
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
                       let count :=
@@ -1871,8 +2111,8 @@ Module Impl_erc721_Erc721.
                                             |),
                                             [ M.read (| owned_tokens_count |); M.read (| from |) ]
                                           |);
-                                          M.closure
-                                            (fun γ =>
+                                          M.closure (|
+                                            fun γ =>
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
@@ -1886,16 +2126,22 @@ Module Impl_erc721_Erc721.
                                                             Integer.U32,
                                                             M.read (| c |),
                                                             M.read (|
-                                                              M.use (M.alloc (| Value.Integer 1 |))
+                                                              M.use
+                                                                (M.alloc (|
+                                                                  M.of_value (| Value.Integer 1 |)
+                                                                |))
                                                             |)
                                                           |)))
                                                     ]
                                                   |)
                                                 | _ => M.impossible (||)
-                                                end))
+                                                end)
+                                          |)
                                         ]
                                       |);
-                                      Value.StructTuple "erc721::Error::CannotFetchValue" []
+                                      M.of_value (|
+                                        Value.StructTuple "erc721::Error::CannotFetchValue" []
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -1982,7 +2228,11 @@ Module Impl_erc721_Erc721.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                        |)
                       |)))
                 ]
               |)
@@ -2021,7 +2271,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Parameter add_token_to : (list Ty.t) -> (list Value.t) -> M.
+  Parameter add_token_to : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_add_token_to : M.IsAssociatedFunction Self "add_token_to" add_token_to.
   
@@ -2050,7 +2300,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Parameter transfer_token_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_token_from : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_transfer_token_from :
     M.IsAssociatedFunction Self "transfer_token_from" transfer_token_from.
@@ -2062,7 +2312,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition transfer (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; destination; id ] =>
       ltac:(M.monadic
@@ -2160,7 +2410,13 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -2179,7 +2435,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition transfer_from (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; from; to; id ] =>
       ltac:(M.monadic
@@ -2264,7 +2520,13 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -2285,7 +2547,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition mint (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition mint (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; id ] =>
       ltac:(M.monadic
@@ -2393,38 +2655,61 @@ Module Impl_erc721_Erc721.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "erc721::Event::Transfer"
-                        [
-                          Value.StructRecord
-                            "erc721::Transfer"
-                            [
-                              ("from",
-                                Value.StructTuple
-                                  "core::option::Option::Some"
+                      M.of_value (|
+                        Value.StructTuple
+                          "erc721::Event::Transfer"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "erc721::Transfer"
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::From",
-                                        Ty.path "erc721::AccountId",
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                                        "from",
-                                        []
-                                      |),
-                                      [ repeat (Value.Integer 0) 32 ]
-                                    |)
-                                  ]);
-                              ("to",
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [ M.read (| caller |) ]);
-                              ("id", M.read (| id |))
-                            ]
-                        ]
+                                    ("from",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::convert::From",
+                                                    Ty.path "erc721::AccountId",
+                                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                                    "from",
+                                                    []
+                                                  |),
+                                                  [
+                                                    repeat (|
+                                                      M.of_value (| Value.Integer 0 |),
+                                                      32
+                                                    |)
+                                                  ]
+                                                |))
+                                            ]
+                                        |)));
+                                    ("to",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [ A.to_value (M.read (| caller |)) ]
+                                        |)));
+                                    ("id", A.to_value (M.read (| id |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -2462,7 +2747,7 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Parameter burn : (list Ty.t) -> (list Value.t) -> M.
+  Parameter burn : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_burn : M.IsAssociatedFunction Self "burn" burn.
 End Impl_erc721_Erc721.

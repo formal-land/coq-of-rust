@@ -4,17 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 Module cmp.
   (* Trait *)
   Module PartialEq.
-    Definition ne (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ne (Rhs Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.Pure.not (|
+            M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", Self, [ Rhs ], "eq", [] |),
               [ M.read (| self |); M.read (| other |) ]
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -25,12 +26,12 @@ Module cmp.
   
   (* Trait *)
   Module Eq.
-    Definition assert_receiver_is_total_eq (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.Tuple []))
+          M.of_value (| Value.Tuple [] |)))
       | _, _ => M.impossible
       end.
     
@@ -74,7 +75,7 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -117,7 +118,7 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -144,7 +145,7 @@ Module cmp.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -172,12 +173,12 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.Tuple []))
+          M.of_value (| Value.Tuple [] |)))
       | _, _ => M.impossible
       end.
     
@@ -194,7 +195,7 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -249,7 +250,7 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -298,7 +299,7 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -315,15 +316,15 @@ Module cmp.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "Less" |) |)));
+                        M.alloc (| M.read (| M.of_value (| Value.String "Less" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "Equal" |) |)));
+                        M.alloc (| M.read (| M.of_value (| Value.String "Equal" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "Greater" |) |)))
+                        M.alloc (| M.read (| M.of_value (| Value.String "Greater" |) |) |)))
                   ]
                 |)
               |)
@@ -344,7 +345,7 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ __H ], [ self; state ] =>
         ltac:(M.monadic
@@ -387,7 +388,7 @@ Module cmp.
             matches!(self, Equal)
         }
     *)
-    Definition is_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -396,8 +397,8 @@ Module cmp.
             M.match_operator (|
               self,
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -411,21 +412,22 @@ Module cmp.
             !matches!(self, Equal)
         }
     *)
-    Definition is_ne (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ne (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.read (|
+          UnOp.Pure.not (|
+            M.read (|
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -436,7 +438,7 @@ Module cmp.
             matches!(self, Less)
         }
     *)
-    Definition is_lt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_lt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -445,8 +447,8 @@ Module cmp.
             M.match_operator (|
               self,
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -460,7 +462,7 @@ Module cmp.
             matches!(self, Greater)
         }
     *)
-    Definition is_gt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_gt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -469,8 +471,8 @@ Module cmp.
             M.match_operator (|
               self,
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -484,21 +486,22 @@ Module cmp.
             !matches!(self, Greater)
         }
     *)
-    Definition is_le (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_le (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.read (|
+          UnOp.Pure.not (|
+            M.read (|
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -509,21 +512,22 @@ Module cmp.
             !matches!(self, Less)
         }
     *)
-    Definition is_ge (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ge (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.read (|
+          UnOp.Pure.not (|
+            M.read (|
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -538,7 +542,7 @@ Module cmp.
             }
         }
     *)
-    Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reverse (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -549,12 +553,19 @@ Module cmp.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                    |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -571,7 +582,7 @@ Module cmp.
             }
         }
     *)
-    Definition then_ (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition then_ (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -596,7 +607,7 @@ Module cmp.
             }
         }
     *)
-    Definition then_with (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition then_with (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ F ], [ self; f ] =>
         ltac:(M.monadic
@@ -617,7 +628,7 @@ Module cmp.
                           "call_once",
                           []
                         |),
-                        [ M.read (| f |); Value.Tuple [] ]
+                        [ M.read (| f |); M.of_value (| Value.Tuple [] |) ]
                       |)
                     |)));
                 fun γ => ltac:(M.monadic self)
@@ -653,7 +664,7 @@ Module cmp.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
     
     (* PartialEq *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -695,7 +706,7 @@ Module cmp.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -703,8 +714,8 @@ Module cmp.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              M.of_value (| Value.DeclaredButUndefined |),
+              [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
             |)
           |)))
       | _, _ => M.impossible
@@ -724,7 +735,7 @@ Module cmp.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; f ] =>
@@ -739,16 +750,17 @@ Module cmp.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "Reverse" |);
+              M.read (| M.of_value (| Value.String "Reverse" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::cmp::Reverse",
                     0
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -779,19 +791,22 @@ Module cmp.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
     
     (* Default *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructTuple
-            "core::cmp::Reverse"
-            [
-              M.call_closure (|
-                M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
-                []
-              |)
-            ]))
+          (M.of_value (|
+            Value.StructTuple
+              "core::cmp::Reverse"
+              [
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                    []
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -808,7 +823,7 @@ Module cmp.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
     
     (* Hash *)
-    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ __H ], [ self; state ] =>
@@ -842,7 +857,7 @@ Module cmp.
             other.0.partial_cmp(&self.0)
         }
     *)
-    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -864,7 +879,7 @@ Module cmp.
             other.0 < self.0
         }
     *)
-    Definition lt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -886,7 +901,7 @@ Module cmp.
             other.0 <= self.0
         }
     *)
-    Definition le (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -908,7 +923,7 @@ Module cmp.
             other.0 > self.0
         }
     *)
-    Definition gt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -930,7 +945,7 @@ Module cmp.
             other.0 >= self.0
         }
     *)
-    Definition ge (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -971,7 +986,7 @@ Module cmp.
             other.0.cmp(&self.0)
         }
     *)
-    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -1005,26 +1020,29 @@ Module cmp.
             Reverse(self.0.clone())
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple
-            "core::cmp::Reverse"
-            [
-              M.call_closure (|
-                M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::cmp::Reverse",
-                    0
-                  |)
-                ]
-              |)
-            ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::cmp::Reverse"
+              [
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                    [
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::cmp::Reverse",
+                        0
+                      |)
+                    ]
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1033,7 +1051,7 @@ Module cmp.
             self.0.clone_from(&other.0)
         }
     *)
-    Definition clone_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -1065,7 +1083,7 @@ Module cmp.
   
   (* Trait *)
   Module Ord.
-    Definition max (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition max (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1091,7 +1109,7 @@ Module cmp.
       end.
     
     Axiom ProvidedMethod_max : M.IsProvidedMethod "core::cmp::Ord" "max" max.
-    Definition min (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition min (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1117,7 +1135,7 @@ Module cmp.
       end.
     
     Axiom ProvidedMethod_min : M.IsProvidedMethod "core::cmp::Ord" "min" min.
-    Definition clamp (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clamp (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; min; max ] =>
         ltac:(M.monadic
@@ -1127,15 +1145,15 @@ Module cmp.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.Pure.not (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Self,
@@ -1144,22 +1162,27 @@ Module cmp.
                                   []
                                 |),
                                 [ min; max ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
                             M.get_function (| "core::panicking::panic", [] |),
-                            [ M.read (| Value.String "assertion failed: min <= max" |) ]
+                            [
+                              M.read (|
+                                M.of_value (| Value.String "assertion failed: min <= max" |)
+                              |)
+                            ]
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1182,7 +1205,7 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1217,7 +1240,7 @@ Module cmp.
   
   (* Trait *)
   Module PartialOrd.
-    Definition lt (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (Rhs Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1246,8 +1269,8 @@ Module cmp.
                         "core::option::Option::Some",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -1257,7 +1280,7 @@ Module cmp.
     Axiom ProvidedMethod_lt :
       forall (Rhs : Ty.t),
       M.IsProvidedMethod "core::cmp::PartialOrd" "lt" (lt Rhs).
-    Definition le (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (Rhs Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1289,18 +1312,19 @@ Module cmp.
                     M.find_or_pattern (|
                       γ0_0,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                       ],
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
+                            | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -1310,7 +1334,7 @@ Module cmp.
     Axiom ProvidedMethod_le :
       forall (Rhs : Ty.t),
       M.IsProvidedMethod "core::cmp::PartialOrd" "le" (le Rhs).
-    Definition gt (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (Rhs Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1339,8 +1363,8 @@ Module cmp.
                         "core::option::Option::Some",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -1350,7 +1374,7 @@ Module cmp.
     Axiom ProvidedMethod_gt :
       forall (Rhs : Ty.t),
       M.IsProvidedMethod "core::cmp::PartialOrd" "gt" (gt Rhs).
-    Definition ge (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (Rhs Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1382,18 +1406,19 @@ Module cmp.
                     M.find_or_pattern (|
                       γ0_0,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                       ],
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
+                            | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -1410,7 +1435,7 @@ Module cmp.
       v1.min(v2)
   }
   *)
-  Definition min (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition min (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
@@ -1431,7 +1456,7 @@ Module cmp.
       }
   }
   *)
-  Definition min_by (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition min_by (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
@@ -1449,7 +1474,10 @@ Module cmp.
                   "call_once",
                   []
                 |),
-                [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
+                [
+                  M.read (| compare |);
+                  M.of_value (| Value.Tuple [ A.to_value v1; A.to_value v2 ] |)
+                ]
               |)
             |),
             [
@@ -1458,12 +1486,12 @@ Module cmp.
                   (M.find_or_pattern (|
                     γ,
                     [
-                      fun γ => ltac:(M.monadic (Value.Tuple []));
-                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                      fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic match γ with | [] => v1 | _ => M.impossible (||) end))
+                    M.closure (|
+                      fun γ => ltac:(M.monadic match γ with | [] => v1 | _ => M.impossible (||) end)
+                    |)
                   |)));
               fun γ => ltac:(M.monadic v2)
             ]
@@ -1477,7 +1505,7 @@ Module cmp.
       min_by(v1, v2, |v1, v2| f(v1).cmp(&f(v2)))
   }
   *)
-  Definition min_by_key (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition min_by_key (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
@@ -1497,8 +1525,8 @@ Module cmp.
           [
             M.read (| v1 |);
             M.read (| v2 |);
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
@@ -1526,7 +1554,12 @@ Module cmp.
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| v1 |) ] ]
+                                            [
+                                              f;
+                                              M.of_value (|
+                                                Value.Tuple [ A.to_value (M.read (| v1 |)) ]
+                                              |)
+                                            ]
                                           |)
                                         |);
                                         M.alloc (|
@@ -1538,7 +1571,12 @@ Module cmp.
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| v2 |) ] ]
+                                            [
+                                              f;
+                                              M.of_value (|
+                                                Value.Tuple [ A.to_value (M.read (| v2 |)) ]
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       ]
@@ -1548,7 +1586,8 @@ Module cmp.
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))
+                  end)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -1559,7 +1598,7 @@ Module cmp.
       v1.max(v2)
   }
   *)
-  Definition max (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition max (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
@@ -1580,7 +1619,7 @@ Module cmp.
       }
   }
   *)
-  Definition max_by (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition max_by (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
@@ -1598,7 +1637,10 @@ Module cmp.
                   "call_once",
                   []
                 |),
-                [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
+                [
+                  M.read (| compare |);
+                  M.of_value (| Value.Tuple [ A.to_value v1; A.to_value v2 ] |)
+                ]
               |)
             |),
             [
@@ -1607,12 +1649,12 @@ Module cmp.
                   (M.find_or_pattern (|
                     γ,
                     [
-                      fun γ => ltac:(M.monadic (Value.Tuple []));
-                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                      fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic match γ with | [] => v2 | _ => M.impossible (||) end))
+                    M.closure (|
+                      fun γ => ltac:(M.monadic match γ with | [] => v2 | _ => M.impossible (||) end)
+                    |)
                   |)));
               fun γ => ltac:(M.monadic v1)
             ]
@@ -1626,7 +1668,7 @@ Module cmp.
       max_by(v1, v2, |v1, v2| f(v1).cmp(&f(v2)))
   }
   *)
-  Definition max_by_key (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition max_by_key (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
@@ -1646,8 +1688,8 @@ Module cmp.
           [
             M.read (| v1 |);
             M.read (| v2 |);
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
@@ -1675,7 +1717,12 @@ Module cmp.
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| v1 |) ] ]
+                                            [
+                                              f;
+                                              M.of_value (|
+                                                Value.Tuple [ A.to_value (M.read (| v1 |)) ]
+                                              |)
+                                            ]
                                           |)
                                         |);
                                         M.alloc (|
@@ -1687,7 +1734,12 @@ Module cmp.
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| v2 |) ] ]
+                                            [
+                                              f;
+                                              M.of_value (|
+                                                Value.Tuple [ A.to_value (M.read (| v2 |)) ]
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       ]
@@ -1697,7 +1749,8 @@ Module cmp.
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))
+                  end)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -1711,7 +1764,7 @@ Module cmp.
       if v1 <= v2 { [v1, v2] } else { [v2, v1] }
   }
   *)
-  Definition minmax (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition minmax (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
@@ -1719,7 +1772,7 @@ Module cmp.
         let v2 := M.alloc (| v2 |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -1732,9 +1785,18 @@ Module cmp.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Array [ M.read (| v1 |); M.read (| v2 |) ] |)));
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array [ A.to_value (M.read (| v1 |)); A.to_value (M.read (| v2 |)) ]
+                    |)
+                  |)));
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.Array [ M.read (| v2 |); M.read (| v1 |) ] |)))
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.of_value (|
+                      Value.Array [ A.to_value (M.read (| v2 |)); A.to_value (M.read (| v1 |)) ]
+                    |)
+                  |)))
             ]
           |)
         |)))
@@ -1749,7 +1811,7 @@ Module cmp.
       if compare(&v1, &v2).is_le() { [v1, v2] } else { [v2, v1] }
   }
   *)
-  Definition minmax_by (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition minmax_by (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
@@ -1758,7 +1820,7 @@ Module cmp.
         let compare := M.alloc (| compare |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -1783,15 +1845,27 @@ Module cmp.
                                 "call_once",
                                 []
                               |),
-                              [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
+                              [
+                                M.read (| compare |);
+                                M.of_value (| Value.Tuple [ A.to_value v1; A.to_value v2 ] |)
+                              ]
                             |)
                           ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Array [ M.read (| v1 |); M.read (| v2 |) ] |)));
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array [ A.to_value (M.read (| v1 |)); A.to_value (M.read (| v2 |)) ]
+                    |)
+                  |)));
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.Array [ M.read (| v2 |); M.read (| v1 |) ] |)))
+                ltac:(M.monadic
+                  (M.alloc (|
+                    M.of_value (|
+                      Value.Array [ A.to_value (M.read (| v2 |)); A.to_value (M.read (| v1 |)) ]
+                    |)
+                  |)))
             ]
           |)
         |)))
@@ -1807,7 +1881,7 @@ Module cmp.
       minmax_by(v1, v2, |v1, v2| f(v1).cmp(&f(v2)))
   }
   *)
-  Definition minmax_by_key (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition minmax_by_key (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
@@ -1827,8 +1901,8 @@ Module cmp.
           [
             M.read (| v1 |);
             M.read (| v2 |);
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
@@ -1856,7 +1930,12 @@ Module cmp.
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| v1 |) ] ]
+                                            [
+                                              f;
+                                              M.of_value (|
+                                                Value.Tuple [ A.to_value (M.read (| v1 |)) ]
+                                              |)
+                                            ]
                                           |)
                                         |);
                                         M.alloc (|
@@ -1868,7 +1947,12 @@ Module cmp.
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| v2 |) ] ]
+                                            [
+                                              f;
+                                              M.of_value (|
+                                                Value.Tuple [ A.to_value (M.read (| v2 |)) ]
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       ]
@@ -1878,7 +1962,8 @@ Module cmp.
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))
+                  end)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -1893,13 +1978,13 @@ Module cmp.
                   true
               }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
-            Value.Bool true))
+            M.of_value (| Value.Bool true |)))
         | _, _ => M.impossible
         end.
       
@@ -1908,13 +1993,13 @@ Module cmp.
                   false
               }
       *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
-            Value.Bool false))
+            M.of_value (| Value.Bool false |)))
         | _, _ => M.impossible
         end.
       
@@ -1930,24 +2015,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1963,24 +2048,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "char".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1996,24 +2081,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2029,24 +2114,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2062,24 +2147,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2095,24 +2180,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2128,24 +2213,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2161,24 +2246,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2194,24 +2279,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2227,24 +2312,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2260,24 +2345,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2293,24 +2378,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2326,24 +2411,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2359,24 +2444,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2392,24 +2477,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2425,24 +2510,24 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2567,7 +2652,7 @@ Module cmp.
                   Some(Equal)
               }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; β1 ] =>
           ltac:(M.monadic
@@ -2578,9 +2663,14 @@ Module cmp.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+                    (M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |))
+                        ]
+                    |)))
               ]
             |)))
         | _, _ => M.impossible
@@ -2602,20 +2692,23 @@ Module cmp.
                   Some(self.cmp(other))
               }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2640,7 +2733,7 @@ Module cmp.
                           }
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2649,15 +2742,21 @@ Module cmp.
             M.read (|
               M.match_operator (|
                 M.alloc (|
-                  Value.Tuple
-                    [
-                      BinOp.Pure.le
-                        (M.read (| M.read (| self |) |))
-                        (M.read (| M.read (| other |) |));
-                      BinOp.Pure.ge
-                        (M.read (| M.read (| self |) |))
-                        (M.read (| M.read (| other |) |))
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value
+                          (BinOp.Pure.le (|
+                            M.read (| M.read (| self |) |),
+                            M.read (| M.read (| other |) |)
+                          |));
+                        A.to_value
+                          (BinOp.Pure.ge (|
+                            M.read (| M.read (| self |) |),
+                            M.read (| M.read (| other |) |)
+                          |))
+                      ]
+                  |)
                 |),
                 [
                   fun γ =>
@@ -2668,7 +2767,9 @@ Module cmp.
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2678,9 +2779,16 @@ Module cmp.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple "core::cmp::Ordering::Greater" []
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2691,9 +2799,14 @@ Module cmp.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2704,9 +2817,14 @@ Module cmp.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -2715,46 +2833,46 @@ Module cmp.
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2786,7 +2904,7 @@ Module cmp.
                           }
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2795,15 +2913,21 @@ Module cmp.
             M.read (|
               M.match_operator (|
                 M.alloc (|
-                  Value.Tuple
-                    [
-                      BinOp.Pure.le
-                        (M.read (| M.read (| self |) |))
-                        (M.read (| M.read (| other |) |));
-                      BinOp.Pure.ge
-                        (M.read (| M.read (| self |) |))
-                        (M.read (| M.read (| other |) |))
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value
+                          (BinOp.Pure.le (|
+                            M.read (| M.read (| self |) |),
+                            M.read (| M.read (| other |) |)
+                          |));
+                        A.to_value
+                          (BinOp.Pure.ge (|
+                            M.read (| M.read (| self |) |),
+                            M.read (| M.read (| other |) |)
+                          |))
+                      ]
+                  |)
                 |),
                 [
                   fun γ =>
@@ -2814,7 +2938,9 @@ Module cmp.
                         M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2824,9 +2950,16 @@ Module cmp.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple "core::cmp::Ordering::Greater" []
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2837,9 +2970,14 @@ Module cmp.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2850,9 +2988,14 @@ Module cmp.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -2861,46 +3004,46 @@ Module cmp.
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -2927,13 +3070,13 @@ Module cmp.
                   Equal
               }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; _other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
-            Value.StructTuple "core::cmp::Ordering::Equal" []))
+            M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -2962,7 +3105,7 @@ Module cmp.
                   }
               }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2973,8 +3116,8 @@ Module cmp.
                 M.alloc (|
                   BinOp.Panic.sub (|
                     Integer.I8,
-                    M.rust_cast (M.read (| M.read (| self |) |)),
-                    M.rust_cast (M.read (| M.read (| other |) |))
+                    M.rust_cast (| M.read (| M.read (| self |) |) |),
+                    M.rust_cast (| M.read (| M.read (| other |) |) |)
                   |)
                 |),
                 [
@@ -2982,17 +3125,23 @@ Module cmp.
                     ltac:(M.monadic
                       (let _ :=
                         M.is_constant_or_break_match (| M.read (| γ |), Value.Integer (-1) |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -3014,13 +3163,13 @@ Module cmp.
                   self & other
               }
       *)
-      Definition min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3029,13 +3178,13 @@ Module cmp.
                   self | other
               }
       *)
-      Definition max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3045,7 +3194,7 @@ Module cmp.
                   self.max(min).min(max)
               }
       *)
-      Definition clamp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clamp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; min; max ] =>
           ltac:(M.monadic
@@ -3055,14 +3204,16 @@ Module cmp.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not (BinOp.Pure.le (M.read (| min |)) (M.read (| max |)))
+                              UnOp.Pure.not (|
+                                BinOp.Pure.le (| M.read (| min |), M.read (| max |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3070,11 +3221,15 @@ Module cmp.
                           M.never_to_any (|
                             M.call_closure (|
                               M.get_function (| "core::panicking::panic", [] |),
-                              [ M.read (| Value.String "assertion failed: min <= max" |) ]
+                              [
+                                M.read (|
+                                  M.of_value (| Value.String "assertion failed: min <= max" |)
+                                |)
+                              ]
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -3115,64 +3270,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "char", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "char", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3203,7 +3361,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3211,42 +3369,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -3271,64 +3437,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3359,7 +3528,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3367,42 +3536,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -3427,64 +3604,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3515,7 +3695,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3523,42 +3703,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -3583,64 +3771,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3671,7 +3862,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3679,42 +3870,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -3739,64 +3938,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3827,7 +4029,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3835,42 +4037,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -3895,64 +4105,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3983,7 +4196,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3991,42 +4204,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -4051,64 +4272,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -4139,7 +4363,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4147,42 +4371,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -4207,64 +4439,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -4295,7 +4530,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4303,42 +4538,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -4363,64 +4606,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -4451,7 +4697,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4459,42 +4705,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -4519,64 +4773,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i16", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "i16", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -4607,7 +4864,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4615,42 +4872,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -4675,64 +4940,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i32", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "i32", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -4763,7 +5031,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4771,42 +5039,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -4831,64 +5107,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i64", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "i64", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -4919,7 +5198,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4927,42 +5206,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -4987,64 +5274,67 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i128", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::cmp::Ord", Ty.path "i128", [], "cmp", [] |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+            BinOp.Pure.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -5075,7 +5365,7 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5083,42 +5373,50 @@ Module cmp.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.Pure.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -5143,7 +5441,7 @@ Module cmp.
                   *self
               }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; β1 ] =>
           ltac:(M.monadic
@@ -5179,7 +5477,7 @@ Module cmp.
                   *self
               }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; β1 ] =>
           ltac:(M.monadic
@@ -5208,7 +5506,7 @@ Module cmp.
                   *self
               }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; β1 ] =>
           ltac:(M.monadic
@@ -5237,7 +5535,7 @@ Module cmp.
                   PartialEq::eq( *self, *other)
               }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5256,7 +5554,7 @@ Module cmp.
                   PartialEq::ne( *self, *other)
               }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5288,7 +5586,7 @@ Module cmp.
                   PartialOrd::partial_cmp( *self, *other)
               }
       *)
-      Definition partial_cmp (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5307,7 +5605,7 @@ Module cmp.
                   PartialOrd::lt( *self, *other)
               }
       *)
-      Definition lt (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5326,7 +5624,7 @@ Module cmp.
                   PartialOrd::le( *self, *other)
               }
       *)
-      Definition le (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5345,7 +5643,7 @@ Module cmp.
                   PartialOrd::gt( *self, *other)
               }
       *)
-      Definition gt (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5364,7 +5662,7 @@ Module cmp.
                   PartialOrd::ge( *self, *other)
               }
       *)
-      Definition ge (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5402,7 +5700,7 @@ Module cmp.
                   Ord::cmp( *self, *other)
               }
       *)
-      Definition cmp (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A in
         match τ, α with
         | [], [ self; other ] =>
@@ -5445,7 +5743,7 @@ Module cmp.
                   PartialEq::eq( *self, *other)
               }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5464,7 +5762,7 @@ Module cmp.
                   PartialEq::ne( *self, *other)
               }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5496,7 +5794,7 @@ Module cmp.
                   PartialOrd::partial_cmp( *self, *other)
               }
       *)
-      Definition partial_cmp (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5515,7 +5813,7 @@ Module cmp.
                   PartialOrd::lt( *self, *other)
               }
       *)
-      Definition lt (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5534,7 +5832,7 @@ Module cmp.
                   PartialOrd::le( *self, *other)
               }
       *)
-      Definition le (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5553,7 +5851,7 @@ Module cmp.
                   PartialOrd::gt( *self, *other)
               }
       *)
-      Definition gt (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5572,7 +5870,7 @@ Module cmp.
                   PartialOrd::ge( *self, *other)
               }
       *)
-      Definition ge (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5610,7 +5908,7 @@ Module cmp.
                   Ord::cmp( *self, *other)
               }
       *)
-      Definition cmp (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A in
         match τ, α with
         | [], [ self; other ] =>
@@ -5653,7 +5951,7 @@ Module cmp.
                   PartialEq::eq( *self, *other)
               }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5672,7 +5970,7 @@ Module cmp.
                   PartialEq::ne( *self, *other)
               }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5704,7 +6002,7 @@ Module cmp.
                   PartialEq::eq( *self, *other)
               }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>
@@ -5723,7 +6021,7 @@ Module cmp.
                   PartialEq::ne( *self, *other)
               }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B in
         match τ, α with
         | [], [ self; other ] =>

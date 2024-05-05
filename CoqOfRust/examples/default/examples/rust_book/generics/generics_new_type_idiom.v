@@ -23,26 +23,29 @@ Module Impl_generics_new_type_idiom_Years.
           Days(self.0 * 365)
       }
   *)
-  Definition to_days (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition to_days (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.StructTuple
-          "generics_new_type_idiom::Days"
-          [
-            BinOp.Panic.mul (|
-              Integer.I64,
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_new_type_idiom::Years",
-                  0
-                |)
-              |),
-              Value.Integer 365
-            |)
-          ]))
+        M.of_value (|
+          Value.StructTuple
+            "generics_new_type_idiom::Days"
+            [
+              A.to_value
+                (BinOp.Panic.mul (|
+                  Integer.I64,
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "generics_new_type_idiom::Years",
+                      0
+                    |)
+                  |),
+                  M.of_value (| Value.Integer 365 |)
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -57,26 +60,29 @@ Module Impl_generics_new_type_idiom_Days.
           Years(self.0 / 365)
       }
   *)
-  Definition to_years (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition to_years (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.StructTuple
-          "generics_new_type_idiom::Years"
-          [
-            BinOp.Panic.div (|
-              Integer.I64,
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_new_type_idiom::Days",
-                  0
-                |)
-              |),
-              Value.Integer 365
-            |)
-          ]))
+        M.of_value (|
+          Value.StructTuple
+            "generics_new_type_idiom::Years"
+            [
+              A.to_value
+                (BinOp.Panic.div (|
+                  Integer.I64,
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "generics_new_type_idiom::Days",
+                      0
+                    |)
+                  |),
+                  M.of_value (| Value.Integer 365 |)
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -88,20 +94,21 @@ fn old_enough(age: &Years) -> bool {
     age.0 >= 18
 }
 *)
-Definition old_enough (τ : list Ty.t) (α : list Value.t) : M :=
+Definition old_enough (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ age ] =>
     ltac:(M.monadic
       (let age := M.alloc (| age |) in
-      BinOp.Pure.ge
-        (M.read (|
+      BinOp.Pure.ge (|
+        M.read (|
           M.SubPointer.get_struct_tuple_field (|
             M.read (| age |),
             "generics_new_type_idiom::Years",
             0
           |)
-        |))
-        (Value.Integer 18)))
+        |),
+        M.of_value (| Value.Integer 18 |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -114,13 +121,19 @@ fn main() {
     // println!("Old enough {}", old_enough(&age_days));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let age :=
-          M.alloc (| Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer 5 ] |) in
+          M.alloc (|
+            M.of_value (|
+              Value.StructTuple
+                "generics_new_type_idiom::Years"
+                [ A.to_value (M.of_value (| Value.Integer 5 |)) ]
+            |)
+          |) in
         let age_days :=
           M.alloc (|
             M.call_closure (|
@@ -142,44 +155,54 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Old enough " |); M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Old enough " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "bool" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "generics_new_type_idiom::old_enough",
-                                        []
-                                      |),
-                                      [ age ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "bool" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "generics_new_type_idiom::old_enough",
+                                            []
+                                          |),
+                                          [ age ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -190,56 +213,66 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Old enough " |); M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Old enough " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "bool" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "generics_new_type_idiom::old_enough",
-                                        []
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "generics_new_type_idiom::Days",
-                                              "to_years",
-                                              []
-                                            |),
-                                            [ age_days ]
-                                          |)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "bool" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "generics_new_type_idiom::old_enough",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "generics_new_type_idiom::Days",
+                                                  "to_years",
+                                                  []
+                                                |),
+                                                [ age_days ]
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

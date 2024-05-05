@@ -15,7 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc721_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -29,37 +29,37 @@ End Impl_core_default_Default_where_core_default_Default_K_where_core_default_De
 Module Impl_erc721_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
   
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
   
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -76,7 +76,7 @@ End Impl_erc721_Mapping_K_V.
 Module Impl_core_default_Default_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -89,7 +89,7 @@ End Impl_core_default_Default_for_erc721_AccountId.
 Module Impl_core_clone_Clone_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -120,7 +120,7 @@ End Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
 Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -133,7 +133,7 @@ End Impl_core_cmp_PartialEq_for_erc721_AccountId.
 Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -176,7 +176,7 @@ Axiom TokenId : (Ty.path "erc721::TokenId") = (Ty.path "u32").
 Module Impl_core_default_Default_for_erc721_Erc721.
   Definition Self : Ty.t := Ty.path "erc721::Erc721".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -245,7 +245,7 @@ End Impl_core_marker_StructuralPartialEq_for_erc721_Error.
 Module Impl_core_cmp_PartialEq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -269,7 +269,7 @@ End Impl_core_marker_StructuralEq_for_erc721_Error.
 Module Impl_core_cmp_Eq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -283,7 +283,7 @@ End Impl_core_cmp_Eq_for_erc721_Error.
 Module Impl_core_clone_Clone_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -364,11 +364,11 @@ Enum Event
 Module Impl_erc721_Env.
   Definition Self : Ty.t := Ty.path "erc721::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc721_Env.
@@ -376,105 +376,105 @@ End Impl_erc721_Env.
 Module Impl_erc721_Erc721.
   Definition Self : Ty.t := Ty.path "erc721::Erc721".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter balance_of_or_zero : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance_of_or_zero : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_balance_of_or_zero :
     M.IsAssociatedFunction Self "balance_of_or_zero" balance_of_or_zero.
   
-  Parameter clear_approval : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clear_approval : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_clear_approval :
     M.IsAssociatedFunction Self "clear_approval" clear_approval.
   
-  Parameter approved_for_all : (list Ty.t) -> (list Value.t) -> M.
+  Parameter approved_for_all : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_approved_for_all :
     M.IsAssociatedFunction Self "approved_for_all" approved_for_all.
   
-  Parameter owner_of : (list Ty.t) -> (list Value.t) -> M.
+  Parameter owner_of : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_owner_of : M.IsAssociatedFunction Self "owner_of" owner_of.
   
-  Parameter approved_or_owner : (list Ty.t) -> (list Value.t) -> M.
+  Parameter approved_or_owner : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_approved_or_owner :
     M.IsAssociatedFunction Self "approved_or_owner" approved_or_owner.
   
-  Parameter exists_ : (list Ty.t) -> (list Value.t) -> M.
+  Parameter exists_ : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_exists_ : M.IsAssociatedFunction Self "exists_" exists_.
   
-  Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance_of : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
   
-  Parameter get_approved : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get_approved : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_get_approved : M.IsAssociatedFunction Self "get_approved" get_approved.
   
-  Parameter is_approved_for_all : (list Ty.t) -> (list Value.t) -> M.
+  Parameter is_approved_for_all : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_is_approved_for_all :
     M.IsAssociatedFunction Self "is_approved_for_all" is_approved_for_all.
   
-  Parameter approve_for_all : (list Ty.t) -> (list Value.t) -> M.
+  Parameter approve_for_all : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_approve_for_all :
     M.IsAssociatedFunction Self "approve_for_all" approve_for_all.
   
-  Parameter set_approval_for_all : (list Ty.t) -> (list Value.t) -> M.
+  Parameter set_approval_for_all : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_set_approval_for_all :
     M.IsAssociatedFunction Self "set_approval_for_all" set_approval_for_all.
   
-  Parameter approve_for : (list Ty.t) -> (list Value.t) -> M.
+  Parameter approve_for : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_approve_for : M.IsAssociatedFunction Self "approve_for" approve_for.
   
-  Parameter approve : (list Ty.t) -> (list Value.t) -> M.
+  Parameter approve : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
   
-  Parameter remove_token_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove_token_from : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_remove_token_from :
     M.IsAssociatedFunction Self "remove_token_from" remove_token_from.
   
-  Parameter add_token_to : (list Ty.t) -> (list Value.t) -> M.
+  Parameter add_token_to : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_add_token_to : M.IsAssociatedFunction Self "add_token_to" add_token_to.
   
-  Parameter transfer_token_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_token_from : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_transfer_token_from :
     M.IsAssociatedFunction Self "transfer_token_from" transfer_token_from.
   
-  Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
-  Parameter transfer_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_from : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_transfer_from :
     M.IsAssociatedFunction Self "transfer_from" transfer_from.
   
-  Parameter mint : (list Ty.t) -> (list Value.t) -> M.
+  Parameter mint : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
   
-  Parameter burn : (list Ty.t) -> (list Value.t) -> M.
+  Parameter burn : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_burn : M.IsAssociatedFunction Self "burn" burn.
 End Impl_erc721_Erc721.

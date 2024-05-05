@@ -6,13 +6,13 @@ fn main() {
     let x = &1;
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| M.alloc (| Value.Integer 1 |) |) in
-        M.alloc (| Value.Tuple [] |)
+        let x := M.alloc (| M.alloc (| M.of_value (| Value.Integer 1 |) |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

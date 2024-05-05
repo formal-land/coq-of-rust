@@ -24,8 +24,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 Module main.
   (*
@@ -47,23 +50,26 @@ Module main.
           ((hi as u128) << 64) + lo as u128
       }
   *)
-  Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition mul (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ a; b ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
         M.read (|
-          let lo := M.copy (| Value.DeclaredButUndefined |) in
-          let hi := M.copy (| Value.DeclaredButUndefined |) in
+          let lo := M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
+          let hi := M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
           let _ :=
             let _ := InlineAssembly in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           M.alloc (|
             BinOp.Panic.add (|
               Integer.U128,
-              BinOp.Panic.shl (| M.rust_cast (M.read (| hi |)), Value.Integer 64 |),
-              M.rust_cast (M.read (| lo |))
+              BinOp.Panic.shl (|
+                M.rust_cast (| M.read (| hi |) |),
+                M.of_value (| Value.Integer 64 |)
+              |),
+              M.rust_cast (| M.read (| lo |) |)
             |)
           |)
         |)))

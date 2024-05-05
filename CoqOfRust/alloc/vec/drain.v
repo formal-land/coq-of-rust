@@ -27,7 +27,7 @@ Module vec.
               f.debug_tuple("Drain").field(&self.iter.as_slice()).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; f ] =>
@@ -55,12 +55,12 @@ Module vec.
                           "debug_tuple",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Drain" |) ]
+                        [ M.read (| f |); M.read (| M.of_value (| Value.String "Drain" |) |) ]
                       |)
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
+                    M.pointer_coercion (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
@@ -75,7 +75,8 @@ Module vec.
                             |)
                           ]
                         |)
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -100,7 +101,7 @@ Module vec.
               self.iter.as_slice()
           }
       *)
-      Definition as_slice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_slice (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -132,7 +133,7 @@ Module vec.
               unsafe { self.vec.as_ref().allocator() }
           }
       *)
-      Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -220,7 +221,7 @@ Module vec.
               }
           }
       *)
-      Definition keep_rest (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition keep_rest (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -365,17 +366,18 @@ Module vec.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.read (|
+                              UnOp.Pure.not (|
+                                M.read (|
                                   M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -402,17 +404,18 @@ Module vec.
                           |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne
-                                          (M.read (| unyielded_ptr |))
+                                        BinOp.Pure.ne (|
+                                          M.read (| unyielded_ptr |),
                                           (* MutToConstPointer *)
-                                          (M.pointer_coercion (M.read (| start_ptr |)))
+                                          M.pointer_coercion (| M.read (| start_ptr |) |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -432,25 +435,27 @@ Module vec.
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.ne
-                                        (M.read (| tail |))
-                                        (BinOp.Panic.add (|
+                                      BinOp.Pure.ne (|
+                                        M.read (| tail |),
+                                        BinOp.Panic.add (|
                                           Integer.Usize,
                                           M.read (| start |),
                                           M.read (| unyielded_len |)
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -521,11 +526,12 @@ Module vec.
                                       ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -567,7 +573,7 @@ Module vec.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -585,7 +591,7 @@ Module vec.
               self.as_slice()
           }
       *)
-      Definition as_ref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ref (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -646,7 +652,7 @@ Module vec.
               self.iter.next().map(|elt| unsafe { ptr::read(elt as *const _) })
           }
       *)
-      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -675,8 +681,8 @@ Module vec.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -693,7 +699,8 @@ Module vec.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -704,7 +711,7 @@ Module vec.
               self.iter.size_hint()
           }
       *)
-      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -751,7 +758,7 @@ Module vec.
               self.iter.next_back().map(|elt| unsafe { ptr::read(elt as *const _) })
           }
       *)
-      Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -780,8 +787,8 @@ Module vec.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -798,7 +805,8 @@ Module vec.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -883,7 +891,7 @@ Module vec.
               }
           }
       *)
-      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -931,7 +939,7 @@ Module vec.
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1020,35 +1028,44 @@ Module vec.
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |) in
-                                  M.return_ (| Value.Tuple [] |)
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                                  M.return_ (| M.of_value (| Value.Tuple [] |) |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let _guard :=
                     M.alloc (|
-                      Value.StructTuple "alloc::vec::drain::drop::DropGuard" [ M.read (| self |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "alloc::vec::drain::drop::DropGuard"
+                          [ A.to_value (M.read (| self |)) ]
+                      |)
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| drop_len |)) (Value.Integer 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| drop_len |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
+                              M.never_to_any (|
+                                M.read (| M.return_ (| M.of_value (| Value.Tuple [] |) |) |)
+                              |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let drop_ptr :=
@@ -1103,7 +1120,7 @@ Module vec.
                         |),
                         [
                           M.read (| drop_ptr |);
-                          (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |))
+                          (* MutToConstPointer *) M.pointer_coercion (| M.read (| vec_ptr |) |)
                         ]
                       |)
                     |) in
@@ -1134,7 +1151,7 @@ Module vec.
                         [ M.read (| to_drop |) ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -1157,7 +1174,7 @@ Module vec.
               self.iter.is_empty()
           }
       *)
-      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>

@@ -34,19 +34,22 @@ Module iter.
         }
     }
     *)
-    Definition try_process (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_process (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ _ as I; T; R; F; U ], [ iter; f ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let residual := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+            let residual :=
+              M.alloc (| M.of_value (| Value.StructTuple "core::option::Option::None" [] |) |) in
             let shunt :=
               M.alloc (|
-                Value.StructRecord
-                  "core::iter::adapters::GenericShunt"
-                  [ ("iter", M.read (| iter |)); ("residual", residual) ]
+                M.of_value (|
+                  Value.StructRecord
+                    "core::iter::adapters::GenericShunt"
+                    [ ("iter", A.to_value (M.read (| iter |))); ("residual", A.to_value residual) ]
+                |)
               |) in
             let value :=
               M.alloc (|
@@ -59,7 +62,7 @@ Module iter.
                     "call_mut",
                     []
                   |),
-                  [ f; Value.Tuple [ M.read (| shunt |) ] ]
+                  [ f; M.of_value (| Value.Tuple [ A.to_value (M.read (| shunt |)) ] |) ]
                 |)
               |) in
             M.match_operator (|
@@ -118,7 +121,7 @@ Module iter.
               self.try_for_each(ControlFlow::Break).break_value()
           }
       *)
-      Definition next (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (I R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I R in
         match τ, α with
         | [], [ self ] =>
@@ -152,7 +155,7 @@ Module iter.
                   |),
                   [
                     M.read (| self |);
-                    M.constructor_as_closure "core::ops::control_flow::ControlFlow::Break"
+                    M.constructor_as_closure (| "core::ops::control_flow::ControlFlow::Break" |)
                   ]
                 |)
               ]
@@ -170,7 +173,7 @@ Module iter.
               }
           }
       *)
-      Definition size_hint (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (I R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I R in
         match τ, α with
         | [], [ self ] =>
@@ -178,7 +181,7 @@ Module iter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -204,11 +207,18 @@ Module iter.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.Tuple
-                          [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
-                          ]
+                        M.of_value (|
+                          Value.Tuple
+                            [
+                              A.to_value (M.of_value (| Value.Integer 0 |));
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -237,7 +247,15 @@ Module iter.
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let upper := M.copy (| γ0_1 |) in
-                              M.alloc (| Value.Tuple [ Value.Integer 0; M.read (| upper |) ] |)))
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Tuple
+                                    [
+                                      A.to_value (M.of_value (| Value.Integer 0 |));
+                                      A.to_value (M.read (| upper |))
+                                    ]
+                                |)
+                              |)))
                         ]
                       |)))
                 ]
@@ -263,7 +281,7 @@ Module iter.
                   .into_try()
           }
       *)
-      Definition try_fold (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_fold (I R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I R in
         match τ, α with
         | [ B; F; T ], [ self; init; f ] =>
@@ -299,8 +317,8 @@ Module iter.
                       "iter"
                     |);
                     M.read (| init |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
@@ -361,9 +379,13 @@ Module iter.
                                                               |),
                                                               [
                                                                 f;
-                                                                Value.Tuple
-                                                                  [ M.read (| acc |); M.read (| x |)
-                                                                  ]
+                                                                M.of_value (|
+                                                                  Value.Tuple
+                                                                    [
+                                                                      A.to_value (M.read (| acc |));
+                                                                      A.to_value (M.read (| x |))
+                                                                    ]
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -387,25 +409,30 @@ Module iter.
                                                               "residual"
                                                             |)
                                                           |),
-                                                          Value.StructTuple
-                                                            "core::option::Option::Some"
-                                                            [ M.read (| r |) ]
+                                                          M.of_value (|
+                                                            Value.StructTuple
+                                                              "core::option::Option::Some"
+                                                              [ A.to_value (M.read (| r |)) ]
+                                                          |)
                                                         |) in
                                                       M.alloc (|
-                                                        Value.StructTuple
-                                                          "core::ops::control_flow::ControlFlow::Break"
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::try_trait::Try",
-                                                                T,
-                                                                [],
-                                                                "from_output",
-                                                                []
-                                                              |),
-                                                              [ M.read (| acc |) ]
-                                                            |)
-                                                          ]
+                                                        M.of_value (|
+                                                          Value.StructTuple
+                                                            "core::ops::control_flow::ControlFlow::Break"
+                                                            [
+                                                              A.to_value
+                                                                (M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::Try",
+                                                                    T,
+                                                                    [],
+                                                                    "from_output",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| acc |) ]
+                                                                |))
+                                                            ]
+                                                        |)
                                                       |)))
                                                 ]
                                               |)
@@ -415,7 +442,8 @@ Module iter.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |)
               ]
@@ -433,7 +461,7 @@ Module iter.
                   self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
               }
       *)
-      Definition fold (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fold (I R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I R in
         match τ, α with
         | [ AAA; FFF ], [ self; init; fold ] =>
@@ -506,7 +534,7 @@ Module iter.
               unsafe { SourceIter::as_inner(&mut self.iter) }
           }
       *)
-      Definition as_inner (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_inner (I R : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I R in
         match τ, α with
         | [], [ self ] =>
@@ -544,7 +572,7 @@ Module iter.
       
       (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
       (* Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-      Definition value_EXPAND_BY (I R : Ty.t) : Value.t :=
+      Definition value_EXPAND_BY (I R : Ty.t) : A.t :=
         let Self : Ty.t := Self I R in
         M.run
           ltac:(M.monadic
@@ -552,7 +580,7 @@ Module iter.
       
       (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
       (* Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-      Definition value_MERGE_BY (I R : Ty.t) : Value.t :=
+      Definition value_MERGE_BY (I R : Ty.t) : A.t :=
         let Self : Ty.t := Self I R in
         M.run
           ltac:(M.monadic

@@ -29,7 +29,7 @@ Enum Food
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self : Ty.t := Ty.path "combinators_map::Food".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -49,7 +49,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self : Ty.t := Ty.path "combinators_map::Peeled".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -69,7 +69,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self : Ty.t := Ty.path "combinators_map::Chopped".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -89,7 +89,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self : Ty.t := Ty.path "combinators_map::Cooked".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -99,14 +99,14 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
-Parameter peel : (list Ty.t) -> (list Value.t) -> M.
+Parameter peel : (list Ty.t) -> (list A.t) -> M.
 
-Parameter chop : (list Ty.t) -> (list Value.t) -> M.
+Parameter chop : (list Ty.t) -> (list A.t) -> M.
 
-Parameter cook : (list Ty.t) -> (list Value.t) -> M.
+Parameter cook : (list Ty.t) -> (list A.t) -> M.
 
-Parameter process : (list Ty.t) -> (list Value.t) -> M.
+Parameter process : (list Ty.t) -> (list A.t) -> M.
 
-Parameter eat : (list Ty.t) -> (list Value.t) -> M.
+Parameter eat : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

@@ -30,19 +30,19 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                       |)))
                 ]
@@ -63,7 +63,7 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -77,33 +77,36 @@ Module panic.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "Location" |);
-                M.read (| Value.String "file" |);
+                M.read (| M.of_value (| Value.String "Location" |) |);
+                M.read (| M.of_value (| Value.String "file" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::panic::location::Location",
                     "file"
-                  |));
-                M.read (| Value.String "line" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "line" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::panic::location::Location",
                     "line"
-                  |));
-                M.read (| Value.String "col" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "col" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::panic::location::Location",
                       "col"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -132,20 +135,21 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -166,7 +170,7 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -236,7 +240,7 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -353,7 +357,7 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -383,38 +387,40 @@ Module panic.
                   ]
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::panic::location::Location",
                         "line"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::panic::location::Location",
                         "line"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::panic::location::Location",
                       "col"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::panic::location::Location",
                       "col"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -431,7 +437,7 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -559,7 +565,7 @@ Module panic.
               crate::intrinsics::caller_location()
           }
       *)
-      Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition caller (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -574,7 +580,7 @@ Module panic.
               self.file
           }
       *)
-      Definition file (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition file (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -596,7 +602,7 @@ Module panic.
               self.line
           }
       *)
-      Definition line (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition line (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -618,7 +624,7 @@ Module panic.
               self.col
           }
       *)
-      Definition column (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition column (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -639,17 +645,22 @@ Module panic.
               Location { file, line, col }
           }
       *)
-      Definition internal_constructor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition internal_constructor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ file; line; col ] =>
           ltac:(M.monadic
             (let file := M.alloc (| file |) in
             let line := M.alloc (| line |) in
             let col := M.alloc (| col |) in
-            Value.StructRecord
-              "core::panic::location::Location"
-              [ ("file", M.read (| file |)); ("line", M.read (| line |)); ("col", M.read (| col |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::panic::location::Location"
+                [
+                  ("file", A.to_value (M.read (| file |)));
+                  ("line", A.to_value (M.read (| line |)));
+                  ("col", A.to_value (M.read (| col |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -666,7 +677,7 @@ Module panic.
               write!(formatter, "{}:{}:{}", self.file, self.line, self.col)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; formatter ] =>
           ltac:(M.monadic
@@ -680,64 +691,73 @@ Module panic.
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "" |);
-                            M.read (| Value.String ":" |);
-                            M.read (| Value.String ":" |)
-                          ]
-                      |));
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                              A.to_value (M.read (| M.of_value (| Value.String ":" |) |));
+                              A.to_value (M.read (| M.of_value (| Value.String ":" |) |))
+                            ]
+                        |)
+                      |)
+                    |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::panic::location::Location",
-                                  "file"
-                                |)
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "u32" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::panic::location::Location",
-                                  "line"
-                                |)
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "u32" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::panic::location::Location",
-                                  "col"
-                                |)
-                              ]
-                            |)
-                          ]
-                      |))
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::panic::location::Location",
+                                      "file"
+                                    |)
+                                  ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::panic::location::Location",
+                                      "line"
+                                    |)
+                                  ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::panic::location::Location",
+                                      "col"
+                                    |)
+                                  ]
+                                |))
+                            ]
+                        |)
+                      |)
+                    |)
                   ]
                 |)
               ]

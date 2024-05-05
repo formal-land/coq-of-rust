@@ -25,24 +25,29 @@ Module net.
               Self { buf: MaybeUninit::uninit_array(), len: 0 }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::net::display_buffer::DisplayBuffer"
-              [
-                ("buf",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ],
-                      "uninit_array",
-                      []
-                    |),
-                    []
-                  |));
-                ("len", Value.Integer 0)
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::net::display_buffer::DisplayBuffer"
+                [
+                  ("buf",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            [ Ty.path "u8" ],
+                          "uninit_array",
+                          []
+                        |),
+                        []
+                      |)));
+                  ("len", A.to_value (M.of_value (| Value.Integer 0 |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -58,7 +63,7 @@ Module net.
               }
           }
       *)
-      Definition as_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -93,18 +98,21 @@ Module net.
                             "core::net::display_buffer::DisplayBuffer",
                             "buf"
                           |);
-                          Value.StructRecord
-                            "core::ops::range::RangeTo"
-                            [
-                              ("end_",
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::net::display_buffer::DisplayBuffer",
-                                    "len"
-                                  |)
-                                |))
-                            ]
+                          M.of_value (|
+                            Value.StructRecord
+                              "core::ops::range::RangeTo"
+                              [
+                                ("end_",
+                                  A.to_value
+                                    (M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::net::display_buffer::DisplayBuffer",
+                                        "len"
+                                      |)
+                                    |)))
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -139,7 +147,7 @@ Module net.
               }
           }
       *)
-      Definition write_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; s ] =>
           ltac:(M.monadic
@@ -154,7 +162,7 @@ Module net.
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -174,43 +182,48 @@ Module net.
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
+                              M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::net::display_buffer::DisplayBuffer",
                                   "buf"
-                                |));
-                              Value.StructRecord
-                                "core::ops::range::Range"
-                                [
-                                  ("start",
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::net::display_buffer::DisplayBuffer",
-                                        "len"
-                                      |)
-                                    |));
-                                  ("end_",
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::net::display_buffer::DisplayBuffer",
-                                          "len"
-                                        |)
-                                      |),
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                          "len",
-                                          []
-                                        |),
-                                        [ M.read (| bytes |) ]
-                                      |)
-                                    |))
-                                ]
+                                |)
+                              |);
+                              M.of_value (|
+                                Value.StructRecord
+                                  "core::ops::range::Range"
+                                  [
+                                    ("start",
+                                      A.to_value
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::net::display_buffer::DisplayBuffer",
+                                            "len"
+                                          |)
+                                        |)));
+                                    ("end_",
+                                      A.to_value
+                                        (BinOp.Panic.add (|
+                                          Integer.Usize,
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::net::display_buffer::DisplayBuffer",
+                                              "len"
+                                            |)
+                                          |),
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              "len",
+                                              []
+                                            |),
+                                            [ M.read (| bytes |) ]
+                                          |)
+                                        |)))
+                                  ]
+                              |)
                             ]
                           |)
                         |) in
@@ -257,14 +270,21 @@ Module net.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "core::fmt::Error" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [ A.to_value (M.of_value (| Value.StructTuple "core::fmt::Error" [] |))
+                            ]
+                        |)
                       |)))
                 ]
               |)

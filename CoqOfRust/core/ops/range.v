@@ -25,7 +25,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -46,9 +46,10 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
-        | [], [] => ltac:(M.monadic (Value.StructTuple "core::ops::range::RangeFull" []))
+        | [], [] =>
+          ltac:(M.monadic (M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -75,13 +76,13 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.Bool true))
+            M.of_value (| Value.Bool true |)))
         | _, _ => M.impossible
         end.
       
@@ -108,12 +109,12 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -130,13 +131,13 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -156,7 +157,7 @@ Module ops.
               write!(fmt, "..")
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -170,8 +171,14 @@ Module ops.
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                   [
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [ A.to_value (M.read (| M.of_value (| Value.String ".." |) |)) ]
+                        |)
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -198,38 +205,42 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::ops::range::Range"
-              [
-                ("start",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::Range",
-                        "start"
-                      |)
-                    ]
-                  |));
-                ("end_",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::Range",
-                        "end"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ops::range::Range"
+                [
+                  ("start",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::Range",
+                            "start"
+                          |)
+                        ]
+                      |)));
+                  ("end_",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::Range",
+                            "end"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -246,25 +257,29 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
       
       (* Default *)
-      Definition default (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::ops::range::Range"
-              [
-                ("start",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", Idx, [], "default", [] |),
-                    []
-                  |));
-                ("end_",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", Idx, [], "default", [] |),
-                    []
-                  |))
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::ops::range::Range"
+                [
+                  ("start",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::default::Default", Idx, [], "default", [] |),
+                        []
+                      |)));
+                  ("end_",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::default::Default", Idx, [], "default", [] |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -293,7 +308,7 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; other ] =>
@@ -361,7 +376,7 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
@@ -369,8 +384,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -391,7 +406,7 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -450,7 +465,7 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; fmt ] =>
@@ -567,8 +582,17 @@ Module ops.
                                   |),
                                   [
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.read (| M.of_value (| Value.String ".." |) |))
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
@@ -702,7 +726,13 @@ Module ops.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -729,7 +759,7 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ U ], [ self; item ] =>
@@ -758,14 +788,14 @@ Module ops.
               !(self.start < self.end)
           }
       *)
-      Definition is_empty (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.Pure.not (|
+              M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialOrd", Idx, [ Idx ], "lt", [] |),
                 [
                   M.SubPointer.get_struct_record_field (|
@@ -779,7 +809,8 @@ Module ops.
                     "end"
                   |)
                 ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -800,27 +831,30 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::ops::range::RangeFrom"
-              [
-                ("start",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeFrom",
-                        "start"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ops::range::RangeFrom"
+                [
+                  ("start",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeFrom",
+                            "start"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -851,7 +885,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; other ] =>
@@ -903,7 +937,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
@@ -911,8 +945,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -934,7 +968,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -975,7 +1009,7 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; fmt ] =>
@@ -1092,8 +1126,17 @@ Module ops.
                                   |),
                                   [
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.read (| M.of_value (| Value.String ".." |) |))
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1150,7 +1193,13 @@ Module ops.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -1178,7 +1227,7 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ U ], [ self; item ] =>
@@ -1226,27 +1275,30 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::ops::range::RangeTo"
-              [
-                ("end_",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeTo",
-                        "end"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ops::range::RangeTo"
+                [
+                  ("end_",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeTo",
+                            "end"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1275,7 +1327,7 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; other ] =>
@@ -1325,7 +1377,7 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
@@ -1333,8 +1385,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -1355,7 +1407,7 @@ Module ops.
       Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -1395,7 +1447,7 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; fmt ] =>
@@ -1435,8 +1487,17 @@ Module ops.
                                   |),
                                   [
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.read (| M.of_value (| Value.String ".." |) |))
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1570,7 +1631,13 @@ Module ops.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -1597,7 +1664,7 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ U ], [ self; item ] =>
@@ -1634,49 +1701,60 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::ops::range::RangeInclusive"
-              [
-                ("start",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "start"
-                      |)
-                    ]
-                  |));
-                ("end_",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "end"
-                      |)
-                    ]
-                  |));
-                ("exhausted",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeInclusive",
-                        "exhausted"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ops::range::RangeInclusive"
+                [
+                  ("start",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
+                            "start"
+                          |)
+                        ]
+                      |)));
+                  ("end_",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
+                            "end"
+                          |)
+                        ]
+                      |)));
+                  ("exhausted",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "bool",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
+                            "exhausted"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1707,7 +1785,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; other ] =>
@@ -1749,21 +1827,22 @@ Module ops.
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::ops::range::RangeInclusive",
                       "exhausted"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::ops::range::RangeInclusive",
                       "exhausted"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -1795,7 +1874,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
@@ -1803,13 +1882,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -1833,7 +1913,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -1904,20 +1984,22 @@ Module ops.
               Self { start, end, exhausted: false }
           }
       *)
-      Definition new (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ start; end_ ] =>
           ltac:(M.monadic
             (let start := M.alloc (| start |) in
             let end_ := M.alloc (| end_ |) in
-            Value.StructRecord
-              "core::ops::range::RangeInclusive"
-              [
-                ("start", M.read (| start |));
-                ("end_", M.read (| end_ |));
-                ("exhausted", Value.Bool false)
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ops::range::RangeInclusive"
+                [
+                  ("start", A.to_value (M.read (| start |)));
+                  ("end_", A.to_value (M.read (| end_ |)));
+                  ("exhausted", A.to_value (M.of_value (| Value.Bool false |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1930,7 +2012,7 @@ Module ops.
               &self.start
           }
       *)
-      Definition start (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
@@ -1953,7 +2035,7 @@ Module ops.
               &self.end
           }
       *)
-      Definition end_ (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_ (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
@@ -1976,29 +2058,33 @@ Module ops.
               (self.start, self.end)
           }
       *)
-      Definition into_inner (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ops::range::RangeInclusive",
-                    "start"
-                  |)
-                |);
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ops::range::RangeInclusive",
-                    "end"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::RangeInclusive",
+                        "start"
+                      |)
+                    |));
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::RangeInclusive",
+                        "end"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2014,7 +2100,7 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ U ], [ self; item ] =>
@@ -2043,7 +2129,7 @@ Module ops.
               self.exhausted || !(self.start <= self.end)
           }
       *)
-      Definition is_empty (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
@@ -2058,8 +2144,8 @@ Module ops.
                 |)
               |),
               ltac:(M.monadic
-                (UnOp.Pure.not
-                  (M.call_closure (|
+                (UnOp.Pure.not (|
+                  M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialOrd", Idx, [ Idx ], "le", [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
@@ -2073,7 +2159,8 @@ Module ops.
                         "end"
                       |)
                     ]
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -2097,7 +2184,7 @@ Module ops.
               start..exclusive_end
           }
       *)
-      Definition into_slice_range (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_slice_range (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2114,13 +2201,13 @@ Module ops.
                         "end"
                       |)
                     |),
-                    Value.Integer 1
+                    M.of_value (| Value.Integer 1 |)
                   |)
                 |) in
               let start :=
                 M.copy (|
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -2145,9 +2232,14 @@ Module ops.
                   |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [ ("start", M.read (| start |)); ("end_", M.read (| exclusive_end |)) ]
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start", A.to_value (M.read (| start |)));
+                      ("end_", A.to_value (M.read (| exclusive_end |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -2172,7 +2264,7 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; fmt ] =>
@@ -2289,10 +2381,17 @@ Module ops.
                                   |),
                                   [
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array [ M.read (| Value.String "..=" |) ]
-                                      |))
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.read (| M.of_value (| Value.String "..=" |) |))
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2428,7 +2527,7 @@ Module ops.
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -2471,11 +2570,21 @@ Module ops.
                                             |),
                                             [
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [ M.read (| Value.String " (exhausted)" |) ]
-                                                |))
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (|
+                                                              Value.String " (exhausted)"
+                                                            |)
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -2532,11 +2641,17 @@ Module ops.
                                       val))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -2577,27 +2692,30 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::ops::range::RangeToInclusive"
-              [
-                ("end_",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ops::range::RangeToInclusive",
-                        "end"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ops::range::RangeToInclusive"
+                [
+                  ("end_",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeToInclusive",
+                            "end"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2628,7 +2746,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; other ] =>
@@ -2680,7 +2798,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self ] =>
@@ -2688,8 +2806,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -2711,7 +2829,7 @@ Module ops.
         Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -2752,7 +2870,7 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [], [ self; fmt ] =>
@@ -2792,10 +2910,17 @@ Module ops.
                                   |),
                                   [
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array [ M.read (| Value.String "..=" |) ]
-                                      |))
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.read (| M.of_value (| Value.String "..=" |) |))
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2929,7 +3054,13 @@ Module ops.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -2957,7 +3088,7 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self Idx in
         match τ, α with
         | [ U ], [ self; item ] =>
@@ -3011,7 +3142,7 @@ Module ops.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -3032,14 +3163,17 @@ Module ops.
                         |) in
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::range::Bound::Included"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                              [ M.read (| __self_0 |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Included"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  [ M.read (| __self_0 |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3052,19 +3186,24 @@ Module ops.
                         |) in
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::range::Bound::Excluded"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                              [ M.read (| __self_0 |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Excluded"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  [ M.read (| __self_0 |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -3096,7 +3235,7 @@ Module ops.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -3126,8 +3265,8 @@ Module ops.
                           |),
                           [
                             M.read (| f |);
-                            M.read (| Value.String "Included" |);
-                            (* Unsize *) M.pointer_coercion __self_0
+                            M.read (| M.of_value (| Value.String "Included" |) |);
+                            (* Unsize *) M.pointer_coercion (| __self_0 |)
                           ]
                         |)
                       |)));
@@ -3150,8 +3289,8 @@ Module ops.
                           |),
                           [
                             M.read (| f |);
-                            M.read (| Value.String "Excluded" |);
-                            (* Unsize *) M.pointer_coercion __self_0
+                            M.read (| M.of_value (| Value.String "Excluded" |) |);
+                            (* Unsize *) M.pointer_coercion (| __self_0 |)
                           ]
                         |)
                       |)));
@@ -3165,7 +3304,7 @@ Module ops.
                             "write_str",
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Unbounded" |) ]
+                          [ M.read (| f |); M.read (| M.of_value (| Value.String "Unbounded" |) |) ]
                         |)
                       |)))
                 ]
@@ -3187,7 +3326,7 @@ Module ops.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -3253,7 +3392,7 @@ Module ops.
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -3285,7 +3424,7 @@ Module ops.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -3315,11 +3454,16 @@ Module ops.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -3385,7 +3529,7 @@ Module ops.
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)))
                         ]
                       |)
                     |)))
@@ -3420,7 +3564,7 @@ Module ops.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -3428,8 +3572,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -3457,7 +3601,7 @@ Module ops.
               }
           }
       *)
-      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -3477,7 +3621,11 @@ Module ops.
                         |) in
                       let x := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Included" [ M.read (| x |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Included"
+                            [ A.to_value (M.read (| x |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3489,11 +3637,17 @@ Module ops.
                         |) in
                       let x := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Excluded" [ M.read (| x |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Excluded"
+                            [ A.to_value (M.read (| x |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -3513,7 +3667,7 @@ Module ops.
               }
           }
       *)
-      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -3533,7 +3687,11 @@ Module ops.
                         |) in
                       let x := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Included" [ M.read (| x |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Included"
+                            [ A.to_value (M.read (| x |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3545,11 +3703,17 @@ Module ops.
                         |) in
                       let x := M.alloc (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Excluded" [ M.read (| x |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Excluded"
+                            [ A.to_value (M.read (| x |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -3569,7 +3733,7 @@ Module ops.
               }
           }
       *)
-      Definition map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ U; F ], [ self; f ] =>
@@ -3582,7 +3746,9 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -3593,20 +3759,26 @@ Module ops.
                         |) in
                       let x := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::range::Bound::Included"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::function::FnOnce",
-                                F,
-                                [ Ty.tuple [ T ] ],
-                                "call_once",
-                                []
-                              |),
-                              [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Included"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::function::FnOnce",
+                                    F,
+                                    [ Ty.tuple [ T ] ],
+                                    "call_once",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| f |);
+                                    M.of_value (| Value.Tuple [ A.to_value (M.read (| x |)) ] |)
+                                  ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3618,20 +3790,26 @@ Module ops.
                         |) in
                       let x := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::range::Bound::Excluded"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::function::FnOnce",
-                                F,
-                                [ Ty.tuple [ T ] ],
-                                "call_once",
-                                []
-                              |),
-                              [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Excluded"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::function::FnOnce",
+                                    F,
+                                    [ Ty.tuple [ T ] ],
+                                    "call_once",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| f |);
+                                    M.of_value (| Value.Tuple [ A.to_value (M.read (| x |)) ] |)
+                                  ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -3657,7 +3835,7 @@ Module ops.
               }
           }
       *)
-      Definition cloned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cloned (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -3669,7 +3847,9 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -3680,14 +3860,17 @@ Module ops.
                         |) in
                       let x := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::range::Bound::Included"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                              [ M.read (| x |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Included"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  [ M.read (| x |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3699,14 +3882,17 @@ Module ops.
                         |) in
                       let x := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::range::Bound::Excluded"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                              [ M.read (| x |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Excluded"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  [ M.read (| x |) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -3721,7 +3907,7 @@ Module ops.
     
     (* Trait *)
     Module RangeBounds.
-      Definition contains (T Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (T Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ U ], [ self; item ] =>
           ltac:(M.monadic
@@ -3785,7 +3971,7 @@ Module ops.
                             [ start; M.alloc (| M.read (| item |) |) ]
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)))
                   ]
                 |)
               |),
@@ -3847,7 +4033,7 @@ Module ops.
                               [ item; M.alloc (| M.read (| end_ |) |) ]
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)))
                     ]
                   |)
                 |)))
@@ -3868,13 +4054,13 @@ Module ops.
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -3883,13 +4069,13 @@ Module ops.
               Unbounded
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -3914,21 +4100,24 @@ Module ops.
               Included(&self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeFrom",
-                  "start"
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::range::RangeFrom",
+                      "start"
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3937,13 +4126,13 @@ Module ops.
               Unbounded
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -3968,13 +4157,13 @@ Module ops.
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -3983,21 +4172,24 @@ Module ops.
               Excluded(&self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Excluded"
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeTo",
-                  "end"
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Excluded"
+                [
+                  A.to_value
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::range::RangeTo",
+                      "end"
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4022,21 +4214,24 @@ Module ops.
               Included(&self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::Range",
-                  "start"
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::range::Range",
+                      "start"
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4045,21 +4240,24 @@ Module ops.
               Excluded(&self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Excluded"
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::Range",
-                  "end"
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Excluded"
+                [
+                  A.to_value
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::range::Range",
+                      "end"
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4085,21 +4283,24 @@ Module ops.
               Included(&self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeInclusive",
-                  "start"
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::range::RangeInclusive",
+                      "start"
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4114,7 +4315,7 @@ Module ops.
               }
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -4122,7 +4323,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4135,28 +4336,34 @@ Module ops.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::range::Bound::Excluded"
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::ops::range::RangeInclusive",
-                              "end"
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Excluded"
+                            [
+                              A.to_value
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::RangeInclusive",
+                                  "end"
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::ops::range::Bound::Included"
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::ops::range::RangeInclusive",
-                              "end"
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Included"
+                            [
+                              A.to_value
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::RangeInclusive",
+                                  "end"
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4186,13 +4393,13 @@ Module ops.
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -4201,21 +4408,24 @@ Module ops.
               Included(&self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::ops::range::RangeToInclusive",
-                  "end"
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::range::RangeToInclusive",
+                      "end"
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4249,7 +4459,7 @@ Module ops.
               }
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -4271,7 +4481,11 @@ Module ops.
                         |) in
                       let start := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Included" [ M.read (| start |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Included"
+                            [ A.to_value (M.read (| start |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4285,13 +4499,19 @@ Module ops.
                         |) in
                       let start := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Excluded" [ M.read (| start |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Excluded"
+                            [ A.to_value (M.read (| start |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -4307,7 +4527,7 @@ Module ops.
               }
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -4329,7 +4549,11 @@ Module ops.
                         |) in
                       let end_ := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Included" [ M.read (| end_ |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Included"
+                            [ A.to_value (M.read (| end_ |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4343,13 +4567,19 @@ Module ops.
                         |) in
                       let end_ := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::ops::range::Bound::Excluded" [ M.read (| end_ |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::range::Bound::Excluded"
+                            [ A.to_value (M.read (| end_ |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -4382,7 +4612,7 @@ Module ops.
               self.0
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -4397,7 +4627,7 @@ Module ops.
               self.1
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -4429,23 +4659,26 @@ Module ops.
               Included(self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeFrom",
-                    "start"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeFrom",
+                        "start"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4454,13 +4687,13 @@ Module ops.
               Unbounded
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -4486,13 +4719,13 @@ Module ops.
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -4501,23 +4734,26 @@ Module ops.
               Excluded(self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Excluded"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeTo",
-                    "end"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Excluded"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeTo",
+                        "end"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4543,23 +4779,26 @@ Module ops.
               Included(self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::Range",
-                    "start"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::Range",
+                        "start"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4568,23 +4807,26 @@ Module ops.
               Excluded(self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Excluded"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::Range",
-                    "end"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Excluded"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::Range",
+                        "end"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4610,23 +4852,26 @@ Module ops.
               Included(self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeInclusive",
-                    "start"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "start"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4635,23 +4880,26 @@ Module ops.
               Included(self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeInclusive",
-                    "end"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "end"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4677,13 +4925,13 @@ Module ops.
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            M.of_value (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -4692,23 +4940,26 @@ Module ops.
               Included(self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::range::Bound::Included"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ops::range::RangeToInclusive",
-                    "end"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::range::Bound::Included"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       

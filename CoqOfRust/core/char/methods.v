@@ -8,28 +8,29 @@ Module char.
       
       (*     pub const MIN: char = '\0'; *)
       (* Ty.path "char" *)
-      Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 0 |))).
+      Definition value_MIN : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.UnicodeChar 0 |) |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*     pub const MAX: char = '\u{10ffff}'; *)
       (* Ty.path "char" *)
-      Definition value_MAX : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 1114111 |))).
+      Definition value_MAX : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.UnicodeChar 1114111 |) |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*     pub const REPLACEMENT_CHARACTER: char = '\u{FFFD}'; *)
       (* Ty.path "char" *)
-      Definition value_REPLACEMENT_CHARACTER : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 65533 |))).
+      Definition value_REPLACEMENT_CHARACTER : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.UnicodeChar 65533 |) |))).
       
       Axiom AssociatedConstant_value_REPLACEMENT_CHARACTER :
         M.IsAssociatedConstant Self "value_REPLACEMENT_CHARACTER" value_REPLACEMENT_CHARACTER.
       
       (*     pub const UNICODE_VERSION: (u8, u8, u8) = crate::unicode::UNICODE_VERSION; *)
       (* Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ] *)
-      Definition value_UNICODE_VERSION : Value.t :=
+      Definition value_UNICODE_VERSION : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::unicode::UNICODE_VERSION" |))).
       
       Axiom AssociatedConstant_value_UNICODE_VERSION :
@@ -40,7 +41,7 @@ Module char.
               super::decode::decode_utf16(iter)
           }
       *)
-      Definition decode_utf16 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition decode_utf16 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ _ as I ], [ iter ] =>
           ltac:(M.monadic
@@ -60,7 +61,7 @@ Module char.
               super::convert::from_u32(i)
           }
       *)
-      Definition from_u32 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_u32 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ i ] =>
           ltac:(M.monadic
@@ -80,7 +81,7 @@ Module char.
               unsafe { super::convert::from_u32_unchecked(i) }
           }
       *)
-      Definition from_u32_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_u32_unchecked (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ i ] =>
           ltac:(M.monadic
@@ -100,7 +101,7 @@ Module char.
               super::convert::from_digit(num, radix)
           }
       *)
-      Definition from_digit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_digit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ num; radix ] =>
           ltac:(M.monadic
@@ -120,7 +121,7 @@ Module char.
               self.to_digit(radix).is_some()
           }
       *)
-      Definition is_digit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_digit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; radix ] =>
           ltac:(M.monadic
@@ -162,7 +163,7 @@ Module char.
               if digit < radix { Some(digit) } else { None }
           }
       *)
-      Definition to_digit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_digit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; radix ] =>
           ltac:(M.monadic
@@ -175,35 +176,43 @@ Module char.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (Value.UnicodeChar 48) ]
+                        [
+                          M.rust_cast (| M.read (| self |) |);
+                          M.rust_cast (| M.of_value (| Value.UnicodeChar 48 |) |)
+                        ]
                       |)
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| radix |)) (Value.Integer 10)
+                                  BinOp.Pure.gt (|
+                                    M.read (| radix |),
+                                    M.of_value (| Value.Integer 10 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            UnOp.Pure.not
-                                              (BinOp.Pure.le
-                                                (M.read (| radix |))
-                                                (Value.Integer 36))
+                                            UnOp.Pure.not (|
+                                              BinOp.Pure.le (|
+                                                M.read (| radix |),
+                                                M.of_value (| Value.Integer 36 |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -223,35 +232,45 @@ Module char.
                                                 |),
                                                 [
                                                   (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "to_digit: radix is too high (maximum 36)"
-                                                          |)
-                                                        ]
-                                                    |))
+                                                  M.pointer_coercion (|
+                                                    M.alloc (|
+                                                      M.of_value (|
+                                                        Value.Array
+                                                          [
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.of_value (|
+                                                                  Value.String
+                                                                    "to_digit: radix is too high (maximum 36)"
+                                                                |)
+                                                              |))
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
                                                 ]
                                               |)
                                             ]
                                           |)
                                         |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
                             let _ :=
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt (M.read (| digit |)) (Value.Integer 10)
+                                            BinOp.Pure.lt (|
+                                              M.read (| digit |),
+                                              M.of_value (| Value.Integer 10 |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -262,14 +281,17 @@ Module char.
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
-                                              Value.StructTuple
-                                                "core::option::Option::Some"
-                                                [ M.read (| digit |) ]
+                                              M.of_value (|
+                                                Value.StructTuple
+                                                  "core::option::Option::Some"
+                                                  [ A.to_value (M.read (| digit |)) ]
+                                              |)
                                             |)
                                           |)
                                         |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
                             let _ :=
@@ -289,38 +311,45 @@ Module char.
                                         []
                                       |),
                                       [
-                                        BinOp.Pure.bit_or
-                                          (M.rust_cast (M.read (| self |)))
-                                          (Value.Integer 32);
-                                        M.rust_cast (Value.UnicodeChar 97)
+                                        BinOp.Pure.bit_or (|
+                                          M.rust_cast (| M.read (| self |) |),
+                                          M.of_value (| Value.Integer 32 |)
+                                        |);
+                                        M.rust_cast (| M.of_value (| Value.UnicodeChar 97 |) |)
                                       ]
                                     |);
-                                    Value.Integer 10
+                                    M.of_value (| Value.Integer 10 |)
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt (M.read (| digit |)) (M.read (| radix |))
+                                BinOp.Pure.lt (| M.read (| digit |), M.read (| radix |) |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| digit |) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ A.to_value (M.read (| digit |)) ]
+                            |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                          (M.alloc (|
+                            M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                          |)))
                     ]
                   |)
                 |)))
@@ -335,7 +364,7 @@ Module char.
               EscapeUnicode::new(self)
           }
       *)
-      Definition escape_unicode (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition escape_unicode (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -369,7 +398,7 @@ Module char.
           }
       "
       *)
-      Definition escape_debug_ext (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition escape_debug_ext (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; args ] =>
           ltac:(M.monadic
@@ -390,7 +419,11 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] ]
+                          [
+                            M.of_value (|
+                              Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" []
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -404,7 +437,11 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
+                          [
+                            M.of_value (|
+                              Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" []
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -418,7 +455,11 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
+                          [
+                            M.of_value (|
+                              Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" []
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -432,7 +473,11 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
+                          [
+                            M.of_value (|
+                              Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" []
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -447,9 +492,11 @@ Module char.
                             []
                           |),
                           [
-                            Value.StructTuple
-                              "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
-                              []
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                                []
+                            |)
                           ]
                         |)
                       |)));
@@ -471,7 +518,12 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::QuotationMark" []
+                          [
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::ascii::ascii_char::AsciiChar::QuotationMark"
+                                []
+                            |)
                           ]
                         |)
                       |)));
@@ -493,7 +545,11 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" [] ]
+                          [
+                            M.of_value (|
+                              Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" []
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -583,7 +639,7 @@ Module char.
               self.escape_debug_ext(EscapeDebugExtArgs::ESCAPE_ALL)
           }
       *)
-      Definition escape_debug (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition escape_debug (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -614,7 +670,7 @@ Module char.
           }
       "
       *)
-      Definition escape_default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition escape_default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -634,7 +690,11 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
+                          [
+                            M.of_value (|
+                              Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" []
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -648,7 +708,11 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
+                          [
+                            M.of_value (|
+                              Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" []
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -662,7 +726,11 @@ Module char.
                             "backslash",
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
+                          [
+                            M.of_value (|
+                              Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" []
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -677,7 +745,7 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 92
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -685,7 +753,7 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 39
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -693,10 +761,10 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 34
                                 |) in
-                              Value.Tuple []))
+                              M.of_value (| Value.Tuple [] |)))
                         ],
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
                               | [] =>
@@ -731,7 +799,8 @@ Module char.
                                   |)
                                 |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -792,14 +861,14 @@ Module char.
               len_utf8(self as u32)
           }
       *)
-      Definition len_utf8 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len_utf8 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::char::methods::len_utf8", [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.rust_cast (| M.read (| self |) |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -812,28 +881,32 @@ Module char.
               if (ch & 0xFFFF) == ch { 1 } else { 2 }
           }
       *)
-      Definition len_utf16 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len_utf16 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let ch := M.alloc (| M.rust_cast (M.read (| self |)) |) in
+              let ch := M.alloc (| M.rust_cast (| M.read (| self |) |) |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (BinOp.Pure.bit_and (M.read (| ch |)) (Value.Integer 65535))
-                              (M.read (| ch |))
+                            BinOp.Pure.eq (|
+                              BinOp.Pure.bit_and (|
+                                M.read (| ch |),
+                                M.of_value (| Value.Integer 65535 |)
+                              |),
+                              M.read (| ch |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.Integer 1 |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 2 |)))
+                      M.alloc (| M.of_value (| Value.Integer 1 |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 2 |) |)))
                 ]
               |)
             |)))
@@ -848,7 +921,7 @@ Module char.
               unsafe { from_utf8_unchecked_mut(encode_utf8_raw(self as u32, dst)) }
           }
       *)
-      Definition encode_utf8 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition encode_utf8 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; dst ] =>
           ltac:(M.monadic
@@ -859,7 +932,7 @@ Module char.
               [
                 M.call_closure (|
                   M.get_function (| "core::char::methods::encode_utf8_raw", [] |),
-                  [ M.rust_cast (M.read (| self |)); M.read (| dst |) ]
+                  [ M.rust_cast (| M.read (| self |) |); M.read (| dst |) ]
                 |)
               ]
             |)))
@@ -873,7 +946,7 @@ Module char.
               encode_utf16_raw(self as u32, dst)
           }
       *)
-      Definition encode_utf16 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition encode_utf16 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; dst ] =>
           ltac:(M.monadic
@@ -881,7 +954,7 @@ Module char.
             let dst := M.alloc (| dst |) in
             M.call_closure (|
               M.get_function (| "core::char::methods::encode_utf16_raw", [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| dst |) ]
+              [ M.rust_cast (| M.read (| self |) |); M.read (| dst |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -897,7 +970,7 @@ Module char.
               }
           }
       *)
-      Definition is_alphabetic (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_alphabetic (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -911,23 +984,27 @@ Module char.
                       (M.find_or_pattern (|
                         γ,
                         [
-                          fun γ => ltac:(M.monadic (Value.Tuple []));
-                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                          fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                         ],
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
+                              | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.Pure.gt (|
+                            M.read (| c |),
+                            M.of_value (| Value.UnicodeChar 127 |)
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (|
@@ -955,7 +1032,7 @@ Module char.
               }
           }
       *)
-      Definition is_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_lowercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -964,13 +1041,16 @@ Module char.
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.Pure.gt (|
+                            M.read (| c |),
+                            M.of_value (| Value.UnicodeChar 127 |)
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (|
@@ -998,7 +1078,7 @@ Module char.
               }
           }
       *)
-      Definition is_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_uppercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1007,13 +1087,16 @@ Module char.
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.Pure.gt (|
+                            M.read (| c |),
+                            M.of_value (| Value.UnicodeChar 127 |)
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (|
@@ -1041,7 +1124,7 @@ Module char.
               }
           }
       *)
-      Definition is_whitespace (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_whitespace (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1062,23 +1145,27 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 32
                                 |) in
-                              Value.Tuple []));
-                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                              M.of_value (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                         ],
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
+                              | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.Pure.gt (|
+                            M.read (| c |),
+                            M.of_value (| Value.UnicodeChar 127 |)
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (|
@@ -1103,7 +1190,7 @@ Module char.
               self.is_alphabetic() || self.is_numeric()
           }
       *)
-      Definition is_alphanumeric (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_alphanumeric (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1130,7 +1217,7 @@ Module char.
               unicode::Cc(self)
           }
       *)
-      Definition is_control (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_control (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1149,7 +1236,7 @@ Module char.
               unicode::Grapheme_Extend(self)
           }
       *)
-      Definition is_grapheme_extended (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_grapheme_extended (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1172,7 +1259,7 @@ Module char.
               }
           }
       *)
-      Definition is_numeric (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_numeric (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1181,13 +1268,16 @@ Module char.
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.Pure.gt (|
+                            M.read (| c |),
+                            M.of_value (| Value.UnicodeChar 127 |)
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (| "core::unicode::unicode_data::n::lookup", [] |),
@@ -1208,24 +1298,34 @@ Module char.
               ToLowercase(CaseMappingIter::new(conversions::to_lower(self)))
           }
       *)
-      Definition to_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_lowercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::char::ToLowercase"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::char::CaseMappingIter", "new", [] |),
-                  [
-                    M.call_closure (|
-                      M.get_function (| "core::unicode::unicode_data::conversions::to_lower", [] |),
-                      [ M.read (| self |) ]
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::char::ToLowercase"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::char::CaseMappingIter",
+                        "new",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::unicode::unicode_data::conversions::to_lower",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1237,24 +1337,34 @@ Module char.
               ToUppercase(CaseMappingIter::new(conversions::to_upper(self)))
           }
       *)
-      Definition to_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_uppercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::char::ToUppercase"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::char::CaseMappingIter", "new", [] |),
-                  [
-                    M.call_closure (|
-                      M.get_function (| "core::unicode::unicode_data::conversions::to_upper", [] |),
-                      [ M.read (| self |) ]
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::char::ToUppercase"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::char::CaseMappingIter",
+                        "new",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::unicode::unicode_data::conversions::to_upper",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1266,12 +1376,15 @@ Module char.
               *self as u32 <= 0x7F
           }
       *)
-      Definition is_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.le (M.rust_cast (M.read (| M.read (| self |) |))) (Value.Integer 127)))
+            BinOp.Pure.le (|
+              M.rust_cast (| M.read (| M.read (| self |) |) |),
+              M.of_value (| Value.Integer 127 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1287,14 +1400,14 @@ Module char.
               }
           }
       *)
-      Definition as_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1308,22 +1421,27 @@ Module char.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::ascii::ascii_char::AsciiChar",
-                                "from_u8_unchecked",
-                                []
-                              |),
-                              [ M.rust_cast (M.read (| M.read (| self |) |)) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ascii::ascii_char::AsciiChar",
+                                    "from_u8_unchecked",
+                                    []
+                                  |),
+                                  [ M.rust_cast (| M.read (| M.read (| self |) |) |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -1341,14 +1459,14 @@ Module char.
               }
           }
       *)
-      Definition to_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_ascii_uppercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1366,15 +1484,16 @@ Module char.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.rust_cast
-                          (M.call_closure (|
+                        M.rust_cast (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "u8",
                               "ascii_change_case_unchecked",
                               []
                             |),
-                            [ M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |) ]
-                          |))
+                            [ M.alloc (| M.rust_cast (| M.read (| M.read (| self |) |) |) |) ]
+                          |)
+                        |)
                       |)));
                   fun γ => ltac:(M.monadic (M.read (| self |)))
                 ]
@@ -1395,14 +1514,14 @@ Module char.
               }
           }
       *)
-      Definition to_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_ascii_lowercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1420,15 +1539,16 @@ Module char.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.rust_cast
-                          (M.call_closure (|
+                        M.rust_cast (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "u8",
                               "ascii_change_case_unchecked",
                               []
                             |),
-                            [ M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |) ]
-                          |))
+                            [ M.alloc (| M.rust_cast (| M.read (| M.read (| self |) |) |) |) ]
+                          |)
+                        |)
                       |)));
                   fun γ => ltac:(M.monadic (M.read (| self |)))
                 ]
@@ -1445,21 +1565,22 @@ Module char.
               self.to_ascii_lowercase() == other.to_ascii_lowercase()
           }
       *)
-      Definition eq_ignore_ascii_case (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq_ignore_ascii_case (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.Pure.eq (|
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
                 [ M.read (| self |) ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
                 [ M.read (| other |) ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1471,7 +1592,7 @@ Module char.
               *self = self.to_ascii_uppercase();
           }
       *)
-      Definition make_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_ascii_uppercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1485,7 +1606,7 @@ Module char.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1498,7 +1619,7 @@ Module char.
               *self = self.to_ascii_lowercase();
           }
       *)
-      Definition make_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_ascii_lowercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1512,7 +1633,7 @@ Module char.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1525,7 +1646,7 @@ Module char.
               matches!( *self, 'A'..='Z' | 'a'..='z')
           }
       *)
-      Definition is_ascii_alphabetic (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_alphabetic (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1539,18 +1660,19 @@ Module char.
                       (M.find_or_pattern (|
                         γ,
                         [
-                          fun γ => ltac:(M.monadic (Value.Tuple []));
-                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                          fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                         ],
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
+                              | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1565,7 +1687,7 @@ Module char.
               matches!( *self, 'A'..='Z')
           }
       *)
-      Definition is_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_uppercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1574,8 +1696,8 @@ Module char.
               M.match_operator (|
                 M.read (| self |),
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1590,7 +1712,7 @@ Module char.
               matches!( *self, 'a'..='z')
           }
       *)
-      Definition is_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_lowercase (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1599,8 +1721,8 @@ Module char.
               M.match_operator (|
                 M.read (| self |),
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1615,40 +1737,42 @@ Module char.
               matches!( *self, '0'..='9') | matches!( *self, 'A'..='Z') | matches!( *self, 'a'..='z')
           }
       *)
-      Definition is_ascii_alphanumeric (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_alphanumeric (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.bit_or
-              (BinOp.Pure.bit_or
-                (M.read (|
+            BinOp.Pure.bit_or (|
+              BinOp.Pure.bit_or (|
+                M.read (|
                   M.match_operator (|
                     M.read (| self |),
                     [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                     ]
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.match_operator (|
                     M.read (| self |),
                     [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                     ]
                   |)
-                |)))
-              (M.read (|
+                |)
+              |),
+              M.read (|
                 M.match_operator (|
                   M.read (| self |),
                   [
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                   ]
                 |)
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1660,7 +1784,7 @@ Module char.
               matches!( *self, '0'..='9')
           }
       *)
-      Definition is_ascii_digit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_digit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1669,8 +1793,8 @@ Module char.
               M.match_operator (|
                 M.read (| self |),
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1685,7 +1809,7 @@ Module char.
               matches!( *self, '0'..='7')
           }
       *)
-      Definition is_ascii_octdigit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_octdigit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1694,8 +1818,8 @@ Module char.
               M.match_operator (|
                 M.read (| self |),
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1710,40 +1834,42 @@ Module char.
               matches!( *self, '0'..='9') | matches!( *self, 'A'..='F') | matches!( *self, 'a'..='f')
           }
       *)
-      Definition is_ascii_hexdigit (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_hexdigit (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.bit_or
-              (BinOp.Pure.bit_or
-                (M.read (|
+            BinOp.Pure.bit_or (|
+              BinOp.Pure.bit_or (|
+                M.read (|
                   M.match_operator (|
                     M.read (| self |),
                     [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                     ]
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.match_operator (|
                     M.read (| self |),
                     [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                     ]
                   |)
-                |)))
-              (M.read (|
+                |)
+              |),
+              M.read (|
                 M.match_operator (|
                   M.read (| self |),
                   [
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                   ]
                 |)
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1758,50 +1884,53 @@ Module char.
                   | matches!( *self, '{'..='~')
           }
       *)
-      Definition is_ascii_punctuation (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_punctuation (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.bit_or
-              (BinOp.Pure.bit_or
-                (BinOp.Pure.bit_or
-                  (M.read (|
+            BinOp.Pure.bit_or (|
+              BinOp.Pure.bit_or (|
+                BinOp.Pure.bit_or (|
+                  M.read (|
                     M.match_operator (|
                       M.read (| self |),
                       [
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                       ]
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.match_operator (|
                       M.read (| self |),
                       [
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                       ]
                     |)
-                  |)))
-                (M.read (|
+                  |)
+                |),
+                M.read (|
                   M.match_operator (|
                     M.read (| self |),
                     [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                     ]
                   |)
-                |)))
-              (M.read (|
+                |)
+              |),
+              M.read (|
                 M.match_operator (|
                   M.read (| self |),
                   [
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                   ]
                 |)
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1813,7 +1942,7 @@ Module char.
               matches!( *self, '!'..='~')
           }
       *)
-      Definition is_ascii_graphic (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_graphic (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1822,8 +1951,8 @@ Module char.
               M.match_operator (|
                 M.read (| self |),
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1838,7 +1967,7 @@ Module char.
               matches!( *self, '\t' | '\n' | '\x0C' | '\r' | ' ')
           }
       *)
-      Definition is_ascii_whitespace (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_whitespace (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1859,7 +1988,7 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 9
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -1867,7 +1996,7 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 10
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -1875,7 +2004,7 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 12
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -1883,7 +2012,7 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 13
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -1891,17 +2020,18 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 32
                                 |) in
-                              Value.Tuple []))
+                              M.of_value (| Value.Tuple [] |)))
                         ],
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
+                              | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1916,7 +2046,7 @@ Module char.
               matches!( *self, '\0'..='\x1F' | '\x7F')
           }
       *)
-      Definition is_ascii_control (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ascii_control (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1930,7 +2060,7 @@ Module char.
                       (M.find_or_pattern (|
                         γ,
                         [
-                          fun γ => ltac:(M.monadic (Value.Tuple []));
+                          fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -1938,17 +2068,18 @@ Module char.
                                   M.read (| γ |),
                                   Value.UnicodeChar 127
                                 |) in
-                              Value.Tuple []))
+                              M.of_value (| Value.Tuple [] |)))
                         ],
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
+                              | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1982,17 +2113,19 @@ Module char.
           };
       *)
       (* Ty.path "core::char::methods::EscapeDebugExtArgs" *)
-      Definition value_ESCAPE_ALL : Value.t :=
+      Definition value_ESCAPE_ALL : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructRecord
-                "core::char::methods::EscapeDebugExtArgs"
-                [
-                  ("escape_grapheme_extended", Value.Bool true);
-                  ("escape_single_quote", Value.Bool true);
-                  ("escape_double_quote", Value.Bool true)
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::char::methods::EscapeDebugExtArgs"
+                  [
+                    ("escape_grapheme_extended", A.to_value (M.of_value (| Value.Bool true |)));
+                    ("escape_single_quote", A.to_value (M.of_value (| Value.Bool true |)));
+                    ("escape_double_quote", A.to_value (M.of_value (| Value.Bool true |)))
+                  ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_ESCAPE_ALL :
@@ -2012,66 +2145,70 @@ Module char.
         }
     }
     *)
-    Definition len_utf8 (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition len_utf8 (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ code ] =>
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.read (| code |))
-                            (M.read (| M.get_constant (| "core::char::MAX_ONE_B" |) |))
+                          BinOp.Pure.lt (|
+                            M.read (| code |),
+                            M.read (| M.get_constant (| "core::char::MAX_ONE_B" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.Integer 1 |)));
+                    M.alloc (| M.of_value (| Value.Integer 1 |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt
-                                    (M.read (| code |))
-                                    (M.read (| M.get_constant (| "core::char::MAX_TWO_B" |) |))
+                                  BinOp.Pure.lt (|
+                                    M.read (| code |),
+                                    M.read (| M.get_constant (| "core::char::MAX_TWO_B" |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 2 |)));
+                            M.alloc (| M.of_value (| Value.Integer 2 |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.lt
-                                            (M.read (| code |))
-                                            (M.read (|
+                                          BinOp.Pure.lt (|
+                                            M.read (| code |),
+                                            M.read (|
                                               M.get_constant (| "core::char::MAX_THREE_B" |)
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.alloc (| Value.Integer 3 |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 4 |)))
+                                    M.alloc (| M.of_value (| Value.Integer 3 |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 4 |) |)))
                               ]
                             |)))
                       ]
@@ -2114,7 +2251,7 @@ Module char.
         &mut dst[..len]
     }
     *)
-    Definition encode_utf8_raw (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition encode_utf8_raw (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ code; dst ] =>
         ltac:(M.monadic
@@ -2131,20 +2268,26 @@ Module char.
             let _ :=
               M.match_operator (|
                 M.alloc (|
-                  Value.Tuple
-                    [
-                      M.read (| len |);
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::index::IndexMut",
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                          [ Ty.path "core::ops::range::RangeFull" ],
-                          "index_mut",
-                          []
-                        |),
-                        [ M.read (| dst |); Value.StructTuple "core::ops::range::RangeFull" [] ]
-                      |)
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value (M.read (| len |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::index::IndexMut",
+                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              [ Ty.path "core::ops::range::RangeFull" ],
+                              "index_mut",
+                              []
+                            |),
+                            [
+                              M.read (| dst |);
+                              M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                            ]
+                          |))
+                      ]
+                  |)
                 |),
                 [
                   fun γ =>
@@ -2157,8 +2300,8 @@ Module char.
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
                       let a := M.alloc (| γ2_0 |) in
-                      let _ := M.write (| M.read (| a |), M.rust_cast (M.read (| code |)) |) in
-                      M.alloc (| Value.Tuple [] |)));
+                      let _ := M.write (| M.read (| a |), M.rust_cast (| M.read (| code |) |) |) in
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2174,22 +2317,33 @@ Module char.
                       let _ :=
                         M.write (|
                           M.read (| a |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
-                                (Value.Integer 31)))
-                            (M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                BinOp.Panic.shr (|
+                                  M.read (| code |),
+                                  M.of_value (| Value.Integer 6 |)
+                                |),
+                                M.of_value (| Value.Integer 31 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |)
+                          |)
                         |) in
                       let _ :=
                         M.write (|
                           M.read (| b |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                M.read (| code |),
+                                M.of_value (| Value.Integer 63 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_CONT" |) |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2207,32 +2361,49 @@ Module char.
                       let _ :=
                         M.write (|
                           M.read (| a |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 12 |))
-                                (Value.Integer 15)))
-                            (M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                BinOp.Panic.shr (|
+                                  M.read (| code |),
+                                  M.of_value (| Value.Integer 12 |)
+                                |),
+                                M.of_value (| Value.Integer 15 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |)
+                          |)
                         |) in
                       let _ :=
                         M.write (|
                           M.read (| b |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
-                                (Value.Integer 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                BinOp.Panic.shr (|
+                                  M.read (| code |),
+                                  M.of_value (| Value.Integer 6 |)
+                                |),
+                                M.of_value (| Value.Integer 63 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_CONT" |) |)
+                          |)
                         |) in
                       let _ :=
                         M.write (|
                           M.read (| c |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                M.read (| code |),
+                                M.of_value (| Value.Integer 63 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_CONT" |) |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2252,42 +2423,65 @@ Module char.
                       let _ :=
                         M.write (|
                           M.read (| a |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 18 |))
-                                (Value.Integer 7)))
-                            (M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                BinOp.Panic.shr (|
+                                  M.read (| code |),
+                                  M.of_value (| Value.Integer 18 |)
+                                |),
+                                M.of_value (| Value.Integer 7 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |)
+                          |)
                         |) in
                       let _ :=
                         M.write (|
                           M.read (| b |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 12 |))
-                                (Value.Integer 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                BinOp.Panic.shr (|
+                                  M.read (| code |),
+                                  M.of_value (| Value.Integer 12 |)
+                                |),
+                                M.of_value (| Value.Integer 63 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_CONT" |) |)
+                          |)
                         |) in
                       let _ :=
                         M.write (|
                           M.read (| c |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
-                                (Value.Integer 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                BinOp.Panic.shr (|
+                                  M.read (| code |),
+                                  M.of_value (| Value.Integer 6 |)
+                                |),
+                                M.of_value (| Value.Integer 63 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_CONT" |) |)
+                          |)
                         |) in
                       let _ :=
                         M.write (|
                           M.read (| d |),
-                          BinOp.Pure.bit_or
-                            (M.rust_cast
-                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                          BinOp.Pure.bit_or (|
+                            M.rust_cast (|
+                              BinOp.Pure.bit_and (|
+                                M.read (| code |),
+                                M.of_value (| Value.Integer 63 |)
+                              |)
+                            |),
+                            M.read (| M.get_constant (| "core::char::TAG_CONT" |) |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -2303,57 +2497,77 @@ Module char.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "encode_utf8: need " |);
-                                          M.read (| Value.String " bytes to encode U+" |);
-                                          M.read (| Value.String ", but the buffer has " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [ len ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_upper_hex",
-                                              [ Ty.path "u32" ]
-                                            |),
-                                            [ code ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                                    "len",
-                                                    []
-                                                  |),
-                                                  [ M.read (| dst |) ]
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (| Value.String "encode_utf8: need " |)
+                                              |));
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (| Value.String " bytes to encode U+" |)
+                                              |));
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String ", but the buffer has "
                                                 |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |))
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |);
+                                  (* Unsize *)
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "usize" ]
+                                                |),
+                                                [ len ]
+                                              |));
+                                            A.to_value
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_upper_hex",
+                                                  [ Ty.path "u32" ]
+                                                |),
+                                                [ code ]
+                                              |));
+                                            A.to_value
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "usize" ]
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                        "len",
+                                                        []
+                                                      |),
+                                                      [ M.read (| dst |) ]
+                                                    |)
+                                                  |)
+                                                ]
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -2373,7 +2587,11 @@ Module char.
                 |),
                 [
                   M.read (| dst |);
-                  Value.StructRecord "core::ops::range::RangeTo" [ ("end_", M.read (| len |)) ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::ops::range::RangeTo"
+                      [ ("end_", A.to_value (M.read (| len |))) ]
+                  |)
                 ]
               |)
             |)
@@ -2406,7 +2624,7 @@ Module char.
         }
     }
     *)
-    Definition encode_utf16_raw (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition encode_utf16_raw (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ code; dst ] =>
         ltac:(M.monadic
@@ -2414,7 +2632,7 @@ Module char.
           let dst := M.alloc (| dst |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -2422,19 +2640,24 @@ Module char.
                       M.use
                         (M.alloc (|
                           LogicalOp.and (|
-                            BinOp.Pure.eq
-                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 65535))
-                              (M.read (| code |)),
+                            BinOp.Pure.eq (|
+                              BinOp.Pure.bit_and (|
+                                M.read (| code |),
+                                M.of_value (| Value.Integer 65535 |)
+                              |),
+                              M.read (| code |)
+                            |),
                             ltac:(M.monadic
-                              (UnOp.Pure.not
-                                (M.call_closure (|
+                              (UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
                                     "is_empty",
                                     []
                                   |),
                                   [ M.read (| dst |) ]
-                                |))))
+                                |)
+                              |)))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2448,9 +2671,9 @@ Module char.
                                 "get_unchecked_mut",
                                 [ Ty.path "usize" ]
                               |),
-                              [ M.read (| dst |); Value.Integer 0 ]
+                              [ M.read (| dst |); M.of_value (| Value.Integer 0 |) ]
                             |),
-                            M.rust_cast (M.read (| code |))
+                            M.rust_cast (| M.read (| code |) |)
                           |) in
                         M.alloc (|
                           M.call_closure (|
@@ -2467,7 +2690,7 @@ Module char.
                                 |),
                                 [ M.read (| dst |) ]
                               |);
-                              Value.Integer 1
+                              M.of_value (| Value.Integer 1 |)
                             ]
                           |)
                         |)
@@ -2476,23 +2699,24 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ge
-                                    (M.call_closure (|
+                                  BinOp.Pure.ge (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| dst |) ]
-                                    |))
-                                    (Value.Integer 2)
+                                    |),
+                                    M.of_value (| Value.Integer 2 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2505,7 +2729,7 @@ Module char.
                                     BinOp.Panic.sub (|
                                       Integer.U32,
                                       M.read (| β |),
-                                      Value.Integer 65536
+                                      M.of_value (| Value.Integer 65536 |)
                                     |)
                                   |) in
                                 let _ :=
@@ -2516,12 +2740,17 @@ Module char.
                                         "get_unchecked_mut",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ M.read (| dst |); Value.Integer 0 ]
+                                      [ M.read (| dst |); M.of_value (| Value.Integer 0 |) ]
                                     |),
-                                    BinOp.Pure.bit_or
-                                      (Value.Integer 55296)
-                                      (M.rust_cast
-                                        (BinOp.Panic.shr (| M.read (| code |), Value.Integer 10 |)))
+                                    BinOp.Pure.bit_or (|
+                                      M.of_value (| Value.Integer 55296 |),
+                                      M.rust_cast (|
+                                        BinOp.Panic.shr (|
+                                          M.read (| code |),
+                                          M.of_value (| Value.Integer 10 |)
+                                        |)
+                                      |)
+                                    |)
                                   |) in
                                 let _ :=
                                   M.write (|
@@ -2531,13 +2760,15 @@ Module char.
                                         "get_unchecked_mut",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ M.read (| dst |); Value.Integer 1 ]
+                                      [ M.read (| dst |); M.of_value (| Value.Integer 1 |) ]
                                     |),
-                                    BinOp.Pure.bit_or
-                                      (Value.Integer 56320)
-                                      (BinOp.Pure.bit_and
-                                        (M.rust_cast (M.read (| code |)))
-                                        (Value.Integer 1023))
+                                    BinOp.Pure.bit_or (|
+                                      M.of_value (| Value.Integer 56320 |),
+                                      BinOp.Pure.bit_and (|
+                                        M.rust_cast (| M.read (| code |) |),
+                                        M.of_value (| Value.Integer 1023 |)
+                                      |)
+                                    |)
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -2554,7 +2785,7 @@ Module char.
                                         |),
                                         [ M.read (| dst |) ]
                                       |);
-                                      Value.Integer 2
+                                      M.of_value (| Value.Integer 2 |)
                                     ]
                                   |)
                                 |)
@@ -2575,79 +2806,103 @@ Module char.
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "encode_utf16: need " |);
-                                                M.read (| Value.String " units to encode U+" |);
-                                                M.read (| Value.String ", but the buffer has " |)
-                                              ]
-                                          |));
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (|
+                                                        Value.String "encode_utf16: need "
+                                                      |)
+                                                    |));
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (|
+                                                        Value.String " units to encode U+"
+                                                      |)
+                                                    |));
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (|
+                                                        Value.String ", but the buffer has "
+                                                      |)
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |);
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "usize" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "char",
-                                                          "len_utf16",
-                                                          []
-                                                        |),
-                                                        [
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
                                                           M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path "char",
-                                                              "from_u32_unchecked",
+                                                              "len_utf16",
                                                               []
                                                             |),
-                                                            [ M.read (| code |) ]
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "char",
+                                                                  "from_u32_unchecked",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| code |) ]
+                                                              |)
+                                                            ]
                                                           |)
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_upper_hex",
-                                                    [ Ty.path "u32" ]
-                                                  |),
-                                                  [ code ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "usize" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            [ Ty.path "u16" ],
-                                                          "len",
-                                                          []
-                                                        |),
-                                                        [ M.read (| dst |) ]
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                          |))
+                                                        |)
+                                                      ]
+                                                    |));
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_upper_hex",
+                                                        [ Ty.path "u32" ]
+                                                      |),
+                                                      [ code ]
+                                                    |));
+                                                  A.to_value
+                                                    (M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                [ Ty.path "u16" ],
+                                                              "len",
+                                                              []
+                                                            |),
+                                                            [ M.read (| dst |) ]
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   ]

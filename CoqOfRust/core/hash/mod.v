@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module hash.
   (* Trait *)
   Module Hash.
-    Definition hash_slice (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash_slice (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ data; state ] =>
         ltac:(M.monadic
@@ -72,7 +72,7 @@ Module hash.
                                     |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       |)))
                 ]
               |))
@@ -85,7 +85,7 @@ Module hash.
   
   (* Trait *)
   Module Hasher.
-    Definition write_u8 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u8 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -95,14 +95,17 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
             [
               M.read (| self |);
-              (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| i |) ] |))
+              (* Unsize *)
+              M.pointer_coercion (|
+                M.alloc (| M.of_value (| Value.Array [ A.to_value (M.read (| i |)) ] |) |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u8 : M.IsProvidedMethod "core::hash::Hasher" "write_u8" write_u8.
-    Definition write_u16 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u16 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -113,20 +116,21 @@ Module hash.
             [
               M.read (| self |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [] |),
                     [ M.read (| i |) ]
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u16 : M.IsProvidedMethod "core::hash::Hasher" "write_u16" write_u16.
-    Definition write_u32 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u32 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -137,20 +141,21 @@ Module hash.
             [
               M.read (| self |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
                     [ M.read (| i |) ]
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u32 : M.IsProvidedMethod "core::hash::Hasher" "write_u32" write_u32.
-    Definition write_u64 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u64 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -161,20 +166,21 @@ Module hash.
             [
               M.read (| self |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [] |),
                     [ M.read (| i |) ]
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u64 : M.IsProvidedMethod "core::hash::Hasher" "write_u64" write_u64.
-    Definition write_u128 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u128 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -185,13 +191,14 @@ Module hash.
             [
               M.read (| self |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
                     [ M.read (| i |) ]
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -199,7 +206,7 @@ Module hash.
     
     Axiom ProvidedMethod_write_u128 :
       M.IsProvidedMethod "core::hash::Hasher" "write_u128" write_u128.
-    Definition write_usize (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_usize (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -210,13 +217,14 @@ Module hash.
             [
               M.read (| self |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [] |),
                     [ M.read (| i |) ]
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -224,7 +232,7 @@ Module hash.
     
     Axiom ProvidedMethod_write_usize :
       M.IsProvidedMethod "core::hash::Hasher" "write_usize" write_usize.
-    Definition write_i8 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i8 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -232,13 +240,13 @@ Module hash.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            [ M.read (| self |); M.rust_cast (| M.read (| i |) |) ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i8 : M.IsProvidedMethod "core::hash::Hasher" "write_i8" write_i8.
-    Definition write_i16 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i16 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -246,13 +254,13 @@ Module hash.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u16", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            [ M.read (| self |); M.rust_cast (| M.read (| i |) |) ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i16 : M.IsProvidedMethod "core::hash::Hasher" "write_i16" write_i16.
-    Definition write_i32 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i32 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -260,13 +268,13 @@ Module hash.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u32", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            [ M.read (| self |); M.rust_cast (| M.read (| i |) |) ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i32 : M.IsProvidedMethod "core::hash::Hasher" "write_i32" write_i32.
-    Definition write_i64 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i64 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -274,13 +282,13 @@ Module hash.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u64", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            [ M.read (| self |); M.rust_cast (| M.read (| i |) |) ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i64 : M.IsProvidedMethod "core::hash::Hasher" "write_i64" write_i64.
-    Definition write_i128 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i128 (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -288,14 +296,14 @@ Module hash.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u128", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            [ M.read (| self |); M.rust_cast (| M.read (| i |) |) ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i128 :
       M.IsProvidedMethod "core::hash::Hasher" "write_i128" write_i128.
-    Definition write_isize (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_isize (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; i ] =>
         ltac:(M.monadic
@@ -303,14 +311,14 @@ Module hash.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_usize", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            [ M.read (| self |); M.rust_cast (| M.read (| i |) |) ]
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_isize :
       M.IsProvidedMethod "core::hash::Hasher" "write_isize" write_isize.
-    Definition write_length_prefix (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_length_prefix (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; len ] =>
         ltac:(M.monadic
@@ -324,14 +332,14 @@ Module hash.
                   [ M.read (| self |); M.read (| len |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_length_prefix :
       M.IsProvidedMethod "core::hash::Hasher" "write_length_prefix" write_length_prefix.
-    Definition write_str (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_str (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; s ] =>
         ltac:(M.monadic
@@ -355,10 +363,10 @@ Module hash.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
-                  [ M.read (| self |); Value.Integer 255 ]
+                  [ M.read (| self |); M.of_value (| Value.Integer 255 |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -374,7 +382,7 @@ Module hash.
             ( **self).finish()
         }
     *)
-    Definition finish (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition finish (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self ] =>
@@ -392,7 +400,7 @@ Module hash.
             ( **self).write(bytes)
         }
     *)
-    Definition write (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; bytes ] =>
@@ -411,7 +419,7 @@ Module hash.
             ( **self).write_u8(i)
         }
     *)
-    Definition write_u8 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u8 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -430,7 +438,7 @@ Module hash.
             ( **self).write_u16(i)
         }
     *)
-    Definition write_u16 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u16 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -449,7 +457,7 @@ Module hash.
             ( **self).write_u32(i)
         }
     *)
-    Definition write_u32 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u32 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -468,7 +476,7 @@ Module hash.
             ( **self).write_u64(i)
         }
     *)
-    Definition write_u64 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u64 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -487,7 +495,7 @@ Module hash.
             ( **self).write_u128(i)
         }
     *)
-    Definition write_u128 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u128 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -506,7 +514,7 @@ Module hash.
             ( **self).write_usize(i)
         }
     *)
-    Definition write_usize (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_usize (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -525,7 +533,7 @@ Module hash.
             ( **self).write_i8(i)
         }
     *)
-    Definition write_i8 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i8 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -544,7 +552,7 @@ Module hash.
             ( **self).write_i16(i)
         }
     *)
-    Definition write_i16 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i16 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -563,7 +571,7 @@ Module hash.
             ( **self).write_i32(i)
         }
     *)
-    Definition write_i32 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i32 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -582,7 +590,7 @@ Module hash.
             ( **self).write_i64(i)
         }
     *)
-    Definition write_i64 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i64 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -601,7 +609,7 @@ Module hash.
             ( **self).write_i128(i)
         }
     *)
-    Definition write_i128 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i128 (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -620,7 +628,7 @@ Module hash.
             ( **self).write_isize(i)
         }
     *)
-    Definition write_isize (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_isize (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; i ] =>
@@ -639,7 +647,7 @@ Module hash.
             ( **self).write_length_prefix(len)
         }
     *)
-    Definition write_length_prefix (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_length_prefix (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; len ] =>
@@ -658,7 +666,7 @@ Module hash.
             ( **self).write_str(s)
         }
     *)
-    Definition write_str (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_str (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; s ] =>
@@ -701,7 +709,7 @@ Module hash.
   
   (* Trait *)
   Module BuildHasher.
-    Definition hash_one (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash_one (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self; x ] =>
         ltac:(M.monadic
@@ -751,7 +759,7 @@ Module hash.
             f.debug_struct("BuildHasherDefault").finish()
         }
     *)
-    Definition fmt (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; f ] =>
@@ -772,7 +780,8 @@ Module hash.
                     "debug_struct",
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "BuildHasherDefault" |) ]
+                  [ M.read (| f |); M.read (| M.of_value (| Value.String "BuildHasherDefault" |) |)
+                  ]
                 |)
               |)
             ]
@@ -800,7 +809,7 @@ Module hash.
             H::default()
         }
     *)
-    Definition build_hasher (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition build_hasher (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self ] =>
@@ -834,15 +843,17 @@ Module hash.
             BuildHasherDefault(marker::PhantomData)
         }
     *)
-    Definition clone (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple
-            "core::hash::BuildHasherDefault"
-            [ Value.StructTuple "core::marker::PhantomData" [] ]))
+          M.of_value (|
+            Value.StructTuple
+              "core::hash::BuildHasherDefault"
+              [ A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -863,14 +874,16 @@ Module hash.
             BuildHasherDefault(marker::PhantomData)
         }
     *)
-    Definition default (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructTuple
-            "core::hash::BuildHasherDefault"
-            [ Value.StructTuple "core::marker::PhantomData" [] ]))
+          (M.of_value (|
+            Value.StructTuple
+              "core::hash::BuildHasherDefault"
+              [ A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -891,14 +904,14 @@ Module hash.
             true
         }
     *)
-    Definition eq (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self H in
       match τ, α with
       | [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
-          Value.Bool true))
+          M.of_value (| Value.Bool true |)))
       | _, _ => M.impossible
       end.
     
@@ -928,7 +941,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -952,7 +965,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -971,15 +984,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1014,7 +1028,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1038,7 +1052,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1057,15 +1071,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1100,7 +1115,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1124,7 +1139,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1143,15 +1158,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1186,7 +1202,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1210,7 +1226,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1229,15 +1245,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "u64" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1272,7 +1289,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1296,7 +1313,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1315,15 +1332,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "usize" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1358,7 +1376,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1382,7 +1400,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1401,15 +1419,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "i8" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1444,7 +1463,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1468,7 +1487,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1487,15 +1506,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "i16" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1530,7 +1550,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1554,7 +1574,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1573,15 +1593,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1616,7 +1637,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1640,7 +1661,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1659,15 +1680,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "i64" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1702,7 +1724,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1726,7 +1748,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1745,15 +1767,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "isize" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1788,7 +1811,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1812,7 +1835,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1831,15 +1854,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "u128" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1874,7 +1898,7 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1898,7 +1922,7 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ data; state ] =>
           ltac:(M.monadic
@@ -1917,15 +1941,16 @@ Module hash.
                 |) in
               let ptr :=
                 M.alloc (|
-                  M.rust_cast
-                    (M.call_closure (|
+                  M.rust_cast (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "i128" ],
                         "as_ptr",
                         []
                       |),
                       [ M.read (| data |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1960,7 +1985,7 @@ Module hash.
                   state.write_u8( *self as u8)
               }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1968,7 +1993,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
-              [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
+              [ M.read (| state |); M.rust_cast (| M.read (| M.read (| self |) |) |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1989,7 +2014,7 @@ Module hash.
                   state.write_u32( *self as u32)
               }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1997,7 +2022,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
-              [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
+              [ M.read (| state |); M.rust_cast (| M.read (| M.read (| self |) |) |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2018,7 +2043,7 @@ Module hash.
                   state.write_str(self);
               }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; state ] =>
           ltac:(M.monadic
@@ -2032,7 +2057,7 @@ Module hash.
                     [ M.read (| state |); M.read (| self |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2053,7 +2078,7 @@ Module hash.
                   *self
               }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; β1 ] =>
           ltac:(M.monadic
@@ -2078,13 +2103,13 @@ Module hash.
       Definition Self : Ty.t := Ty.tuple [].
       
       (*                 fn hash<H: Hasher>(&self, _state: &mut H) {} *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ H ], [ self; _state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _state := M.alloc (| _state |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -2105,7 +2130,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2127,7 +2152,7 @@ Module hash.
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2152,7 +2177,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2183,7 +2208,7 @@ Module hash.
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2208,7 +2233,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2248,7 +2273,7 @@ Module hash.
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2273,7 +2298,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2322,7 +2347,7 @@ Module hash.
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2347,7 +2372,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D E in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2405,7 +2430,7 @@ Module hash.
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2430,7 +2455,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D E F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D E F in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2497,7 +2522,7 @@ Module hash.
                             [ M.read (| value_F |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2522,7 +2547,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D E F G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D E F G in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2598,7 +2623,7 @@ Module hash.
                             [ M.read (| value_G |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2623,7 +2648,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D E F G H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D E F G H in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2708,7 +2733,7 @@ Module hash.
                             [ M.read (| value_H |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2733,7 +2758,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D E F G H I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D E F G H I in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2827,7 +2852,7 @@ Module hash.
                             [ M.read (| value_I |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2853,7 +2878,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H I J : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D E F G H I J : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D E F G H I J in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -2956,7 +2981,7 @@ Module hash.
                             [ M.read (| value_J |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -2982,7 +3007,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H I J K : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D E F G H I J K : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D E F G H I J K in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -3094,7 +3119,7 @@ Module hash.
                             [ M.read (| value_K |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -3120,7 +3145,7 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H I J K L : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D E F G H I J K L : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T B C D E F G H I J K L in
         match τ, α with
         | [ _ as S ], [ self; state ] =>
@@ -3241,7 +3266,7 @@ Module hash.
                             [ M.read (| value_L |); M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -3266,7 +3291,7 @@ Module hash.
                   Hash::hash_slice(self, state)
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ H ], [ self; state ] =>
@@ -3314,7 +3339,7 @@ Module hash.
                   ( **self).hash(state);
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ H ], [ self; state ] =>
@@ -3329,7 +3354,7 @@ Module hash.
                     [ M.read (| M.read (| self |) |); M.read (| state |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3351,7 +3376,7 @@ Module hash.
                   ( **self).hash(state);
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ H ], [ self; state ] =>
@@ -3366,7 +3391,7 @@ Module hash.
                     [ M.read (| M.read (| self |) |); M.read (| state |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3390,7 +3415,7 @@ Module hash.
                   metadata.hash(state);
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ H ], [ self; state ] =>
@@ -3446,7 +3471,7 @@ Module hash.
                             [ metadata; M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -3472,7 +3497,7 @@ Module hash.
                   metadata.hash(state);
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ H ], [ self; state ] =>
@@ -3528,7 +3553,7 @@ Module hash.
                             [ metadata; M.read (| state |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))

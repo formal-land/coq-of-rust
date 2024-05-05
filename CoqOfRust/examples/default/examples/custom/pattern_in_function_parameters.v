@@ -6,7 +6,7 @@ fn sum((x, y): (i32, i32)) -> i32 {
     x + y
 }
 *)
-Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+Definition sum (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ β0 ] =>
     ltac:(M.monadic
@@ -42,7 +42,7 @@ fn steps_between(&start: &char, &end: &char) -> Option<usize> {
     }
 }
 *)
-Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
+Definition steps_between (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ β0; β1 ] =>
     ltac:(M.monadic
@@ -63,17 +63,17 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                       (let γ := M.read (| γ |) in
                       let end_ := M.copy (| γ |) in
                       M.read (|
-                        let start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
-                        let end_ := M.alloc (| M.rust_cast (M.read (| end_ |)) |) in
+                        let start := M.alloc (| M.rust_cast (| M.read (| start |) |) |) in
+                        let end_ := M.alloc (| M.rust_cast (| M.read (| end_ |) |) |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.le (M.read (| start |)) (M.read (| end_ |))
+                                      BinOp.Pure.le (| M.read (| start |), M.read (| end_ |) |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -89,7 +89,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                     |)
                                   |) in
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -97,13 +97,15 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.Pure.lt
-                                                  (M.read (| start |))
-                                                  (Value.Integer 55296),
+                                                BinOp.Pure.lt (|
+                                                  M.read (| start |),
+                                                  M.of_value (| Value.Integer 55296 |)
+                                                |),
                                                 ltac:(M.monadic
-                                                  (BinOp.Pure.le
-                                                    (Value.Integer 57344)
-                                                    (M.read (| end_ |))))
+                                                  (BinOp.Pure.le (|
+                                                    M.of_value (| Value.Integer 57344 |),
+                                                    M.read (| end_ |)
+                                                  |)))
                                               |)
                                             |)) in
                                         let _ :=
@@ -136,7 +138,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                                   BinOp.Panic.sub (|
                                                     Integer.U32,
                                                     M.read (| count |),
-                                                    Value.Integer 2048
+                                                    M.of_value (| Value.Integer 2048 |)
                                                   |)
                                                 ]
                                               |)
@@ -175,7 +177,9 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                                (M.alloc (|
+                                  M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                                |)))
                           ]
                         |)
                       |)))

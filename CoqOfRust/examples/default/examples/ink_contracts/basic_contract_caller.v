@@ -12,18 +12,27 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
   Definition Self : Ty.t := Ty.path "basic_contract_caller::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "basic_contract_caller::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "basic_contract_caller::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -39,14 +48,14 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
   Definition Self : Ty.t := Ty.path "basic_contract_caller::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -94,14 +103,16 @@ Module Impl_basic_contract_caller_OtherContract.
           Self { value: init_value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord
-          "basic_contract_caller::OtherContract"
-          [ ("value", M.read (| init_value |)) ]))
+        M.of_value (|
+          Value.StructRecord
+            "basic_contract_caller::OtherContract"
+            [ ("value", A.to_value (M.read (| init_value |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -112,7 +123,7 @@ Module Impl_basic_contract_caller_OtherContract.
           self.value = !self.value;
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition flip (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -125,16 +136,17 @@ Module Impl_basic_contract_caller_OtherContract.
                 "basic_contract_caller::OtherContract",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.Pure.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "basic_contract_caller::OtherContract",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -146,7 +158,7 @@ Module Impl_basic_contract_caller_OtherContract.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -186,7 +198,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
           Self { other_contract }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ other_contract_code_hash ] =>
       ltac:(M.monadic
@@ -197,14 +209,16 @@ Module Impl_basic_contract_caller_BasicContractCaller.
               M.never_to_any (|
                 M.call_closure (|
                   M.get_function (| "core::panicking::panic", [] |),
-                  [ M.read (| Value.String "not yet implemented" |) ]
+                  [ M.read (| M.of_value (| Value.String "not yet implemented" |) |) ]
                 |)
               |)
             |) in
           M.alloc (|
-            Value.StructRecord
-              "basic_contract_caller::BasicContractCaller"
-              [ ("other_contract", M.read (| other_contract |)) ]
+            M.of_value (|
+              Value.StructRecord
+                "basic_contract_caller::BasicContractCaller"
+                [ ("other_contract", A.to_value (M.read (| other_contract |))) ]
+            |)
           |)
         |)))
     | _, _ => M.impossible
@@ -218,7 +232,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
           self.other_contract.get()
       }
   *)
-  Definition flip_and_get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition flip_and_get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic

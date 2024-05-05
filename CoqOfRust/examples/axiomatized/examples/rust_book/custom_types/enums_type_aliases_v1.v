@@ -25,4 +25,4 @@ Axiom Operations :
   (Ty.path "enums_type_aliases_v1::Operations") =
     (Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers").
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

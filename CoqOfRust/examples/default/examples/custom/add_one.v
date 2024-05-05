@@ -6,11 +6,11 @@ fn add_one(x: u32) -> u32 {
     x + 1
 }
 *)
-Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
+Definition add_one (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
-      BinOp.Panic.add (| Integer.U32, M.read (| x |), Value.Integer 1 |)))
+      BinOp.Panic.add (| Integer.U32, M.read (| x |), M.of_value (| Value.Integer 1 |) |)))
   | _, _ => M.impossible
   end.

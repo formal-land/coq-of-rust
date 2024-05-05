@@ -16,7 +16,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
   Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -31,43 +31,43 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
   
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
-  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "new" (new K V).
   
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
   
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -84,7 +84,7 @@ End Impl_mapping_integration_tests_Mapping_K_V.
 Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -97,7 +97,7 @@ End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
 Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -126,7 +126,7 @@ Axiom Balance : (Ty.path "mapping_integration_tests::Balance") = (Ty.path "u128"
 Module Impl_mapping_integration_tests_Env.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
 End Impl_mapping_integration_tests_Env.
@@ -147,7 +147,7 @@ End Impl_mapping_integration_tests_Env.
 Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::Mappings".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -160,42 +160,42 @@ End Impl_core_default_Default_for_mapping_integration_tests_Mappings.
 Module Impl_mapping_integration_tests_Mappings.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::Mappings".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter get_balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get_balance : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.
   
-  Parameter insert_balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert_balance : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_insert_balance :
     M.IsAssociatedFunction Self "insert_balance" insert_balance.
   
-  Parameter size_balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size_balance : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_size_balance : M.IsAssociatedFunction Self "size_balance" size_balance.
   
-  Parameter contains_balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains_balance : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_contains_balance :
     M.IsAssociatedFunction Self "contains_balance" contains_balance.
   
-  Parameter remove_balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove_balance : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_remove_balance :
     M.IsAssociatedFunction Self "remove_balance" remove_balance.
   
-  Parameter take_balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take_balance : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_take_balance : M.IsAssociatedFunction Self "take_balance" take_balance.
 End Impl_mapping_integration_tests_Mappings.

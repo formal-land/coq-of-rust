@@ -16,9 +16,9 @@ Module Impl_mutual_loop_LoopA.
           LoopA {}
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "mutual_loop::LoopA" []))
+    | [], [] => ltac:(M.monadic (M.of_value (| Value.StructTuple "mutual_loop::LoopA" [] |)))
     | _, _ => M.impossible
     end.
   
@@ -29,7 +29,7 @@ Module Impl_mutual_loop_LoopA.
           LoopB::start_loop()
       }
   *)
-  Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition start_loop (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -69,19 +69,22 @@ Module Impl_mutual_loop_LoopB.
           }
       }
   *)
-  Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition start_loop (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "mutual_loop::LoopB::Item"
-          [
-            ("ident",
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [] |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "mutual_loop::LoopB::Item"
+            [
+              ("ident",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [] |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -95,7 +98,7 @@ pub fn start_loop() {
     let lb = la.start_loop();
 }
 *)
-Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
+Definition start_loop (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -114,7 +117,7 @@ Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
               [ la ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

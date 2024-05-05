@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Unhandled foreign module here *)
 
-Parameter cos : (list Ty.t) -> (list Value.t) -> M.
+Parameter cos : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.
 
 (* StructRecord
   {
@@ -17,7 +17,7 @@ Parameter main : (list Ty.t) -> (list Value.t) -> M.
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -37,7 +37,7 @@ End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance

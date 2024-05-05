@@ -6,7 +6,7 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+Definition add (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ a; b ] =>
     ltac:(M.monadic
@@ -21,7 +21,7 @@ fn bad_add(a: i32, b: i32) -> i32 {
     a - b
 }
 *)
-Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
+Definition bad_add (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ a; b ] =>
     ltac:(M.monadic
@@ -37,7 +37,7 @@ Module tests.
           assert_eq!(add(1, 2), 3);
       }
   *)
-  Definition test_add (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition test_add (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -45,16 +45,19 @@ Module tests.
           let _ :=
             M.match_operator (|
               M.alloc (|
-                Value.Tuple
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_function (| "unit_testing::add", [] |),
-                        [ Value.Integer 1; Value.Integer 2 ]
-                      |)
-                    |);
-                    M.alloc (| Value.Integer 3 |)
-                  ]
+                M.of_value (|
+                  Value.Tuple
+                    [
+                      A.to_value
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "unit_testing::add", [] |),
+                            [ M.of_value (| Value.Integer 1 |); M.of_value (| Value.Integer 2 |) ]
+                          |)
+                        |));
+                      A.to_value (M.alloc (| M.of_value (| Value.Integer 3 |) |))
+                    ]
+                |)
               |),
               [
                 fun γ =>
@@ -64,17 +67,19 @@ Module tests.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| left_val |) |))
-                                      (M.read (| M.read (| right_val |) |)))
+                                  UnOp.Pure.not (|
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| left_val |) |),
+                                      M.read (| M.read (| right_val |) |)
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -83,7 +88,9 @@ Module tests.
                                 M.read (|
                                   let kind :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      |)
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -95,19 +102,21 @@ Module tests.
                                         M.read (| kind |);
                                         M.read (| left_val |);
                                         M.read (| right_val |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)
                                       ]
                                     |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |)))
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -119,7 +128,7 @@ Module tests.
           assert_eq!(bad_add(1, 2), 3);
       }
   *)
-  Definition test_bad_add (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition test_bad_add (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -127,16 +136,19 @@ Module tests.
           let _ :=
             M.match_operator (|
               M.alloc (|
-                Value.Tuple
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_function (| "unit_testing::bad_add", [] |),
-                        [ Value.Integer 1; Value.Integer 2 ]
-                      |)
-                    |);
-                    M.alloc (| Value.Integer 3 |)
-                  ]
+                M.of_value (|
+                  Value.Tuple
+                    [
+                      A.to_value
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "unit_testing::bad_add", [] |),
+                            [ M.of_value (| Value.Integer 1 |); M.of_value (| Value.Integer 2 |) ]
+                          |)
+                        |));
+                      A.to_value (M.alloc (| M.of_value (| Value.Integer 3 |) |))
+                    ]
+                |)
               |),
               [
                 fun γ =>
@@ -146,17 +158,19 @@ Module tests.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| left_val |) |))
-                                      (M.read (| M.read (| right_val |) |)))
+                                  UnOp.Pure.not (|
+                                    BinOp.Pure.eq (|
+                                      M.read (| M.read (| left_val |) |),
+                                      M.read (| M.read (| right_val |) |)
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -165,7 +179,9 @@ Module tests.
                                 M.read (|
                                   let kind :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      |)
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -177,19 +193,21 @@ Module tests.
                                         M.read (| kind |);
                                         M.read (| left_val |);
                                         M.read (| right_val |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)
                                       ]
                                     |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |)))
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

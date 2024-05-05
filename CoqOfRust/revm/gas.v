@@ -14,19 +14,19 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
+              M.of_value (| Value.DeclaredButUndefined |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Value.DeclaredButUndefined,
+                      M.of_value (| Value.DeclaredButUndefined |),
                       [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                     |)))
               ]
@@ -58,7 +58,7 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -72,33 +72,36 @@ Module gas.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "Gas" |);
-              M.read (| Value.String "limit" |);
+              M.read (| M.of_value (| Value.String "Gas" |) |);
+              M.read (| M.of_value (| Value.String "limit" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::gas::Gas",
                   "limit"
-                |));
-              M.read (| Value.String "remaining" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "remaining" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::gas::Gas",
                   "remaining"
-                |));
-              M.read (| Value.String "refunded" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "refunded" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::gas::Gas",
                     "refunded"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -116,47 +119,52 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "revm_interpreter::gas::Gas"
-            [
-              ("limit",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "u64",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |));
-              ("remaining",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "u64",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |));
-              ("refunded",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "i64",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |))
-            ]))
+          (M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::gas::Gas"
+              [
+                ("limit",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "u64",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)));
+                ("remaining",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "u64",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)));
+                ("refunded",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "i64",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -183,7 +191,7 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -191,54 +199,57 @@ Module gas.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::gas::Gas",
                     "limit"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::gas::Gas",
                     "limit"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::gas::Gas",
                       "remaining"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::gas::Gas",
                       "remaining"
                     |)
-                  |))))
+                  |)
+                |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::gas::Gas",
                     "refunded"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::gas::Gas",
                     "refunded"
                   |)
-                |))))
+                |)
+              |)))
           |)))
       | _, _ => M.impossible
       end.
@@ -266,20 +277,20 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
+              M.of_value (| Value.DeclaredButUndefined |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      M.of_value (| Value.DeclaredButUndefined |),
+                      [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
                     |)))
               ]
             |)
@@ -300,7 +311,7 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ __H ], [ self; state ] =>
         ltac:(M.monadic
@@ -372,18 +383,20 @@ Module gas.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ limit ] =>
         ltac:(M.monadic
           (let limit := M.alloc (| limit |) in
-          Value.StructRecord
-            "revm_interpreter::gas::Gas"
-            [
-              ("limit", M.read (| limit |));
-              ("remaining", M.read (| limit |));
-              ("refunded", Value.Integer 0)
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::gas::Gas"
+              [
+                ("limit", A.to_value (M.read (| limit |)));
+                ("remaining", A.to_value (M.read (| limit |)));
+                ("refunded", A.to_value (M.of_value (| Value.Integer 0 |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -398,18 +411,20 @@ Module gas.
             }
         }
     *)
-    Definition new_spent (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_spent (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ limit ] =>
         ltac:(M.monadic
           (let limit := M.alloc (| limit |) in
-          Value.StructRecord
-            "revm_interpreter::gas::Gas"
-            [
-              ("limit", M.read (| limit |));
-              ("remaining", Value.Integer 0);
-              ("refunded", Value.Integer 0)
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::gas::Gas"
+              [
+                ("limit", A.to_value (M.read (| limit |)));
+                ("remaining", A.to_value (M.of_value (| Value.Integer 0 |)));
+                ("refunded", A.to_value (M.of_value (| Value.Integer 0 |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -420,7 +435,7 @@ Module gas.
             self.limit
         }
     *)
-    Definition limit (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition limit (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -442,12 +457,12 @@ Module gas.
             0
         }
     *)
-    Definition memory (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition memory (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.Integer 0))
+          M.of_value (| Value.Integer 0 |)))
       | _, _ => M.impossible
       end.
     
@@ -458,7 +473,7 @@ Module gas.
             self.refunded
         }
     *)
-    Definition refunded (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition refunded (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -480,7 +495,7 @@ Module gas.
             self.limit - self.remaining
         }
     *)
-    Definition spent (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition spent (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -512,7 +527,7 @@ Module gas.
             self.spent()
         }
     *)
-    Definition spend (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition spend (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -531,7 +546,7 @@ Module gas.
             self.remaining
         }
     *)
-    Definition remaining (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition remaining (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -553,7 +568,7 @@ Module gas.
             self.remaining += returned;
         }
     *)
-    Definition erase_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition erase_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; returned ] =>
         ltac:(M.monadic
@@ -571,7 +586,7 @@ Module gas.
                 β,
                 BinOp.Panic.add (| Integer.U64, M.read (| β |), M.read (| returned |) |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -583,7 +598,7 @@ Module gas.
             self.remaining = 0;
         }
     *)
-    Definition spend_all (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition spend_all (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -596,9 +611,9 @@ Module gas.
                   "revm_interpreter::gas::Gas",
                   "remaining"
                 |),
-                Value.Integer 0
+                M.of_value (| Value.Integer 0 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -610,7 +625,7 @@ Module gas.
             self.refunded += refund;
         }
     *)
-    Definition record_refund (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition record_refund (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; refund ] =>
         ltac:(M.monadic
@@ -628,7 +643,7 @@ Module gas.
                 β,
                 BinOp.Panic.add (| Integer.I64, M.read (| β |), M.read (| refund |) |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -642,7 +657,7 @@ Module gas.
             self.refunded = (self.refunded() as u64).min(self.spent() / max_refund_quotient) as i64;
         }
     *)
-    Definition set_final_refund (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set_final_refund (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; is_london ] =>
         ltac:(M.monadic
@@ -652,15 +667,15 @@ Module gas.
             let max_refund_quotient :=
               M.copy (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use is_london in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer 5 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 2 |)))
+                        M.alloc (| M.of_value (| Value.Integer 5 |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 2 |) |)))
                   ]
                 |)
               |) in
@@ -671,19 +686,20 @@ Module gas.
                   "revm_interpreter::gas::Gas",
                   "refunded"
                 |),
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "min", [] |),
                     [
-                      M.rust_cast
-                        (M.call_closure (|
+                      M.rust_cast (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "refunded",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |));
+                        |)
+                      |);
                       BinOp.Panic.div (|
                         Integer.U64,
                         M.call_closure (|
@@ -697,9 +713,10 @@ Module gas.
                         M.read (| max_refund_quotient |)
                       |)
                     ]
-                  |))
+                  |)
+                |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -712,7 +729,7 @@ Module gas.
             self.refunded = refund;
         }
     *)
-    Definition set_refund (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set_refund (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; refund ] =>
         ltac:(M.monadic
@@ -728,7 +745,7 @@ Module gas.
                 |),
                 M.read (| refund |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -745,7 +762,7 @@ Module gas.
             success
         }
     *)
-    Definition record_cost (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition record_cost (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; cost ] =>
         ltac:(M.monadic
@@ -775,10 +792,10 @@ Module gas.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let remaining := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
-                    let success := M.alloc (| UnOp.Pure.not (M.read (| overflow |)) |) in
+                    let success := M.alloc (| UnOp.Pure.not (| M.read (| overflow |) |) |) in
                     let _ :=
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -797,8 +814,8 @@ Module gas.
                                   |),
                                   M.read (| remaining |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         ]
                       |) in
                     success))

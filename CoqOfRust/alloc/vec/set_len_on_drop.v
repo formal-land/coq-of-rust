@@ -20,14 +20,19 @@ Module vec.
               SetLenOnDrop { local_len: *len, len }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ len ] =>
           ltac:(M.monadic
             (let len := M.alloc (| len |) in
-            Value.StructRecord
-              "alloc::vec::set_len_on_drop::SetLenOnDrop"
-              [ ("local_len", M.read (| M.read (| len |) |)); ("len", M.read (| len |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::vec::set_len_on_drop::SetLenOnDrop"
+                [
+                  ("local_len", A.to_value (M.read (| M.read (| len |) |)));
+                  ("len", A.to_value (M.read (| len |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -38,7 +43,7 @@ Module vec.
               self.local_len += increment;
           }
       *)
-      Definition increment_len (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition increment_len (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; increment ] =>
           ltac:(M.monadic
@@ -56,7 +61,7 @@ Module vec.
                   β,
                   BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| increment |) |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -69,7 +74,7 @@ Module vec.
               self.local_len
           }
       *)
-      Definition current_len (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition current_len (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -95,7 +100,7 @@ Module vec.
               *self.len = self.local_len;
           }
       *)
-      Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -118,7 +123,7 @@ Module vec.
                     |)
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.

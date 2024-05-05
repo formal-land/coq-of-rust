@@ -16,37 +16,41 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "erc1155::Mapping"
-          [
-            ("_key",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("_value",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "erc1155::Mapping"
+            [
+              ("_key",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("_value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -67,7 +71,21 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -78,7 +96,21 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -89,7 +121,22 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -100,7 +147,21 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -111,7 +172,21 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -122,7 +197,21 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -140,18 +229,27 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "erc1155::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "erc1155::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -167,14 +265,14 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -211,19 +309,20 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.Pure.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc1155::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc1155::AccountId", 0 |)
-          |))))
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -243,7 +342,19 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ _v ] =>
+      ltac:(M.monadic
+        (let _v := M.alloc (| _v |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -267,7 +378,7 @@ fn zero_address() -> AccountId {
     [0u8; 32].into()
 }
 *)
-Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
+Definition zero_address (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -279,23 +390,39 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
           "into",
           []
         |),
-        [ repeat (Value.Integer 0) 32 ]
+        [ repeat (| M.of_value (| Value.Integer 0 |), 32 |) ]
       |)))
   | _, _ => M.impossible
   end.
 
-Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
+Definition value_ON_ERC_1155_RECEIVED_SELECTOR : A.t :=
   M.run
     ltac:(M.monadic
       (M.alloc (|
-        Value.Array [ Value.Integer 242; Value.Integer 58; Value.Integer 110; Value.Integer 97 ]
+        M.of_value (|
+          Value.Array
+            [
+              A.to_value (M.of_value (| Value.Integer 242 |));
+              A.to_value (M.of_value (| Value.Integer 58 |));
+              A.to_value (M.of_value (| Value.Integer 110 |));
+              A.to_value (M.of_value (| Value.Integer 97 |))
+            ]
+        |)
       |))).
 
-Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
+Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : A.t :=
   M.run
     ltac:(M.monadic
       (M.alloc (|
-        Value.Array [ Value.Integer 188; Value.Integer 25; Value.Integer 124; Value.Integer 129 ]
+        M.of_value (|
+          Value.Array
+            [
+              A.to_value (M.of_value (| Value.Integer 188 |));
+              A.to_value (M.of_value (| Value.Integer 25 |));
+              A.to_value (M.of_value (| Value.Integer 124 |));
+              A.to_value (M.of_value (| Value.Integer 129 |))
+            ]
+        |)
       |))).
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
@@ -355,7 +482,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
@@ -382,7 +509,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -410,12 +537,12 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.Tuple []))
+        M.of_value (| Value.Tuple [] |)))
     | _, _ => M.impossible
     end.
   
@@ -509,7 +636,7 @@ Module Impl_erc1155_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -527,7 +654,20 @@ Module Impl_erc1155_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc1155_Env.
@@ -555,54 +695,60 @@ Module Impl_core_default_Default_for_erc1155_Contract.
   Definition Self : Ty.t := Ty.path "erc1155::Contract".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "erc1155::Contract"
-          [
-            ("balances",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "erc1155::Mapping")
-                    [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("approvals",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "erc1155::Mapping")
-                    [
-                      Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ];
-                      Ty.tuple []
-                    ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("token_id_nonce",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "u128",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "erc1155::Contract"
+            [
+              ("balances",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "erc1155::Mapping")
+                        [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
+                        ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("approvals",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "erc1155::Mapping")
+                        [
+                          Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ];
+                          Ty.tuple []
+                        ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("token_id_nonce",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u128",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -622,7 +768,18 @@ Module Impl_erc1155_Contract.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -631,7 +788,7 @@ Module Impl_erc1155_Contract.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -650,7 +807,7 @@ Module Impl_erc1155_Contract.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -690,7 +847,7 @@ Module Impl_erc1155_Contract.
           self.token_id_nonce
       }
   *)
-  Definition create (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition create (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; value ] =>
       ltac:(M.monadic
@@ -718,7 +875,10 @@ Module Impl_erc1155_Contract.
                 "erc1155::Contract",
                 "token_id_nonce"
               |) in
-            M.write (| β, BinOp.Panic.add (| Integer.U128, M.read (| β |), Value.Integer 1 |) |) in
+            M.write (|
+              β,
+              BinOp.Panic.add (| Integer.U128, M.read (| β |), M.of_value (| Value.Integer 1 |) |)
+            |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -735,17 +895,20 @@ Module Impl_erc1155_Contract.
                     "erc1155::Contract",
                     "balances"
                   |);
-                  Value.Tuple
-                    [
-                      M.read (| caller |);
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "erc1155::Contract",
-                          "token_id_nonce"
-                        |)
-                      |)
-                    ];
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value (M.read (| caller |));
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "erc1155::Contract",
+                              "token_id_nonce"
+                            |)
+                          |))
+                      ]
+                  |);
                   M.read (| value |)
                 ]
               |)
@@ -761,56 +924,79 @@ Module Impl_erc1155_Contract.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "erc1155::Event::TransferSingle"
-                    [
-                      Value.StructRecord
-                        "erc1155::TransferSingle"
-                        [
-                          ("operator",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| caller |) ]);
-                          ("from", Value.StructTuple "core::option::Option::None" []);
-                          ("to",
-                            M.read (|
-                              M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.Pure.eq (M.read (| value |)) (Value.Integer 0)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        Value.StructTuple "core::option::Option::None" []
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        Value.StructTuple
-                                          "core::option::Option::Some"
-                                          [ M.read (| caller |) ]
-                                      |)))
-                                ]
-                              |)
-                            |));
-                          ("token_id",
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "erc1155::Contract",
-                                "token_id_nonce"
-                              |)
-                            |));
-                          ("value", M.read (| value |))
-                        ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "erc1155::Event::TransferSingle"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "erc1155::TransferSingle"
+                              [
+                                ("operator",
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ A.to_value (M.read (| caller |)) ]
+                                    |)));
+                                ("from",
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)));
+                                ("to",
+                                  A.to_value
+                                    (M.read (|
+                                      M.match_operator (|
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    BinOp.Pure.eq (|
+                                                      M.read (| value |),
+                                                      M.of_value (| Value.Integer 0 |)
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                M.is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.StructTuple "core::option::Option::None" []
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (|
+                                                M.of_value (|
+                                                  Value.StructTuple
+                                                    "core::option::Option::Some"
+                                                    [ A.to_value (M.read (| caller |)) ]
+                                                |)
+                                              |)))
+                                        ]
+                                      |)
+                                    |)));
+                                ("token_id",
+                                  A.to_value
+                                    (M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "erc1155::Contract",
+                                        "token_id_nonce"
+                                      |)
+                                    |)));
+                                ("value", A.to_value (M.read (| value |)))
+                              ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
@@ -844,7 +1030,7 @@ Module Impl_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition mint (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition mint (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; token_id; value ] =>
       ltac:(M.monadic
@@ -856,23 +1042,25 @@ Module Impl_erc1155_Contract.
             (M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.le
-                                  (M.read (| token_id |))
-                                  (M.read (|
+                              UnOp.Pure.not (|
+                                BinOp.Pure.le (|
+                                  M.read (| token_id |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "erc1155::Contract",
                                       "token_id_nonce"
                                     |)
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -880,25 +1068,32 @@ Module Impl_erc1155_Contract.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "erc1155::Error",
-                                        [ Ty.path "erc1155::Error" ],
-                                        "into",
-                                        []
-                                      |),
-                                      [ Value.StructTuple "erc1155::Error::UnexistentToken" [] ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.path "erc1155::Error",
+                                            [ Ty.path "erc1155::Error" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [
+                                            M.of_value (|
+                                              Value.StructTuple "erc1155::Error::UnexistentToken" []
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let caller :=
@@ -932,7 +1127,10 @@ Module Impl_erc1155_Contract.
                         "erc1155::Contract",
                         "balances"
                       |);
-                      Value.Tuple [ M.read (| caller |); M.read (| token_id |) ];
+                      M.of_value (|
+                        Value.Tuple
+                          [ A.to_value (M.read (| caller |)); A.to_value (M.read (| token_id |)) ]
+                      |);
                       M.read (| value |)
                     ]
                   |)
@@ -948,29 +1146,50 @@ Module Impl_erc1155_Contract.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "erc1155::Event::TransferSingle"
-                        [
-                          Value.StructRecord
-                            "erc1155::TransferSingle"
-                            [
-                              ("operator",
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [ M.read (| caller |) ]);
-                              ("from", Value.StructTuple "core::option::Option::None" []);
-                              ("to",
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [ M.read (| caller |) ]);
-                              ("token_id", M.read (| token_id |));
-                              ("value", M.read (| value |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "erc1155::Event::TransferSingle"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "erc1155::TransferSingle"
+                                  [
+                                    ("operator",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [ A.to_value (M.read (| caller |)) ]
+                                        |)));
+                                    ("from",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)));
+                                    ("to",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [ A.to_value (M.read (| caller |)) ]
+                                        |)));
+                                    ("token_id", A.to_value (M.read (| token_id |)));
+                                    ("value", A.to_value (M.read (| value |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1007,7 +1226,7 @@ Module Impl_erc1155_Contract.
           }));
       }
   *)
-  Definition perform_transfer (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition perform_transfer (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; from; to; token_id; value ] =>
       ltac:(M.monadic
@@ -1041,11 +1260,18 @@ Module Impl_erc1155_Contract.
                         "erc1155::Contract",
                         "balances"
                       |);
-                      M.alloc (| Value.Tuple [ M.read (| from |); M.read (| token_id |) ] |)
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Tuple
+                            [ A.to_value (M.read (| from |)); A.to_value (M.read (| token_id |)) ]
+                        |)
+                      |)
                     ]
                   |);
                   M.read (|
-                    Value.String "Caller should have ensured that `from` holds `token_id`."
+                    M.of_value (|
+                      Value.String "Caller should have ensured that `from` holds `token_id`."
+                    |)
                   |)
                 ]
               |)
@@ -1072,7 +1298,10 @@ Module Impl_erc1155_Contract.
                     "erc1155::Contract",
                     "balances"
                   |);
-                  Value.Tuple [ M.read (| from |); M.read (| token_id |) ];
+                  M.of_value (|
+                    Value.Tuple
+                      [ A.to_value (M.read (| from |)); A.to_value (M.read (| token_id |)) ]
+                  |);
                   M.read (| sender_balance |)
                 ]
               |)
@@ -1101,10 +1330,15 @@ Module Impl_erc1155_Contract.
                         "erc1155::Contract",
                         "balances"
                       |);
-                      M.alloc (| Value.Tuple [ M.read (| to |); M.read (| token_id |) ] |)
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Tuple
+                            [ A.to_value (M.read (| to |)); A.to_value (M.read (| token_id |)) ]
+                        |)
+                      |)
                     ]
                   |);
-                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+                  M.read (| M.use (M.alloc (| M.of_value (| Value.Integer 0 |) |)) |)
                 ]
               |)
             |) in
@@ -1130,7 +1364,9 @@ Module Impl_erc1155_Contract.
                     "erc1155::Contract",
                     "balances"
                   |);
-                  Value.Tuple [ M.read (| to |); M.read (| token_id |) ];
+                  M.of_value (|
+                    Value.Tuple [ A.to_value (M.read (| to |)); A.to_value (M.read (| token_id |)) ]
+                  |);
                   M.read (| recipient_balance |)
                 ]
               |)
@@ -1160,26 +1396,46 @@ Module Impl_erc1155_Contract.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "erc1155::Event::TransferSingle"
-                    [
-                      Value.StructRecord
-                        "erc1155::TransferSingle"
-                        [
-                          ("operator",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| caller |) ]);
-                          ("from",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| from |) ]);
-                          ("to",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| to |) ]);
-                          ("token_id", M.read (| token_id |));
-                          ("value", M.read (| value |))
-                        ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "erc1155::Event::TransferSingle"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "erc1155::TransferSingle"
+                              [
+                                ("operator",
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ A.to_value (M.read (| caller |)) ]
+                                    |)));
+                                ("from",
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ A.to_value (M.read (| from |)) ]
+                                    |)));
+                                ("to",
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ A.to_value (M.read (| to |)) ]
+                                    |)));
+                                ("token_id", A.to_value (M.read (| token_id |)));
+                                ("value", A.to_value (M.read (| value |)))
+                              ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1260,7 +1516,7 @@ Module Impl_erc1155_Contract.
           }
       }
   *)
-  Definition transfer_acceptance_check (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition transfer_acceptance_check (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; caller; from; to; token_id; value; data ] =>
       ltac:(M.monadic
@@ -1271,7 +1527,7 @@ Module Impl_erc1155_Contract.
         let token_id := M.alloc (| token_id |) in
         let value := M.alloc (| value |) in
         let data := M.alloc (| data |) in
-        Value.Tuple []))
+        M.of_value (| Value.Tuple [] |)))
     | _, _ => M.impossible
     end.
   
@@ -1287,7 +1543,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           self.approvals.contains(&(owner, operator))
       }
   *)
-  Definition is_approved_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_approved_for_all (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner; operator ] =>
       ltac:(M.monadic
@@ -1309,7 +1565,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               "erc1155::Contract",
               "approvals"
             |);
-            M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
+            M.alloc (|
+              M.of_value (|
+                Value.Tuple [ A.to_value (M.read (| owner |)); A.to_value (M.read (| operator |)) ]
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -1320,7 +1580,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
       }
   *)
-  Definition balance_of (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition balance_of (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owner; token_id ] =>
       ltac:(M.monadic
@@ -1348,10 +1608,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   "erc1155::Contract",
                   "balances"
                 |);
-                M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| token_id |) ] |)
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple
+                      [ A.to_value (M.read (| owner |)); A.to_value (M.read (| token_id |)) ]
+                  |)
+                |)
               ]
             |);
-            M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+            M.read (| M.use (M.alloc (| M.of_value (| Value.Integer 0 |) |)) |)
           ]
         |)))
     | _, _ => M.impossible
@@ -1382,7 +1647,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition safe_transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition safe_transfer_from (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; from; to; token_id; value; data ] =>
       ltac:(M.monadic
@@ -1411,7 +1676,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1433,15 +1698,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.Pure.not (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "erc1155::Erc1155",
                                               Ty.path "erc1155::Contract",
@@ -1454,7 +1719,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               M.read (| from |);
                                               M.read (| caller |)
                                             ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1465,43 +1731,52 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructTuple
-                                            "core::result::Result::Err"
-                                            [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::convert::Into",
-                                                  Ty.path "erc1155::Error",
-                                                  [ Ty.path "erc1155::Error" ],
-                                                  "into",
-                                                  []
-                                                |),
-                                                [ Value.StructTuple "erc1155::Error::NotApproved" []
-                                                ]
-                                              |)
-                                            ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::convert::Into",
+                                                      Ty.path "erc1155::Error",
+                                                      [ Ty.path "erc1155::Error" ],
+                                                      "into",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.of_value (|
+                                                        Value.StructTuple
+                                                          "erc1155::Error::NotApproved"
+                                                          []
+                                                      |)
+                                                    ]
+                                                  |))
+                                              ]
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
@@ -1518,7 +1793,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       |)
                                     |)
                                   ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1526,25 +1802,34 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "erc1155::Error",
-                                        [ Ty.path "erc1155::Error" ],
-                                        "into",
-                                        []
-                                      |),
-                                      [ Value.StructTuple "erc1155::Error::ZeroAddressTransfer" [] ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.path "erc1155::Error",
+                                            [ Ty.path "erc1155::Error" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "erc1155::Error::ZeroAddressTransfer"
+                                                []
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let balance :=
@@ -1562,15 +1847,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.ge (M.read (| balance |)) (M.read (| value |)))
+                              UnOp.Pure.not (|
+                                BinOp.Pure.ge (| M.read (| balance |), M.read (| value |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1578,25 +1864,34 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "erc1155::Error",
-                                        [ Ty.path "erc1155::Error" ],
-                                        "into",
-                                        []
-                                      |),
-                                      [ Value.StructTuple "erc1155::Error::InsufficientBalance" [] ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.path "erc1155::Error",
+                                            [ Ty.path "erc1155::Error" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "erc1155::Error::InsufficientBalance"
+                                                []
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -1635,7 +1930,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1679,7 +1980,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition safe_batch_transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition safe_batch_transfer_from (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; from; to; token_ids; values; data ] =>
       ltac:(M.monadic
@@ -1708,7 +2009,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1730,15 +2031,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.Pure.not (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "erc1155::Erc1155",
                                               Ty.path "erc1155::Contract",
@@ -1751,7 +2052,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               M.read (| from |);
                                               M.read (| caller |)
                                             ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1762,43 +2064,52 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructTuple
-                                            "core::result::Result::Err"
-                                            [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::convert::Into",
-                                                  Ty.path "erc1155::Error",
-                                                  [ Ty.path "erc1155::Error" ],
-                                                  "into",
-                                                  []
-                                                |),
-                                                [ Value.StructTuple "erc1155::Error::NotApproved" []
-                                                ]
-                                              |)
-                                            ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::convert::Into",
+                                                      Ty.path "erc1155::Error",
+                                                      [ Ty.path "erc1155::Error" ],
+                                                      "into",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.of_value (|
+                                                        Value.StructTuple
+                                                          "erc1155::Error::NotApproved"
+                                                          []
+                                                      |)
+                                                    ]
+                                                  |))
+                                              ]
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
@@ -1815,7 +2126,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       |)
                                     |)
                                   ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1823,39 +2135,48 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "erc1155::Error",
-                                        [ Ty.path "erc1155::Error" ],
-                                        "into",
-                                        []
-                                      |),
-                                      [ Value.StructTuple "erc1155::Error::ZeroAddressTransfer" [] ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.path "erc1155::Error",
+                                            [ Ty.path "erc1155::Error" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "erc1155::Error::ZeroAddressTransfer"
+                                                []
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (UnOp.Pure.not
-                                  (M.call_closure (|
+                              UnOp.Pure.not (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1864,7 +2185,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       []
                                     |),
                                     [ token_ids ]
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1872,40 +2195,48 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "erc1155::Error",
-                                        [ Ty.path "erc1155::Error" ],
-                                        "into",
-                                        []
-                                      |),
-                                      [ Value.StructTuple "erc1155::Error::BatchTransferMismatch" []
-                                      ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.path "erc1155::Error",
+                                            [ Ty.path "erc1155::Error" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "erc1155::Error::BatchTransferMismatch"
+                                                []
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.eq
-                                  (M.call_closure (|
+                              UnOp.Pure.not (|
+                                BinOp.Pure.eq (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1914,8 +2245,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       []
                                     |),
                                     [ token_ids ]
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1924,7 +2255,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       []
                                     |),
                                     [ values ]
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1932,26 +2265,34 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "erc1155::Error",
-                                        [ Ty.path "erc1155::Error" ],
-                                        "into",
-                                        []
-                                      |),
-                                      [ Value.StructTuple "erc1155::Error::BatchTransferMismatch" []
-                                      ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.path "erc1155::Error",
+                                            [ Ty.path "erc1155::Error" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "erc1155::Error::BatchTransferMismatch"
+                                                []
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let transfers :=
@@ -2114,17 +2455,19 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                           |) in
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (BinOp.Pure.ge
-                                                            (M.read (| balance |))
-                                                            (M.read (| v |)))
+                                                        UnOp.Pure.not (|
+                                                          BinOp.Pure.ge (|
+                                                            M.read (| balance |),
+                                                            M.read (| v |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -2135,36 +2478,42 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|
-                                                          Value.StructTuple
-                                                            "core::result::Result::Err"
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::convert::Into",
-                                                                  Ty.path "erc1155::Error",
-                                                                  [ Ty.path "erc1155::Error" ],
-                                                                  "into",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  Value.StructTuple
-                                                                    "erc1155::Error::InsufficientBalance"
-                                                                    []
-                                                                ]
-                                                              |)
-                                                            ]
+                                                          M.of_value (|
+                                                            Value.StructTuple
+                                                              "core::result::Result::Err"
+                                                              [
+                                                                A.to_value
+                                                                  (M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::convert::Into",
+                                                                      Ty.path "erc1155::Error",
+                                                                      [ Ty.path "erc1155::Error" ],
+                                                                      "into",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.of_value (|
+                                                                        Value.StructTuple
+                                                                          "erc1155::Error::InsufficientBalance"
+                                                                          []
+                                                                      |)
+                                                                    ]
+                                                                  |))
+                                                              ]
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -2254,10 +2603,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -2285,7 +2634,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             "index",
                             []
                           |),
-                          [ token_ids; Value.Integer 0 ]
+                          [ token_ids; M.of_value (| Value.Integer 0 |) ]
                         |)
                       |);
                       M.read (|
@@ -2299,14 +2648,20 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             "index",
                             []
                           |),
-                          [ values; Value.Integer 0 ]
+                          [ values; M.of_value (| Value.Integer 0 |) ]
                         |)
                       |);
                       M.read (| data |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -2324,7 +2679,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           output
       }
   *)
-  Definition balance_of_batch (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition balance_of_batch (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; owners; token_ids ] =>
       ltac:(M.monadic
@@ -2495,16 +2850,18 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                   [ output; M.read (| amount |) ]
                                                                 |)
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)))
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                               |)))
                                         ]
                                       |))))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       |)))
                 ]
               |)) in
@@ -2533,7 +2890,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition set_approval_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition set_approval_for_all (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; operator; approved ] =>
       ltac:(M.monadic
@@ -2559,15 +2916,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
@@ -2576,7 +2933,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     []
                                   |),
                                   [ operator; caller ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2584,30 +2942,37 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "erc1155::Error",
-                                        [ Ty.path "erc1155::Error" ],
-                                        "into",
-                                        []
-                                      |),
-                                      [ Value.StructTuple "erc1155::Error::SelfApproval" [] ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.path "erc1155::Error",
+                                            [ Ty.path "erc1155::Error" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [
+                                            M.of_value (|
+                                              Value.StructTuple "erc1155::Error::SelfApproval" []
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -2635,12 +3000,18 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   "erc1155::Contract",
                                   "approvals"
                                 |);
-                                Value.Tuple [ M.read (| caller |); M.read (| operator |) ];
-                                Value.Tuple []
+                                M.of_value (|
+                                  Value.Tuple
+                                    [
+                                      A.to_value (M.read (| caller |));
+                                      A.to_value (M.read (| operator |))
+                                    ]
+                                |);
+                                M.of_value (| Value.Tuple [] |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -2664,11 +3035,17 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   "erc1155::Contract",
                                   "approvals"
                                 |);
-                                Value.Tuple [ M.read (| caller |); M.read (| operator |) ]
+                                M.of_value (|
+                                  Value.Tuple
+                                    [
+                                      A.to_value (M.read (| caller |));
+                                      A.to_value (M.read (| operator |))
+                                    ]
+                                |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -2682,21 +3059,32 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "erc1155::Event::ApprovalForAll"
-                        [
-                          Value.StructRecord
-                            "erc1155::ApprovalForAll"
-                            [
-                              ("owner", M.read (| caller |));
-                              ("operator", M.read (| operator |));
-                              ("approved", M.read (| approved |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "erc1155::Event::ApprovalForAll"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "erc1155::ApprovalForAll"
+                                  [
+                                    ("owner", A.to_value (M.read (| caller |)));
+                                    ("operator", A.to_value (M.read (| operator |)));
+                                    ("approved", A.to_value (M.read (| approved |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -2744,7 +3132,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
           unimplemented!("This smart contract does not accept token transfer.")
       }
   *)
-  Definition on_received (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition on_received (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; _operator; _from; _token_id; _value; _data ] =>
       ltac:(M.monadic
@@ -2762,19 +3150,25 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String
-                              "not implemented: This smart contract does not accept token transfer."
-                          |)
-                        ]
-                    |));
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.read (|
+                                M.of_value (|
+                                  Value.String
+                                    "not implemented: This smart contract does not accept token transfer."
+                                |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::Argument",
@@ -2783,7 +3177,8 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
                         |),
                         []
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -2815,7 +3210,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
           unimplemented!("This smart contract does not accept batch token transfers.")
       }
   *)
-  Definition on_batch_received (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition on_batch_received (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; _operator; _from; _token_ids; _values; _data ] =>
       ltac:(M.monadic
@@ -2833,19 +3228,25 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String
-                              "not implemented: This smart contract does not accept batch token transfers."
-                          |)
-                        ]
-                    |));
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.read (|
+                                M.of_value (|
+                                  Value.String
+                                    "not implemented: This smart contract does not accept batch token transfers."
+                                |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::Argument",
@@ -2854,7 +3255,8 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
                         |),
                         []
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)
             ]

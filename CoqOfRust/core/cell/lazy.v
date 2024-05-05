@@ -50,27 +50,36 @@ Module cell.
               LazyCell { state: UnsafeCell::new(State::Uninit(f)) }
           }
       *)
-      Definition new (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
-            Value.StructRecord
-              "core::cell::lazy::LazyCell"
-              [
-                ("state",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
-                      "new",
-                      []
-                    |),
-                    [ Value.StructTuple "core::cell::lazy::State::Uninit" [ M.read (| f |) ] ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::cell::lazy::LazyCell"
+                [
+                  ("state",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::cell::UnsafeCell")
+                            [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                          "new",
+                          []
+                        |),
+                        [
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::cell::lazy::State::Uninit"
+                              [ A.to_value (M.read (| f |)) ]
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -87,7 +96,7 @@ Module cell.
               }
           }
       *)
-      Definition into_inner (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ this ] =>
@@ -126,7 +135,11 @@ Module cell.
                         |) in
                       let data := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ M.read (| data |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.read (| data |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -138,7 +151,11 @@ Module cell.
                         |) in
                       let f := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Err" [ M.read (| f |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [ A.to_value (M.read (| f |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -155,16 +172,22 @@ Module cell.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "LazyCell instance has previously been poisoned"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "LazyCell instance has previously been poisoned"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -197,7 +220,7 @@ Module cell.
               }
           }
       *)
-      Definition force (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition force (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ this ] =>
@@ -272,15 +295,22 @@ Module cell.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "LazyCell has previously been poisoned"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "LazyCell has previously been poisoned"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -327,7 +357,7 @@ Module cell.
               data
           }
       *)
-      Definition really_init (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition really_init (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ this ] =>
@@ -360,7 +390,10 @@ Module cell.
                       "core::mem::replace",
                       [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ]
                     |),
-                    [ M.read (| state |); Value.StructTuple "core::cell::lazy::State::Poisoned" [] ]
+                    [
+                      M.read (| state |);
+                      M.of_value (| Value.StructTuple "core::cell::lazy::State::Poisoned" [] |)
+                    ]
                   |)
                 |),
                 [
@@ -383,7 +416,7 @@ Module cell.
                               "call_once",
                               []
                             |),
-                            [ M.read (| f |); Value.Tuple [] ]
+                            [ M.read (| f |); M.of_value (| Value.Tuple [] |) ]
                           |)
                         |) in
                       let _ :=
@@ -413,9 +446,11 @@ Module cell.
                                   |)
                                 ]
                               |);
-                              Value.StructTuple
-                                "core::cell::lazy::State::Init"
-                                [ M.read (| data |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::cell::lazy::State::Init"
+                                  [ A.to_value (M.read (| data |)) ]
+                              |)
                             ]
                           |)
                         |) in
@@ -476,7 +511,7 @@ Module cell.
               }
           }
       *)
-      Definition get (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ self ] =>
@@ -516,11 +551,17 @@ Module cell.
                         |) in
                       let data := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| data |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ A.to_value (M.read (| data |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -545,7 +586,7 @@ Module cell.
               LazyCell::force(self)
           }
       *)
-      Definition deref (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ self ] =>
@@ -582,7 +623,7 @@ Module cell.
               LazyCell::new(T::default)
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
@@ -595,8 +636,9 @@ Module cell.
               |),
               [
                 (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::default::Default", T, [], "default", [] |))
+                M.pointer_coercion (|
+                  M.get_trait_method (| "core::default::Default", T, [], "default", [] |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -625,7 +667,7 @@ Module cell.
               d.finish()
           }
       *)
-      Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ self; f ] =>
@@ -641,7 +683,7 @@ Module cell.
                       "debug_tuple",
                       []
                     |),
-                    [ M.read (| f |); M.read (| Value.String "LazyCell" |) ]
+                    [ M.read (| f |); M.read (| M.of_value (| Value.String "LazyCell" |) |) ]
                   |)
                 |) in
               let _ :=
@@ -673,7 +715,7 @@ Module cell.
                               "field",
                               []
                             |),
-                            [ d; (* Unsize *) M.pointer_coercion (M.read (| data |)) ]
+                            [ d; (* Unsize *) M.pointer_coercion (| M.read (| data |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -688,8 +730,8 @@ Module cell.
                             [
                               d;
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
+                              M.pointer_coercion (|
+                                M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
@@ -698,13 +740,23 @@ Module cell.
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array [ M.read (| Value.String "<uninit>" |) ]
-                                        |))
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (|
+                                                    M.of_value (| Value.String "<uninit>" |)
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
-                                |))
+                                |)
+                              |)
                             ]
                           |)
                         |)))

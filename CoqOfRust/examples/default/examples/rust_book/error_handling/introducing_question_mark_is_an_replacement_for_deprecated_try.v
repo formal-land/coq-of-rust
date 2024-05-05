@@ -9,7 +9,7 @@ fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, Pars
     Ok(first_number * second_number)
 }
 *)
-Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
+Definition multiply (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ first_number_str; second_number_str ] =>
     ltac:(M.monadic
@@ -51,20 +51,23 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::From",
-                                        Ty.path "core::num::error::ParseIntError",
-                                        [ Ty.path "core::num::error::ParseIntError" ],
-                                        "from",
-                                        []
-                                      |),
-                                      [ M.read (| err |) ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.path "core::num::error::ParseIntError",
+                                            [ Ty.path "core::num::error::ParseIntError" ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| err |) ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
@@ -105,20 +108,23 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::From",
-                                        Ty.path "core::num::error::ParseIntError",
-                                        [ Ty.path "core::num::error::ParseIntError" ],
-                                        "from",
-                                        []
-                                      |),
-                                      [ M.read (| err |) ]
-                                    |)
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.path "core::num::error::ParseIntError",
+                                            [ Ty.path "core::num::error::ParseIntError" ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| err |) ]
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
@@ -127,15 +133,18 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (|
-              Value.StructTuple
-                "core::result::Result::Ok"
-                [
-                  BinOp.Panic.mul (|
-                    Integer.I32,
-                    M.read (| first_number |),
-                    M.read (| second_number |)
-                  |)
-                ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [
+                    A.to_value
+                      (BinOp.Panic.mul (|
+                        Integer.I32,
+                        M.read (| first_number |),
+                        M.read (| second_number |)
+                      |))
+                  ]
+              |)
             |)
           |)))
       |)))
@@ -150,7 +159,7 @@ fn print(result: Result<i32, ParseIntError>) {
     }
 }
 *)
-Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+Definition print (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ result ] =>
     ltac:(M.monadic
@@ -177,34 +186,44 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "n is " |); M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "n is " |) |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ n ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ n ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -223,36 +242,44 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Error: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "Error: " |) |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "core::num::error::ParseIntError" ]
-                                      |),
-                                      [ e ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "core::num::error::ParseIntError" ]
+                                          |),
+                                          [ e ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))
@@ -265,7 +292,7 @@ fn main() {
     print(multiply("t", "2"));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -283,7 +310,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply",
                     []
                   |),
-                  [ M.read (| Value.String "10" |); M.read (| Value.String "2" |) ]
+                  [
+                    M.read (| M.of_value (| Value.String "10" |) |);
+                    M.read (| M.of_value (| Value.String "2" |) |)
+                  ]
                 |)
               ]
             |)
@@ -301,12 +331,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply",
                     []
                   |),
-                  [ M.read (| Value.String "t" |); M.read (| Value.String "2" |) ]
+                  [
+                    M.read (| M.of_value (| Value.String "t" |) |);
+                    M.read (| M.of_value (| Value.String "2" |) |)
+                  ]
                 |)
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

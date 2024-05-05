@@ -3,15 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module str.
   Module count.
-    Definition value_USIZE_SIZE : Value.t :=
+    Definition value_USIZE_SIZE : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (| M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |), [] |)
           |))).
     
-    Definition value_UNROLL_INNER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+    Definition value_UNROLL_INNER : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 4 |) |))).
     
     (*
     pub(super) fn count_chars(s: &str) -> usize {
@@ -26,30 +26,31 @@ Module str.
         }
     }
     *)
-    Definition count_chars (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition count_chars (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.Pure.lt (|
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| s |) ]
-                            |))
-                            (BinOp.Panic.mul (|
+                            |),
+                            BinOp.Panic.mul (|
                               Integer.Usize,
                               M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |),
                               M.read (| M.get_constant (| "core::str::count::UNROLL_INNER" |) |)
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -149,7 +150,7 @@ Module str.
         total
     }
     *)
-    Definition do_count_chars (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition do_count_chars (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ s ] =>
         ltac:(M.monadic
@@ -184,7 +185,7 @@ Module str.
                         let tail := M.copy (| γ0_2 |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -205,36 +206,38 @@ Module str.
                                                   [ M.read (| body |) ]
                                                 |),
                                                 ltac:(M.monadic
-                                                  (BinOp.Pure.gt
-                                                    (M.call_closure (|
+                                                  (BinOp.Pure.gt (|
+                                                    M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                         "len",
                                                         []
                                                       |),
                                                       [ M.read (| head |) ]
-                                                    |))
-                                                    (M.read (|
+                                                    |),
+                                                    M.read (|
                                                       M.get_constant (|
                                                         "core::str::count::USIZE_SIZE"
                                                       |)
-                                                    |))))
+                                                    |)
+                                                  |)))
                                               |),
                                               ltac:(M.monadic
-                                                (BinOp.Pure.gt
-                                                  (M.call_closure (|
+                                                (BinOp.Pure.gt (|
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| tail |) ]
-                                                  |))
-                                                  (M.read (|
+                                                  |),
+                                                  M.read (|
                                                     M.get_constant (|
                                                       "core::str::count::USIZE_SIZE"
                                                     |)
-                                                  |))))
+                                                  |)
+                                                |)))
                                             |)
                                           ]
                                         |)
@@ -268,7 +271,8 @@ Module str.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
                         let total :=
@@ -361,7 +365,10 @@ Module str.
                                                       0
                                                     |) in
                                                   let chunk := M.copy (| γ0_0 |) in
-                                                  let counts := M.alloc (| Value.Integer 0 |) in
+                                                  let counts :=
+                                                    M.alloc (|
+                                                      M.of_value (| Value.Integer 0 |)
+                                                    |) in
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -588,14 +595,18 @@ Module str.
                                                                                                                 |)
                                                                                                               |) in
                                                                                                             M.alloc (|
-                                                                                                              Value.Tuple
-                                                                                                                []
+                                                                                                              M.of_value (|
+                                                                                                                Value.Tuple
+                                                                                                                  []
+                                                                                                              |)
                                                                                                             |)))
                                                                                                       ]
                                                                                                     |) in
                                                                                                   M.alloc (|
-                                                                                                    Value.Tuple
-                                                                                                      []
+                                                                                                    M.of_value (|
+                                                                                                      Value.Tuple
+                                                                                                        []
+                                                                                                    |)
                                                                                                   |)))
                                                                                               |)))
                                                                                         ]
@@ -603,7 +614,9 @@ Module str.
                                                                               ]
                                                                             |) in
                                                                           M.alloc (|
-                                                                            Value.Tuple []
+                                                                            M.of_value (|
+                                                                              Value.Tuple []
+                                                                            |)
                                                                           |)))
                                                                       |)))
                                                                 ]
@@ -625,15 +638,17 @@ Module str.
                                                               |)
                                                             |) in
                                                           M.match_operator (|
-                                                            M.alloc (| Value.Tuple [] |),
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        UnOp.Pure.not
-                                                                          (M.call_closure (|
+                                                                        UnOp.Pure.not (|
+                                                                          M.call_closure (|
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -643,7 +658,8 @@ Module str.
                                                                             |),
                                                                             [ M.read (| remainder |)
                                                                             ]
-                                                                          |))
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -655,7 +671,9 @@ Module str.
                                                                       M.read (|
                                                                         let counts :=
                                                                           M.alloc (|
-                                                                            Value.Integer 0
+                                                                            M.of_value (|
+                                                                              Value.Integer 0
+                                                                            |)
                                                                           |) in
                                                                         let _ :=
                                                                           M.use
@@ -774,14 +792,18 @@ Module str.
                                                                                                       |)
                                                                                                     |) in
                                                                                                   M.alloc (|
-                                                                                                    Value.Tuple
-                                                                                                      []
+                                                                                                    M.of_value (|
+                                                                                                      Value.Tuple
+                                                                                                        []
+                                                                                                    |)
                                                                                                   |)))
                                                                                             ]
                                                                                           |) in
                                                                                         M.alloc (|
-                                                                                          Value.Tuple
-                                                                                            []
+                                                                                          M.of_value (|
+                                                                                            Value.Tuple
+                                                                                              []
+                                                                                          |)
                                                                                         |)))
                                                                                     |)))
                                                                               ]
@@ -812,14 +834,16 @@ Module str.
                                                                   |)));
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                                  (M.alloc (|
+                                                                    M.of_value (| Value.Tuple [] |)
+                                                                  |)))
                                                             ]
                                                           |)))
                                                     ]
                                                   |)))
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                     |)))
                               ]
                             |)) in
@@ -832,8 +856,8 @@ Module str.
       end.
     
     Module do_count_chars.
-      Definition value_CHUNK_SIZE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 192 |))).
+      Definition value_CHUNK_SIZE : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 192 |) |))).
     End do_count_chars.
     
     (*
@@ -842,29 +866,34 @@ Module str.
         ((!w >> 7) | (w >> 6)) & LSB
     }
     *)
-    Definition contains_non_continuation_byte (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition contains_non_continuation_byte (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ w ] =>
         ltac:(M.monadic
           (let w := M.alloc (| w |) in
-          BinOp.Pure.bit_and
-            (BinOp.Pure.bit_or
-              (BinOp.Panic.shr (| UnOp.Pure.not (M.read (| w |)), Value.Integer 7 |))
-              (BinOp.Panic.shr (| M.read (| w |), Value.Integer 6 |)))
-            (M.read (|
+          BinOp.Pure.bit_and (|
+            BinOp.Pure.bit_or (|
+              BinOp.Panic.shr (|
+                UnOp.Pure.not (| M.read (| w |) |),
+                M.of_value (| Value.Integer 7 |)
+              |),
+              BinOp.Panic.shr (| M.read (| w |), M.of_value (| Value.Integer 6 |) |)
+            |),
+            M.read (|
               M.get_constant (| "core::str::count::contains_non_continuation_byte::LSB" |)
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
     Module contains_non_continuation_byte.
-      Definition value_LSB : Value.t :=
+      Definition value_LSB : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-                [ Value.Integer 1 ]
+                [ M.of_value (| Value.Integer 1 |) ]
               |)
             |))).
     End contains_non_continuation_byte.
@@ -878,7 +907,7 @@ Module str.
         pair_sum.wrapping_mul(LSB_SHORTS) >> ((USIZE_SIZE - 2) * 8)
     }
     *)
-    Definition sum_bytes_in_usize (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition sum_bytes_in_usize (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ values ] =>
         ltac:(M.monadic
@@ -888,16 +917,18 @@ Module str.
               M.alloc (|
                 BinOp.Panic.add (|
                   Integer.Usize,
-                  BinOp.Pure.bit_and
-                    (M.read (| values |))
-                    (M.read (|
+                  BinOp.Pure.bit_and (|
+                    M.read (| values |),
+                    M.read (|
                       M.get_constant (| "core::str::count::sum_bytes_in_usize::SKIP_BYTES" |)
-                    |)),
-                  BinOp.Pure.bit_and
-                    (BinOp.Panic.shr (| M.read (| values |), Value.Integer 8 |))
-                    (M.read (|
+                    |)
+                  |),
+                  BinOp.Pure.bit_and (|
+                    BinOp.Panic.shr (| M.read (| values |), M.of_value (| Value.Integer 8 |) |),
+                    M.read (|
                       M.get_constant (| "core::str::count::sum_bytes_in_usize::SKIP_BYTES" |)
-                    |))
+                    |)
+                  |)
                 |)
               |) in
             M.alloc (|
@@ -916,9 +947,9 @@ Module str.
                   BinOp.Panic.sub (|
                     Integer.Usize,
                     M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |),
-                    Value.Integer 2
+                    M.of_value (| Value.Integer 2 |)
                   |),
-                  Value.Integer 8
+                  M.of_value (| Value.Integer 8 |)
                 |)
               |)
             |)
@@ -927,23 +958,23 @@ Module str.
       end.
     
     Module sum_bytes_in_usize.
-      Definition value_LSB_SHORTS : Value.t :=
+      Definition value_LSB_SHORTS : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u16", [] |),
-                [ Value.Integer 1 ]
+                [ M.of_value (| Value.Integer 1 |) ]
               |)
             |))).
       
-      Definition value_SKIP_BYTES : Value.t :=
+      Definition value_SKIP_BYTES : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u16", [] |),
-                [ Value.Integer 255 ]
+                [ M.of_value (| Value.Integer 255 |) ]
               |)
             |))).
     End sum_bytes_in_usize.
@@ -953,7 +984,7 @@ Module str.
         s.iter().filter(|&&byte| !super::validations::utf8_is_cont_byte(byte)).count()
     }
     *)
-    Definition char_count_general_case (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition char_count_general_case (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ s ] =>
         ltac:(M.monadic
@@ -1001,8 +1032,8 @@ Module str.
                     |),
                     [ M.read (| s |) ]
                   |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -1014,18 +1045,20 @@ Module str.
                                   (let γ := M.read (| γ |) in
                                   let γ := M.read (| γ |) in
                                   let byte := M.copy (| γ |) in
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.Pure.not (|
+                                    M.call_closure (|
                                       M.get_function (|
                                         "core::str::validations::utf8_is_cont_byte",
                                         []
                                       |),
                                       [ M.read (| byte |) ]
-                                    |))))
+                                    |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)
             ]

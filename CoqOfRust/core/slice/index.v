@@ -14,7 +14,7 @@ Module slice.
               index.index(self)
           }
       *)
-      Definition index (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T I in
         match τ, α with
         | [], [ self; index ] =>
@@ -53,7 +53,7 @@ Module slice.
               index.index_mut(self)
           }
       *)
-      Definition index_mut (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T I in
         match τ, α with
         | [], [ self; index ] =>
@@ -94,7 +94,7 @@ Module slice.
         }
     }
     *)
-    Definition slice_start_index_len_fail (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_start_index_len_fail (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ index; len ] =>
         ltac:(M.monadic
@@ -111,7 +111,9 @@ Module slice.
               ]
             |),
             [
-              Value.Tuple [ M.read (| index |); M.read (| len |) ];
+              M.of_value (|
+                Value.Tuple [ A.to_value (M.read (| index |)); A.to_value (M.read (| len |)) ]
+              |);
               M.get_function (| "core::slice::index::slice_start_index_len_fail_ct", [] |);
               M.get_function (| "core::slice::index::slice_start_index_len_fail_rt", [] |)
             ]
@@ -124,7 +126,7 @@ Module slice.
         panic!("range start index {index} out of range for slice of length {len}");
     }
     *)
-    Definition slice_start_index_len_fail_rt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_start_index_len_fail_rt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ index; len ] =>
         ltac:(M.monadic
@@ -137,37 +139,49 @@ Module slice.
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (| Value.String "range start index " |);
-                          M.read (| Value.String " out of range for slice of length " |)
-                        ]
-                    |));
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.read (| M.of_value (| Value.String "range start index " |) |));
+                            A.to_value
+                              (M.read (|
+                                M.of_value (| Value.String " out of range for slice of length " |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ index ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ len ]
-                          |)
-                        ]
-                    |))
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "usize" ]
+                                |),
+                                [ index ]
+                              |));
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "usize" ]
+                                |),
+                                [ len ]
+                              |))
+                          ]
+                      |)
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -180,7 +194,7 @@ Module slice.
         panic!("slice start index is out of range for slice");
     }
     *)
-    Definition slice_start_index_len_fail_ct (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_start_index_len_fail_ct (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ β0; β1 ] =>
         ltac:(M.monadic
@@ -207,16 +221,22 @@ Module slice.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "slice start index is out of range for slice"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "slice start index is out of range for slice"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -236,7 +256,7 @@ Module slice.
         }
     }
     *)
-    Definition slice_end_index_len_fail (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_end_index_len_fail (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ index; len ] =>
         ltac:(M.monadic
@@ -253,7 +273,9 @@ Module slice.
               ]
             |),
             [
-              Value.Tuple [ M.read (| index |); M.read (| len |) ];
+              M.of_value (|
+                Value.Tuple [ A.to_value (M.read (| index |)); A.to_value (M.read (| len |)) ]
+              |);
               M.get_function (| "core::slice::index::slice_end_index_len_fail_ct", [] |);
               M.get_function (| "core::slice::index::slice_end_index_len_fail_rt", [] |)
             ]
@@ -266,7 +288,7 @@ Module slice.
         panic!("range end index {index} out of range for slice of length {len}");
     }
     *)
-    Definition slice_end_index_len_fail_rt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_end_index_len_fail_rt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ index; len ] =>
         ltac:(M.monadic
@@ -279,37 +301,49 @@ Module slice.
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (| Value.String "range end index " |);
-                          M.read (| Value.String " out of range for slice of length " |)
-                        ]
-                    |));
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.read (| M.of_value (| Value.String "range end index " |) |));
+                            A.to_value
+                              (M.read (|
+                                M.of_value (| Value.String " out of range for slice of length " |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ index ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ len ]
-                          |)
-                        ]
-                    |))
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "usize" ]
+                                |),
+                                [ index ]
+                              |));
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "usize" ]
+                                |),
+                                [ len ]
+                              |))
+                          ]
+                      |)
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -322,7 +356,7 @@ Module slice.
         panic!("slice end index is out of range for slice");
     }
     *)
-    Definition slice_end_index_len_fail_ct (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_end_index_len_fail_ct (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ β0; β1 ] =>
         ltac:(M.monadic
@@ -349,15 +383,22 @@ Module slice.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "slice end index is out of range for slice"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "slice end index is out of range for slice"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -375,7 +416,7 @@ Module slice.
         unsafe { const_eval_select((index, end), slice_index_order_fail_ct, slice_index_order_fail_rt) }
     }
     *)
-    Definition slice_index_order_fail (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_index_order_fail (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ index; end_ ] =>
         ltac:(M.monadic
@@ -392,7 +433,9 @@ Module slice.
               ]
             |),
             [
-              Value.Tuple [ M.read (| index |); M.read (| end_ |) ];
+              M.of_value (|
+                Value.Tuple [ A.to_value (M.read (| index |)); A.to_value (M.read (| end_ |)) ]
+              |);
               M.get_function (| "core::slice::index::slice_index_order_fail_ct", [] |);
               M.get_function (| "core::slice::index::slice_index_order_fail_rt", [] |)
             ]
@@ -405,7 +448,7 @@ Module slice.
         panic!("slice index starts at {index} but ends at {end}");
     }
     *)
-    Definition slice_index_order_fail_rt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_index_order_fail_rt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ index; end_ ] =>
         ltac:(M.monadic
@@ -418,37 +461,46 @@ Module slice.
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (| Value.String "slice index starts at " |);
-                          M.read (| Value.String " but ends at " |)
-                        ]
-                    |));
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.read (| M.of_value (| Value.String "slice index starts at " |) |));
+                            A.to_value (M.read (| M.of_value (| Value.String " but ends at " |) |))
+                          ]
+                      |)
+                    |)
+                  |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ index ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ end_ ]
-                          |)
-                        ]
-                    |))
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "usize" ]
+                                |),
+                                [ index ]
+                              |));
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "usize" ]
+                                |),
+                                [ end_ ]
+                              |))
+                          ]
+                      |)
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -461,7 +513,7 @@ Module slice.
         panic!("slice index start is larger than end");
     }
     *)
-    Definition slice_index_order_fail_ct (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_index_order_fail_ct (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ β0; β1 ] =>
         ltac:(M.monadic
@@ -488,15 +540,22 @@ Module slice.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "slice index start is larger than end"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "slice index start is larger than end"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -513,7 +572,7 @@ Module slice.
         panic!("attempted to index slice from after maximum usize");
     }
     *)
-    Definition slice_start_index_overflow_fail (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_start_index_overflow_fail (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -524,15 +583,21 @@ Module slice.
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                 [
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String "attempted to index slice from after maximum usize"
-                          |)
-                        ]
-                    |))
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.read (|
+                                M.of_value (|
+                                  Value.String "attempted to index slice from after maximum usize"
+                                |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -545,7 +610,7 @@ Module slice.
         panic!("attempted to index slice up to maximum usize");
     }
     *)
-    Definition slice_end_index_overflow_fail (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition slice_end_index_overflow_fail (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -556,11 +621,21 @@ Module slice.
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                 [
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [ M.read (| Value.String "attempted to index slice up to maximum usize" |) ]
-                    |))
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (M.read (|
+                                M.of_value (|
+                                  Value.String "attempted to index slice up to maximum usize"
+                                |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -696,7 +771,7 @@ Module slice.
               if self < slice.len() { unsafe { Some(&*self.get_unchecked(slice)) } } else { None }
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -705,44 +780,50 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| self |))
-                              (M.call_closure (|
+                            BinOp.Pure.lt (|
+                              M.read (| self |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.path "usize",
-                                [ Ty.apply (Ty.path "slice") [ T ] ],
-                                "get_unchecked",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::slice::index::SliceIndex",
+                                    Ty.path "usize",
+                                    [ Ty.apply (Ty.path "slice") [ T ] ],
+                                    "get_unchecked",
+                                    []
+                                  |),
+                                  [ M.read (| self |); M.read (| slice |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -755,7 +836,7 @@ Module slice.
               if self < slice.len() { unsafe { Some(&mut *self.get_unchecked_mut(slice)) } } else { None }
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -764,44 +845,50 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| self |))
-                              (M.call_closure (|
+                            BinOp.Pure.lt (|
+                              M.read (| self |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.path "usize",
-                                [ Ty.apply (Ty.path "slice") [ T ] ],
-                                "get_unchecked_mut",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::slice::index::SliceIndex",
+                                    Ty.path "usize",
+                                    [ Ty.apply (Ty.path "slice") [ T ] ],
+                                    "get_unchecked_mut",
+                                    []
+                                  |),
+                                  [ M.read (| self |); M.read (| slice |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -824,7 +911,7 @@ Module slice.
               }
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -834,25 +921,25 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.lt
-                                          (M.read (| self |))
-                                          (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        BinOp.Pure.lt (|
+                                          M.read (| self |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*const")
@@ -861,7 +948,9 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| slice |) ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -884,27 +973,34 @@ Module slice.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked requires that the index is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (|
+                                                            Value.String
+                                                              "slice::get_unchecked requires that the index is within the slice"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |);
-                                        Value.Bool false
+                                        M.of_value (| Value.Bool false |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -912,16 +1008,17 @@ Module slice.
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assume", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| self |))
-                        (M.call_closure (|
+                      BinOp.Pure.lt (|
+                        M.read (| self |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "slice") [ T ] ],
                             "len",
                             []
                           |),
                           [ M.read (| slice |) ]
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -955,7 +1052,7 @@ Module slice.
               unsafe { slice.as_mut_ptr().add(self) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -965,25 +1062,25 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.lt
-                                          (M.read (| self |))
-                                          (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        BinOp.Pure.lt (|
+                                          M.read (| self |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*mut")
@@ -992,7 +1089,9 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| slice |) ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1015,27 +1114,34 @@ Module slice.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked_mut requires that the index is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (|
+                                                            Value.String
+                                                              "slice::get_unchecked_mut requires that the index is within the slice"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |);
-                                        Value.Bool false
+                                        M.of_value (| Value.Bool false |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -1064,7 +1170,7 @@ Module slice.
               &( *slice)[self]
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1081,7 +1187,7 @@ Module slice.
               &mut ( *slice)[self]
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1126,7 +1232,7 @@ Module slice.
               }
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1135,51 +1241,57 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.Pure.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.path "core::ops::index_range::IndexRange",
-                                [ Ty.apply (Ty.path "slice") [ T ] ],
-                                "get_unchecked",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::slice::index::SliceIndex",
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    [ Ty.apply (Ty.path "slice") [ T ] ],
+                                    "get_unchecked",
+                                    []
+                                  |),
+                                  [ M.read (| self |); M.read (| slice |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -1196,7 +1308,7 @@ Module slice.
               }
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1205,51 +1317,57 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.Pure.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.path "core::ops::index_range::IndexRange",
-                                [ Ty.apply (Ty.path "slice") [ T ] ],
-                                "get_unchecked_mut",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::slice::index::SliceIndex",
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    [ Ty.apply (Ty.path "slice") [ T ] ],
+                                    "get_unchecked_mut",
+                                    []
+                                  |),
+                                  [ M.read (| self |); M.read (| slice |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -1269,7 +1387,7 @@ Module slice.
               unsafe { ptr::slice_from_raw_parts(slice.as_ptr().add(self.start()), self.len()) }
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1279,32 +1397,32 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.le
-                                          (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        BinOp.Pure.le (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::ops::index_range::IndexRange",
                                               "end",
                                               []
                                             |),
                                             [ self ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*const")
@@ -1313,7 +1431,9 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| slice |) ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1336,27 +1456,34 @@ Module slice.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked requires that the index is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (|
+                                                            Value.String
+                                                              "slice::get_unchecked requires that the index is within the slice"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |);
-                                        Value.Bool false
+                                        M.of_value (| Value.Bool false |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -1409,7 +1536,7 @@ Module slice.
               unsafe { ptr::slice_from_raw_parts_mut(slice.as_mut_ptr().add(self.start()), self.len()) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1419,32 +1546,32 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.le
-                                          (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        BinOp.Pure.le (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::ops::index_range::IndexRange",
                                               "end",
                                               []
                                             |),
                                             [ self ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*mut")
@@ -1453,7 +1580,9 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| slice |) ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1476,27 +1605,34 @@ Module slice.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked_mut requires that the index is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (|
+                                                            Value.String
+                                                              "slice::get_unchecked_mut requires that the index is within the slice"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |);
-                                        Value.Bool false
+                                        M.of_value (| Value.Bool false |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -1549,7 +1685,7 @@ Module slice.
               }
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1558,30 +1694,31 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.Pure.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1639,7 +1776,7 @@ Module slice.
               }
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1648,30 +1785,31 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.Pure.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1754,7 +1892,7 @@ Module slice.
               }
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1763,7 +1901,7 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1771,59 +1909,68 @@ Module slice.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.Pure.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "end"
                                   |)
-                                |)),
+                                |)
+                              |),
                               ltac:(M.monadic
-                                (BinOp.Pure.gt
-                                  (M.read (|
+                                (BinOp.Pure.gt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "end"
                                     |)
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| slice |) ]
-                                  |))))
+                                  |)
+                                |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
-                                [ Ty.apply (Ty.path "slice") [ T ] ],
-                                "get_unchecked",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::slice::index::SliceIndex",
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      [ Ty.path "usize" ],
+                                    [ Ty.apply (Ty.path "slice") [ T ] ],
+                                    "get_unchecked",
+                                    []
+                                  |),
+                                  [ M.read (| self |); M.read (| slice |) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1841,7 +1988,7 @@ Module slice.
               }
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1850,7 +1997,7 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1858,59 +2005,68 @@ Module slice.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.Pure.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "end"
                                   |)
-                                |)),
+                                |)
+                              |),
                               ltac:(M.monadic
-                                (BinOp.Pure.gt
-                                  (M.read (|
+                                (BinOp.Pure.gt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "end"
                                     |)
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| slice |) ]
-                                  |))))
+                                  |)
+                                |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
-                                [ Ty.apply (Ty.path "slice") [ T ] ],
-                                "get_unchecked_mut",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::slice::index::SliceIndex",
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      [ Ty.path "usize" ],
+                                    [ Ty.apply (Ty.path "slice") [ T ] ],
+                                    "get_unchecked_mut",
+                                    []
+                                  |),
+                                  [ M.read (| self |); M.read (| slice |) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1934,7 +2090,7 @@ Module slice.
               }
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -1944,48 +2100,49 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
+                                      UnOp.Pure.not (|
+                                        LogicalOp.and (|
+                                          BinOp.Pure.ge (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "end"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "start"
                                               |)
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
+                                            (BinOp.Pure.le (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   self,
                                                   "core::ops::range::Range",
                                                   "end"
                                                 |)
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "*const")
@@ -1994,8 +2151,10 @@ Module slice.
                                                   []
                                                 |),
                                                 [ M.read (| slice |) ]
-                                              |))))
-                                        |))
+                                              |)
+                                            |)))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2018,27 +2177,34 @@ Module slice.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked requires that the range is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (|
+                                                            Value.String
+                                                              "slice::get_unchecked requires that the range is within the slice"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |);
-                                        Value.Bool false
+                                        M.of_value (| Value.Bool false |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let new_len :=
@@ -2108,7 +2274,7 @@ Module slice.
               }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2118,48 +2284,49 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
+                                      UnOp.Pure.not (|
+                                        LogicalOp.and (|
+                                          BinOp.Pure.ge (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "end"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "start"
                                               |)
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
+                                            (BinOp.Pure.le (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   self,
                                                   "core::ops::range::Range",
                                                   "end"
                                                 |)
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "*mut")
@@ -2168,8 +2335,10 @@ Module slice.
                                                   []
                                                 |),
                                                 [ M.read (| slice |) ]
-                                              |))))
-                                        |))
+                                              |)
+                                            |)))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2192,27 +2361,34 @@ Module slice.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked_mut requires that the range is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (|
+                                                            Value.String
+                                                              "slice::get_unchecked_mut requires that the range is within the slice"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |);
-                                        Value.Bool false
+                                        M.of_value (| Value.Bool false |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let new_len :=
@@ -2280,7 +2456,7 @@ Module slice.
               unsafe { &*self.get_unchecked(slice) }
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2290,28 +2466,29 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.Pure.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "end"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2341,29 +2518,30 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.gt
-                                        (M.read (|
+                                      BinOp.Pure.gt (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             self,
                                             "core::ops::range::Range",
                                             "end"
                                           |)
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ T ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| slice |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2397,7 +2575,8 @@ Module slice.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)))
                   ]
@@ -2429,7 +2608,7 @@ Module slice.
               unsafe { &mut *self.get_unchecked_mut(slice) }
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2439,28 +2618,29 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.Pure.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "end"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2490,29 +2670,30 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.gt
-                                        (M.read (|
+                                      BinOp.Pure.gt (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             self,
                                             "core::ops::range::Range",
                                             "end"
                                           |)
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ T ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| slice |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2546,7 +2727,8 @@ Module slice.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |)))
                   ]
@@ -2597,7 +2779,7 @@ Module slice.
               (0..self.end).get(slice)
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2613,19 +2795,22 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start", Value.Integer 0);
-                    ("end_",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeTo",
-                          "end"
-                        |)
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                      ("end_",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeTo",
+                              "end"
+                            |)
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -2637,7 +2822,7 @@ Module slice.
               (0..self.end).get_mut(slice)
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2653,19 +2838,22 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start", Value.Integer 0);
-                    ("end_",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeTo",
-                          "end"
-                        |)
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                      ("end_",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeTo",
+                              "end"
+                            |)
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -2678,7 +2866,7 @@ Module slice.
               unsafe { (0..self.end).get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2694,19 +2882,22 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start", Value.Integer 0);
-                    ("end_",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeTo",
-                          "end"
-                        |)
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                      ("end_",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeTo",
+                              "end"
+                            |)
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -2719,7 +2910,7 @@ Module slice.
               unsafe { (0..self.end).get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2735,19 +2926,22 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start", Value.Integer 0);
-                    ("end_",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeTo",
-                          "end"
-                        |)
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                      ("end_",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeTo",
+                              "end"
+                            |)
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -2759,7 +2953,7 @@ Module slice.
               (0..self.end).index(slice)
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2775,19 +2969,22 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start", Value.Integer 0);
-                    ("end_",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeTo",
-                          "end"
-                        |)
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                      ("end_",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeTo",
+                              "end"
+                            |)
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -2799,7 +2996,7 @@ Module slice.
               (0..self.end).index_mut(slice)
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2815,19 +3012,22 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start", Value.Integer 0);
-                    ("end_",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeTo",
-                          "end"
-                        |)
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                      ("end_",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeTo",
+                              "end"
+                            |)
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -2864,7 +3064,7 @@ Module slice.
               (self.start..slice.len()).get(slice)
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2880,23 +3080,31 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeFrom",
-                          "start"
-                        |)
-                      |));
-                    ("end_",
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
-                        [ M.read (| slice |) ]
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeFrom",
+                              "start"
+                            |)
+                          |)));
+                      ("end_",
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [ T ],
+                              "len",
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -2908,7 +3116,7 @@ Module slice.
               (self.start..slice.len()).get_mut(slice)
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2924,23 +3132,31 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeFrom",
-                          "start"
-                        |)
-                      |));
-                    ("end_",
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
-                        [ M.read (| slice |) ]
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeFrom",
+                              "start"
+                            |)
+                          |)));
+                      ("end_",
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [ T ],
+                              "len",
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -2953,7 +3169,7 @@ Module slice.
               unsafe { (self.start..slice.len()).get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -2969,27 +3185,31 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeFrom",
-                          "start"
-                        |)
-                      |));
-                    ("end_",
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "slice") [ T ] ],
-                          "len",
-                          []
-                        |),
-                        [ M.read (| slice |) ]
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeFrom",
+                              "start"
+                            |)
+                          |)));
+                      ("end_",
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "slice") [ T ] ],
+                              "len",
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -3002,7 +3222,7 @@ Module slice.
               unsafe { (self.start..slice.len()).get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3018,27 +3238,31 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
-                  "core::ops::range::Range"
-                  [
-                    ("start",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ops::range::RangeFrom",
-                          "start"
-                        |)
-                      |));
-                    ("end_",
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
-                          "len",
-                          []
-                        |),
-                        [ M.read (| slice |) ]
-                      |))
-                  ];
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start",
+                        A.to_value
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::RangeFrom",
+                              "start"
+                            |)
+                          |)));
+                      ("end_",
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
+                              "len",
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |)))
+                    ]
+                |);
                 M.read (| slice |)
               ]
             |)))
@@ -3054,7 +3278,7 @@ Module slice.
               unsafe { &*self.get_unchecked(slice) }
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3064,29 +3288,30 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.Pure.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::RangeFrom",
                                     "start"
                                   |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| slice |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3117,7 +3342,7 @@ Module slice.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -3145,7 +3370,7 @@ Module slice.
               unsafe { &mut *self.get_unchecked_mut(slice) }
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3155,29 +3380,30 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.Pure.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::RangeFrom",
                                     "start"
                                   |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| slice |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3208,7 +3434,7 @@ Module slice.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -3256,14 +3482,16 @@ Module slice.
               Some(slice)
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
-            Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
+            M.of_value (|
+              Value.StructTuple "core::option::Option::Some" [ A.to_value (M.read (| slice |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3272,14 +3500,16 @@ Module slice.
               Some(slice)
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
-            Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
+            M.of_value (|
+              Value.StructTuple "core::option::Option::Some" [ A.to_value (M.read (| slice |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3288,7 +3518,7 @@ Module slice.
               slice
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3304,7 +3534,7 @@ Module slice.
               slice
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3320,7 +3550,7 @@ Module slice.
               slice
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3336,7 +3566,7 @@ Module slice.
               slice
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3377,7 +3607,7 @@ Module slice.
               if *self.end() == usize::MAX { None } else { self.into_slice_range().get(slice) }
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3386,15 +3616,15 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.Pure.eq (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -3405,11 +3635,14 @@ Module slice.
                                   |),
                                   [ self ]
                                 |)
-                              |))
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -3447,7 +3680,7 @@ Module slice.
               if *self.end() == usize::MAX { None } else { self.into_slice_range().get_mut(slice) }
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3456,15 +3689,15 @@ Module slice.
             let slice := M.alloc (| slice |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.Pure.eq (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -3475,11 +3708,14 @@ Module slice.
                                   |),
                                   [ self ]
                                 |)
-                              |))
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -3518,7 +3754,7 @@ Module slice.
               unsafe { self.into_slice_range().get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3554,7 +3790,7 @@ Module slice.
               unsafe { self.into_slice_range().get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3592,7 +3828,7 @@ Module slice.
               self.into_slice_range().index(slice)
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3602,15 +3838,15 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.Pure.eq (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -3621,8 +3857,9 @@ Module slice.
                                     |),
                                     [ self ]
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3637,7 +3874,7 @@ Module slice.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -3674,7 +3911,7 @@ Module slice.
               self.into_slice_range().index_mut(slice)
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3684,15 +3921,15 @@ Module slice.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.Pure.eq (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -3703,8 +3940,9 @@ Module slice.
                                     |),
                                     [ self ]
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3719,7 +3957,7 @@ Module slice.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -3778,7 +4016,7 @@ Module slice.
               (0..=self.end).get(slice)
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3801,7 +4039,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    M.of_value (| Value.Integer 0 |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3822,7 +4060,7 @@ Module slice.
               (0..=self.end).get_mut(slice)
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3845,7 +4083,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    M.of_value (| Value.Integer 0 |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3867,7 +4105,7 @@ Module slice.
               unsafe { (0..=self.end).get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3890,7 +4128,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    M.of_value (| Value.Integer 0 |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3912,7 +4150,7 @@ Module slice.
               unsafe { (0..=self.end).get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3935,7 +4173,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    M.of_value (| Value.Integer 0 |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3956,7 +4194,7 @@ Module slice.
               (0..=self.end).index(slice)
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -3979,7 +4217,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    M.of_value (| Value.Integer 0 |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4000,7 +4238,7 @@ Module slice.
               (0..=self.end).index_mut(slice)
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -4023,7 +4261,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    M.of_value (| Value.Integer 0 |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4092,7 +4330,7 @@ Module slice.
         ops::Range { start, end }
     }
     *)
-    Definition range (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition range (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ R ], [ range; bounds ] =>
         ltac:(M.monadic
@@ -4155,10 +4393,11 @@ Module slice.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
-                                [ M.read (| M.read (| start |) |); Value.Integer 1 ]
+                                [ M.read (| M.read (| start |) |); M.of_value (| Value.Integer 1 |)
+                                ]
                               |);
-                              M.closure
-                                (fun γ =>
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
@@ -4179,11 +4418,12 @@ Module slice.
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                   ]
                 |)
               |) in
@@ -4224,10 +4464,10 @@ Module slice.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
-                                [ M.read (| M.read (| end_ |) |); Value.Integer 1 ]
+                                [ M.read (| M.read (| end_ |) |); M.of_value (| Value.Integer 1 |) ]
                               |);
-                              M.closure
-                                (fun γ =>
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
@@ -4248,7 +4488,8 @@ Module slice.
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |)
                         |)));
@@ -4269,13 +4510,15 @@ Module slice.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| start |)) (M.read (| end_ |)) |)) in
+                          (M.alloc (|
+                            BinOp.Pure.gt (| M.read (| start |), M.read (| end_ |) |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -4285,18 +4528,18 @@ Module slice.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| end_ |)) (M.read (| len |)) |)) in
+                          (M.alloc (| BinOp.Pure.gt (| M.read (| end_ |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -4306,13 +4549,18 @@ Module slice.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::ops::range::Range"
-                [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::ops::range::Range"
+                  [
+                    ("start", A.to_value (M.read (| start |)));
+                    ("end_", A.to_value (M.read (| end_ |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -4337,7 +4585,7 @@ Module slice.
         start..end
     }
     *)
-    Definition into_range_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_range_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len; β1 ] =>
         ltac:(M.monadic
@@ -4381,10 +4629,11 @@ Module slice.
                                   BinOp.Panic.add (|
                                     Integer.Usize,
                                     M.read (| i |),
-                                    Value.Integer 1
+                                    M.of_value (| Value.Integer 1 |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                           ]
                         |)
                       |) in
@@ -4406,7 +4655,7 @@ Module slice.
                                   BinOp.Panic.add (|
                                     Integer.Usize,
                                     M.read (| i |),
-                                    Value.Integer 1
+                                    M.of_value (| Value.Integer 1 |)
                                   |)
                                 |)));
                             fun γ =>
@@ -4424,9 +4673,14 @@ Module slice.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructRecord
-                        "core::ops::range::Range"
-                        [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "core::ops::range::Range"
+                          [
+                            ("start", A.to_value (M.read (| start |)));
+                            ("end_", A.to_value (M.read (| end_ |)))
+                          ]
+                      |)
                     |)
                   |)))
             ]
@@ -4458,7 +4712,7 @@ Module slice.
         Some(start..end)
     }
     *)
-    Definition into_range (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_range (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len; β1 ] =>
         ltac:(M.monadic
@@ -4519,7 +4773,8 @@ Module slice.
                                                 "checked_add",
                                                 []
                                               |),
-                                              [ M.read (| start |); Value.Integer 1 ]
+                                              [ M.read (| start |); M.of_value (| Value.Integer 1 |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -4574,7 +4829,8 @@ Module slice.
                                             val))
                                       ]
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                               ]
                             |)
                           |) in
@@ -4611,7 +4867,8 @@ Module slice.
                                                 "checked_add",
                                                 []
                                               |),
-                                              [ M.read (| end_ |); Value.Integer 1 ]
+                                              [ M.read (| end_ |); M.of_value (| Value.Integer 1 |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -4681,13 +4938,21 @@ Module slice.
                             |)
                           |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              Value.StructRecord
-                                "core::ops::range::Range"
-                                [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [
+                                        ("start", A.to_value (M.read (| start |)));
+                                        ("end_", A.to_value (M.read (| end_ |)))
+                                      ]
+                                  |))
+                              ]
+                          |)
                         |)
                       |)))
                   |)))
@@ -4724,7 +4989,7 @@ Module slice.
         start..end
     }
     *)
-    Definition into_slice_range (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_slice_range (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ len; β1 ] =>
         ltac:(M.monadic
@@ -4778,10 +5043,10 @@ Module slice.
                                           "checked_add",
                                           []
                                         |),
-                                        [ M.read (| start |); Value.Integer 1 ]
+                                        [ M.read (| start |); M.of_value (| Value.Integer 1 |) ]
                                       |);
-                                      M.closure
-                                        (fun γ =>
+                                      M.closure (|
+                                        fun γ =>
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
@@ -4802,11 +5067,13 @@ Module slice.
                                                 ]
                                               |)
                                             | _ => M.impossible (||)
-                                            end))
+                                            end)
+                                      |)
                                     ]
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                           ]
                         |)
                       |) in
@@ -4838,10 +5105,10 @@ Module slice.
                                           "checked_add",
                                           []
                                         |),
-                                        [ M.read (| end_ |); Value.Integer 1 ]
+                                        [ M.read (| end_ |); M.of_value (| Value.Integer 1 |) ]
                                       |);
-                                      M.closure
-                                        (fun γ =>
+                                      M.closure (|
+                                        fun γ =>
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
@@ -4862,7 +5129,8 @@ Module slice.
                                                 ]
                                               |)
                                             | _ => M.impossible (||)
-                                            end))
+                                            end)
+                                      |)
                                     ]
                                   |)
                                 |)));
@@ -4881,9 +5149,14 @@ Module slice.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructRecord
-                        "core::ops::range::Range"
-                        [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "core::ops::range::Range"
+                          [
+                            ("start", A.to_value (M.read (| start |)));
+                            ("end_", A.to_value (M.read (| end_ |)))
+                          ]
+                      |)
                     |)
                   |)))
             ]
@@ -4907,7 +5180,7 @@ Module slice.
               into_range(slice.len(), self)?.get(slice)
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -5020,7 +5293,7 @@ Module slice.
               into_range(slice.len(), self)?.get_mut(slice)
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -5134,7 +5407,7 @@ Module slice.
               unsafe { into_range_unchecked(slice.len(), self).get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -5176,7 +5449,7 @@ Module slice.
               unsafe { into_range_unchecked(slice.len(), self).get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -5217,7 +5490,7 @@ Module slice.
               into_slice_range(slice.len(), self).index(slice)
           }
       *)
-      Definition index (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>
@@ -5254,7 +5527,7 @@ Module slice.
               into_slice_range(slice.len(), self).index_mut(slice)
           }
       *)
-      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; slice ] =>

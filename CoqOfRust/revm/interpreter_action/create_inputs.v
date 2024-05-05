@@ -22,94 +22,107 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
-              [
-                ("caller",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "caller"
-                      |)
-                    ]
-                  |));
-                ("scheme",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "revm_primitives::env::CreateScheme",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "scheme"
-                      |)
-                    ]
-                  |));
-                ("value",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "ruint::Uint",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "value"
-                      |)
-                    ]
-                  |));
-                ("init_code",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "alloy_primitives::bytes_::Bytes",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "init_code"
-                      |)
-                    ]
-                  |));
-                ("gas_limit",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                        "gas_limit"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
+                [
+                  ("caller",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bits::address::Address",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "caller"
+                          |)
+                        ]
+                      |)));
+                  ("scheme",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "revm_primitives::env::CreateScheme",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "scheme"
+                          |)
+                        ]
+                      |)));
+                  ("value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "ruint::Uint",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "value"
+                          |)
+                        ]
+                      |)));
+                  ("init_code",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bytes_::Bytes",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "init_code"
+                          |)
+                        ]
+                      |)));
+                  ("gas_limit",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "u64",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "gas_limit"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -126,7 +139,7 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -140,49 +153,54 @@ Module interpreter_action.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "CreateInputs" |);
-                M.read (| Value.String "caller" |);
+                M.read (| M.of_value (| Value.String "CreateInputs" |) |);
+                M.read (| M.of_value (| Value.String "caller" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                     "caller"
-                  |));
-                M.read (| Value.String "scheme" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "scheme" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                     "scheme"
-                  |));
-                M.read (| Value.String "value" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "value" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                     "value"
-                  |));
-                M.read (| Value.String "init_code" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "init_code" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                     "init_code"
-                  |));
-                M.read (| Value.String "gas_limit" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "gas_limit" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                       "gas_limit"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -213,7 +231,7 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -314,21 +332,22 @@ Module interpreter_action.
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                       "gas_limit"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                       "gas_limit"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -358,37 +377,40 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Value.DeclaredButUndefined,
+                                M.of_value (| Value.DeclaredButUndefined |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Value.DeclaredButUndefined,
+                                        M.of_value (| Value.DeclaredButUndefined |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Value.DeclaredButUndefined,
+                                                M.of_value (| Value.DeclaredButUndefined |),
                                                 [
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -417,7 +439,7 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -548,7 +570,7 @@ Module interpreter_action.
               })
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ tx_env; gas_limit ] =>
           ltac:(M.monadic
@@ -565,52 +587,63 @@ Module interpreter_action.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            Value.StructRecord
-                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
-                              [
-                                ("caller",
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| tx_env |),
-                                      "revm_primitives::env::TxEnv",
-                                      "caller"
-                                    |)
-                                  |));
-                                ("scheme",
-                                  Value.StructTuple
-                                    "revm_primitives::env::CreateScheme::Create"
-                                    []);
-                                ("value",
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| tx_env |),
-                                      "revm_primitives::env::TxEnv",
-                                      "value"
-                                    |)
-                                  |));
-                                ("init_code",
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "alloy_primitives::bytes_::Bytes",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructRecord
+                                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| tx_env |),
-                                        "revm_primitives::env::TxEnv",
-                                        "data"
-                                      |)
+                                      ("caller",
+                                        A.to_value
+                                          (M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| tx_env |),
+                                              "revm_primitives::env::TxEnv",
+                                              "caller"
+                                            |)
+                                          |)));
+                                      ("scheme",
+                                        A.to_value
+                                          (M.of_value (|
+                                            Value.StructTuple
+                                              "revm_primitives::env::CreateScheme::Create"
+                                              []
+                                          |)));
+                                      ("value",
+                                        A.to_value
+                                          (M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| tx_env |),
+                                              "revm_primitives::env::TxEnv",
+                                              "value"
+                                            |)
+                                          |)));
+                                      ("init_code",
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::clone::Clone",
+                                              Ty.path "alloy_primitives::bytes_::Bytes",
+                                              [],
+                                              "clone",
+                                              []
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| tx_env |),
+                                                "revm_primitives::env::TxEnv",
+                                                "data"
+                                              |)
+                                            ]
+                                          |)));
+                                      ("gas_limit", A.to_value (M.read (| gas_limit |)))
                                     ]
-                                  |));
-                                ("gas_limit", M.read (| gas_limit |))
-                              ]
-                          ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -625,7 +658,7 @@ Module interpreter_action.
               Self::new(tx_env, gas_limit).map(Box::new)
           }
       *)
-      Definition new_boxed (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_boxed (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ tx_env; gas_limit ] =>
           ltac:(M.monadic
@@ -690,7 +723,7 @@ Module interpreter_action.
               }
           }
       *)
-      Definition created_address (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition created_address (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; nonce ] =>
           ltac:(M.monadic

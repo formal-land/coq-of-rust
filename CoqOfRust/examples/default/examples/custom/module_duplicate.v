@@ -8,7 +8,7 @@ Module foo.
                 println!("foo::gre::bar");
             }
     *)
-    Definition f_foo_gre (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition f_foo_gre (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -27,18 +27,25 @@ Module foo.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "foo::gre::bar
-" |) ]
-                            |))
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (| M.of_value (| Value.String "foo::gre::bar
+" |) |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -50,7 +57,7 @@ Module foo.
           gre::f_foo_gre();
       }
   *)
-  Definition f_foo (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition f_foo (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -69,15 +76,24 @@ Module foo.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| Value.String "foo::bar
-" |) ] |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (| M.of_value (| Value.String "foo::bar
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -85,7 +101,7 @@ Module foo.
                 []
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -96,7 +112,7 @@ fn f() {
     foo::f_foo();
 }
 *)
-Definition f (τ : list Ty.t) (α : list Value.t) : M :=
+Definition f (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -105,7 +121,7 @@ Definition f (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (| M.get_function (| "module_duplicate::foo::f_foo", [] |), [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

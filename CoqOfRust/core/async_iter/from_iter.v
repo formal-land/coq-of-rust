@@ -15,27 +15,30 @@ Module async_iter.
         Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [ I ].
       
       (* Clone *)
-      Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::async_iter::from_iter::FromIter"
-              [
-                ("iter",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::async_iter::from_iter::FromIter",
-                        "iter"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::async_iter::from_iter::FromIter"
+                [
+                  ("iter",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::async_iter::from_iter::FromIter",
+                            "iter"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -53,7 +56,7 @@ Module async_iter.
         Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [ I ].
       
       (* Debug *)
-      Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I in
         match τ, α with
         | [], [ self; f ] =>
@@ -68,17 +71,18 @@ Module async_iter.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "FromIter" |);
-                M.read (| Value.String "iter" |);
+                M.read (| M.of_value (| Value.String "FromIter" |) |);
+                M.read (| M.of_value (| Value.String "iter" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::async_iter::from_iter::FromIter",
                       "iter"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -111,26 +115,29 @@ Module async_iter.
         FromIter { iter: iter.into_iter() }
     }
     *)
-    Definition from_iter (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
-          Value.StructRecord
-            "core::async_iter::from_iter::FromIter"
-            [
-              ("iter",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::iter::traits::collect::IntoIterator",
-                    I,
-                    [],
-                    "into_iter",
-                    []
-                  |),
-                  [ M.read (| iter |) ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::async_iter::from_iter::FromIter"
+              [
+                ("iter",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::IntoIterator",
+                        I,
+                        [],
+                        "into_iter",
+                        []
+                      |),
+                      [ M.read (| iter |) ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -146,48 +153,55 @@ Module async_iter.
               Poll::Ready(self.iter.next())
           }
       *)
-      Definition poll_next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll_next (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I in
         match τ, α with
         | [], [ self; _cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _cx := M.alloc (| _cx |) in
-            Value.StructTuple
-              "core::task::poll::Poll::Ready"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
-                    I,
-                    [],
-                    "next",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            [
-                              Ty.apply
-                                (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [ I ] ]
-                            ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [ self ]
+            M.of_value (|
+              Value.StructTuple
+                "core::task::poll::Poll::Ready"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        I,
+                        [],
+                        "next",
+                        []
                       |),
-                      "core::async_iter::from_iter::FromIter",
-                      "iter"
-                    |)
-                  ]
-                |)
-              ]))
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply
+                                (Ty.path "core::pin::Pin")
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::async_iter::from_iter::FromIter")
+                                        [ I ]
+                                    ]
+                                ],
+                              [],
+                              "deref_mut",
+                              []
+                            |),
+                            [ self ]
+                          |),
+                          "core::async_iter::from_iter::FromIter",
+                          "iter"
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -196,7 +210,7 @@ Module async_iter.
               self.iter.size_hint()
           }
       *)
-      Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I in
         match τ, α with
         | [], [ self ] =>

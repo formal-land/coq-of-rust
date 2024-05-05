@@ -13,6 +13,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* Trait *)
 (* Empty module 'CompSciStudent' *)
 
-Parameter comp_sci_student_greeting : (list Ty.t) -> (list Value.t) -> M.
+Parameter comp_sci_student_greeting : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

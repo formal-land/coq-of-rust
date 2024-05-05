@@ -13,7 +13,7 @@ Module str.
             Join::join(slice, "")
         }
     *)
-    Definition concat (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition concat (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self S in
       match τ, α with
       | [], [ slice ] =>
@@ -27,7 +27,7 @@ Module str.
               "join",
               []
             |),
-            [ M.read (| slice |); M.read (| Value.String "" |) ]
+            [ M.read (| slice |); M.read (| M.of_value (| Value.String "" |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -53,7 +53,7 @@ Module str.
             unsafe { String::from_utf8_unchecked(join_generic_copy(slice, sep.as_bytes())) }
         }
     *)
-    Definition join (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition join (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self S in
       match τ, α with
       | [], [ slice; sep ] =>
@@ -154,7 +154,7 @@ Module str.
       result
   }
   *)
-  Definition join_generic_copy (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition join_generic_copy (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ B; T; _ as S ], [ slice; sep ] =>
       ltac:(M.monadic
@@ -263,8 +263,8 @@ Module str.
                               |)
                             ]
                           |);
-                          M.closure
-                            (fun γ =>
+                          M.closure (|
+                            fun γ =>
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
@@ -328,8 +328,8 @@ Module str.
                                                       |),
                                                       [ M.read (| slice |) ]
                                                     |);
-                                                    M.closure
-                                                      (fun γ =>
+                                                    M.closure (|
+                                                      fun γ =>
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
@@ -378,7 +378,8 @@ Module str.
                                                               ]
                                                             |)
                                                           | _ => M.impossible (||)
-                                                          end))
+                                                          end)
+                                                    |)
                                                   ]
                                                 |)
                                               |);
@@ -393,11 +394,14 @@ Module str.
                                     ]
                                   |)
                                 | _ => M.impossible (||)
-                                end))
+                                end)
+                          |)
                         ]
                       |);
                       M.read (|
-                        Value.String "attempt to join into collection with len > usize::MAX"
+                        M.of_value (|
+                          Value.String "attempt to join into collection with len > usize::MAX"
+                        |)
                       |)
                     ]
                   |)
@@ -415,25 +419,25 @@ Module str.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.ge
-                                            (M.call_closure (|
+                                        UnOp.Pure.not (|
+                                          BinOp.Pure.ge (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -442,8 +446,10 @@ Module str.
                                                 []
                                               |),
                                               [ result ]
-                                            |))
-                                            (M.read (| reserved_len |)))
+                                            |),
+                                            M.read (| reserved_len |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -456,18 +462,21 @@ Module str.
                                         M.get_function (| "core::panicking::panic", [] |),
                                         [
                                           M.read (|
-                                            Value.String
-                                              "assertion failed: result.capacity() >= reserved_len"
+                                            M.of_value (|
+                                              Value.String
+                                                "assertion failed: result.capacity() >= reserved_len"
+                                            |)
                                           |)
                                         ]
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -531,16 +540,19 @@ Module str.
                           |),
                           [ result ]
                         |);
-                        Value.StructRecord
-                          "core::ops::range::RangeTo"
-                          [
-                            ("end_",
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| reserved_len |),
-                                M.read (| pos |)
-                              |))
-                          ]
+                        M.of_value (|
+                          Value.StructRecord
+                            "core::ops::range::RangeTo"
+                            [
+                              ("end_",
+                                A.to_value
+                                  (BinOp.Panic.sub (|
+                                    Integer.Usize,
+                                    M.read (| reserved_len |),
+                                    M.read (| pos |)
+                                  |)))
+                            ]
+                        |)
                       ]
                     |)
                   |) in
@@ -610,8 +622,8 @@ Module str.
                       |),
                       [
                         M.read (| iter |);
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
@@ -694,7 +706,8 @@ Module str.
                                   ]
                                 |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       ]
                     |)
                   |) in
@@ -1040,7 +1053,9 @@ Module str.
                                                                             M.read (| tail |)
                                                                           |) in
                                                                         M.alloc (|
-                                                                          Value.Tuple []
+                                                                          M.of_value (|
+                                                                            Value.Tuple []
+                                                                          |)
                                                                         |)))
                                                                   ]
                                                                 |)))
@@ -1048,7 +1063,7 @@ Module str.
                                                         |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           |)))
                                     ]
                                   |))));
@@ -1372,7 +1387,9 @@ Module str.
                                                                             M.read (| tail |)
                                                                           |) in
                                                                         M.alloc (|
-                                                                          Value.Tuple []
+                                                                          M.of_value (|
+                                                                            Value.Tuple []
+                                                                          |)
                                                                         |)))
                                                                   ]
                                                                 |)))
@@ -1380,7 +1397,7 @@ Module str.
                                                         |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           |)))
                                     ]
                                   |))));
@@ -1704,7 +1721,9 @@ Module str.
                                                                             M.read (| tail |)
                                                                           |) in
                                                                         M.alloc (|
-                                                                          Value.Tuple []
+                                                                          M.of_value (|
+                                                                            Value.Tuple []
+                                                                          |)
                                                                         |)))
                                                                   ]
                                                                 |)))
@@ -1712,7 +1731,7 @@ Module str.
                                                         |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           |)))
                                     ]
                                   |))));
@@ -2036,7 +2055,9 @@ Module str.
                                                                             M.read (| tail |)
                                                                           |) in
                                                                         M.alloc (|
-                                                                          Value.Tuple []
+                                                                          M.of_value (|
+                                                                            Value.Tuple []
+                                                                          |)
                                                                         |)))
                                                                   ]
                                                                 |)))
@@ -2044,7 +2065,7 @@ Module str.
                                                         |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           |)))
                                     ]
                                   |))));
@@ -2368,7 +2389,9 @@ Module str.
                                                                             M.read (| tail |)
                                                                           |) in
                                                                         M.alloc (|
-                                                                          Value.Tuple []
+                                                                          M.of_value (|
+                                                                            Value.Tuple []
+                                                                          |)
                                                                         |)))
                                                                   ]
                                                                 |)))
@@ -2376,7 +2399,7 @@ Module str.
                                                         |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           |)))
                                     ]
                                   |))));
@@ -2695,7 +2718,9 @@ Module str.
                                                                             M.read (| tail |)
                                                                           |) in
                                                                         M.alloc (|
-                                                                          Value.Tuple []
+                                                                          M.of_value (|
+                                                                            Value.Tuple []
+                                                                          |)
                                                                         |)))
                                                                   ]
                                                                 |)))
@@ -2703,7 +2728,7 @@ Module str.
                                                         |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           |)))
                                     ]
                                   |))))
@@ -2740,7 +2765,7 @@ Module str.
                       [ result; M.read (| result_len |) ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               result
             |)))
         |)))
@@ -2755,7 +2780,7 @@ Module str.
             &self[..]
         }
     *)
-    Definition borrow (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -2768,7 +2793,8 @@ Module str.
               "index",
               []
             |),
-            [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+            [ M.read (| self |); M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -2789,7 +2815,7 @@ Module str.
             &mut self[..]
         }
     *)
-    Definition borrow_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -2802,7 +2828,8 @@ Module str.
               "index_mut",
               []
             |),
-            [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+            [ M.read (| self |); M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -2826,7 +2853,7 @@ Module str.
             unsafe { String::from_utf8_unchecked(self.as_bytes().to_owned()) }
         }
     *)
-    Definition to_owned (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_owned (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -2865,7 +2892,7 @@ Module str.
             *target = unsafe { String::from_utf8_unchecked(b) }
         }
     *)
-    Definition clone_into (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_into (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; target ] =>
         ltac:(M.monadic
@@ -2939,7 +2966,7 @@ Module str.
             self.into()
         }
     *)
-    Definition into_boxed_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_boxed_bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -2979,7 +3006,7 @@ Module str.
             result
         }
     *)
-    Definition replace (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition replace (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; from; to ] =>
         ltac:(M.monadic
@@ -2994,7 +3021,7 @@ Module str.
                   []
                 |)
               |) in
-            let last_end := M.alloc (| Value.Integer 0 |) in
+            let last_end := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
             let _ :=
               M.use
                 (M.match_operator (|
@@ -3075,12 +3102,15 @@ Module str.
                                                 |),
                                                 [
                                                   M.read (| self |);
-                                                  Value.StructRecord
-                                                    "core::ops::range::Range"
-                                                    [
-                                                      ("start", M.read (| last_end |));
-                                                      ("end_", M.read (| start |))
-                                                    ]
+                                                  M.of_value (|
+                                                    Value.StructRecord
+                                                      "core::ops::range::Range"
+                                                      [
+                                                        ("start",
+                                                          A.to_value (M.read (| last_end |)));
+                                                        ("end_", A.to_value (M.read (| start |)))
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -3113,10 +3143,10 @@ Module str.
                                             |)
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |)) in
@@ -3134,16 +3164,19 @@ Module str.
                       |),
                       [
                         M.read (| self |);
-                        Value.StructRecord
-                          "core::ops::range::Range"
-                          [
-                            ("start", M.read (| last_end |));
-                            ("end_",
-                              M.call_closure (|
-                                M.get_associated_function (| Ty.path "str", "len", [] |),
-                                [ M.read (| self |) ]
-                              |))
-                          ]
+                        M.of_value (|
+                          Value.StructRecord
+                            "core::ops::range::Range"
+                            [
+                              ("start", A.to_value (M.read (| last_end |)));
+                              ("end_",
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (| Ty.path "str", "len", [] |),
+                                    [ M.read (| self |) ]
+                                  |)))
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -3170,7 +3203,7 @@ Module str.
             result
         }
     *)
-    Definition replacen (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition replacen (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ P ], [ self; pat; to; count ] =>
         ltac:(M.monadic
@@ -3187,10 +3220,10 @@ Module str.
                     "with_capacity",
                     []
                   |),
-                  [ Value.Integer 32 ]
+                  [ M.of_value (| Value.Integer 32 |) ]
                 |)
               |) in
-            let last_end := M.alloc (| Value.Integer 0 |) in
+            let last_end := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
             let _ :=
               M.use
                 (M.match_operator (|
@@ -3288,12 +3321,15 @@ Module str.
                                                 |),
                                                 [
                                                   M.read (| self |);
-                                                  Value.StructRecord
-                                                    "core::ops::range::Range"
-                                                    [
-                                                      ("start", M.read (| last_end |));
-                                                      ("end_", M.read (| start |))
-                                                    ]
+                                                  M.of_value (|
+                                                    Value.StructRecord
+                                                      "core::ops::range::Range"
+                                                      [
+                                                        ("start",
+                                                          A.to_value (M.read (| last_end |)));
+                                                        ("end_", A.to_value (M.read (| start |)))
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -3326,10 +3362,10 @@ Module str.
                                             |)
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |)) in
@@ -3347,16 +3383,19 @@ Module str.
                       |),
                       [
                         M.read (| self |);
-                        Value.StructRecord
-                          "core::ops::range::Range"
-                          [
-                            ("start", M.read (| last_end |));
-                            ("end_",
-                              M.call_closure (|
-                                M.get_associated_function (| Ty.path "str", "len", [] |),
-                                [ M.read (| self |) ]
-                              |))
-                          ]
+                        M.of_value (|
+                          Value.StructRecord
+                            "core::ops::range::Range"
+                            [
+                              ("start", A.to_value (M.read (| last_end |)));
+                              ("end_",
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (| Ty.path "str", "len", [] |),
+                                    [ M.read (| self |) ]
+                                  |)))
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -3423,7 +3462,7 @@ Module str.
             }
         }
     *)
-    Definition to_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_lowercase (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3442,8 +3481,9 @@ Module str.
                             [ M.read (| self |) ]
                           |);
                           (* ReifyFnPointer *)
-                          M.pointer_coercion
-                            (M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [] |))
+                          M.pointer_coercion (|
+                            M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [] |)
+                          |)
                         ]
                       |)
                     |) in
@@ -3457,21 +3497,24 @@ Module str.
                         |),
                         [
                           M.read (| self |);
-                          Value.StructRecord
-                            "core::ops::range::RangeFrom"
-                            [
-                              ("start",
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ out ]
-                                |))
-                            ]
+                          M.of_value (|
+                            Value.StructRecord
+                              "core::ops::range::RangeFrom"
+                              [
+                                ("start",
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                        "len",
+                                        []
+                                      |),
+                                      [ out ]
+                                    |)))
+                              ]
+                          |)
                         ]
                       |)
                     |) in
@@ -3512,7 +3555,9 @@ Module str.
                                     |),
                                     [
                                       M.read (| rest |);
-                                      Value.StructTuple "core::ops::range::RangeFull" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::ops::range::RangeFull" []
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -3561,16 +3606,17 @@ Module str.
                                             let i := M.copy (| γ1_0 |) in
                                             let c := M.copy (| γ1_1 |) in
                                             M.match_operator (|
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.Pure.eq
-                                                            (M.read (| c |))
-                                                            (Value.UnicodeChar 931)
+                                                          BinOp.Pure.eq (|
+                                                            M.read (| c |),
+                                                            M.of_value (| Value.UnicodeChar 931 |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -3679,7 +3725,9 @@ Module str.
                                                                   [ s; M.read (| b |) ]
                                                                 |)
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)));
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
@@ -3733,14 +3781,16 @@ Module str.
                                                                   [ s; M.read (| c |) ]
                                                                 |)
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)))
                                                       ]
                                                     |)))
                                               ]
                                             |)))
                                       ]
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               |)))
                         ]
                       |)) in
@@ -3781,7 +3831,7 @@ Module str.
             s
         }
     *)
-    Definition to_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_uppercase (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3797,8 +3847,9 @@ Module str.
                       [ M.read (| self |) ]
                     |);
                     (* ReifyFnPointer *)
-                    M.pointer_coercion
-                      (M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [] |))
+                    M.pointer_coercion (|
+                      M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [] |)
+                    |)
                   ]
                 |)
               |) in
@@ -3812,21 +3863,24 @@ Module str.
                   |),
                   [
                     M.read (| self |);
-                    Value.StructRecord
-                      "core::ops::range::RangeFrom"
-                      [
-                        ("start",
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                              "len",
-                              []
-                            |),
-                            [ out ]
-                          |))
-                      ]
+                    M.of_value (|
+                      Value.StructRecord
+                        "core::ops::range::RangeFrom"
+                        [
+                          ("start",
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                  "len",
+                                  []
+                                |),
+                                [ out ]
+                              |)))
+                        ]
+                    |)
                   ]
                 |)
               |) in
@@ -3964,7 +4018,7 @@ Module str.
                                                     [ s; M.read (| b |) ]
                                                   |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
@@ -4007,12 +4061,12 @@ Module str.
                                                     [ s; M.read (| c |) ]
                                                   |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                         ]
                                       |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |)) in
@@ -4029,7 +4083,7 @@ Module str.
             unsafe { String::from_utf8_unchecked(slice.into_vec()) }
         }
     *)
-    Definition into_string (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_string (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -4085,7 +4139,7 @@ Module str.
             unsafe { String::from_utf8_unchecked(self.as_bytes().repeat(n)) }
         }
     *)
-    Definition repeat (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition repeat (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; n ] =>
         ltac:(M.monadic
@@ -4126,7 +4180,7 @@ Module str.
             s
         }
     *)
-    Definition to_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_ascii_uppercase (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -4178,7 +4232,7 @@ Module str.
             s
         }
     *)
-    Definition to_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_ascii_lowercase (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -4229,7 +4283,7 @@ Module str.
       unsafe { Box::from_raw(Box::into_raw(v) as *mut str) }
   }
   *)
-  Definition from_boxed_utf8_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition from_boxed_utf8_unchecked (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ v ] =>
       ltac:(M.monadic
@@ -4243,8 +4297,8 @@ Module str.
             []
           |),
           [
-            M.rust_cast
-              (M.call_closure (|
+            M.rust_cast (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -4253,7 +4307,8 @@ Module str.
                   []
                 |),
                 [ M.read (| v |) ]
-              |))
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -4302,7 +4357,7 @@ Module str.
       out
   }
   *)
-  Definition convert_while_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition convert_while_ascii (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ b; convert ] =>
       ltac:(M.monadic
@@ -4331,35 +4386,36 @@ Module str.
                 ]
               |)
             |) in
-          let i := M.alloc (| Value.Integer 0 |) in
+          let i := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
           let _ :=
             let _ :=
               M.loop (|
                 ltac:(M.monadic
                   (M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (BinOp.Panic.add (|
+                                BinOp.Pure.le (|
+                                  BinOp.Panic.add (|
                                     Integer.Usize,
                                     M.read (| i |),
                                     M.read (|
                                       M.get_constant (| "alloc::str::convert_while_ascii::N" |)
                                     |)
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| b |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4374,21 +4430,24 @@ Module str.
                                 |),
                                 [
                                   M.read (| b |);
-                                  Value.StructRecord
-                                    "core::ops::range::Range"
-                                    [
-                                      ("start", M.read (| i |));
-                                      ("end_",
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (| i |),
-                                          M.read (|
-                                            M.get_constant (|
-                                              "alloc::str::convert_while_ascii::N"
-                                            |)
-                                          |)
-                                        |))
-                                    ]
+                                  M.of_value (|
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [
+                                        ("start", A.to_value (M.read (| i |)));
+                                        ("end_",
+                                          A.to_value
+                                            (BinOp.Panic.add (|
+                                              Integer.Usize,
+                                              M.read (| i |),
+                                              M.read (|
+                                                M.get_constant (|
+                                                  "alloc::str::convert_while_ascii::N"
+                                                |)
+                                              |)
+                                            |)))
+                                      ]
+                                  |)
                                 ]
                               |)
                             |) in
@@ -4418,25 +4477,28 @@ Module str.
                                     |),
                                     [ out ]
                                   |);
-                                  Value.StructRecord
-                                    "core::ops::range::Range"
-                                    [
-                                      ("start", M.read (| i |));
-                                      ("end_",
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (| i |),
-                                          M.read (|
-                                            M.get_constant (|
-                                              "alloc::str::convert_while_ascii::N"
-                                            |)
-                                          |)
-                                        |))
-                                    ]
+                                  M.of_value (|
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [
+                                        ("start", A.to_value (M.read (| i |)));
+                                        ("end_",
+                                          A.to_value
+                                            (BinOp.Panic.add (|
+                                              Integer.Usize,
+                                              M.read (| i |),
+                                              M.read (|
+                                                M.get_constant (|
+                                                  "alloc::str::convert_while_ascii::N"
+                                                |)
+                                              |)
+                                            |)))
+                                      ]
+                                  |)
                                 ]
                               |)
                             |) in
-                          let bits := M.alloc (| Value.Integer 0 |) in
+                          let bits := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
                           let _ :=
                             M.use
                               (M.match_operator (|
@@ -4452,17 +4514,21 @@ Module str.
                                       []
                                     |),
                                     [
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
-                                        [
-                                          ("start", Value.Integer 0);
-                                          ("end_",
-                                            M.read (|
-                                              M.get_constant (|
-                                                "alloc::str::convert_while_ascii::MAGIC_UNROLL"
-                                              |)
-                                            |))
-                                        ]
+                                      M.of_value (|
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start",
+                                              A.to_value (M.of_value (| Value.Integer 0 |)));
+                                            ("end_",
+                                              A.to_value
+                                                (M.read (|
+                                                  M.get_constant (|
+                                                    "alloc::str::convert_while_ascii::MAGIC_UNROLL"
+                                                  |)
+                                                |)))
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -4507,9 +4573,9 @@ Module str.
                                                       let β := bits in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Pure.bit_or
-                                                          (M.read (| β |))
-                                                          (M.call_closure (|
+                                                        BinOp.Pure.bit_or (|
+                                                          M.read (| β |),
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "*const")
@@ -4552,33 +4618,36 @@ Module str.
                                                                 ]
                                                               |)
                                                             ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)))
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                               ]
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       |)))
                                 ]
                               |)) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.ne
-                                            (BinOp.Pure.bit_and
-                                              (M.read (| bits |))
-                                              (M.read (|
+                                          BinOp.Pure.ne (|
+                                            BinOp.Pure.bit_and (|
+                                              M.read (| bits |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "alloc::str::convert_while_ascii::NONASCII_MASK"
                                                 |)
-                                              |)))
-                                            (Value.Integer 0)
+                                              |)
+                                            |),
+                                            M.of_value (| Value.Integer 0 |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4586,7 +4655,8 @@ Module str.
                                         Value.Bool true
                                       |) in
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
                           let _ :=
@@ -4604,17 +4674,21 @@ Module str.
                                       []
                                     |),
                                     [
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
-                                        [
-                                          ("start", Value.Integer 0);
-                                          ("end_",
-                                            M.read (|
-                                              M.get_constant (|
-                                                "alloc::str::convert_while_ascii::N"
-                                              |)
-                                            |))
-                                        ]
+                                      M.of_value (|
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start",
+                                              A.to_value (M.of_value (| Value.Integer 0 |)));
+                                            ("end_",
+                                              A.to_value
+                                                (M.read (|
+                                                  M.get_constant (|
+                                                    "alloc::str::convert_while_ascii::N"
+                                                  |)
+                                                |)))
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -4707,10 +4781,10 @@ Module str.
                                                           ]
                                                         |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)))
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                               ]
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       |)))
                                 ]
                               |)) in
@@ -4726,7 +4800,7 @@ Module str.
                                 |)
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
@@ -4734,7 +4808,7 @@ Module str.
                               M.read (|
                                 let _ :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)))
@@ -4754,24 +4828,24 @@ Module str.
                   [ out; M.read (| i |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           out
         |)))
     | _, _ => M.impossible
     end.
   
   Module convert_while_ascii.
-    Definition value_USIZE_SIZE : Value.t :=
+    Definition value_USIZE_SIZE : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (| M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |), [] |)
           |))).
     
-    Definition value_MAGIC_UNROLL : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+    Definition value_MAGIC_UNROLL : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 2 |) |))).
     
-    Definition value_N : Value.t :=
+    Definition value_N : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
@@ -4782,13 +4856,13 @@ Module str.
             |)
           |))).
     
-    Definition value_NONASCII_MASK : Value.t :=
+    Definition value_NONASCII_MASK : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
-              [ repeat (Value.Integer 128) 8 ]
+              [ repeat (| M.of_value (| Value.Integer 128 |), 8 |) ]
             |)
           |))).
   End convert_while_ascii.

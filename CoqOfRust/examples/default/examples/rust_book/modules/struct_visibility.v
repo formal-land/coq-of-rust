@@ -25,15 +25,17 @@ Module my.
                 ClosedBox { contents: contents }
             }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ contents ] =>
         ltac:(M.monadic
           (let contents := M.alloc (| contents |) in
-          Value.StructRecord
-            "struct_visibility::my::ClosedBox"
-            [ ("contents", M.read (| contents |)) ]))
+          M.of_value (|
+            Value.StructRecord
+              "struct_visibility::my::ClosedBox"
+              [ ("contents", A.to_value (M.read (| contents |))) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -66,16 +68,21 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let open_box :=
           M.alloc (|
-            Value.StructRecord
-              "struct_visibility::my::OpenBox"
-              [ ("contents", M.read (| Value.String "public information" |)) ]
+            M.of_value (|
+              Value.StructRecord
+                "struct_visibility::my::OpenBox"
+                [
+                  ("contents",
+                    A.to_value (M.read (| M.of_value (| Value.String "public information" |) |)))
+                ]
+            |)
           |) in
         let _ :=
           let _ :=
@@ -87,42 +94,52 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "The open box contains: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "The open box contains: " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    open_box,
-                                    "struct_visibility::my::OpenBox",
-                                    "contents"
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        open_box,
+                                        "struct_visibility::my::OpenBox",
+                                        "contents"
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _closed_box :=
           M.alloc (|
             M.call_closure (|
@@ -133,10 +150,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ M.read (| Value.String "classified information" |) ]
+              [ M.read (| M.of_value (| Value.String "classified information" |) |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

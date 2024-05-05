@@ -7,14 +7,22 @@ fn main() {
     vec![5, 6, 7, 8];
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let _ :=
           M.alloc (|
-            Value.Tuple [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4 ]
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value (M.of_value (| Value.Integer 1 |));
+                  A.to_value (M.of_value (| Value.Integer 2 |));
+                  A.to_value (M.of_value (| Value.Integer 3 |));
+                  A.to_value (M.of_value (| Value.Integer 4 |))
+                ]
+            |)
           |) in
         let _ :=
           M.alloc (|
@@ -26,8 +34,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -41,16 +49,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [ Value.Integer 5; Value.Integer 6; Value.Integer 7; Value.Integer 8 ]
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.of_value (| Value.Integer 5 |));
+                                A.to_value (M.of_value (| Value.Integer 6 |));
+                                A.to_value (M.of_value (| Value.Integer 7 |));
+                                A.to_value (M.of_value (| Value.Integer 8 |))
+                              ]
+                          |)
                         |)
                       ]
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

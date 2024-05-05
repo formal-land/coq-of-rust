@@ -15,7 +15,7 @@ Module vec.
               SpecFromIterNested::from_iter(iterator)
           }
       *)
-      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T I in
         match τ, α with
         | [], [ iterator ] =>
@@ -75,7 +75,7 @@ Module vec.
               vec
           }
       *)
-      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ iterator ] =>
@@ -86,11 +86,11 @@ Module vec.
                 (M.read (|
                   let has_advanced :=
                     M.alloc (|
-                      BinOp.Pure.ne
-                        (M.rust_cast
+                      BinOp.Pure.ne (|
+                        M.rust_cast (|
                           (* MutToConstPointer *)
-                          (M.pointer_coercion
-                            (M.call_closure (|
+                          M.pointer_coercion (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
                                 "as_ptr",
@@ -105,18 +105,21 @@ Module vec.
                                   |)
                                 |)
                               ]
-                            |))))
-                        (M.read (|
+                            |)
+                          |)
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             iterator,
                             "alloc::vec::into_iter::IntoIter",
                             "ptr"
                           |)
-                        |))
+                        |)
+                      |)
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -124,10 +127,10 @@ Module vec.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    UnOp.Pure.not (M.read (| has_advanced |)),
+                                    UnOp.Pure.not (| M.read (| has_advanced |) |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.ge
-                                        (M.call_closure (|
+                                      (BinOp.Pure.ge (|
+                                        M.call_closure (|
                                           M.get_trait_method (|
                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                             Ty.apply
@@ -138,8 +141,8 @@ Module vec.
                                             []
                                           |),
                                           [ iterator ]
-                                        |))
-                                        (BinOp.Panic.div (|
+                                        |),
+                                        BinOp.Panic.div (|
                                           Integer.Usize,
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
@@ -148,8 +151,9 @@ Module vec.
                                               "cap"
                                             |)
                                           |),
-                                          Value.Integer 2
-                                        |))))
+                                          M.of_value (| Value.Integer 2 |)
+                                        |)
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -176,7 +180,7 @@ Module vec.
                                     |) in
                                   let _ :=
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
@@ -298,8 +302,10 @@ Module vec.
                                                   ]
                                                 |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       ]
                                     |) in
                                   M.return_ (|
@@ -402,7 +408,7 @@ Module vec.
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let vec :=

@@ -13,7 +13,7 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -27,25 +27,27 @@ Module function_stack.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "FunctionReturnFrame" |);
-              M.read (| Value.String "idx" |);
+              M.read (| M.of_value (| Value.String "FunctionReturnFrame" |) |);
+              M.read (| M.of_value (| Value.String "idx" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::function_stack::FunctionReturnFrame",
                   "idx"
-                |));
-              M.read (| Value.String "pc" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "pc" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::function_stack::FunctionReturnFrame",
                     "pc"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -63,36 +65,40 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "revm_interpreter::function_stack::FunctionReturnFrame"
-            [
-              ("idx",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "usize",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |));
-              ("pc",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "usize",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |))
-            ]))
+          (M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::function_stack::FunctionReturnFrame"
+              [
+                ("idx",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "usize",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)));
+                ("pc",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "usize",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -108,14 +114,14 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
+              M.of_value (| Value.DeclaredButUndefined |),
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
@@ -156,44 +162,46 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.Pure.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::function_stack::FunctionReturnFrame",
                   "idx"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| other |),
                   "revm_interpreter::function_stack::FunctionReturnFrame",
                   "idx"
                 |)
-              |)),
+              |)
+            |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::function_stack::FunctionReturnFrame",
                     "pc"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::function_stack::FunctionReturnFrame",
                     "pc"
                   |)
-                |))))
+                |)
+              |)))
           |)))
       | _, _ => M.impossible
       end.
@@ -221,15 +229,15 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              M.of_value (| Value.DeclaredButUndefined |),
+              [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
             |)
           |)))
       | _, _ => M.impossible
@@ -248,7 +256,7 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ __H ], [ self; state ] =>
         ltac:(M.monadic
@@ -302,15 +310,17 @@ Module function_stack.
             Self { idx, pc }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ idx; pc ] =>
         ltac:(M.monadic
           (let idx := M.alloc (| idx |) in
           let pc := M.alloc (| pc |) in
-          Value.StructRecord
-            "revm_interpreter::function_stack::FunctionReturnFrame"
-            [ ("idx", M.read (| idx |)); ("pc", M.read (| pc |)) ]))
+          M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::function_stack::FunctionReturnFrame"
+              [ ("idx", A.to_value (M.read (| idx |))); ("pc", A.to_value (M.read (| pc |))) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -338,7 +348,7 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionStack".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -352,25 +362,27 @@ Module function_stack.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "FunctionStack" |);
-              M.read (| Value.String "return_stack" |);
+              M.read (| M.of_value (| Value.String "FunctionStack" |) |);
+              M.read (| M.of_value (| Value.String "return_stack" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::function_stack::FunctionStack",
                   "return_stack"
-                |));
-              M.read (| Value.String "current_code_idx" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "current_code_idx" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::function_stack::FunctionStack",
                     "current_code_idx"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -388,41 +400,45 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionStack".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "revm_interpreter::function_stack::FunctionStack"
-            [
-              ("return_stack",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      [
-                        Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |));
-              ("current_code_idx",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "usize",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |))
-            ]))
+          (M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::function_stack::FunctionStack"
+              [
+                ("return_stack",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [
+                            Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)));
+                ("current_code_idx",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "usize",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -445,29 +461,32 @@ Module function_stack.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "revm_interpreter::function_stack::FunctionStack"
-            [
-              ("return_stack",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      [
-                        Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    "new",
-                    []
-                  |),
-                  []
-                |));
-              ("current_code_idx", Value.Integer 0)
-            ]))
+          (M.of_value (|
+            Value.StructRecord
+              "revm_interpreter::function_stack::FunctionStack"
+              [
+                ("return_stack",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [
+                            Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      []
+                    |)));
+                ("current_code_idx", A.to_value (M.of_value (| Value.Integer 0 |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -482,7 +501,7 @@ Module function_stack.
             self.current_code_idx = new_idx;
         }
     *)
-    Definition push (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition push (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; program_counter; new_idx ] =>
         ltac:(M.monadic
@@ -509,19 +528,22 @@ Module function_stack.
                       "revm_interpreter::function_stack::FunctionStack",
                       "return_stack"
                     |);
-                    Value.StructRecord
-                      "revm_interpreter::function_stack::FunctionReturnFrame"
-                      [
-                        ("idx",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::function_stack::FunctionStack",
-                              "current_code_idx"
-                            |)
-                          |));
-                        ("pc", M.read (| program_counter |))
-                      ]
+                    M.of_value (|
+                      Value.StructRecord
+                        "revm_interpreter::function_stack::FunctionReturnFrame"
+                        [
+                          ("idx",
+                            A.to_value
+                              (M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::function_stack::FunctionStack",
+                                  "current_code_idx"
+                                |)
+                              |)));
+                          ("pc", A.to_value (M.read (| program_counter |)))
+                        ]
+                    |)
                   ]
                 |)
               |) in
@@ -534,7 +556,7 @@ Module function_stack.
                 |),
                 M.read (| new_idx |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -546,7 +568,7 @@ Module function_stack.
             self.return_stack.len()
         }
     *)
-    Definition return_stack_len (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition return_stack_len (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -584,7 +606,7 @@ Module function_stack.
             })
         }
     *)
-    Definition pop (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pop (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -622,8 +644,8 @@ Module function_stack.
                   |)
                 ]
               |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -654,7 +676,8 @@ Module function_stack.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -667,7 +690,7 @@ Module function_stack.
             self.current_code_idx = idx;
         }
     *)
-    Definition set_current_code_idx (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set_current_code_idx (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; idx ] =>
         ltac:(M.monadic
@@ -683,7 +706,7 @@ Module function_stack.
                 |),
                 M.read (| idx |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
